@@ -1,0 +1,5 @@
+<svg width="50" height="50" viewBox="0 0 50 50" fill="none" xmlns="http://www.w3.org/2000/svg">
+<circle r="25" transform="matrix(-1 0 0 1 25 25)" fill="white"/>
+<path d="M28 20L33 25L28 30" stroke="#FCAB2D" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M32 25C32 24.4477 31.5523 24 31 24H17C16.4477 24 16 24.4477 16 25C16 25.5523 16.4477 26 17 26H31C31.5523 26 32 25.5523 32 25Z" fill="#FCAB2D"/>
+</svg>
