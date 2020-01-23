@@ -5,7 +5,7 @@
 			<nuxt-link to="/" class="header__logo">
 				<img src="~/static/pics/global/svg/nash_plyaj_white.svg" alt="НашПляж">
 			</nuxt-link>
-			<Search v-show="showSearch" />
+			<Search v-if="showSearch" />
 			<div class="header__favorites">
 				<nuxt-link to="/favorites">Избранное</nuxt-link>
 			</div>
@@ -40,6 +40,14 @@
 			this.$bus.$on('dontShowBg', () => {
 				this.showBg = false;
 			});
+
+			window.addEventListener('resize', this.onResize);
+		},
+
+		methods: {
+			onResize() {
+				// if ()
+			}
 		}
 	}
 </script>

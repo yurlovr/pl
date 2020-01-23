@@ -1,5 +1,5 @@
 <template>
-	<div class="footer custom-container">
+	<footer class="footer custom-container">
 		<div class="footer__top">
 			<div class="footer__part">
 				<nuxt-link to="/">
@@ -21,7 +21,7 @@
 				<h4>Правила и условия</h4>
 				<nuxt-link to="/contacts">Контакты</nuxt-link>
 			</div>
-			<div class="footer__part footer__part-last">
+			<div class="footer__part">
 				<h4>Мы в соцсетях</h4>
 				<div class="footer__part__social-links">
 					<a class="footer__part__social" href="facebook.com">
@@ -57,5 +57,5 @@
 				<nuxt-link to="/rules" class="footer__bottom__link footer__bottom__text">Правила пользования сайтом</nuxt-link>
 			</div>
 		</div>
-	</div>
+	</footer>
 </template>

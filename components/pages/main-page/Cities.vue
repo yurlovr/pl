@@ -6,7 +6,7 @@
 </template>
 
 <script>
-  import SliderCities from '~/components/pages/main-page/SliderCities';
+  import SliderCities from '~/components/pages/main-page/sliders/SliderCities';
 
   export default {
   	props: ['data'],

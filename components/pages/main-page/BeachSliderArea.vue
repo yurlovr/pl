@@ -13,7 +13,7 @@
 </template>
 
 <script>
-  import SliderBeachEventHotel from '~/components/global/SliderBeachEventHotel';
+  import SliderBeachEventHotel from '~/components/global/sliders/SliderBeachEventHotel';
 
   export default {
   	props: ['data', 'areaData'],

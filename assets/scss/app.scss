@@ -61,6 +61,8 @@ html, body {
   padding-left: 74px;
   padding-right: 74px;
   position: relative;
+  max-width: 1350px;
+  margin: 0 auto;
 }
 
 .header {
@@ -117,6 +119,7 @@ html, body {
   height: 56px;
   display: flex;
   z-index: 12;
+  max-width: 820px;
 
   &__bar, &__options {
     background: white;
@@ -131,6 +134,7 @@ html, body {
     align-items: center;
     padding: 18px;
     margin-right: 2px;
+    position: relative;
 
     &__input {
       width: 100%;
@@ -187,6 +191,175 @@ html, body {
 
     &:focus {
       outline: none;
+    }
+  }
+
+  &__params {
+    position: absolute;
+    top: 5px;
+    left: 0;
+    width: 100%;
+    background: white;
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    z-index: 12;
+    transition: height .5s ease;
+    overflow: hidden;
+
+    &__inner {
+      width: 100%;
+      height: 100%;
+      padding: 25px;
+    }
+
+    select, input {
+      outline: none;
+    }
+
+    &__title {
+      font-size: 20px;
+      font-weight: 700;
+      line-height: 120%;
+      color: #393E48;
+      margin-bottom: 20px;
+    }
+
+    &__apply {
+      background: #FCAB2D;
+      box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+      border-radius: 6px;
+      padding: 16px 62px;
+      font-size: 14px;
+      line-height: 130%;
+      color: #FFFFFF;
+      border: none;
+
+      &:focus {
+        outline: none;
+      }
+
+      &-area {
+        display: flex;
+        justify-content: flex-end;
+        margin-bottom: 30px;
+      }
+    }
+
+    &__part {
+      &__dropdowns {
+        display: flex;
+        width: 100%;
+
+        &:first-of-type {
+          margin-right: 24px;
+        }
+
+        &-area {
+          display: flex;
+          flex-direction: column;
+        }
+
+        &-row {
+          margin-bottom: 24px;
+          width: 100%;
+          display: flex;
+        }
+      }
+
+      &--dropdown {
+        width: 100%;
+
+        &:first-of-type {
+          margin-right: 24px;
+        }
+
+        select {
+          padding: 15px 20px;
+          font-size: 14px;
+          line-height: 120%;
+          color: #73767D;
+          border-radius: 6px;
+          border: 1px solid #C4C4C4;
+          width: 100%;
+          min-width: 85px;
+          appearance: none;
+          background: url('../../static/pics/global/svg/dropdown.svg');
+          background-repeat: no-repeat;
+          background-position: calc(100% - 16px) calc(50% - 2px);
+        }
+
+        &--merged {
+          display: flex;
+          flex-wrap: nowrap;
+          margin-right: 0 !important;
+
+          select {
+            &:first-of-type {
+              border-radius: 6px 0 0 6px;
+              border-right: none;
+            }
+
+            &:last-of-type {
+              border-radius: 0 6px 6px 0;
+              width: auto;
+            }
+          }
+        }
+
+        &--wider {
+          min-width: 165px;
+        }
+      }
+
+      &__checkboxes {
+        display: flex;
+        flex-wrap: wrap;
+
+        &--first {
+          margin-bottom: 12px;
+        }
+      }
+
+      &--checkbox {
+        width: 33.33%;
+        display: flex;
+        align-items: flex-start;
+        font-size: 14px;
+        line-height: 120%;
+        color: #242934;
+        margin-bottom: 15px;
+        padding-right: 16px;
+
+        input {
+          margin-right: 10px;
+          appearance: none;
+          min-width: 14px;
+          min-height: 14px;
+          border: 1px solid #C4C4C4;
+          box-sizing: border-box;
+          border-radius: 3px;
+
+          &:checked {
+            background: #FCAB2D;
+            border: 1px solid #FCAB2D;
+            padding: 0;
+            position: relative;
+
+            &:after {
+              position: absolute;
+              top: 0;
+              left: 0;
+              content: '';
+              background: url('../../static/pics/global/svg/check.svg');
+              background-size: 10px;
+              width: 12px;
+              height: 12px;
+              background-repeat: no-repeat;
+              background-position: center;
+            }
+          }
+        }
+      }
     }
   }
 }
@@ -306,6 +479,8 @@ html, body {
 }
 
 .main-page {
+  width: 100%;
+
   @mixin see-all {
     text-decoration: none;
     color: #FCAB2D;
@@ -332,6 +507,7 @@ html, body {
       width: 100%;
       height: 100vh;
       z-index: 0;
+      object-fit: cover;
     }
 
     &__gradient {
@@ -531,7 +707,7 @@ html, body {
     &__card {
       &__pic {
         width: 100%;
-        height: 390px;
+        height: 100%;
         object-fit: cover;
         border-radius: 12px 0 0 12px;
 
@@ -619,6 +795,7 @@ html, body {
     &__card {
       &__pic {
         width: 100%;
+        height: 100%;
         object-fit: cover;
         border-radius: 0 12px 12px 0;
 
@@ -721,6 +898,7 @@ html, body {
       object-fit: cover;
       width: 100%;
       height: 100%;
+      border-radius: 12px 0 0 12px;
 
       &-area {
         width: 100%;
@@ -752,6 +930,16 @@ html, body {
         }
       }
     }
+  }
+
+  &__weather-slider-area {
+    padding-top: 60px;
+    padding-bottom: 60px;
+    background: white;
+  }
+
+  &__dynamic-slider-area {
+    margin-bottom: 70px;
   }
 }
 
@@ -793,6 +981,8 @@ html, body {
     position: relative;
 
     &__slide {
+      min-height: 145px;
+
       &__pic {
         width: 100%;
         border-radius: 12px;
@@ -841,8 +1031,9 @@ html, body {
       &__title {
         font-weight: 700;
         line-height: 120%;
-        color: #393E48;
+        color: #393E48 !important;
         margin-bottom: 7px;
+        display: block;
       }
 
       &__beach {
@@ -924,6 +1115,10 @@ html, body {
           width: 30px;
           height: 30px;
           padding: 0;
+
+          &:focus {
+            outline: none;
+          }
         }
       }
 
@@ -948,6 +1143,7 @@ html, body {
       box-shadow: 10px 10px 16px rgba(0, 0, 0, 0.06);
       margin-bottom: 20px;
       border-radius: 12px;
+      min-height: 80px;
 
       &__pic {
         width: 100%;
@@ -987,6 +1183,197 @@ html, body {
           line-height: 120%;
           color: #FCAB2D;
           margin-right: 4px;
+        }
+      }
+    }
+  }
+
+  &-weather {
+    position: relative;
+
+    .swiper-container {
+      padding-right: 10px;
+      padding-left: 10px;
+      margin-right: -10px;
+      margin-left: -10px;
+    }
+
+    &__month {
+      @include flex-center;
+      background: none;
+      border: none;
+      font-size: 18px;
+      line-height: 22px;
+      text-transform: capitalize;
+      color: #73767D;
+      margin-right: 25px;
+
+      &:last-of-type {
+        margin-right: 0;
+      }
+
+      &:focus {
+        outline: none;
+      }
+
+      &.active {
+        background: #FCAB2D;
+        color: white;
+        border-radius: 33px;
+        padding: 5px 25px;
+      }
+
+      &s {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 50px;
+      }
+    }
+
+    &__slide {
+      &__title {
+        margin-bottom: 55px;
+        font-size: 18px;
+        line-height: 22px;
+        color: #000000;
+        opacity: 0.9;
+      }
+
+      &__temp {
+        &-number {
+          color: #FCAB2D;
+          margin-right: 1px;
+        }
+
+        &-o {
+          font-weight: 500;
+          font-size: 10px;
+          position: relative;
+          width: 7px;
+
+          span {
+            position: absolute;
+            top: -12px;
+          }
+        }
+
+        &-number, &-C {
+          font-size: 24px;
+          line-height: 29px;
+        }
+
+        &-number, &-C {
+          font-weight: 700;
+        }
+
+        &-o, &-C {
+          color: #73767D;
+        }
+      }
+
+      &__pic {
+        margin-bottom: 10px;
+
+        &-area {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+        }
+      }
+    }
+
+    &__part {
+      &s {
+        display: flex;
+        width: 100%;
+        position: relative;
+      }
+
+      &__temperature-text {
+        font-size: 12px;
+        line-height: 14px;
+        color: #4A4A4A;
+
+        img {
+          margin-right: 10px;
+        }
+      }
+
+      &__info {
+        height: 40px;
+        @include flex-center;
+
+        &:first-of-type {
+          margin-bottom: 40px;
+        }
+      }
+
+      &-left {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+        margin-right: 50px;
+        min-width: 140px;
+        width: 15%;
+      }
+
+      &-right {
+        position: relative;
+        width: 85%;
+      }
+    }
+  }
+
+  &-dynamic {
+    margin-top: 20px;
+    position: relative;
+
+    &__slide {
+      position: relative;
+      height: 340px !important;
+      border-radius: 12px;
+      transition: width .5s ease !important;
+
+      a {
+        text-decoration: none;
+      }
+
+      &__pic {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: 12px;
+      }
+
+      &__title {
+        position: absolute;
+        top: 20px;
+        left: 30px;
+        font-size: 36px;
+        font-weight: 900;
+        color: #FFFFFF;
+      }
+
+      &__beach {
+        font-size: 14px;
+        letter-spacing: 0.01em;
+        text-transform: lowercase;
+        color: #FFFFFF;
+
+        &-number {
+          font-size: 24px;
+          font-weight: 700;
+          line-height: 120%;
+          color: #FCAB2D;
+          margin-right: 4px;
+
+          &-area {
+            position: absolute;
+            bottom: 25px;
+            left: 30px;
+            display: flex;
+            align-items: flex-end;
+          }
         }
       }
     }
@@ -1031,5 +1418,286 @@ html, body {
     box-shadow: none !important;
     top: -52px !important;
     left: -30px !important;
+  }
+}
+
+// slider-weather's months part starts breaking at 1320, so changing it to a slider
+@media (max-width: 1320px) {
+  .main-page {
+    &__weather-slider-area {
+      overflow: hidden;
+    }
+  }
+
+  .slider {
+    &-weather {
+      &__month {
+        &s {
+          .swiper-container {
+            overflow: visible;
+            width: 100%;
+          }
+
+          .swiper-slide {
+            @include flex-center;
+            max-width: 80px;
+            min-width: 80px;
+          }
+        }
+        
+        &.active {
+          padding: 5px 13px;
+        }
+      }
+    }
+  }
+}
+
+// after 1300px search parameters start to break, so changing it to the tablet view + slider-weather's main slider is too big
+@media (max-width: 1301px) {
+  .search {
+    &__params {
+      &__part {
+        &__dropdowns {
+          margin-bottom: 20px;
+
+          &-area {
+            margin-bottom: 20px;
+          }
+
+          &-row {
+            flex-direction: column;
+            margin-bottom: 0;
+          }
+        }
+      }
+    }
+  }
+
+  .slider {
+    &-weather {
+      &__part {
+        &-right {
+          width: 80%;
+        }
+      }
+    }
+  }
+}
+
+// after 1230px, beh is fucking up, so making it smaller just like in the TABLET version
+@media (max-width: 1230px) {
+  .slider {
+    &-beh {
+      &__slide {
+        &__title {
+          font-size: 16px !important;
+        }
+
+        &__heart, &__expensive {
+          width: 22px;
+          height: 22px;
+        }
+
+        &__heart-button {
+          width: 22px;
+          height: 22px;
+          margin-top: -2px;
+        }
+
+        &__location {
+          font-size: 10px !important;
+          line-height: 12px !important;
+        }
+
+        &__beach, &__date-area {
+          font-size: 14px;
+        }
+
+        &__temp {
+          font-size: 14px;
+
+          &-o {
+            font-size: 8px;
+          }
+
+          &-C {
+            font-size: 14px;
+          }
+
+          &-area {
+            height: 22px;
+            padding: 6px 10px;
+
+            img {
+              transform: scale(.8);
+              margin-right: 2px;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .main-page {
+    &__card {
+      &__info {
+        &-area {
+          &__title {
+            font-size: 24px;
+          }
+
+          &__text {
+            font-size: 14px;
+          }
+        }
+      }
+    }
+  }
+}
+
+// after 1200px BeachEntranceFree gets broken, so making it just like in the TABLET version
+@media (max-width: 1200px) {
+  .main-page {
+    &__bef {
+      &__card {
+        &__pic {
+          &-area {
+            &__icon {
+              &-wrapper {
+                margin-right: 10px;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+// at 1150px slider beh breaks, so making it just like in the TABLET version
+@media (max-width: 1150px) {
+  .slider {
+    &-beh, &-cities {
+      .swiper-container {
+        overflow: visible;
+      }
+    }
+
+    &-cities {
+      &__slide {
+        &__info-area {
+          white-space: nowrap;
+        }
+      }
+    }
+  }
+
+  .main-page {
+    &__beach-slider-area, &__beach-events, &__cities {
+      overflow: hidden;
+    }
+  }
+
+  .footer__bottom {
+    .footer__part {
+      padding-right: 10px;
+    }
+  }
+}
+
+// after 1050px SLIDER-WEATHER again starts to break, this time its main slider part, so change it to the TABLET version
+@media (max-width: 1050px) {
+  .slider {
+    &-weather {
+      .swiper-container {
+        overflow: visible;
+      }
+
+      .slider {
+        &__arrow {
+          &-left {
+            left: 25px;
+          }
+
+          &-right {
+            right: auto;
+            left: 45px;
+          }
+        }
+      }
+
+      &__slide {
+        max-width: 110px;
+      }
+
+      &__part {
+        &-left {
+          width: 140px;
+          margin: 0;
+          background: white;
+          position: relative;
+          z-index: 3;
+
+          &__cover {
+            background: white;
+            width: 100%;
+            height: 100%;
+            margin-left: -74px;
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: -1;
+          }
+        }
+
+        &-right {
+          width: 100%;
+          margin-left: -140px;
+          padding-left: 145px;
+        }
+      }
+    }
+
+    &-cities {
+      &__slide {
+        &__info-area {
+          padding: 4px 12px;
+        }
+      }
+    }
+  }
+}
+
+// lower than 1000, we get smaller container paddings, small stuff, and making the cities look just like in the TABLET version
+@media (max-width: 1000px) {
+  .custom-container {
+    padding-left: 32px;
+    padding-right: 32px;
+  }
+
+  .slider {
+    &-dynamic {
+      &__slide {
+        &:last-of-type {
+          display: none;
+        }
+
+        &__title {
+          font-size: 20px;
+        }
+      }
+    }
+  }
+
+  .main-page {
+    &__section {
+      &__subtitle-area {
+        &__see-all {
+          white-space: nowrap;
+          padding-left: 10px;
+        }
+      }
+    }
   }
 }
