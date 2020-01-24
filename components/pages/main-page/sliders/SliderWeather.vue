@@ -22,10 +22,11 @@
 				</div>
 			</div>
 		</div>
+		<div class="pagination-wrapper"><div class="swiper-pagination"></div></div>
 		<button class="slider__arrow-left" :style="{ transform: 'translate(-50%, -50%)', top: arrowY + 'px', display: showLeft ? '' : 'none' }" @click="mySwiper.slidePrev()">
 			<img src="~/static/pics/global/svg/slider_arrow_left.svg" alt="Налево">
 		</button>
-		<button class="slider__arrow-right" :style="{ transform: 'translate(50%, -50%)', top: arrowY + 'px', display: showRight ? '' : 'none' }" @click="mySwiper.slideNext();">
+		<button class="slider__arrow-right" :style="{ transform: 'translate(50%, -50%)', top: arrowY + 'px', display: showRight ? '' : 'none' }" @click="mySwiper.slideNext()">
 			<img src="~/static/pics/global/svg/slider_arrow_right.svg" alt="Направо">
 		</button>
 	</div>
@@ -35,7 +36,7 @@
 	import Vue from 'vue';
 
 	export default {
-		props: ['slideData', 'slideNumber'],
+		props: ['slideData'],
 
 		beforeMount () {
 			if (process.browser) {
@@ -51,6 +52,9 @@
 					spaceBetween: 50,
 					slidesPerView: 7,
 					init: false,
+					pagination: {
+				    	el: '.swiper-pagination',
+				    },
 					breakpoints: {
 						1200: {
 							slidesPerView: 6
@@ -58,6 +62,12 @@
 						1050: {
 							slidesPerView: 'auto',
 							spaceBetween: 36
+						},
+						500: {
+							slidesPerView: 3
+						},
+						430: {
+							slidesPerView: 2
 						}
 					}
 				},
@@ -92,8 +102,8 @@
 			},
 
 			updateArrows() {
-				this.showLeft = this.mySwiper.activeIndex != 0;
-				this.showRight = this.mySwiper.activeIndex != Math.floor(this.mySwiper.slides.length / 2);
+				this.showLeft = !this.mySwiper.isBeginning;
+				this.showRight = !this.mySwiper.isEnd;
 			}
 		}
 	}

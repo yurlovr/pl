@@ -9,6 +9,12 @@
         </nuxt-link>
       </div>
       <SliderBeachEventHotel :data="data" />
+      <div class="main-page__beach-slider-area__see-all-bottom">
+        <nuxt-link to="/" class="main-page__see-all">
+              <span>Смотреть все ({{ areaData.beachNumber }})</span>
+              <img src="~/static/pics/global/svg/arrow_next.svg" alt="Перейти">
+            </nuxt-link>
+      </div>
     </section>
 </template>
 

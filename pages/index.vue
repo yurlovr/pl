@@ -3,10 +3,10 @@
     <img src="~/static/pics/main/bg.png" class="main-page__welcome__background" alt="Добро пожаловать">
     <div class="main-page__welcome__gradient"></div>
     <Welcome />
-    <Search class="main-page__welcome__search" />
+    <Search class="main-page__welcome__search" labelId="1" />
     <BeachSliderArea :data="mostPopularBeaches" :areaData="mostPopularBeachesAreaData" />
     <Cities :data="cityBeaches" />
-    <Map :data="mapData" />
+    <YandexMap :data="mapData" />
     <BeachEntranceFree />
     <BeachSliderArea :data="familyData" :areaData="familyAreaData" class="main-page__family-rest" />
     <BeachEvents :data="eventData" :areaData="beachEventsData" />
@@ -16,7 +16,7 @@
     <OnCarNoProblem />
     <BeachType :data="beachTypeData" />
     <YouNeedThis />
-    <BeachSliderArea :data="hotelData" :areaData="hotelAreaData" />
+    <BeachSliderArea class="main-page__hotels" :data="hotelData" :areaData="hotelAreaData" />
   </div>
 </template>
 
@@ -25,7 +25,6 @@
   import Welcome from '~/components/pages/main-page/Welcome';
   import BeachSliderArea from '~/components/pages/main-page/BeachSliderArea';
   import Cities from '~/components/pages/main-page/Cities';
-  import Map from '~/components/pages/main-page/Map';
   import BeachEntranceFree from '~/components/pages/main-page/BeachEntranceFree';
   import BeachEvents from '~/components/pages/main-page/BeachEvents';
   import ChooseBeach from '~/components/pages/main-page/ChooseBeach';
@@ -34,6 +33,7 @@
   import YouNeedThis from '~/components/pages/main-page/YouNeedThis';
   import WeatherSliderArea from '~/components/pages/main-page/WeatherSliderArea';
   import DynamicSliderArea from '~/components/pages/main-page/DynamicSliderArea';
+  import YandexMap from '~/components/global/YandexMap';
 
   export default {
     components: {
@@ -49,29 +49,44 @@
       BeachType,
       YouNeedThis,
       WeatherSliderArea,
-      DynamicSliderArea
+      DynamicSliderArea,
+      YandexMap
     },
 
     mounted() {
       this.$bus.$emit('dontShowSearch');
-      this.$bus.$emit("dontShowBg");
 
       window.addEventListener('scroll', () => { onScroll() });
+      window.addEventListener('resize', () => { onResize() });
 
       let scrollTop;
       let onScroll = () => {
         scrollTop = window.scrollY || document.body.scrollTop || document.documentElement.scrollTop;
 
-        if (scrollTop >= 0.4863 * window.innerHeight) {
-          this.$bus.$emit("showBg");
+        // show or hide the search background and the bar depending on the scroll
+        if (window.innerWidth > 500 && scrollTop >= 0.4863 * window.innerHeight || window.innerWidth <= 500 && scrollTop >= 0.25 * window.innerHeight) {
+          this.$bus.$emit("showHeaderBgAndBar");
         } else {
-          this.$bus.$emit("dontShowBg");
+          this.$bus.$emit("hideHeaderBgAndBar");
         }
-      }
+      };
+
+      let onResize = () => {
+        // correct the text for the mobile
+        if (window.innerWidth <= 650) {
+          this.$bus.$emit('showCorrectSelectText');
+        } else {
+          this.$bus.$emit('dontShowCorrectSelectText');
+        }
+      };
+
+      onScroll();
+      onResize();
     },
 
     data() {
       return {
+        // data here
         mostPopularBeaches: {
           showArrows: true, // whether to ever show arrows
           slideNumber: 4,
@@ -464,6 +479,7 @@
         familyData: {
           showArrows: true, // whether to ever show arrows
           slideNumber: 6,
+          tall: true,
           slideData: [
             {
               temperature: 24,
@@ -691,6 +707,7 @@
         hotelData: {
           showArrows: true, // whether to ever show arrows
           slideNumber: 6,
+          tall: true,
           slideData: [
             {
               rating: 5.0,

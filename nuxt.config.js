@@ -32,7 +32,8 @@ export default {
   */
   plugins: [
     '~/plugins/bus',
-   { src: "~/plugins/google-maps", ssr: true },
+   { src: "~/plugins/yandex-maps", ssr: false },
+    {src: '~/plugins/scroll-lock', ssr: false }
   ],
   /*
   ** Nuxt.js dev-modules
@@ -45,6 +46,7 @@ export default {
   modules: [
     // Doc: https://bootstrap-vue.js.org
     'bootstrap-vue/nuxt',
+    'vue-yandex-maps/nuxt'
   ],
   /*
   ** Build configuration
@@ -53,7 +55,6 @@ export default {
     /*
     ** You can extend webpack config here
     */
-    transpile: [/^vue2-google-maps($|\/)/, /^vue2-gmap-custom-marker($|\/)/],
     extend (config, ctx) {
     }
   }

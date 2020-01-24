@@ -4,13 +4,3 @@
       <h1 class="main-page__welcome__title">Найдите идеальный<br>пляж для вашего отдыха</h1>
     </main>
 </template>
-
-<script>
-	import Search from '~/components/global/Search';
-
-	export default {
-		components: {
-			Search
-		}
-	}
-</script>

@@ -35,13 +35,12 @@
 				</div>
 			</div>
 			<div class="main-page__bef__card__info-area">
-				<h4 class="main-page__card__info-area__title">Песчаный пляж<br>Голубой Залив</h4>
+				<h4 class="main-page__card__info-area__title">Песчаный пляж <br>Голубой Залив</h4>
 				<p class="main-page__card__info-area__text">
 					Пологий берег, плавный вход в воду, единение с природой, безопасность и инфраструктура
 				</p>
 				<nuxt-link to="/" class="main-page__card__info-area__button">
 					<span>Подробнее</span>
-					<img src="~/static/pics/global/svg/arrow_next_white.svg" alt="Перейти">
 				</nuxt-link>
 			</div>
 		</div>

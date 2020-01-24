@@ -16,6 +16,7 @@
 				</div>
 			</div>
 		</div>
+		<div class="pagination-wrapper pagination-wrapper__cities"><div class="swiper-pagination"></div></div>
 		<button class="slider__arrow-left" :style="{ transform: 'translate(-50%, -50%)', top: arrowY + 'px', display: showLeft && showArrows ? '' : 'none' }" @click="mySwiper.slidePrev()">
 			<img src="~/static/pics/global/svg/slider_arrow_left.svg" alt="Налево">
 		</button>
@@ -44,7 +45,20 @@
 				swiperOption: {
 					spaceBetween: 24,
 					slidesPerView: 6,
-					init: false
+					init: false,
+					pagination: {
+				    	el: '.swiper-pagination',
+				    },
+					breakpoints: {
+						1150: {
+							slidesPerView: 'auto',
+							spaceBetween: 20
+						},
+						1150: {
+							slidesPerView: 'auto',
+							spaceBetween: 10
+						}
+					}
 				},
 				arrowY: 0,
 				showLeft: false,
@@ -78,8 +92,8 @@
 			},
 
 			updateArrows() {
-				this.showLeft = this.mySwiper.activeIndex != 0;
-				this.showRight = this.mySwiper.activeIndex != Math.floor(this.mySwiper.slides.length / 2);
+				this.showLeft = !this.mySwiper.isBeginning;
+				this.showRight = !this.mySwiper.isEnd;
 			}
 		}
 	}

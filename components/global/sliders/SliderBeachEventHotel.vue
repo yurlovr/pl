@@ -2,7 +2,7 @@
 	<div class="slider-beh">
 		<div v-swiper:mySwiper="swiperOption">
 			<div class="swiper-wrapper">
-				<div class="swiper-slide slider-beh__slide" v-for="slide in data.slideData">
+				<div class="swiper-slide slider-beh__slide" v-for="slide in data.slideData" :class="{ tall : data.tall }">
 					<nuxt-link to="/" class="slider__slide__link">
 						<div class="slider-beh__slide__pic-area">
 							<img :src="slide.pic" alt="Фото" class="slider-beh__slide__pic">
@@ -35,6 +35,7 @@
 				</div>
 			</div>
 		</div>
+		<div class="pagination-wrapper"><div class="swiper-pagination"></div></div>
 		<button class="slider__arrow-left" :style="{ transform: 'translate(-50%, -50%)', top: arrowY + 'px', display: showLeft && showArrows ? '' : 'none' }" @click="mySwiper.slidePrev()">
 			<img src="~/static/pics/global/svg/slider_arrow_left.svg" alt="Налево">
 		</button>
@@ -64,10 +65,17 @@
 					spaceBetween: 24,
 					slidesPerView: this.data.slideNumber,
 					init: false,
+					pagination: {
+				    	el: '.swiper-pagination',
+				    },
 					breakpoints: {
 						1150: {
-							slidesPerView: 4,
+							slidesPerView: 'auto',
 							spaceBetween: 20
+						},
+						500: {
+							slidesPerView: 'auto',
+							spaceBetween: 10
 						}
 					}
 				},
@@ -103,8 +111,8 @@
 			},
 
 			updateArrows() {
-				this.showLeft = this.mySwiper.activeIndex != 0;
-				this.showRight = this.mySwiper.activeIndex != Math.floor(this.mySwiper.slides.length / 2);
+				this.showLeft = !this.mySwiper.isBeginning;
+				this.showRight = !this.mySwiper.isEnd;
 			}
 		}
 	}
