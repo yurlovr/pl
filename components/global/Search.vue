@@ -1,22 +1,24 @@
 <template>
 	<!--  :class="{ active : paramsShown }" -->
-	<div  class="search" :class="{ hidden: (mobileView && !mobileSearchBarShown && !tempMobileSearchBarShown), 'dark-bg': paramsShown }">
+	<div  class="search" :class="{ hidden: (mobileView && !mobileSearchBarShown && !tempMobileSearchBarShown), 'dark-bg': paramsShown && !labelId }">
 		<div class="search__bar">
 			<button class="search__bar__left-search" v-show="searchInput.length > 0">
 				<img src="~/static/pics/global/svg/search.svg" alt="Поиск">
 			</button>
 			<input class="search__bar__input" placeholder="Искать пляж" v-model="searchInput">
-			<img class="search__bar__right-search" src="~/static/pics/global/svg/search.svg" alt="Поиск" v-show="searchInput.length == 0">
+			<a href="/search" class="search__bar__right-search" @click.prevent="$bus.goTo('/search', $router)">
+				<img src="~/static/pics/global/svg/search.svg" alt="Поиск" v-show="searchInput.length == 0">
+			</a>
 			<button class="search__bar__right-cross" v-show="searchInput.length > 0" @click="searchInput = ''">
 				<img src="~/static/pics/global/svg/close.svg" alt="Убрать">
 			</button>
-			<div class="search__params" style="height: 0;" v-body-scroll-lock="paramsShown">
+			<div class="search__params" style="height: 0;" v-body-scroll-lock="paramsShown && mobileView">
 				<div class="search__params__inner">
 					<button class="search__params__close" @click="toggleParams()">
 						<img src="~/static/pics/global/svg/close_blue.svg" alt="Закрыть">
 					</button>
-					<form class="search__params__form">
-						<h3 class="search__params__title">Параметры поиска</h3>
+					<form class="search__params__form" v-on:submit.prevent>
+						<h3 class="search__params__title search__params__title--first">Параметры поиска</h3>
 						<div class="search__params__part__dropdowns-area">
 							<div class="search__params__part__dropdowns-row">
 								<div class="search__params__part__dropdowns">
@@ -45,8 +47,8 @@
 								</div>
 							</div>
 							<div class="search__params__part__dropdowns-row">
-								<div class="search__params__part__dropdowns">
-									<span class="search__params__part__label" v-show="searchMobileText">Протяженность линии, метров</span>
+								<div class="search__params__part__dropdowns" :class="{ equal : searchMobileText && !labelId || showCorrectSelectText }">
+									<span class="search__params__part__label" v-show="searchMobileText && !labelId || showCorrectSelectText">Протяженность линии, метров</span>
 									<div class="search__params__part--dropdown search__params__part--dropdown--merged">
 										<select name="beach-length-from" value="Протяженность линии от, м">
 											<option selected="selected">{{ searchMobileText && !labelId || showCorrectSelectText ?  'От' : 'Протяженность линии от, м' }}</option>
@@ -56,8 +58,8 @@
 										</select>
 									</div>
 								</div>
-								<div class="search__params__part__dropdowns">
-									<span class="search__params__part__label" v-show="searchMobileText">Температура воды от, &deg;C</span>
+								<div class="search__params__part__dropdowns" :class="{ equal : searchMobileText && !labelId || showCorrectSelectText }">
+									<span class="search__params__part__label" v-show="searchMobileText && !labelId || showCorrectSelectText">Температура воды от, &deg;C</span>
 									<div class="search__params__part--dropdown search__params__part--dropdown--merged">
 										<select name="water-temperature-from" value="Температура воды от">
 											<option selected="selected">
@@ -97,8 +99,11 @@
 								<label :for="'search-events' + labelId">Мероприятия</label>
 							</div>
 						</div>
-						<h3 class="search__params__title">Дополнительные параметры</h3>
-						<div class="search__params__part__checkboxes search__params__part__checkboxes--second">
+						<div class="search__params__title-area" @click="toggleAddParams()">
+							<h3 class="search__params__title">Дополнительные параметры</h3>
+							<img src="~/static/pics/global/svg/dropdown.svg" :class="{ active : addParamsHeight == 0 }">
+						</div>
+						<div class="search__params__part__checkboxes search__params__part__checkboxes--second" :style="{ height: addParamsHeight }">
 							<div class="search__params__part--checkbox">
 								<input type="checkbox" :id="'search-public-transport' + labelId">
 								<label :for="'search-public-transport' + labelId">Остановка общественного<br>транспорта</label>
@@ -141,7 +146,7 @@
 							</div>
 						</div>
 						<div class="search__params__apply-area">
-							<button class="search__params__apply">Применить</button>
+							<a href="/search" @click.prevent="$bus.goTo('/search', $router)" class="search__params__apply"><span>Применить</span></a>
 						</div>
 					</form>
 				</div>
@@ -181,7 +186,8 @@
 				params: {
 					searchCity: false
 				},
-				searchInput: ""
+				searchInput: "",
+				addParamsHeight: 0
 			};
 		},
 
@@ -194,7 +200,7 @@
 			});
 
 			this.$bus.$on('dontShowCorrectSelectText', () => {
-				this.showCorrectSelectText = true;
+				this.showCorrectSelectText = false;
 			});
 
 			this.$bus.$on('showBgAndBar', () => {
@@ -271,6 +277,16 @@
 				}, 1001);
 			},
 
+			toggleAddParams() {
+				this.showAddParams = !this.showAddParams;
+
+				if (this.showAddParams) {
+					this.addParamsHeight = this.$el.querySelector('.search__params__part__checkboxes--second').scrollHeight + 'px';
+				} else {
+					this.addParamsHeight = 0;
+				}
+			},
+
 			toggleParams() {
 				if (this.tempMobileSearchBarShown) {
 					this.tempMobileSearchBarShown = false;
@@ -281,36 +297,6 @@
 				if (this.paramsShown)
 					this.hideParams();
 				else this.showParams();
-
-				// if (window.innerWidth <= 450 && this.labelId && !this.paramsShown) {
-				// 	this.$bus.$emit('openparamsShown');
-				// 	return;
-				// }
-
-				// if (this.openedFromMain) {
-				// 	this.openedFromMain = false;
-
-				// 	this.$bus.$emit('closeparamsShown');
-				// }
-
-				// this.paramsShown = !this.paramsShown;
-
-				// if (!this.paramsShown) {
-				// 	this.$el.querySelector('.search__params').style.height = 0;
-				// 	// document.body.style.overflow = '';
-				// 	const scrollY = document.body.style.top;
-				// 	document.body.style.position = '';
-				// 	document.body.style.top = '';
-				// 	window.scrollTo(0, parseInt(scrollY || '0') * -1);
-				// } else {
-				// 	this.$el.querySelector('.search__params').style.height = this.$el.querySelector('.search__params').scrollHeight + 'px';
-
-				// 	if (window.innerWidth <= 650 && !this.labelId) {
-				// 		document.body.style.position = 'fixed';
-				// 		document.body.style.top = `-${window.scrollY}px`;
-				// 		// document.body.style.overflow = 'hidden';
-				// 	}
-				// }
 			},
 
 			onResize() {

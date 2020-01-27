@@ -3,7 +3,7 @@
 		<div v-swiper:mySwiper="swiperOption">
 			<div class="swiper-wrapper slider-cities__wrapper">
 				<div class="swiper-slide slider-cities__slide" v-for="slide in data.slideData">
-					<nuxt-link to="/" class="slider__slide__link">
+					<a href="/" @click.prevent="$bus.goTo('/', $router)" class="slider__slide__link">
 						<div class="slider-cities__slide__pic-area">
 							<img :src="slide.pic" alt="Фото" class="slider-cities__slide__pic">
 							<h4 class="slider-cities__slide__title">{{ slide.city }}</h4>
@@ -12,11 +12,15 @@
 							<span class="slider-cities__slide__beach-number">{{ slide.beachNumber }}</span>
 							<span class="slider-cities__slide__beach">{{ (slide.beachNumber % 10 == 1 && slide.beachNumber % 100 != 11) ? 'пляж' : 'пляжей' }}</span>
 						</div>
-					</nuxt-link>
+					</a>
 				</div>
 			</div>
 		</div>
-		<div class="pagination-wrapper pagination-wrapper__cities"><div class="swiper-pagination"></div></div>
+		<div class="pagination-wrapper">
+			<div class="custom-pagination">
+				<div class="custom-pagination-bullet" v-for="(b,i) in data.slideData.length - 3" :class="{ 'custom-pagination-bullet-active' : i == activeIndex }"></div>
+			</div>
+		</div>
 		<button class="slider__arrow-left" :style="{ transform: 'translate(-50%, -50%)', top: arrowY + 'px', display: showLeft && showArrows ? '' : 'none' }" @click="mySwiper.slidePrev()">
 			<img src="~/static/pics/global/svg/slider_arrow_left.svg" alt="Налево">
 		</button>
@@ -46,9 +50,6 @@
 					spaceBetween: 24,
 					slidesPerView: 6,
 					init: false,
-					pagination: {
-				    	el: '.swiper-pagination',
-				    },
 					breakpoints: {
 						1150: {
 							slidesPerView: 'auto',
@@ -63,7 +64,8 @@
 				arrowY: 0,
 				showLeft: false,
 				showRight: true,
-				showArrows: true
+				showArrows: true,
+				activeIndex: 0
 			}
 		},
 
@@ -75,6 +77,7 @@
 
 			this.mySwiper.on('slideChange', () => {
 				this.updateArrows();
+				this.activeIndex = this.mySwiper.activeIndex;
 			});
 
 			this.mySwiper.init(this.swiperOption);

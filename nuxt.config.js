@@ -32,8 +32,9 @@ export default {
   */
   plugins: [
     '~/plugins/bus',
-   { src: "~/plugins/yandex-maps", ssr: false },
-    {src: '~/plugins/scroll-lock', ssr: false }
+    { src: "~/plugins/yandex-maps", ssr: false },
+    { src: '~/plugins/scroll-lock', ssr: false },
+    { src: '~/plugins/custom-scroll', ssr: false }
   ],
   /*
   ** Nuxt.js dev-modules
@@ -55,6 +56,7 @@ export default {
     /*
     ** You can extend webpack config here
     */
+    transpile: ['vue-clamp', 'resize-detector'],
     extend (config, ctx) {
     }
   }

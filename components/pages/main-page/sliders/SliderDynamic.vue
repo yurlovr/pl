@@ -15,7 +15,11 @@
 				<div class="swiper-slide slider-dynamic__slide"></div>
 			</div>
 		</div>
-		<div class="pagination-wrapper"><div class="swiper-pagination"></div></div>
+		<div class="pagination-wrapper">
+			<div class="custom-pagination">
+				<div class="custom-pagination-bullet" v-for="(b,i) in data" :class="{ 'custom-pagination-bullet-active' : i == activeIndex }" v-if="i != data.length - 1"></div>
+			</div>
+		</div>
 		<button class="slider__arrow-left" :style="{ transform: 'translate(-50%, -50%)', top: arrowY + 'px', display: showLeft && showArrows ? '' : 'none' }" @click="mySwiper.slidePrev()">
 			<img src="~/static/pics/global/svg/slider_arrow_left.svg" alt="Налево">
 		</button>
@@ -45,9 +49,6 @@
 					spaceBetween: 24,
 					slidesPerView: 4,
 					init: false,
-					pagination: {
-				    	el: '.swiper-pagination',
-				    },
 					breakpoints: {
 						1000: {
 							slidesPerView: 3,
@@ -62,13 +63,14 @@
 				arrowY: 0,
 				showLeft: false,
 				showRight: true,
-				showArrows: true
+				showArrows: true,
+				activeIndex: 0
 			}
 		},
 
 		mounted() {
 			this.mySwiper.on('imagesReady', () => {
-				window.addEventListener('resize', this.onResize);
+				window.addEventListener('resize', this.onResize, false);
 				this.onResize();
 				this.updateActiveSlide();
 			});
@@ -76,6 +78,7 @@
 			this.mySwiper.on('slideChange', () => {
 				this.updateArrows();
 				this.updateActiveSlide();
+				this.activeIndex = this.mySwiper.activeIndex;
 			});
 
 			this.mySwiper.init(this.swiperOption);
@@ -83,6 +86,9 @@
 
 		methods: {
 			onResize() {
+				if (!document.querySelector('.slider-dynamic'))
+					window.removeEventListener('resize', this.onResize, false);
+
 				this.arrowY = this.$el.querySelector('.slider-dynamic__slide__pic').offsetHeight / 2; // this.$el means we're query selecting in this component
 				this.updateActiveSlide();
 

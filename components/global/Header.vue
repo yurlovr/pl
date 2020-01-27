@@ -2,19 +2,19 @@
 	<header class="header">
 		<div class="header__bg" :class="{ active : (bgAndBarShown || tempBgAndBarShown) }"></div>
 		<div class="header__inner custom-container">
-			<nuxt-link to="/" class="header__logo">
+			<a href="/" class="header__logo" @click.prevent="$bus.goTo('/', $router)">
 				<img src="~/static/pics/global/svg/nash_plyaj_white.svg" alt="НашПляж">
-			</nuxt-link>
+			</a>
 			<Search v-show="(bgAndBarShown || tempBgAndBarShown)" />
 			<div class="header__left">
 				<button class="header__search-button" @click="toggleSearch()" v-show="(bgAndBarShown || tempBgAndBarShown)">
 					<img src="~/static/pics/global/svg/search_white.svg" alt="Поиск">
 				</button>
 				<div class="header__favorites">
-					<nuxt-link to="/favorites">
+					<a href="/favorites" @click.prevent="$bus.goTo('/', $router)">
 						<img class="header__favorites-img" alt="Избранное" src="~/static/pics/global/svg/heart_white.svg">
 						<span class="header__favorites-text">Избранное</span>
-					</nuxt-link>
+					</a>
 				</div>
 			</div>
 		</div>

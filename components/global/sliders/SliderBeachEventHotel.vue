@@ -3,7 +3,7 @@
 		<div v-swiper:mySwiper="swiperOption">
 			<div class="swiper-wrapper">
 				<div class="swiper-slide slider-beh__slide" v-for="slide in data.slideData" :class="{ tall : data.tall }">
-					<nuxt-link to="/" class="slider__slide__link">
+					<a href="/" class="slider__slide__link" @click.prevent="$bus.goTo('/', $router)">
 						<div class="slider-beh__slide__pic-area">
 							<img :src="slide.pic" alt="Фото" class="slider-beh__slide__pic">
 							<div class="slider-beh__slide__temp-area" v-if="slide.temperature">
@@ -17,8 +17,8 @@
 							</button>
 							<img class="slider-beh__slide__expensive" v-if="slide.expensive" src="~/static/pics/global/svg/expensive.svg" alt="Дорого">
 						</div>
-					</nuxt-link>
-					<div class="slider-beh__slide__info-area">
+					</a>
+					<div class="slider-beh__slide__info-area" :style="{ 'height': data.slideData[0].beach ? '114px' : 'unset' }">
 						<div class="slider-beh__slide__rating-area" v-if="slide.rating">
 							<img src="~/static/pics/global/svg/star.svg" alt="Рейтинг">
 							<span>{{ slide.rating.toFixed(1) }}</span>
@@ -27,15 +27,21 @@
 							<img src="~/static/pics/global/svg/calendar.svg" alt="Дата">
 							<span>{{ slide.date }}</span>
 						</div>
-						<nuxt-link to="/" class="slider-beh__slide__title" :style="{ 'font-size': slide.beach ? '18px' : '20px' }">{{ slide.title }}</nuxt-link>
-						<nuxt-link :to="slide.beachLink" class="slider-beh__slide__beach" v-if="slide.beach">{{ slide.beach }}</nuxt-link>
-						<h6 class="slider-beh__slide__location" :style="{ 'font-size': slide.beach ? '10px' : '12px' }">{{ slide.location }}</h6>
-						<nuxt-link :to="slide.priceLink" class="slider-beh__slide__price" :style="{ 'font-size': slide.beach ? '10px' : '12px' }" v-if="slide.price">от {{ slide.price }} ₽/сутки</nuxt-link>
+						<a href="/" class="slider-beh__slide__title" @click.prevent="$bus.goTo('/', $router)" :style="{ 'font-size': slide.beach ? '18px' : '20px' }"><v-clamp autoresize :max-lines="2">{{ slide.title }}</v-clamp></a>
+						<div class="slider-beh__slide__subtitle-area">
+							<a :href="slide.beachLink" @click.prevent="$bus.goTo(slide.beachLink, $router)" class="slider-beh__slide__beach" v-if="slide.beach">{{ slide.beach }}</a>
+							<h6 class="slider-beh__slide__location" :style="{ 'font-size': slide.beach ? '10px' : '12px' }">{{ slide.location }}</h6>
+							<a :href="slide.priceLink" @click.prevent="$bus.goTo(slide.priceLink, $router)" class="slider-beh__slide__price" :style="{ 'font-size': slide.beach ? '10px' : '12px' }" v-if="slide.price">от {{ slide.price }} &#x20BD;/сутки</a>
+						</div>
 					</div>
 				</div>
 			</div>
 		</div>
-		<div class="pagination-wrapper"><div class="swiper-pagination"></div></div>
+		<div class="pagination-wrapper">
+			<div class="custom-pagination">
+				<div class="custom-pagination-bullet" v-for="(b,i) in data.slideData.length - 3" :class="{ 'custom-pagination-bullet-active' : i == activeIndex }"></div>
+			</div>
+		</div>
 		<button class="slider__arrow-left" :style="{ transform: 'translate(-50%, -50%)', top: arrowY + 'px', display: showLeft && showArrows ? '' : 'none' }" @click="mySwiper.slidePrev()">
 			<img src="~/static/pics/global/svg/slider_arrow_left.svg" alt="Налево">
 		</button>
@@ -47,6 +53,7 @@
 
 <script>
 	import Vue from 'vue';
+	import VClamp from 'vue-clamp';
 
 	export default {
 		props: ['data'],
@@ -59,15 +66,16 @@
 			}
 		},
 
+		components: {
+	  		VClamp
+		},
+
 		data() {
 			return {
 				swiperOption: {
 					spaceBetween: 24,
 					slidesPerView: this.data.slideNumber,
 					init: false,
-					pagination: {
-				    	el: '.swiper-pagination',
-				    },
 					breakpoints: {
 						1150: {
 							slidesPerView: 'auto',
@@ -82,7 +90,8 @@
 				arrowY: 0,
 				showLeft: false,
 				showRight: true,
-				showArrows: true
+				showArrows: true,
+				activeIndex: 0
 			}
 		},
 
@@ -94,6 +103,7 @@
 
 			this.mySwiper.on('slideChange', () => {
 				this.updateArrows();
+				this.activeIndex = this.mySwiper.activeIndex;
 			});
 
 			this.mySwiper.init(this.swiperOption);

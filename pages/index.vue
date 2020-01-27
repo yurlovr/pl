@@ -6,7 +6,7 @@
     <Search class="main-page__welcome__search" labelId="1" />
     <BeachSliderArea :data="mostPopularBeaches" :areaData="mostPopularBeachesAreaData" />
     <Cities :data="cityBeaches" />
-    <YandexMap :data="mapData" />
+    <Map :data="mapData" />
     <BeachEntranceFree />
     <BeachSliderArea :data="familyData" :areaData="familyAreaData" class="main-page__family-rest" />
     <BeachEvents :data="eventData" :areaData="beachEventsData" />
@@ -33,7 +33,7 @@
   import YouNeedThis from '~/components/pages/main-page/YouNeedThis';
   import WeatherSliderArea from '~/components/pages/main-page/WeatherSliderArea';
   import DynamicSliderArea from '~/components/pages/main-page/DynamicSliderArea';
-  import YandexMap from '~/components/global/YandexMap';
+  import Map from '~/components/pages/main-page/Map';
 
   export default {
     components: {
@@ -49,37 +49,43 @@
       BeachType,
       YouNeedThis,
       WeatherSliderArea,
-      DynamicSliderArea,
-      YandexMap
+      DynamicSliderArea
     },
 
     mounted() {
       this.$bus.$emit('dontShowSearch');
 
-      window.addEventListener('scroll', () => { onScroll() });
-      window.addEventListener('resize', () => { onResize() });
-
       let scrollTop;
       let onScroll = () => {
-        scrollTop = window.scrollY || document.body.scrollTop || document.documentElement.scrollTop;
+        if (document.querySelector('.main-page')) {
+          scrollTop = window.scrollY || document.body.scrollTop || document.documentElement.scrollTop;
 
-        // show or hide the search background and the bar depending on the scroll
-        if (window.innerWidth > 500 && scrollTop >= 0.4863 * window.innerHeight || window.innerWidth <= 500 && scrollTop >= 0.25 * window.innerHeight) {
-          this.$bus.$emit("showHeaderBgAndBar");
+          // show or hide the search background and the bar depending on the scroll
+          if (window.innerWidth > 500 && scrollTop >= 0.4863 * window.innerHeight || window.innerWidth <= 500 && scrollTop >= 0.25 * window.innerHeight) {
+            this.$bus.$emit("showHeaderBgAndBar");
+          } else {
+            this.$bus.$emit("hideHeaderBgAndBar");
+          }
         } else {
-          this.$bus.$emit("hideHeaderBgAndBar");
+          window.removeEventListener('scroll', onScroll, false);
         }
       };
 
       let onResize = () => {
-        // correct the text for the mobile
-        if (window.innerWidth <= 650) {
-          this.$bus.$emit('showCorrectSelectText');
+        if (document.querySelector('.main-page')) {
+          // correct the text for the mobile
+          if (window.innerWidth <= 650) {
+            this.$bus.$emit('showCorrectSelectText');
+          } else {
+            this.$bus.$emit('dontShowCorrectSelectText');
+          }
         } else {
-          this.$bus.$emit('dontShowCorrectSelectText');
+          window.removeEventListener('scroll', onScroll, false);
         }
       };
 
+      window.addEventListener('scroll', onScroll, false);
+      window.addEventListener('resize', onResize, false);
       onScroll();
       onResize();
     },

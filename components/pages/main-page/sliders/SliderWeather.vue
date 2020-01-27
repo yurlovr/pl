@@ -22,7 +22,11 @@
 				</div>
 			</div>
 		</div>
-		<div class="pagination-wrapper"><div class="swiper-pagination"></div></div>
+		<div class="pagination-wrapper">
+			<div class="custom-pagination">
+				<div class="custom-pagination-bullet" v-for="(b,i) in slideData.length - 2" :class="{ 'custom-pagination-bullet-active' : i == activeIndex }"></div>
+			</div>
+		</div>
 		<button class="slider__arrow-left" :style="{ transform: 'translate(-50%, -50%)', top: arrowY + 'px', display: showLeft ? '' : 'none' }" @click="mySwiper.slidePrev()">
 			<img src="~/static/pics/global/svg/slider_arrow_left.svg" alt="Налево">
 		</button>
@@ -52,9 +56,6 @@
 					spaceBetween: 50,
 					slidesPerView: 7,
 					init: false,
-					pagination: {
-				    	el: '.swiper-pagination',
-				    },
 					breakpoints: {
 						1200: {
 							slidesPerView: 6
@@ -73,7 +74,8 @@
 				},
 				arrowY: 0,
 				showLeft: false,
-				showRight: true
+				showRight: true,
+				activeIndex: 0
 			}
 		},
 
@@ -85,6 +87,7 @@
 
 			this.mySwiper.on('slideChange', () => {
 				this.updateArrows();
+				this.activeIndex = this.mySwiper.activeIndex;
 			});
 
 			this.mySwiper.init(this.swiperOption);
