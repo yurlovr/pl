@@ -3,7 +3,7 @@
     <Preloader />
     <Header />
     <nuxt />
-    <Footer />
+    <div class="main-page__white-wrapper"><Footer /></div>
   </div>
 </template>
 
@@ -17,6 +17,12 @@
       Preloader,
       Header,
       Footer
+    },
+
+    mounted() {
+      if (process.client && window) {
+        window.history.scrollRestoration = 'auto';
+      }
     }
   }
 </script>

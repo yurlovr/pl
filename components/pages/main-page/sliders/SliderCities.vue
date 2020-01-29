@@ -18,7 +18,7 @@
 		</div>
 		<div class="pagination-wrapper">
 			<div class="custom-pagination">
-				<div class="custom-pagination-bullet" v-for="(b,i) in data.slideData.length - 3" :class="{ 'custom-pagination-bullet-active' : i == activeIndex }"></div>
+				<div class="custom-pagination-bullet" v-for="(b,i) in data.slideData.length - 1" :class="{ 'custom-pagination-bullet-active' : i == activeIndex }"></div>
 			</div>
 		</div>
 		<button class="slider__arrow-left" :style="{ transform: 'translate(-50%, -50%)', top: arrowY + 'px', display: showLeft && showArrows ? '' : 'none' }" @click="mySwiper.slidePrev()">
@@ -52,11 +52,21 @@
 					init: false,
 					breakpoints: {
 						1150: {
-							slidesPerView: 'auto',
-							spaceBetween: 20
+							slidesPerView: 6,
 						},
-						1150: {
-							slidesPerView: 'auto',
+						950: {
+							slidesPerView: 5,
+						},
+						800: {
+							slidesPerView: 4,
+							spaceBetween: 10
+						},
+						600: {
+							slidesPerView: 3,
+							spaceBetween: 10
+						},
+						500: {
+							slidesPerView: 2,
 							spaceBetween: 10
 						}
 					}

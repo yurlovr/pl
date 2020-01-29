@@ -2,12 +2,12 @@
 	<section class="main-page__weather-slider-area custom-container">
 		<h3 class="main-page__section-title" style="margin-bottom: 50px;">Погода в курортных городах Крыма</h3>
 		<div class="slider-weather">
-		<div class="slider-weather__months" v-show="!mobileMonthSlider">
+		<!-- <div class="slider-weather__months" v-show="!mobileMonthSlider">
 			<button class="slider-weather__month" v-for="(month, i) in months" :key="i" :class="{ active : i == activeMonth }" @click="activeMonth = i">
 				<span>{{ month }}</span>
 			</button>
-		</div>
-		<div class="slider-weather__months" v-show="mobileMonthSlider">
+		</div> -->
+		<div class="slider-weather__months">
 			<div v-swiper:mySwiper="swiperOption">
 				<div class="swiper-wrapper">
 					<div class="swiper-slide" v-for="(month, i) in months">
@@ -59,7 +59,7 @@
 
 		data() {
 			return {
-				mobileMonthSlider: false,
+				// mobileMonthSlider: false,
 				activeMonth: -1,
 				months: [
 					'январь',
@@ -77,9 +77,14 @@
 				],
 				swiperOption: {
 					freeMode: true,
-					spaceBetween: 30,
-					slidesPerView: 'auto',
-					init: false
+					spaceBetween: 0,
+					slidesPerView: 12,
+					init: false,
+					breakpoints: {
+						1301: {
+							slidesPerView: 'auto'
+						}
+					}
 				}
 			}
 		},
@@ -87,19 +92,19 @@
 		mounted() {
 			this.activeMonth = new Date().getMonth();
 
-			window.addEventListener('resize', this.onResize);
-			this.onResize();
+			// window.addEventListener('resize', this.onResize);
+			// this.onResize();
 
 			this.mySwiper.init(this.swiperOption);
 		},
 
 		methods: {
 			onResize() {
-				if (window.innerWidth < 1320) {
-					this.mobileMonthSlider = true;
-				} else {
-					this.mobileMonthSlider = false;
-				}
+				// if (window.innerWidth < 1320) {
+				// 	this.mobileMonthSlider = true;
+				// } else {
+				// 	this.mobileMonthSlider = false;
+				// }
 			}
 		}
 	}

@@ -1,0 +1,26 @@
+<svg width="33" height="25" viewBox="0 0 33 25" fill="none" xmlns="http://www.w3.org/2000/svg">
+<circle cx="15.5" cy="15.5" r="1.5" fill="#FCAB2D"/>
+<circle cx="22.5" cy="17.5" r="1.5" fill="#FCAB2D"/>
+<circle cx="30.5" cy="15.5" r="1.5" fill="#228596"/>
+<circle cx="19.5" cy="21.5" r="1.5" fill="#FCAB2D"/>
+<circle cx="25.5" cy="23.5" r="1.5" fill="#FCAB2D"/>
+<circle cx="30.5" cy="20.5" r="1.5" fill="#FCAB2D"/>
+<circle cx="17" cy="18" r="1" fill="#228596"/>
+<circle cx="26" cy="15" r="1" fill="#FCAB2D"/>
+<circle cx="27" cy="18" r="1" fill="#FCAB2D"/>
+<circle cx="21" cy="15" r="1" fill="#FCAB2D"/>
+<circle cx="9.5" cy="20.5" r="1.5" fill="#FCAB2D"/>
+<circle cx="5.5" cy="23.5" r="1.5" fill="#228596"/>
+<circle cx="2.5" cy="15.5" r="1.5" fill="#FCAB2D"/>
+<circle cx="14" cy="21" r="1" fill="#FCAB2D"/>
+<circle cx="3" cy="20" r="1" fill="#228596"/>
+<circle cx="8" cy="17" r="1" fill="#FCAB2D"/>
+<circle cx="11" cy="15" r="1" fill="#FCAB2D"/>
+<circle cx="23" cy="21" r="1" fill="#228596"/>
+<circle cx="12" cy="24" r="1" fill="#FCAB2D"/>
+<path d="M2.21487 5.00101L5.21484 2.00098" stroke="#228596" stroke-width="2" stroke-linecap="round"/>
+<path d="M5.21484 8L2.21484 5" stroke="#228596" stroke-width="2" stroke-linecap="round"/>
+<path d="M31 5.00101L28 2.00098" stroke="#228596" stroke-width="2" stroke-linecap="round"/>
+<path d="M28 8L31 5" stroke="#228596" stroke-width="2" stroke-linecap="round"/>
+<line x1="3" y1="5" x2="31" y2="5" stroke="#228596" stroke-width="2" stroke-linecap="round"/>
+</svg>

@@ -15,10 +15,10 @@
 			</div>
 		</div>
 		<CardGrid :data="searchCardResults" v-show="!showCardsOrMap" />
-		<div class="search-page__see-all-area custom-container">
+		<SearchMapArea :data="searchMapData" v-show="showCardsOrMap" />
+		<div class="search-page__see-all-area custom-container" v-show="!showCardsOrMap">
 			<nuxt-link to="/" class="search-page__see-all">
 				<span>Смотреть все ({{ 45 }})</span>
-          		<img src="~/static/pics/global/svg/arrow_next.svg" alt="Перейти">
 			</nuxt-link>
 		</div>
 	</div>
@@ -26,12 +26,14 @@
 
 <script>
 	import SearchTags from '~/components/pages/search-page/SearchTags';
+	import SearchMapArea from '~/components/pages/search-page/SearchMapArea';
 	import CardGrid from '~/components/global/CardGrid';
 
 	export default {
 		components: {
 			SearchTags,
-			CardGrid
+			CardGrid,
+			SearchMapArea
 		},
 
 		data() {
@@ -73,7 +75,7 @@
 					},
 					{
 						temperature: 20,
-						favorite: true,
+						favorite: false,
 						expensive: false,
 						rating: 5.0,
 						title: 'Пляж «Ялта – Интурист»',
@@ -113,13 +115,48 @@
 					},
 					{
 						temperature: 20,
-						favorite: true,
+						favorite: false,
 						expensive: false,
 						rating: 5.0,
 						title: 'Пляж «Ялта – Интурист»',
 						location: 'Ялта, КРЫМ',
 						pic: '/pics/main/section1_beach2.png',
 						link: '/'
+					}
+				],
+				searchMapData: [
+					{
+						pic: '/pics/main/section1_beach4.png',
+						title: 'Массандровский пляж',
+						location: 'Ялта, КРЫМ',
+						rating: 5.0,
+						beachLength: '1,6 км',
+						beachPrice: 250,
+						beachType: 'Песчаный',
+						beachWorktime: '7:00-22:00',
+						beachRoughness: 'Ровное'
+					},
+					{
+						pic: '/pics/main/section1_beach4.png',
+						title: 'Массандровский пляж',
+						location: 'Ялта, КРЫМ',
+						rating: 5.0,
+						beachLength: '1,6 км',
+						beachPrice: 250,
+						beachType: 'Песчаный',
+						beachWorktime: '7:00-22:00',
+						beachRoughness: 'Ровное'
+					},
+					{
+						pic: '/pics/main/section1_beach4.png',
+						title: 'Массандровский пляж',
+						location: 'Ялта, КРЫМ',
+						rating: 5.0,
+						beachLength: '1,6 км',
+						beachPrice: 250,
+						beachType: 'Песчаный',
+						beachWorktime: '7:00-22:00',
+						beachRoughness: 'Ровное'
 					}
 				]
 			}

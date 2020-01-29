@@ -48,10 +48,6 @@ html, body {
   width: 100%;
 }
 
-select option {
-  background: white !important;
-}
-
 *, *:before, *:after {
   box-sizing: border-box;
   margin: 0;
@@ -61,6 +57,39 @@ select option {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+@mixin see-all {
+  text-decoration: none;
+  color: #FCAB2D;
+  font-size: 16px;
+  font-weight: 300;
+  line-height: 130%;
+  display: flex;
+  align-items: center;
+  transition: color .2s ease;
+
+  span {
+    margin-right: 5px;
+  }
+
+  &:hover {
+    color: #9EA6AE;
+
+    &:after {
+      background: url("../../static/pics/global/svg/arrow_next_gray.svg");
+    }
+  }
+
+  &:after {
+    content: '';
+    display: block;
+    vertical-align: middle;
+    width: 6px;
+    height: 8px;
+    padding-left: 5px;
+    background: url("../../static/pics/global/svg/arrow_next_orange.svg");
+  }
 }
 
 .hidden {
@@ -112,7 +141,7 @@ select option {
     position: absolute;
     width: 100%;
     height: 100%;
-    background: linear-gradient(180deg, #317C9B 0%, rgba(23, 147, 152, 0.83) 100%);
+    background: linear-gradient(180deg, #317C9B 0%, rgba(23, 147, 152, 1) 100%);
     opacity: 0;
     transition: opacity .25s ease;
     z-index: 9;
@@ -134,6 +163,30 @@ select option {
   &__favorites {
     font-size: 16px;
     font-weight: 300;
+    position: relative;
+
+    &-number {
+      position: absolute;
+      right: -12px;
+      top: -5px;
+      background: #FCAB2D;
+      border-radius: 50px;
+      height: 13px;
+      padding: 0 4px;
+      @include flex-center;
+      font-size: 10px;
+      line-height: 12px;
+      color: white !important;
+    }
+
+    &-text {
+      color: white;
+      transition: color .2s ease;
+
+      &:hover {
+        color: #FCAB2D;
+      }
+    }
 
     a {
       text-decoration: none;
@@ -241,7 +294,7 @@ select option {
     z-index: 12;
     transition: height 1s ease;
     max-height: calc(100vh - 25px);
-    overflow-y: auto;
+    overflow: hidden;
 
     &__inner {
       width: 100%;
@@ -308,8 +361,13 @@ select option {
 
       &-area {
         display: flex;
-        justify-content: flex-end;
-        padding-bottom: 30px;
+        flex-direction: column;
+        align-items: flex-end;
+
+        &__blank {
+          width: 50%;
+          height: 30px;
+        }
       }
     }
 
@@ -350,17 +408,23 @@ select option {
 
         select {
           padding: 15px 20px;
+          padding-right: 30px;
           font-size: 14px;
           line-height: 120%;
-          color: #73767D;
+          color: black;
           border-radius: 6px;
-          border: 1px solid #C4C4C4;
+          border: 1px solid #228596;
           width: 100%;
           min-width: 85px;
           appearance: none;
           background: url('../../static/pics/global/svg/dropdown.svg');
           background-repeat: no-repeat;
           background-position: calc(100% - 16px) calc(50% - 2px);
+
+          &.default {
+            color: #73767D;
+            border-color: #C4C4C4;
+          }
         }
 
         &--merged {
@@ -498,10 +562,8 @@ select option {
     }
 
     &__link {
-      transition: opacity .5s ease;
-
       &:hover {
-        opacity: 1;
+        opacity: 1 !important;
       }
     }
 
@@ -533,9 +595,14 @@ select option {
       color: #393E48 !important;
       margin-bottom: 25px;
       font-weight: 300;
+      transition: opacity .2s ease;
 
       &:last-of-type {
         margin-bottom: 0;
+      }
+
+      &:hover {
+        opacity: .8;
       }
     }
 
@@ -567,19 +634,19 @@ select option {
 .main-page {
   width: 100%;
 
-  @mixin see-all {
-    text-decoration: none;
-    color: #FCAB2D;
-    font-size: 16px;
-    font-weight: 300;
-    line-height: 130%;
-    display: flex;
-    align-items: center;
+  &__white-wrapper {
+    background: white;
+    overflow: hidden;
+  }
+
+  &__popular-beaches {
+    margin-bottom: 60px;
   }
 
   &__welcome {
     width: 100%;
-    height: 70vh;
+    padding-top: 160px;
+    margin-bottom: 40px;
     @include flex-center;
     flex-direction: column;
     text-align: center;
@@ -591,17 +658,17 @@ select option {
       top: 0;
       left: 0;
       width: 100%;
-      height: 100vh;
+      height: 720px;
       z-index: 0;
       object-fit: cover;
     }
 
     &__gradient {
       position: absolute;
-      top: 25%;
+      top: 240px;
       left: 0;
       width: 100%;
-      height: 76vh;
+      height: 482px;
       background: linear-gradient(180deg, rgba(250, 250, 250, 0) 0%, #FAFAFA 100%);
       z-index: 1;
     }
@@ -621,7 +688,6 @@ select option {
       font-size: 64px;
       font-weight: 900;
       line-height: 100%;
-      margin-bottom: 40px;
     }
 
     &__search {
@@ -630,29 +696,36 @@ select option {
       margin: 0 auto;
       left: 0;
       top: 17px;
-      margin-top: -21vh;
-      margin-bottom: 12vh;
+      margin-bottom: 130px;
       z-index: 13;
     }
   }
 
   &__beach-slider-area {
     position: relative;
-    margin-bottom: 60px;
     z-index: 2;
 
     &__see-all-bottom {
       display: none;
+
+      a {
+        @include see-all;
+        font-weight: 500;
+      }
     }
   }
 
   &__family-rest {
     padding-top: 50px;
     padding-bottom: 50px;
-    background: white;
+
+    .main-page__section-subtitle {
+      max-width: 397px;
+    }
   }
 
   &__beach-events {
+    margin-top: 60px;
     margin-bottom: 40px;
 
     &__title {
@@ -670,6 +743,11 @@ select option {
 
     &__see-all-bottom {
       display: none;
+
+      a {
+        @include see-all;
+        font-weight: 500;
+      }
     }
   }
 
@@ -723,6 +801,10 @@ select option {
       margin-left: -91px;
       width: 100vw;
     }
+  }
+
+  &__hotels {
+    margin-bottom: 60px;
   }
 
   &__section {
@@ -949,6 +1031,13 @@ select option {
       width: 100%;
       height: 360px;
       border-radius: 12px;
+      overflow: hidden;
+
+      &:hover {
+        .main-page__beach-type__card__bg {
+          transform: scale(1.2);
+        }
+      }
 
       a {
         text-decoration: none;
@@ -970,6 +1059,7 @@ select option {
         border-radius: 12px;
         top: 0;
         left: 0;
+        transition: transform .5s ease;
       }
 
       &__title {
@@ -1087,6 +1177,7 @@ select option {
 
   &__mobile {
     display: none;
+    overflow: hidden;
   }
 
   &__tag {
@@ -1101,6 +1192,10 @@ select option {
     align-items: center;
     padding: 10px 18px;
     padding-right: 12px;
+
+    &:last-of-type {
+      margin-right: 0;
+    }
 
     span {
       margin-right: 5px;
@@ -1157,7 +1252,6 @@ select option {
 
   &__see-all {
     font-size: 16px;
-    color: #FCAB2D;
     display: flex;
     align-items: center;
 
@@ -1167,6 +1261,115 @@ select option {
       justify-content: flex-end;
       margin-top: 40px;
       margin-bottom: 40px;
+
+      a {
+        text-decoration: none;
+        @include see-all;
+      }
+    }
+  }
+
+  &__map-area {
+    display: flex;
+    padding-left: 74px;
+
+    a {
+      text-decoration: none;
+    }
+
+    &__info-area {
+      overflow-y: auto;
+      min-width: 656px;
+      height: 600px;
+      padding-right: 24px;
+    }
+
+    &__card {
+      height: 250px;
+      background: white;
+      border-radius: 8px;
+      display: flex;
+      margin-bottom: 24px;
+
+      &:last-of-type {
+        margin-bottom: 0;
+      }
+
+      &:hover {
+        box-shadow: 0px 4px 16px rgba(0, 0, 0, 0.1);
+      }
+
+      &__pic-area {
+        width: 250px;
+        height: 100%;
+
+        img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          border-radius: 8px 0 0 8px;
+        }
+      }
+
+      &__title {
+        font-size: 20px;
+        line-height: 120%;
+        color: #393E48;
+        margin-bottom: 5px;
+
+        &-area {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+        }
+      }
+
+      &__rating-area {
+        display: flex;
+
+        img {
+          margin-right: 3;
+        }
+
+        span {
+          font-size: 14px;
+          color: #73767D;
+        }
+      }
+
+      &__info-area {
+        padding: 20px 24px;
+        width: 366px;
+      }
+
+      &__subtitle {
+        font-size: 12px;
+        line-height: 14px;
+        color: #73767D;
+        margin-bottom: 30px;
+      }
+
+      &__infos {
+        display: flex;
+        flex-wrap: wrap;
+
+        &__item {
+          width: 50%;
+          display: flex;
+          align-items: center;
+          margin-bottom: 15px;
+
+          img {
+            width: 28px;
+            margin-right: 15px;
+          }
+
+          span {
+            font-size: 16px;
+            color: #393E48;
+          }
+        }
+      }
     }
   }
 }
@@ -1214,11 +1417,19 @@ select option {
         height: 100%;
         object-fit: contain;
         border-radius: 12px;
+        transition: transform .5s ease;
 
         &-area {
           position: relative;
           margin-bottom: 15px;
           border-radius: 12px;
+          overflow: hidden;
+
+          &:hover {
+            .slider-beh__slide__pic {
+              transform: scale(1.3);
+            }
+          }
         }
       }
 
@@ -1273,6 +1484,10 @@ select option {
 
       &__info {
         &-area {
+          &.event {
+            height: 114px;
+          }
+
           a {
             text-decoration: none;
             color: #228596;
@@ -1422,6 +1637,7 @@ select option {
         background: white;
         border-radius: 0 0 12px 12px;
         transition: background .2s ease;
+        white-space: nowrap;
       }
 
       &__beach {
@@ -1462,10 +1678,22 @@ select option {
       line-height: 22px;
       text-transform: capitalize;
       color: #73767D;
-      margin-right: 25px;
+      padding: 5px 0;
+      display: flex;
+
+      span {
+        display: inline-block;
+      }
 
       &:last-of-type {
         margin-right: 0;
+      }
+
+      &:after, &:before {
+        content: '';
+        display: inline-block;
+        min-width: 20px;
+        height: 10px;
       }
 
       &:focus {
@@ -1476,13 +1704,27 @@ select option {
         background: #FCAB2D;
         color: white;
         border-radius: 33px;
-        padding: 5px 25px;
       }
 
       &s {
         display: flex;
         justify-content: space-between;
         margin-bottom: 50px;
+
+        .swiper-container {
+          overflow: visible;
+          width: 100%;
+        }
+
+        .swiper-wrapper {
+          justify-content: center;
+        }
+
+        .swiper-slide {
+          @include flex-center;
+          overflow: visible;
+          width: fit-content !important;
+        }
       }
     }
 
@@ -1498,7 +1740,6 @@ select option {
       &__temp {
         &-number {
           color: #FCAB2D;
-          margin-right: 1px;
           white-space: nowrap;
         }
 
@@ -1507,10 +1748,13 @@ select option {
           font-size: 10px;
           position: relative;
           width: 7px;
+          height: 12px;
 
           span {
             position: absolute;
-            top: -12px;
+            top: -5px;
+            left: 1px;
+            line-height: 0;
           }
         }
 
@@ -1576,7 +1820,7 @@ select option {
 
       &-right {
         position: relative;
-        width: 85%;
+        width: 80%;
       }
     }
   }
@@ -1590,6 +1834,13 @@ select option {
       height: 340px !important;
       border-radius: 12px;
       transition: width .5s ease !important;
+      overflow: hidden;
+
+      &:hover {
+        .slider-dynamic__slide__pic {
+          transform: scale(1.3);
+        }
+      }
 
       a {
         text-decoration: none;
@@ -1600,6 +1851,7 @@ select option {
         height: 100%;
         object-fit: cover;
         border-radius: 12px;
+        transition: transform .5s ease;
       }
 
       &__title {
@@ -2095,6 +2347,7 @@ select option {
       font-size: 16px;
       line-height: 19px;
       margin-right: 1px;
+      white-space: nowrap;
 
       &-area {
         display: flex;
@@ -2196,39 +2449,6 @@ select option {
   }
 }
 
-// at 1320px
-// slider-weather's months part starts breaking, so changing it to a slider
-@media (max-width: 1320px) {
-  .main-page {
-    &__weather-slider-area {
-      overflow: hidden;
-    }
-  }
-
-  .slider {
-    &-weather {
-      &__month {
-        &s {
-          .swiper-container {
-            overflow: visible;
-            width: 100%;
-          }
-
-          .swiper-slide {
-            @include flex-center;
-            max-width: 80px;
-            min-width: 80px;
-          }
-        }
-        
-        &.active {
-          padding: 5px 13px;
-        }
-      }
-    }
-  }
-}
-
 // after 1300px
 // search parameters start to break, so changing it to the tablet view + slider-weather's main slider is too big
 @media (max-width: 1301px) {
@@ -2253,6 +2473,14 @@ select option {
 
   .slider {
     &-weather {
+      &__month {
+        &s {
+          .swiper-wrapper {
+            justify-content: flex-start;
+          }
+        }
+      }
+
       &__part {
         &-right {
           width: 80%;
@@ -2262,6 +2490,7 @@ select option {
   }
 }
 
+
 // after 1230px
 // beh is breaking, so making it smaller just like in the TABLET version
 @media (max-width: 1230px) {
@@ -2270,6 +2499,10 @@ select option {
       &__slide {
         &__title {
           font-size: 16px !important;
+        }
+
+        &__info-area.event {
+          height: 105px;
         }
 
         &__heart, &__expensive {
@@ -2375,34 +2608,16 @@ select option {
 
   .slider {
     &-beh, &-cities {
+      padding-right: 10px;
+
       .swiper-container {
         overflow: visible;
-      }
-    }
-
-    &-beh {
-      &__slide {
-        max-width: 220px;
-
-        &.tall {
-          max-width: 160px;
-        }
       }
     }
 
     &-dynamic {
       &__slide {
         height: 256px !important;
-      }
-    }
-
-    &-cities {
-      &__slide {
-        max-width: 160px;
-
-        &__info-area {
-          white-space: nowrap;
-        }
       }
     }
   }
@@ -2424,6 +2639,18 @@ select option {
 
   .footer__part {
     padding-right: 20px;
+  }
+}
+
+@media (max-width: 1058px) {
+  .slider {
+    &-beh {
+      &__slide {
+        &__info-area.event {
+          height: 121px;
+        }
+      }
+    }
   }
 }
 
@@ -2476,13 +2703,18 @@ select option {
         &-right {
           width: 100%;
           margin-left: -140px;
-          padding-left: 145px;
+          padding-left: 150px;
         }
       }
     }
 
     &-cities {
       &__slide {
+        &__title {
+          top: 10px;
+          left: 12px;
+        }
+
         &__info-area {
           padding: 4px 12px;
         }
@@ -2505,6 +2737,14 @@ select option {
   }
 
   .slider {
+    &-beh {
+      &__slide {
+        &__info-area.event {
+          height: 105px;
+        }
+      }
+    }
+
     &-dynamic {
       &__slide {
         &:last-of-type {
@@ -2538,6 +2778,7 @@ select option {
   .search {
     &__params {
       max-height: calc(100vh - 124px);
+      overflow-y: auto;
 
       &__part {
         &--checkbox {
@@ -2550,9 +2791,24 @@ select option {
 
   .main-page {
     &__welcome {
+      padding-top: 120px;
+      margin-bottom: 20px;
+
+      &__background {
+        height: 460px;
+      }
+
+      &__gradient {
+        top: 195px;
+        height: 267px;
+      }
+
       &__title {
         font-size: 36px;
-        margin-bottom: 20px;
+      }
+
+      &__search {
+        margin-bottom: 65px;
       }
     }
 
@@ -2832,6 +3088,18 @@ select option {
   }
 }
 
+@media (max-width: 763px) {
+  .slider {
+    &-beh {
+      &__slide {
+        &__info-area.event {
+          height: 121px;
+        }
+      }
+    }
+  }
+}
+
 // TABLET OFFICIAL
 @media (max-width: 768px) {
   .main-page {
@@ -2843,7 +3111,7 @@ select option {
 
       &-subtitle-area {
         a {
-          padding-left: 50px;
+          padding-left: 130px;
         }
       }
     }
@@ -2892,6 +3160,18 @@ select option {
 
     &__ynt {
       margin-bottom: 5px;
+    }
+  }
+}
+
+@media (max-width: 700px) {
+  .slider {
+    &-beh {
+      &__slide {
+        &__info-area.event {
+          height: 105px;
+        }
+      }
     }
   }
 }
@@ -3021,20 +3301,12 @@ select option {
     transform: none;
     transition: height .5s ease;
 
-    &.dark-bg:before, &.dark-bg:after {
+    &.dark-bg:after {
       content: '';
       background: rgba(0,0,0, .5);
       width: 100vw;
-      height: 75px;
+      height: 100vh;
       left: 0;
-    }
-
-    &.dark-bg:before {
-      position: absolute;
-      top: -62px;
-    }
-
-    &.dark-bg:after {
       position: fixed;
       bottom: 0;
     }
@@ -3047,6 +3319,10 @@ select option {
       width: 100vw;
       top: 0;
       bottom: 0;
+
+      &.not-main {
+        bottom: unset;
+      }
 
       &__close {
         display: block;
@@ -3087,7 +3363,6 @@ select option {
           }
 
           &__params {
-            max-height: unset;
             width: unset;
             top: 0;
             overflow: hidden;
@@ -3153,6 +3428,14 @@ select option {
 
         &__beach-number-area {
           left: 10px;
+        }
+      }
+    }
+
+    &__section {
+      &-subtitle-area {
+        a {
+          padding-left: 50px;
         }
       }
     }
@@ -3294,6 +3577,40 @@ select option {
         display: block;
       }
     }
+
+    &-beh {
+      &__slide {
+        max-width: unset;
+
+        &.tall {
+          max-width: unset;
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 592px) {
+  .slider {
+    &-beh {
+      &__slide {
+        &__info-area.event {
+          height: 121px;
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 550px) {
+  .slider {
+    &-beh {
+      &__slide {
+        &__info-area.event {
+          height: 105px;
+        }
+      }
+    }
   }
 }
 
@@ -3310,7 +3627,6 @@ select option {
       &-title {
         font-size: 18px;
         line-height: 22px;
-        margin-bottom: 20px;
       }
 
       &-subtitle {
@@ -3326,15 +3642,15 @@ select option {
     }
 
     &__welcome {
-      height: 40vh;
+      padding-top: 60px;
 
       &__background {
-        height: 50vh;
+        height: 270px;
       }
 
       &__gradient {
-        height: 30vh;
-        top: 21%;
+        top: 120px;
+        height: 152px;
       }
 
       &__pretitle {
@@ -3348,8 +3664,7 @@ select option {
       }
 
       &__search {
-        top: 50px;
-        margin-bottom: 19vh;
+        margin-bottom: 45px;
 
         .search {
           &__params {
@@ -3377,9 +3692,11 @@ select option {
       }
     }
 
-    &__beach-slider-area {
-      margin-bottom: 50px;
+    &__popular-beaches {
+      margin-bottom: 15px;
+    }
 
+    &__beach-slider-area {
       &__see-all-bottom {
         margin-top: 20px;
         display: flex;
@@ -3462,20 +3779,8 @@ select option {
   }
 
   .slider {
-    &-beh, &-cities {
-      .swiper-container {
-        overflow: visible;
-      }
-    }
-
     &-beh {
       &__slide {
-        max-width: 135px;
-
-        &.tall {
-          max-width: 135px;
-        }
-
         &__temp {
           &-area {
             top: 6px;
@@ -3490,13 +3795,11 @@ select option {
       }
     }
 
-    &-cities {
-      &__slide {
-        max-width: 135px;
-      }
-    }
-
     &-weather {
+      &__slide {
+        // margin-right: unset !important;
+      }
+
       &__part {
         &-left {
           min-width: unset;
@@ -3708,6 +4011,18 @@ select option {
           img {
             height: 14px;
           }
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 392px) {
+  .slider {
+    &-beh {
+      &__slide {
+        &__info-area.event {
+          height: 121px;
         }
       }
     }

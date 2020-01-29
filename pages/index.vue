@@ -4,15 +4,15 @@
     <div class="main-page__welcome__gradient"></div>
     <Welcome />
     <Search class="main-page__welcome__search" labelId="1" />
-    <BeachSliderArea :data="mostPopularBeaches" :areaData="mostPopularBeachesAreaData" />
+    <BeachSliderArea class="main-page__popular-beaches" :data="mostPopularBeaches" :areaData="mostPopularBeachesAreaData" />
     <Cities :data="cityBeaches" />
     <Map :data="mapData" />
     <BeachEntranceFree />
-    <BeachSliderArea :data="familyData" :areaData="familyAreaData" class="main-page__family-rest" />
+    <div class="main-page__white-wrapper"><BeachSliderArea :data="familyData" :areaData="familyAreaData" class="main-page__family-rest" /></div>
     <BeachEvents :data="eventData" :areaData="beachEventsData" />
     <ChooseBeach />
     <DynamicSliderArea :data="dynamicSliderData" />
-    <WeatherSliderArea :data="weatherData" />
+    <div class="main-page__white-wrapper"><WeatherSliderArea :data="weatherData" /></div>
     <OnCarNoProblem />
     <BeachType :data="beachTypeData" />
     <YouNeedThis />
@@ -61,7 +61,7 @@
           scrollTop = window.scrollY || document.body.scrollTop || document.documentElement.scrollTop;
 
           // show or hide the search background and the bar depending on the scroll
-          if (window.innerWidth > 500 && scrollTop >= 0.4863 * window.innerHeight || window.innerWidth <= 500 && scrollTop >= 0.25 * window.innerHeight) {
+          if (window.innerWidth > 900 && scrollTop >= 346 || window.innerWidth <= 900 && window.innerWidth > 800 && scrollTop >= 230 || window.innerWidth <= 800 && window.innerWidth > 500 && scrollTop >= 75 || window.innerWidth <= 500 && scrollTop >= 20) {
             this.$bus.$emit("showHeaderBgAndBar");
           } else {
             this.$bus.$emit("hideHeaderBgAndBar");

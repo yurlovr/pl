@@ -13,7 +13,9 @@
                         :class="{'map-size': address.length >1}"
                         :cluster-options="{1: {clusterDisableClickZoom: true}}"
                         :controls="['zoomControl']"
+                        :behaviors="['drag']"
                         map-type="map"
+                        @click="closeAll"
                 >
                     <ymap-marker
                             v-if="address.length === 1"
@@ -27,11 +29,12 @@
                     <ymap-marker
                             v-else
                             v-for="(item,index) in address"
-                            :key="index"
+                            :key="item.lng"
                             :marker-id="index"
                             :coords="[item.lat, item.lng]"
                             :icon="beachIcon()"
-                            :balloonTemplate="balloonTemplate"
+                            :balloonTemplate="balloonTemplate(index)"
+                            @balloonopen="initSwiper()"
                     ></ymap-marker>
                 </yandex-map>
             </client-only>
@@ -110,6 +113,9 @@
         },
         components: {MapPopupSlider, MapBeaches, yandexMap, ymapMarker},
         methods: {
+            initSwiper(){
+              console.log('IEROPEPEP')
+            },
             getBeach(item) {
                 this.zoom = 12;
                 this.cords = [44.640894812141954, 34.261004767121044];
@@ -135,12 +141,27 @@
                     contentOffset: [-10, 0],
                     contentLayout: '<img src="$[properties.iconContent]">'
                 });
+            },
+            closeAll(e){
+             console.log(e.originalEvent.target.balloon.events.close())
+            },
+            balloonTemplate(index) {
+                return `<div class="map-popup map-popup--top">
+                    <div class="map-popup__pic-area">
+                    {{ index }}
+                    </div>
+                    <div class="map-popup__info-area">
+                        <span class="map-popup__rating">
+                            <img src="/pics/global/svg/star.svg" alt="Рейтинг">
+                            <span>{{ 5.0 }}</span>
+                        </span>
+                        <h3 class="map-popup__title">Массандровский пляж</h3>
+                        <h5 class="map-popup__location">алушта, КРЫМ</h5>
+                    </div>
+                </div>`
             }
         },
         computed: {
-            balloonTemplate() {
-                return `  <MapPopupSlider :data="mapPopupData"/>`
-            }
         },
         mounted() {
         }

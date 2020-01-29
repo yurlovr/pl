@@ -11,9 +11,12 @@
 					<img src="~/static/pics/global/svg/search_white.svg" alt="Поиск">
 				</button>
 				<div class="header__favorites">
-					<a href="/favorites" @click.prevent="$bus.goTo('/', $router)">
+					<a href="/favorites" @click.prevent="$bus.goTo('/favorites', $router)">
 						<img class="header__favorites-img" alt="Избранное" src="~/static/pics/global/svg/heart_white.svg">
-						<span class="header__favorites-text">Избранное</span>
+						<div class="header__favorites-text">
+							<span>Избранное</span>
+							<span class="header__favorites-number" v-show="favoritesNumber != 0">{{ favoritesNumber }}</span>
+						</div>
 					</a>
 				</div>
 			</div>
@@ -33,7 +36,8 @@
 			return {
 				// show background and the searchBar (searchBar for desktop)
 				bgAndBarShown: true,
-				tempBgAndBarShown: false
+				tempBgAndBarShown: false,
+				favoritesNumber: 0
 			}
 		},
 
@@ -52,6 +56,14 @@
 
 			this.$bus.$on('tempShowHeaderBgAndBar', () => {
 				this.tempBgAndBarShown = true;
+			});
+
+			this.$bus.$on('increaseFavorites', () => {
+				this.favoritesNumber++;
+			});
+
+			this.$bus.$on('decreaseFavorites', () => {
+				this.favoritesNumber--;
 			});
 		},
 

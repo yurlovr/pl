@@ -1,5 +1,4 @@
 <template>
-	<!--  :class="{ active : paramsShown }" -->
 	<div  class="search" :class="{ hidden: (mobileView && !mobileSearchBarShown && !tempMobileSearchBarShown), 'dark-bg': paramsShown && !labelId }">
 		<div class="search__bar">
 			<button class="search__bar__left-search" v-show="searchInput.length > 0">
@@ -12,7 +11,7 @@
 			<button class="search__bar__right-cross" v-show="searchInput.length > 0" @click="searchInput = ''">
 				<img src="~/static/pics/global/svg/close.svg" alt="Убрать">
 			</button>
-			<div class="search__params" style="height: 0;" v-body-scroll-lock="paramsShown && mobileView">
+			<div class="search__params" style="height: 0;" v-body-scroll-lock="paramsShown && mobileView" :class="{ 'not-main' : labelId }">
 				<div class="search__params__inner">
 					<button class="search__params__close" @click="toggleParams()">
 						<img src="~/static/pics/global/svg/close_blue.svg" alt="Закрыть">
@@ -23,25 +22,30 @@
 							<div class="search__params__part__dropdowns-row">
 								<div class="search__params__part__dropdowns">
 									<div class="search__params__part--dropdown search__params__part--dropdown--wider">
-										<select name="city" value="Любой город">
-											<option selected="selected">Любой город</option>
+										<select name="city" v-model="params.searchCity" :class="{ default : params.searchCity == 'Любой город' }">
+											<option selected="selected" class="default">Любой город</option>
+											<option v-for="val in cityValues" :value="val">{{ val }}</option>
 										</select>
 									</div>
 									<div class="search__params__part--dropdown">
-										<select name="beach-type" value="Тип пляжа">
-											<option selected="selected">Тип пляжа</option>
+										<select name="beach-type" v-model="params.searchBeachType" :class="{ default : params.searchBeachType == 'Тип пляжа' }">
+											<option selected="selected" class="default">Тип пляжа</option>
+											<option v-for="val in beachTypeValues" :value="val">{{ val }}</option>
 										</select>
 									</div>
 								</div>
 								<div class="search__params__part__dropdowns">
 									<div class="search__params__part--dropdown search__params__part--dropdown--wider">
-										<select name="work-schedule" value="Режим работы">
-											<option selected="selected">Режим работы</option>
+										<select name="work-schedule" v-model="params.searchWorkSchedule" :class="{ default : params.searchWorkSchedule == 'Режим работы' }">
+											<option selected="selected" class="default">Режим работы</option>
+											<option v-for="val in workSchedule" :value="val">{{ val }}</option>
 										</select>
 									</div>
 									<div class="search__params__part--dropdown">
-										<select name="price" value="Стоимость">
-											<option selected="selected">Стоимость</option>
+										<select name="price" v-model="params.searchPrice" :class="{ default : params.searchPrice == 'Стоимость' }">
+											<option selected="selected" class="default">Стоимость</option>
+											<option>Платно</option>
+											<option>Бесплатно</option>
 										</select>
 									</div>
 								</div>
@@ -50,24 +54,28 @@
 								<div class="search__params__part__dropdowns" :class="{ equal : searchMobileText && !labelId || showCorrectSelectText }">
 									<span class="search__params__part__label" v-show="searchMobileText && !labelId || showCorrectSelectText">Протяженность линии, метров</span>
 									<div class="search__params__part--dropdown search__params__part--dropdown--merged">
-										<select name="beach-length-from" value="Протяженность линии от, м">
-											<option selected="selected">{{ searchMobileText && !labelId || showCorrectSelectText ?  'От' : 'Протяженность линии от, м' }}</option>
+										<select name="beach-length-from" v-model="params.searchBeachLengthFrom" :class="{ default : params.searchBeachLengthFrom == 'От' || params.searchBeachLengthFrom == 'Протяженность линии от, м' }">
+											<option selected="selected" class="default">{{ searchMobileText && !labelId || showCorrectSelectText ?  'От' : 'Протяженность линии от, м' }}</option>
+											<option v-for="val in beachLengthFromValues" :value="val">{{ val }}</option>
 										</select>
-										<select name="beach-length-to" value="до">
-											<option selected="selected">до</option>
+										<select name="beach-length-to" v-model="params.searchBeachLengthTo" :class="{ default : params.searchBeachLengthTo == 'До' }">
+											<option selected="selected" class="default">До</option>
+											<option v-for="val in beachLengthToValues" :value="val">{{ val }}</option>
 										</select>
 									</div>
 								</div>
 								<div class="search__params__part__dropdowns" :class="{ equal : searchMobileText && !labelId || showCorrectSelectText }">
 									<span class="search__params__part__label" v-show="searchMobileText && !labelId || showCorrectSelectText">Температура воды от, &deg;C</span>
 									<div class="search__params__part--dropdown search__params__part--dropdown--merged">
-										<select name="water-temperature-from" value="Температура воды от">
-											<option selected="selected">
+										<select name="water-temperature-from" v-model="params.searchWaterTempFrom" :class="{ default : params.searchWaterTempFrom == 'От' || params.searchWaterTempFrom == 'Температура воды от, °C' }">
+											<option selected="selected" class="default">
 												{{ searchMobileText && !labelId || showCorrectSelectText ? 'От' : 'Температура воды от, &deg;C' }}
 											</option>
+											<option v-for="val in waterTemperatureFromValues" :value="val">{{ val }}</option>
 										</select>
-										<select name="water-temperature-to" value="до">
-											<option selected="selected">до</option>
+										<select name="water-temperature-to" v-model="params.searchWaterTempTo" :class="{ default : params.searchWaterTempTo == 'До' }">
+											<option selected="selected" class="default">До</option>
+											<option v-for="val in waterTemperatureToValues" :value="val">{{ val }}</option>
 										</select>
 									</div>
 								</div>
@@ -75,7 +83,7 @@
 						</div>
 						<div class="search__params__part__checkboxes search__params__part__checkboxes--first">
 							<div class="search__params__part--checkbox">
-								<input type="checkbox" :id="'search-city' + labelId" v-model="params.searchCity" value="search-city">
+								<input type="checkbox" :id="'search-city' + labelId" value="search-city">
 								<label :for="'search-city' + labelId">Городские</label>
 							</div>
 							<div class="search__params__part--checkbox">
@@ -147,6 +155,7 @@
 						</div>
 						<div class="search__params__apply-area">
 							<a href="/search" @click.prevent="$bus.goTo('/search', $router)" class="search__params__apply"><span>Применить</span></a>
+							<div class="search__params__apply-area__blank"></div>
 						</div>
 					</form>
 				</div>
@@ -184,10 +193,60 @@
 
 				// all parameters v-model here
 				params: {
-					searchCity: false
+					searchCity: 'Любой город',
+					searchBeachType: 'Тип пляжа',
+					searchWorkSchedule: 'Режим работы',
+					searchPrice: 'Стоимость',
+					searchBeachLengthFrom: 'Протяженность линии от, м',
+					searchBeachLengthTo: 'До',
+					searchWaterTempFrom: 'Температура воды от, °C',
+					searchWaterTempTo: 'До'
 				},
 				searchInput: "",
-				addParamsHeight: 0
+				addParamsHeight: 0,
+
+				cityValues: [
+					'Алушта',
+					'Камчатка',
+					'Москва',
+					'Лондон',
+					'Париж',
+					'Непариж'
+				],
+				beachTypeValues: [
+					'Песчаный',
+					'Ракушечный',
+					'Каменный',
+					'Паркетный',
+					'Нормальный'
+				],
+				workSchedule: [
+					'9-6',
+					'Когда не работаю',
+					'Когда солнечно',
+					'Когда закат',
+					'Не могу решиться'
+				],
+				beachLengthFromValues: [
+					'0',
+					'1000',
+					'2000'
+				],
+				beachLengthToValues: [
+					'0',
+					'1000',
+					'2000'
+				],
+				waterTemperatureFromValues: [
+					'10',
+					'20',
+					'30'
+				],
+				waterTemperatureToValues: [
+					'10',
+					'20',
+					'30'
+				]
 			};
 		},
 
@@ -242,6 +301,10 @@
 					this.showParams();
 				}
 			});
+
+			this.$bus.$on('hideParams', () => {
+				this.hideParams();
+			});
 		},
 
 		methods: {
@@ -271,10 +334,10 @@
 				this.paramsShown = false;
 				this.$el.querySelector('.search__params').style.height = 0;
 				this.$el.querySelector('.search__params').style.overflow = 'hidden';
-				setTimeout(() => {
-					if (this.paramsShown)
-						this.$el.querySelector('.search__params').style.overflow = '';
-				}, 1001);
+				// setTimeout(() => {
+				// 	if (this.paramsShown)
+				// 		this.$el.querySelector('.search__params').style.overflow = '';
+				// }, 1001);
 			},
 
 			toggleAddParams() {
@@ -282,8 +345,24 @@
 
 				if (this.showAddParams) {
 					this.addParamsHeight = this.$el.querySelector('.search__params__part__checkboxes--second').scrollHeight + 'px';
+
+					if (window.innerWidth > 450/* && this.labelId */) {
+						this.$el.querySelector('.search__params').style.height = '';
+						setTimeout(() => {
+							if (this.showAddParams)
+								this.$el.querySelector('.search__params').style.height = this.$el.querySelector('.search__params').scrollHeight + 'px';
+						}, 201);
+					}
 				} else {
 					this.addParamsHeight = 0;
+
+					if (window.innerWidth > 450/* && this.labelId */) {
+						this.$el.querySelector('.search__params').style.height = '';
+						setTimeout(() => {
+							if (!this.showAddParams)
+								this.$el.querySelector('.search__params').style.height = this.$el.querySelector('.search__params').scrollHeight + 'px';
+						}, 201);
+					}
 				}
 			},
 
@@ -327,6 +406,19 @@
 					this.searchMobileText = true;
 				} else {
 					this.searchMobileText = false;
+				}
+
+				// correcting the params values if they area set to default for different screen width
+				if (this.searchMobileText && !this.labelId || this.showCorrectSelectText) {
+					if (this.params.searchBeachLengthFrom == 'Протяженность линии от, м')
+						this.params.searchBeachLengthFrom = 'От';
+					if (this.params.searchWaterTempFrom == 'Температура воды от, °C')
+						this.params.searchWaterTempFrom = 'От';
+				} else {
+					if (this.params.searchBeachLengthFrom == 'От')
+						this.params.searchBeachLengthFrom = 'Протяженность линии от, м';
+					if (this.params.searchWaterTempFrom == 'От')
+						this.params.searchWaterTempFrom = 'Температура воды от, °C';
 				}
 			}
 		}

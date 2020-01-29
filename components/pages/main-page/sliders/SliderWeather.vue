@@ -8,12 +8,12 @@
 						<h4 class="slider-weather__slide__title">{{ slide.city }}</h4>
 					</div>
 					<div class="slider-weather__slide__info-area">
-						<div class="slider-weather__slide__air-temp slider-weather__part__info">
+						<div class="slider-weather__slide__temp slider-weather__part__info">
 							<span class="slider-weather__slide__temp-number">{{ (slide.airTemperature > 0 ? '+ ' : '') + (slide.airTemperature < 0 ? '- ' : '') + slide.airTemperature }}</span>
 							<span class="slider-weather__slide__temp-o"><span>o</span></span>
 							<span class="slider-weather__slide__temp-C">C</span>
 						</div>
-						<div class="slider-weather__slide__water-temp slider-weather__part__info">
+						<div class="slider-weather__slide__temp slider-weather__part__info">
 							<span class="slider-weather__slide__temp-number">{{ (slide.waterTemperature > 0 ? '+ ' : '') + (slide.waterTemperature < 0 ? '- ' : '') + slide.waterTemperature }}</span>
 							<span class="slider-weather__slide__temp-o"><span>o</span></span>
 							<span class="slider-weather__slide__temp-C">C</span>
@@ -24,13 +24,13 @@
 		</div>
 		<div class="pagination-wrapper">
 			<div class="custom-pagination">
-				<div class="custom-pagination-bullet" v-for="(b,i) in slideData.length - 2" :class="{ 'custom-pagination-bullet-active' : i == activeIndex }"></div>
+				<div class="custom-pagination-bullet" v-for="(b,i) in slideData.length - minus" :class="{ 'custom-pagination-bullet-active' : i == activeIndex }"></div>
 			</div>
 		</div>
-		<button class="slider__arrow-left" :style="{ transform: 'translate(-50%, -50%)', top: arrowY + 'px', display: showLeft ? '' : 'none' }" @click="mySwiper.slidePrev()">
+		<button class="slider__arrow-left" :style="{ transform: 'translate(-50%, -50%)', top: arrowY + 'px', display: showLeft ? '' : 'none' }" @click="!mySwiper.isBeginning ? mySwiper.slidePrev() : ''">
 			<img src="~/static/pics/global/svg/slider_arrow_left.svg" alt="Налево">
 		</button>
-		<button class="slider__arrow-right" :style="{ transform: 'translate(50%, -50%)', top: arrowY + 'px', display: showRight ? '' : 'none' }" @click="mySwiper.slideNext()">
+		<button class="slider__arrow-right" :style="{ transform: 'translate(50%, -50%)', top: arrowY + 'px', display: showRight ? '' : 'none' }" @click="!mySwiper.isEnd ? mySwiper.slideNext() : ''">
 			<img src="~/static/pics/global/svg/slider_arrow_right.svg" alt="Направо">
 		</button>
 	</div>
@@ -60,14 +60,33 @@
 						1200: {
 							slidesPerView: 6
 						},
-						1050: {
-							slidesPerView: 'auto',
-							spaceBetween: 36
+						900: {
+							slidesPerView: 5,
 						},
-						500: {
+						780: {
+							slidesPerView: 4
+						},
+						660: {
 							slidesPerView: 3
 						},
-						430: {
+						540: {
+							spaceBetween: 110,
+							slidesPerView: 2
+						},
+						500: {
+							spaceBetween: 50,
+							slidesPerView: 3
+						},
+						440: {
+							spaceBetween: 100,
+							slidesPerView: 2
+						},
+						400: {
+							spaceBetween: 70,
+							slidesPerView: 2
+						},
+						350: {
+							spaceBetween: 50,
 							slidesPerView: 2
 						}
 					}
@@ -75,7 +94,8 @@
 				arrowY: 0,
 				showLeft: false,
 				showRight: true,
-				activeIndex: 0
+				activeIndex: 0,
+				minus: 2
 			}
 		},
 
@@ -102,6 +122,10 @@
 						break;
 					}
 				}
+
+				if (window.innerWidth <= 440)
+					this.minus = 1;
+				else this.minus = 2;
 			},
 
 			updateArrows() {

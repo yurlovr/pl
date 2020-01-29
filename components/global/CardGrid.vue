@@ -4,9 +4,9 @@
 			<nuxt-link :to="card.link" class="card-grid__card__link">
 				<div class="card-grid__card__pic-area">
 					<img :src="card.pic" class="card-grid__card__pic">
-					<button class="card-grid__card__heart-button">
-						<img src="~/static/pics/global/svg/heart_unclicked.svg" alt="В избранное" v-show="!card.favorite" @click.prevent>
-						<img src="~/static/pics/global/svg/heart_clicked.svg" alt="В избранное" v-show="card.favorite" @click.prevent>
+					<button class="card-grid__card__heart-button" @click.prevent="updateHearts(i)" @mouseenter="updateHeartsHover(i)" @mouseleave="updateHeartsHover(i)" v-if="card.favorite == false || card.favorite == true">
+						<img src="~/static/pics/global/svg/heart_unclicked.svg" alt="В избранное" v-show="!favorites[i] && !favoritesHover[i] || favorites[i] && favoritesHover[i]">
+						<img src="~/static/pics/global/svg/heart_clicked.svg" alt="В избранное" v-show="favorites[i] && !favoritesHover[i] || !favorites[i] && favoritesHover[i]">
 					</button>
 					<div class="card-grid__card__temp-area" v-if="card.temperature">
 						<img src="~/static/pics/global/svg/temper_big.svg" alt="Температура">
@@ -46,6 +46,35 @@
 
 		components: {
 	  		VClamp
+		},
+
+		data() {
+			return {
+				favorites: new Array(this.data.length).fill(false),
+				favoritesHover: new Array(this.data.length).fill(false)
+			}
+		},
+
+		methods: {
+			updateHearts(i) {
+				if (this.favorites[i])
+					this.$bus.$emit('decreaseFavorites');
+				else this.$bus.$emit('increaseFavorites');
+
+				this.favorites[i] = !this.favorites[i];
+				this.favorites.push('');
+				this.favorites.pop();
+			},
+
+			updateHeartsHover(i) {
+				if (this.favoritesHover[i])
+					this.$bus.$emit('decreaseFavorites');
+				else this.$bus.$emit('increaseFavorites');
+
+				this.favoritesHover[i] = !this.favoritesHover[i];
+				this.favoritesHover.push('');
+				this.favoritesHover.pop();
+			}
 		}
 	}
 </script>
