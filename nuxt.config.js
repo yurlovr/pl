@@ -41,6 +41,12 @@ export default {
   */
   buildModules: [
   ],
+
+  generate: {
+    routes: [
+      '/beach/1'
+    ]
+  },
   /*
   ** Nuxt.js modules
   */

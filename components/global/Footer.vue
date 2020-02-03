@@ -2,39 +2,39 @@
 	<footer class="footer custom-container">
 		<div class="footer__top">
 			<div class="footer__right">
-				<nuxt-link to="/">
+				<a href="/" @click.prevent="$bus.goTo('/', $router)">
 					<img src="~/static/pics/global/svg/nash_plyaj_blue.svg" alt="НашПляж" class="footer__logo">
-				</nuxt-link>
+				</a>
 			</div>
 			<div class="footer__left">
 				<div class="footer__part">
 					<h4>О проекте</h4>
-					<nuxt-link to="/about">О нас</nuxt-link>
-					<nuxt-link to="/media">СМИ</nuxt-link>
+					<a href="/about" @click.prevent="$bus.goTo('/about', $router)">О нас</a>
+					<a href="/media" @click.prevent="$bus.goTo('/media', $router)">СМИ</a>
 				</div>
 				<div class="footer__part">
 					<h4>Партнерство</h4>
-					<nuxt-link to="/beach-catalog">Каталог пляжей</nuxt-link>
-					<nuxt-link to="/event-catalog">Каталог мероприятий</nuxt-link>
-					<nuxt-link to="/partner-info">Информация для партнеров</nuxt-link>
+					<a href="/beach-catalog" @click.prevent="$bus.goTo('/beach-catalog', $router)">Каталог пляжей</a>
+					<a href="/event-catalog" @click.prevent="$bus.goTo('/event-catalog', $router)">Каталог мероприятий</a>
+					<a href="/partner-info" @click.prevent="$bus.goTo('/partner-info', $router)">Информация для партнеров</a>
 				</div>
 				<div class="footer__part">
 					<h4>Правила и условия</h4>
-					<nuxt-link to="/contacts">Контакты</nuxt-link>
+					<a href="/contacts" @click.prevent="$bus.goTo('/contacts', $router)">Контакты</a>
 				</div>
 				<div class="footer__part">
 					<h4>Мы в соцсетях</h4>
 					<div class="footer__part__social-links">
-						<a class="footer__part__social" href="facebook.com">
+						<a class="footer__part__social" href="https://facebook.com">
 							<img src="~/static/pics/global/svg/fb.svg" alt="Facebook">
 						</a>
-						<a class="footer__part__social" href="odnoklassniki.ru">
+						<a class="footer__part__social" href="https://odnoklassniki.ru">
 							<img src="~/static/pics/global/svg/ok.svg" alt="Odnoklassniki">
 						</a>
-						<a class="footer__part__social" href="vk.com">
+						<a class="footer__part__social" href="https://vk.com">
 							<img src="~/static/pics/global/svg/vk.svg" alt="VK">
 						</a>
-						<a class="footer__part__social" href="instagram.com">
+						<a class="footer__part__social" href="https://instagram.com">
 							<img src="~/static/pics/global/svg/ig.svg" alt="Instagram">
 						</a>
 					</div>
@@ -48,16 +48,16 @@
 			</div>
 			<div class="footer__left">
 				<div class="footer__part">
-					<nuxt-link to="/confidentiality" class="footer__bottom__link footer__bottom__text">Конфиденциальность</nuxt-link>
+					<a href="/confidentiality" @click.prevent="$bus.goTo('/confidentiality', $router)" class="footer__bottom__link footer__bottom__text">Конфиденциальность</a>
 				</div>
 				<div class="footer__part">
-					<nuxt-link to="/license" class="footer__bottom__link footer__bottom__text">Лицензионное соглашение</nuxt-link>
+					<a href="/license" @click.prevent="$bus.goTo('/license', $router)" class="footer__bottom__link footer__bottom__text">Лицензионное соглашение</a>
 				</div>
 				<div class="footer__part">
-					<nuxt-link to="/agreement" class="footer__bottom__link footer__bottom__text">Соглашение об оказании услуг</nuxt-link>
+					<a href="/agreement" @click.prevent="$bus.goTo('/agreement', $router)" class="footer__bottom__link footer__bottom__text">Соглашение об оказании услуг</a>
 				</div>
 				<div class="footer__part">
-					<nuxt-link to="/rules" class="footer__bottom__link footer__bottom__text">Правила пользования сайтом</nuxt-link>
+					<a href="/rules" @click.prevent="$bus.goTo('/rules', $router)" class="footer__bottom__link footer__bottom__text">Правила пользования сайтом</a>
 				</div>
 			</div>
 		</div>

@@ -1,8 +1,19 @@
 <template>
-	<div class="slider-beh">
+	<div class="slider-cities">
 		<div v-swiper:mySwiper="swiperOption">
-			<div class="swiper-wrapper">
-				<Card v-for="(slide, i) in data.cardData" :data="slide" :key="i" class="swiper-slide" />
+			<div class="swiper-wrapper slider-cities__wrapper">
+				<div class="swiper-slide slider-cities__slide" v-for="slide in data.cardData">
+					<a href="/" @click.prevent="$bus.goTo('/', $router)" class="slider__slide__link">
+						<div class="slider-cities__slide__pic-area">
+							<img :src="slide.pic" alt="Фото" class="slider-cities__slide__pic">
+							<h4 class="slider-cities__slide__title">{{ slide.city }}</h4>
+						</div>
+						<div class="slider-cities__slide__info-area">
+							<span class="slider-cities__slide__beach-number">{{ slide.beachNumber }}</span>
+							<span class="slider-cities__slide__beach">{{ (slide.beachNumber % 10 == 1 && slide.beachNumber % 100 != 11) ? 'пляж' : 'пляжей' }}</span>
+						</div>
+					</a>
+				</div>
 			</div>
 		</div>
 		<div class="pagination-wrapper">
@@ -21,7 +32,6 @@
 
 <script>
 	import Vue from 'vue';
-	import Card from '~/components/global/Card';
 
 	export default {
 		props: ['data'],
@@ -34,28 +44,28 @@
 			}
 		},
 
-		components: {
-	  		Card
-		},
-
 		data() {
 			return {
 				swiperOption: {
 					spaceBetween: 24,
-					slidesPerView: this.data.slideNumber,
+					slidesPerView: 6,
 					init: false,
 					breakpoints: {
 						1150: {
+							slidesPerView: 6,
+						},
+						950: {
 							slidesPerView: 5,
-							spaceBetween: 20
 						},
-						1000: {
-							slidesPerView: 4
+						800: {
+							slidesPerView: 4,
+							spaceBetween: 10
 						},
-						700: {
-							slidesPerView: 3
+						600: {
+							slidesPerView: 3,
+							spaceBetween: 10
 						},
-						550: {
+						500: {
 							slidesPerView: 2,
 							spaceBetween: 10
 						}
@@ -85,7 +95,7 @@
 
 		methods: {
 			onResize() {
-				this.arrowY = this.$el.querySelector('.custom-card__pic').offsetHeight / 2; // this.$el means we're query selecting in this component
+				this.arrowY = this.$el.querySelector('.slider-cities__slide__pic').offsetHeight / 2; // this.$el means we're query selecting in this component
 
 				if (window.innerWidth < 1150) {
 					this.showArrows = false;

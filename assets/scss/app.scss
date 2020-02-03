@@ -39,7 +39,6 @@
   font-style: normal;
 }
 
-
 html, body {
   box-sizing: border-box;
   background: #FAFAFA;
@@ -112,6 +111,114 @@ html, body {
   padding-right: 64px;
 }
 
+.custom-page {
+  padding-top: 130px;
+
+  &__title {
+    color: #393E48;
+    font-weight: 700;
+    font-size: 36px;
+    line-height: 120%;
+  }
+}
+
+.two-part-layout {
+  display: flex;
+
+  &__left {
+    width: 66%;
+  }
+
+  &__right {
+    width: 34%;
+    min-width: 400px;
+    padding-left: 24px;
+  }
+
+  &__card {
+    padding: 35px;
+    border-radius: 12px;
+    background: white;
+    margin-bottom: 15px;
+
+    &:last-of-type {
+      margin-bottom: 0;
+    }
+
+    &__title {
+      font-size: 36px;
+      font-weight: 700;
+      line-height: 43px;
+      color: #393E48;
+      margin-bottom: 0;
+    }
+  }
+}
+
+.announcement-card {
+  a {
+    text-decoration: none;
+    color: white;
+  }
+
+  &:hover {
+    .announcement-card__pic {
+      transform: scale(1.2);
+    }
+  }
+
+  &__info-area {
+    padding: 45px 24px 60px 24px;
+    border-radius: 0 0 12px 12px;
+  }
+
+  &__title {
+    max-width: 240px;
+    margin-bottom: 30px;
+    font-size: 48px;
+    font-weight: 900;
+    line-height: 90%;
+  }
+
+  &__description {
+    margin: 0;
+    font-size: 16px;
+    line-height: 140%;
+  }
+
+  &__pic {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 12px 12px 0 0;
+    transition: transform .5s ease;
+
+    &-area {
+      width: 100%;
+      height: 100%;
+      max-height: 400px;
+      border-radius: 12px 12px 0 0;
+      overflow: hidden;
+    }
+  }
+
+  &__date {
+    font-weight: 700;
+    font-size: 24px;
+    line-height: 22px;
+
+    &-area {
+      display: flex;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    &-icon {
+      margin-right: 10px;
+    }
+  }
+}
+
 .preloader {
   position: fixed;
   width: 100vw;
@@ -120,6 +227,51 @@ html, body {
   background: white;
   z-index: 100;
   @include flex-center;
+}
+
+.page-transitioner {
+    position: fixed;
+    top: 0;
+    left: 0;
+    display: none;
+    width: 100vw;
+    height: 100vh;
+    z-index: 100;
+    &.active {
+        display: block;
+    }
+    &__left, &__right {
+        position: absolute;
+        top: 0;
+        width: 50vw;
+        height: 100vh;
+        transition: transform .5s ease;
+        background-color: white;
+    }
+    &__left {
+        left: 0;
+        transform: translateY(-100vh);
+    }
+    &__right {
+        right: 0;
+        transform: translateY(100vh);
+    }
+    &__logo {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        transition: opacity .5s ease;
+        opacity: 0;
+    }
+}
+
+.pagination-num-wrapper {
+  width: 100%;
+  display: flex;
+  margin-top: 5px;
+  margin-bottom: 40px;
+  justify-content: center;
 }
 
 .header {
@@ -167,15 +319,15 @@ html, body {
 
     &-number {
       position: absolute;
-      right: -12px;
-      top: -5px;
+      right: -23px;
+      top: -10px;
       background: #FCAB2D;
       border-radius: 50px;
-      height: 13px;
-      padding: 0 4px;
+      height: 20px;
+      padding: 0 6px;
       @include flex-center;
-      font-size: 10px;
-      line-height: 12px;
+      font-size: 15px;
+      line-height: 15px;
       color: white !important;
     }
 
@@ -300,6 +452,7 @@ html, body {
       width: 100%;
       height: 100%;
       padding: 25px;
+      padding-bottom: 0;
     }
 
     &__close {
@@ -345,15 +498,22 @@ html, body {
     }
 
     &__apply {
+      @include flex-center;
       background: #FCAB2D;
       box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
       border-radius: 6px;
       padding: 16px 62px;
       font-size: 14px;
       line-height: 130%;
+      border: 2px solid #FCAB2D;
       color: #FFFFFF;
-      border: none;
-      @include flex-center;
+      transition: background .2s ease, color .2s ease, border-color .2s ease;
+
+      &:hover {
+        background: white;
+        color: #FCAB2D;
+        border-color: #C4C4C4;
+      }
 
       &:focus {
         outline: none;
@@ -476,6 +636,11 @@ html, body {
 
         label {
           cursor: pointer;
+          transition: opacity .2s ease;
+
+          &:hover {
+            opacity: .7;
+          }
         }
 
         input {
@@ -602,7 +767,7 @@ html, body {
       }
 
       &:hover {
-        opacity: .8;
+        opacity: .7;
       }
     }
 
@@ -612,8 +777,9 @@ html, body {
       border: 1px solid rgba(34, 133, 150, .5);
       margin-right: 10px;
       border-radius: 50%;
-      transition: border .5s ease;
+      transition: border .5s ease !important;
       margin-bottom: 0 !important;
+      opacity: 1 !important;
       @include flex-center;
 
       &:hover {
@@ -720,7 +886,7 @@ html, body {
     padding-bottom: 50px;
 
     .main-page__section-subtitle {
-      max-width: 397px;
+      // max-width: 397px;
     }
   }
 
@@ -891,9 +1057,15 @@ html, body {
           background: url("../../static/pics/global/svg/arrow_next_white.svg");
         }
 
+        &.border-orange {
+          &:hover {
+            border-color: #FCAB2D;
+          }
+        }
+
         &:hover {
           background: white;
-          border-color: #C4C4C4;
+          border-color: #228596;
 
           span {
             color: #FCAB2D;
@@ -954,6 +1126,9 @@ html, body {
 
           &__icon {
             margin-bottom: 10px;
+            width: 60px;
+            height: 60px;
+            object-fit: contain;
 
             &-area {
               @include flex-center;
@@ -966,6 +1141,7 @@ html, body {
 
             &-wrapper {
               display: flex;
+              align-items: center;
               flex-direction: column;
               margin-right: 45px;
 
@@ -978,6 +1154,7 @@ html, body {
                 line-height: 130%;
                 color: #FFFFFF;
                 text-align: center;
+                white-space: nowrap;
               }
             }
           }
@@ -1084,6 +1261,8 @@ html, body {
       }
 
       &__beach {
+        margin-right: 3px;       
+
         &-number {
           margin-right: 4px;
 
@@ -1096,6 +1275,21 @@ html, body {
             font-size: 10px;
             line-height: 100%;
             letter-spacing: 0.06em;
+            transition: color .2s ease;
+
+            &:after {
+              content: '';
+              display: block;
+              vertical-align: middle;
+              width: 6px;
+              height: 10px;
+              padding-left: 5px;
+              background: url("../../static/pics/global/svg/arrow_next_orange.svg") no-repeat;
+            }
+
+            &:hover {
+              color: #FCAB2D !important;
+            }
 
             img {
               transform: scale(0.8);
@@ -1163,6 +1357,10 @@ html, body {
     margin-bottom: 70px;
     overflow: hidden;
   }
+
+  &__see-all {
+    white-space: nowrap;
+  }
 }
 
 .search-page {
@@ -1171,7 +1369,6 @@ html, body {
   &__desktop-tablet {
     display: flex;
     flex-wrap: wrap;
-    padding-top: 130px;
     margin-bottom: 20px;
   }
 
@@ -1190,8 +1387,9 @@ html, body {
     color: #242934;
     display: flex;
     align-items: center;
-    padding: 10px 18px;
-    padding-right: 12px;
+    padding: 10px 14px;
+    padding-right: 5px;
+    height: 36px !important;
 
     &:last-of-type {
       margin-right: 0;
@@ -1250,28 +1448,18 @@ html, body {
     }
   }
 
-  &__see-all {
-    font-size: 16px;
-    display: flex;
-    align-items: center;
-
-    &-area {
-      width: 100%;
-      display: flex;
-      justify-content: flex-end;
-      margin-top: 40px;
-      margin-bottom: 40px;
-
-      a {
-        text-decoration: none;
-        @include see-all;
-      }
-    }
-  }
-
   &__map-area {
     display: flex;
     padding-left: 74px;
+
+    .swiper-container {
+      padding-bottom: 20px;
+    }
+
+    .ymap-container, [class*="ymaps-2"][class*="-map"]:not([class*="promo"]) {
+      min-height: 600px;
+      height: 70vh !important;
+    }
 
     a {
       text-decoration: none;
@@ -1280,8 +1468,17 @@ html, body {
     &__info-area {
       overflow-y: auto;
       min-width: 656px;
-      height: 600px;
+      min-height: 600px;
+      height: 70vh;
       padding-right: 24px;
+
+      &.slider {
+        display: none;
+      }
+
+      &__modal {
+        display: none;
+      }
     }
 
     &__card {
@@ -1290,17 +1487,20 @@ html, body {
       border-radius: 8px;
       display: flex;
       margin-bottom: 24px;
+      border: 1px solid transparent;
+      transition: border-color .2s ease, box-shadow .2s ease;
 
       &:last-of-type {
         margin-bottom: 0;
       }
 
-      &:hover {
+      &:hover, &.active {
         box-shadow: 0px 4px 16px rgba(0, 0, 0, 0.1);
+        border-color: #FCAB2D;
       }
 
       &__pic-area {
-        width: 250px;
+        min-width: 250px;
         height: 100%;
 
         img {
@@ -1328,7 +1528,7 @@ html, body {
         display: flex;
 
         img {
-          margin-right: 3;
+          margin-right: 3px;
         }
 
         span {
@@ -1339,7 +1539,6 @@ html, body {
 
       &__info-area {
         padding: 20px 24px;
-        width: 366px;
       }
 
       &__subtitle {
@@ -1374,11 +1573,452 @@ html, body {
   }
 }
 
-.slider {
-  &__slide {
-    &__link {
-      text-decoration: none !important;
+.about-page {
+  padding-bottom: 80px;
+
+  &__title {
+    margin-bottom: 35px;
+  }
+
+  &__text {
+    color: #4A4A4A;
+    font-size: 16px;
+    line-height: 170%;
+  }
+}
+
+.favorites-page {
+  &__title {
+    margin-bottom: 20px;
+  }
+
+  &__favorites-type {
+    border-radius: 33px;
+    border: none;
+    background: none;
+    transition: opacity .2s ease, color .2s ease, background .2s ease;
+    font-size: 20px;
+    font-weight: 500;
+    line-height: 24px;
+    padding: 5px 15px;
+    color: #393E48;
+
+    &:hover {
+      opacity: .7;
     }
+
+    &:focus {
+      outline: none;
+    }
+
+    &.active {
+      background: #FCAB2D;
+      color: white;
+      opacity: 1 !important;
+      cursor: default;
+    }
+
+    &s {
+      display: flex;
+      margin-bottom: 40px;
+    }
+  }
+}
+
+.beach-page {
+  overflow: hidden;
+
+  &__similar-beaches {
+    margin-bottom: 128px;
+  }
+
+  &__container {
+    margin-bottom: 60px;
+  }
+
+  &__quick-data {
+    &__title {
+      margin-bottom: 30px;
+    }
+
+    &__slider {
+      display: none;
+    }
+
+    &__item {
+      display: flex;
+      align-items: flex-start;
+      flex-direction: column;
+      margin-right: 30px;
+      width: 25%;
+
+      &:last-of-type {
+        margin-right: 0;
+      }
+
+      img {
+        margin-bottom: 10px;
+      }
+
+      span {
+        font-size: 14px;
+        line-height: 120%;
+        color: #242934;
+        // max-width: 110px;
+      }
+
+      &s {
+        display: flex;
+        justify-content: space-between;
+        flex-wrap: nowrap;
+      }
+    }
+  }
+
+  &-sections {
+    &.slider {
+      &-weather {
+        &__month {
+          &s {
+            .swiper-wrapper {
+              justify-content: flex-start;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+.beach-event {
+  &__main-info {
+    &__infos {
+      &__item {
+        margin-bottom: 40px;
+
+        span {
+          font-size: 18px;
+          line-height: 22px;
+
+          &.gray {
+            color: #73767D;
+            margin-right: 5px;
+          }
+        }
+      }
+    }
+
+    .h-line {
+      width: 100%;
+      height: 1px;
+      background: #E8E8E8;
+    }
+
+    &__hearts {
+      background: none;
+      @include flex-center;
+      padding: 12px 16px;
+      border-radius: 50px;
+      border: 2px solid #FEE6C0;
+      transition: border-color .2s ease;
+
+      &:hover {
+        border-color: #FCAB2D;
+      }
+
+      &:focus {
+        outline: none;
+      }
+
+      img {
+        margin-right: 4px;
+      }
+
+      span {
+        color: #4A4A4A;
+        font-weight: 500;
+        font-size: 24px;
+        line-height: 120%;
+      }
+    }
+
+    &__subtitle {
+      color: #228596;
+      text-transform: uppercase;
+    }
+
+    .mobile {
+      display: none;
+    }
+
+    &__title {
+      font-weight: 700;
+      font-size: 36px;
+      line-height: 120%;
+      margin-right: 10px;
+      margin-bottom: 15px;
+
+      &-area {
+        margin-bottom: 60px;
+        align-items: flex-start;
+      }
+    }
+
+    &__subtitle {
+      font-size: 16px;
+      line-height: 19px;
+      margin-bottom: 0;
+    }
+  }
+
+  &__about {
+    &__title {
+      margin-bottom: 10px;
+    }
+
+    &__accordion {
+      display: none;
+    }
+
+    &__text-area {
+      h3 {
+        font-weight: 700;
+        margin-top: 30px;
+      }
+
+      p {
+        font-weight: 300;
+      }
+
+      h3, p {
+        font-size: 16px;
+        line-height: 170%;
+        margin-bottom: 0;
+        color: #393E48;
+      }
+    }
+  }
+}
+
+.custom-card {
+  &__link {
+    text-decoration: none !important;
+  }
+
+  &__visited {
+    width: 106px;
+    height: 30px;
+    background: white;
+    border-radius: 20px;
+    border: none;
+    @include flex-center;
+    transition: transform .2s ease;
+    transform-origin: right;
+    position: absolute;
+    right: 12px;
+    bottom: 12px;
+    overflow: hidden;
+    padding: 0;
+    transform: scaleX(0);
+
+    &:focus {
+      outline: none;
+    }
+
+    &__round {
+      border-radius: 50%;
+      min-width: 18px;
+      min-height: 18px;
+      max-width: 18px;
+      max-height: 18px;
+      border: 2px solid #FCAB2D;
+      @include flex-center;
+    }
+
+    &__text {
+      font-weight: 500;
+      font-size: 12px;
+      line-height: 100%;
+      text-transform: uppercase;
+      color: #73767D;
+      margin-top: 2px;
+      margin-left: 8px;
+    }
+  }
+
+  &__pic {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    border-radius: 12px;
+    transition: transform .5s ease;
+
+    &-area {
+      position: relative;
+      margin-bottom: 15px;
+      border-radius: 12px;
+      overflow: hidden;
+
+      &:hover {
+        .custom-card {
+          &__pic {
+            transform: scale(1.3);
+          }
+
+          &__visited {
+            transform: scaleX(1);
+          }
+        }
+      }
+    }
+  }
+
+  &__price {
+    margin-top: 5px;
+    font-size: 14px !important;
+    font-weight: 700;
+    line-height: 17px;
+    color: #115C91 !important;
+  }
+
+  &__rating-area, &__date-area {
+    font-weight: 500;
+    color: #73767D;
+    display: flex;
+    align-items: center;
+    margin-bottom: 5px;        
+  }
+
+  &__rating-area {
+    font-size: 14px;
+    line-height: 120%;
+
+    img {
+      margin-right: 3px;
+    }
+  }
+
+  &__date-area {
+    font-size: 16px;
+    line-height: 19px;
+
+    img {
+      margin-right: 6px;
+    }
+  }
+
+  &__title {
+    font-weight: 700;
+    line-height: 120%;
+    color: #393E48 !important;
+    margin-bottom: 7px;
+    display: block;
+    transition: opacity .2s ease;
+
+    &:hover {
+      opacity: .7;
+    }
+  }
+
+  &__beach {
+    font-size: 16px;
+    line-height: 120%;
+    margin-bottom: 8px;
+    display: block;
+  }
+
+  &__info {
+    &-area {
+      &.event {
+        height: 114px;
+      }
+
+      a {
+        text-decoration: none;
+        color: #228596;
+      }
+    }
+  }
+
+  &__location {
+    line-height: 14px;
+    text-transform: uppercase;
+    color: #73767D;
+    margin-bottom: 0;
+  }
+
+  &__temp {
+    color: #FCAB2D;
+    font-weight: 700;
+    font-size: 16px;
+    line-height: 19px;
+    margin-right: 1px;
+
+    &-area {
+      display: flex;
+      align-items: center;
+      position: absolute;
+      top: 12px;
+      left: 12px;
+      background: white;
+      padding: 6px 12px;
+      border-radius: 30px;
+
+      .small {
+        display: none;
+      }
+
+      img {
+        margin-right: 5px;
+      }
+    }
+
+    &-o {
+      font-weight: 500;
+      font-size: 10px;
+      color: #73767D;
+      position: relative;
+      width: 7px;
+
+      span {
+        position: absolute;
+        top: -12px;
+      }
+    }
+
+    &-C {
+      font-weight: 700;
+      font-size: 16px;
+      line-height: 19px;
+      color: #73767D;
+    }
+  }
+
+  &__expensive {
+    position: absolute;
+    bottom: 12px;
+    left: 12px;
+  }
+
+  &__info-area {
+    display: flex;
+    flex-direction: column;
+  }
+
+  &__subtitle-area {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    height: 100%;
+  }
+}
+
+.slider {
+  &-container {
+    display: flex;
+    overflow: hidden;
+    position: relative;
+    white-space: nowrap;
   }
 
   &__arrow {
@@ -1410,179 +2050,6 @@ html, body {
 
   &-beh {
     position: relative;
-
-    &__slide {
-      &__pic {
-        width: 100%;
-        height: 100%;
-        object-fit: contain;
-        border-radius: 12px;
-        transition: transform .5s ease;
-
-        &-area {
-          position: relative;
-          margin-bottom: 15px;
-          border-radius: 12px;
-          overflow: hidden;
-
-          &:hover {
-            .slider-beh__slide__pic {
-              transform: scale(1.3);
-            }
-          }
-        }
-      }
-
-      &__price {
-        margin-top: 5px;
-        font-size: 14px !important;
-        font-weight: 700;
-        line-height: 17px;
-        color: #115C91 !important;
-      }
-
-      &__rating-area, &__date-area {
-        font-weight: 500;
-        color: #73767D;
-        display: flex;
-        align-items: center;
-        margin-bottom: 5px;        
-      }
-
-      &__rating-area {
-        font-size: 14px;
-        line-height: 120%;
-
-        img {
-          margin-right: 3px;
-        }
-      }
-
-      &__date-area {
-        font-size: 16px;
-        line-height: 19px;
-
-        img {
-          margin-right: 6px;
-        }
-      }
-
-      &__title {
-        font-weight: 700;
-        line-height: 120%;
-        color: #393E48 !important;
-        margin-bottom: 7px;
-        display: block;
-      }
-
-      &__beach {
-        font-size: 16px;
-        line-height: 120%;
-        margin-bottom: 8px;
-        display: block;
-      }
-
-      &__info {
-        &-area {
-          &.event {
-            height: 114px;
-          }
-
-          a {
-            text-decoration: none;
-            color: #228596;
-          }
-        }
-      }
-
-      &__location {
-        line-height: 14px;
-        text-transform: uppercase;
-        color: #73767D;
-        margin-bottom: 0;
-      }
-
-      &__temp {
-        color: #FCAB2D;
-        font-weight: 700;
-        font-size: 16px;
-        line-height: 19px;
-        margin-right: 1px;
-
-        &-area {
-          display: flex;
-          align-items: center;
-          position: absolute;
-          top: 12px;
-          left: 12px;
-          background: white;
-          padding: 6px 12px;
-          border-radius: 30px;
-
-          img {
-            margin-right: 5px;
-          }
-        }
-
-        &-o {
-          font-weight: 500;
-          font-size: 10px;
-          color: #73767D;
-          position: relative;
-          width: 7px;
-
-          span {
-            position: absolute;
-            top: -12px;
-          }
-        }
-
-        &-C {
-          font-weight: 700;
-          font-size: 16px;
-          line-height: 19px;
-          color: #73767D;
-        }
-      }
-
-      &__heart {
-        width: 100%;
-        height: 100%;
-
-        &-button {
-          position: absolute;
-          top: 12px;
-          right: 12px;
-          border: none;
-          background: none;
-          width: 30px;
-          height: 30px;
-          padding: 0;
-
-          &:focus {
-            outline: none;
-          }
-        }
-      }
-
-      &__expensive {
-        position: absolute;
-        bottom: 12px;
-        left: 12px;
-      }
-
-      &__info-area {
-        display: flex;
-        flex-direction: column;
-      }
-
-      &__subtitle-area {
-        display: flex;
-        flex-direction: column;
-        justify-content: flex-end;
-        height: 100%;
-      }
-    }
   }
 
   &-cities {
@@ -1599,6 +2066,10 @@ html, body {
       margin-bottom: 20px;
       border-radius: 12px;
       min-height: 80px;
+
+      a {
+        text-decoration: none;
+      }
 
       &:hover {
         .slider-cities__slide {
@@ -1676,10 +2147,14 @@ html, body {
       border: none;
       font-size: 18px;
       line-height: 22px;
-      text-transform: capitalize;
       color: #73767D;
       padding: 5px 0;
       display: flex;
+      transition: color .2s ease;
+
+      &:hover {
+        color: black;
+      }
 
       span {
         display: inline-block;
@@ -1889,8 +2364,29 @@ html, body {
   }
 }
 
+.heart {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  border: none;
+  background: none;
+  width: 30px;
+  height: 30px;
+  padding: 0;
+
+  &:focus {
+    outline: none;
+  }
+
+  img {
+    width: 100%;
+    height: 100%;
+  }
+}
+
 .custom-pagination {
   width: 100%;
+  height: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1902,7 +2398,13 @@ html, body {
     height: 4px !important;
     opacity: .5 !important;
     border-radius: 50%;
-    margin-right: 6px;
+    margin: 3px;
+    border: none;
+    padding: 0;
+
+    &:focus {
+      outline: none;
+    }
 
     &:last-of-type {
       margin-right: 0;
@@ -2069,6 +2571,7 @@ html, body {
 
       &r {
         position: relative;
+        overflow: hidden;
 
         .swiper-container {
           border-radius: 12px;
@@ -2109,7 +2612,9 @@ html, body {
         }
 
         .pagination-wrapper {
-          display: block;
+          display: flex !important;
+          justify-content: center;
+          align-items: center;
           margin: 0;
           position: absolute;
           bottom: 14px;
@@ -2117,9 +2622,19 @@ html, body {
         }
 
         .swiper-pagination {
+          @include flex-center;
+
           &-bullet {
             background: white !important;
             opacity: 1 !important;
+            margin: 0 3px;
+            width: 4px;
+            height: 4px;
+
+            &-active {
+              width: 6px;
+              height: 6px;
+            }
           }
         }
       }
@@ -2128,8 +2643,20 @@ html, body {
 
   &-beaches {
     &-main {
-      width: 514px;
+      min-width: 514px;
       padding-left: 74px;
+
+      &__slide {
+        &.active {
+          .map-beaches-main__card__pic-area {
+            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.3);
+          }
+        }
+
+        &r {
+          display: none;
+        }
+      }
 
       .scroll-area {
         position: relative;
@@ -2165,7 +2692,7 @@ html, body {
           text-decoration: none;
         }
 
-        &:hover {
+        &:hover, &.active {
           .map-beaches-main__card__pic-area {
             box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.3);
           }
@@ -2177,7 +2704,7 @@ html, body {
 
         &__pic-area {
           position: relative;
-          width: 413px;
+          width: 100%;
           border-radius: 12px;
           margin-bottom: 15px;
 
@@ -2192,19 +2719,21 @@ html, body {
             position: absolute;
             top: 12px;
             right: 12px;
-            width: 30px;
-            height: 30px;
+            width: 32px;
+            height: 32px;
             background: none;
             border: none;
             padding: 0;
+            @include flex-center;
 
             &:focus {
               outline: none;
             }
 
             img {
-              width: 100%;
-              height: 100%;
+              width: 28px;
+              height: 28px;
+              margin: 0 !important;
             }
           }
         }
@@ -2251,184 +2780,12 @@ html, body {
     width: 25%;
     padding: 0 12px;
     position: relative;
-
-    &:nth-child(4n) {
-      margin-bottom: 35px;
-    }
-
-    &:last-of-type {
-      margin-bottom: 0;
-    }
-
-    a {
-      text-decoration: none;
-    }
-
-    &__pic {
-      width: 100%;
-      height: 100%;
-      object-fit: contain;
-      border-radius: 12px;
-
-      &-area {
-        width: 100%;
-        position: relative;
-        margin-bottom: 15px;
-        margin-right: 24px;
-        border-radius: 12px;
-      }
-    }
-
-    &__price {
-      margin-top: 5px;
-      font-size: 14px !important;
-      font-weight: 700;
-      line-height: 17px;
-      color: #115C91 !important;
-    }
-
-    &__rating-area {
-      font-weight: 500;
-      color: #73767D;
-      display: flex;
-      align-items: center;
-      margin-bottom: 5px;
-      font-size: 14px;
-      line-height: 120%;
-
-      img {
-        margin-right: 3px;
-      }
-    }
-
-    &__date-area {
-      font-size: 16px;
-      line-height: 19px;
-
-      img {
-        margin-right: 6px;
-      }
-    }
-
-    &__title {
-      font-weight: 700;
-      line-height: 120%;
-      color: #393E48 !important;
-      margin-bottom: 7px;
-      display: block;
-    }
-
-    &__beach {
-      font-size: 16px;
-      line-height: 120%;
-      margin-bottom: 8px;
-      display: block;
-    }
-
-    &__info {
-      &-area {
-        a {
-          text-decoration: none;
-          color: #228596;
-        }
-      }
-    }
-
-    &__location {
-      line-height: 14px;
-      text-transform: uppercase;
-      color: #73767D;
-      margin-bottom: 0;
-    }
-
-    &__temp {
-      color: #FCAB2D;
-      font-weight: 700;
-      font-size: 16px;
-      line-height: 19px;
-      margin-right: 1px;
-      white-space: nowrap;
-
-      &-area {
-        display: flex;
-        align-items: center;
-        position: absolute;
-        top: 12px;
-        left: 12px;
-        background: white;
-        padding: 6px 12px;
-        border-radius: 30px;
-
-        img {
-          margin-right: 5px;
-        }
-      }
-
-      &-o {
-        font-weight: 500;
-        font-size: 10px;
-        color: #73767D;
-        position: relative;
-        width: 7px;
-
-        span {
-          position: absolute;
-          top: -12px;
-        }
-      }
-
-      &-C {
-        font-weight: 700;
-        font-size: 16px;
-        line-height: 19px;
-        color: #73767D;
-      }
-    }
-
-    &__heart {
-      width: 100%;
-      height: 100%;
-
-      &-button {
-        position: absolute;
-        top: 12px;
-        right: 12px;
-        border: none;
-        background: none;
-        width: 30px;
-        height: 30px;
-        padding: 0;
-        z-index: 4;
-
-        img {
-          width: 100%;
-          height: 100%;
-        }
-
-        &:focus {
-          outline: none;
-        }
-      }
-    }
-
-    &__expensive {
-      position: absolute;
-      bottom: 12px;
-      left: 12px;
-    }
-
-    &__info-area {
-      display: flex;
-      flex-direction: column;
-    }
-
-    &__subtitle-area {
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-end;
-      height: 100%;
-    }
+    margin-bottom: 35px;
   }
+}
+
+.overlay-map {
+  overflow: hidden;
 }
 
 // FOR TESTING
@@ -2449,7 +2806,7 @@ html, body {
   }
 }
 
-// after 1300px
+// after 1301px
 // search parameters start to break, so changing it to the tablet view + slider-weather's main slider is too big
 @media (max-width: 1301px) {
   .search {
@@ -2488,64 +2845,106 @@ html, body {
       }
     }
   }
+
+  .search-page {
+    &__map {
+      &-area {
+        padding-left: 32px;
+      }
+    }
+  }
+
+  .beach-event {
+    &__main-info {
+      &__infos {
+        &__item {
+          width: 100%;
+
+          &:last-of-type {
+            margin-bottom: 0;
+          }
+        }
+      }
+    }
+  }
 }
 
 
 // after 1230px
 // beh is breaking, so making it smaller just like in the TABLET version
 @media (max-width: 1230px) {
-  .slider {
-    &-beh {
-      &__slide {
-        &__title {
-          font-size: 16px !important;
+  .heart {
+    width: 22px;
+    height: 22px;
+
+    img {
+      margin-top: -4px;
+      width: 22px;
+      height: 22px;
+    }
+  }
+
+  .custom-card {
+    &__title {
+      font-size: 16px !important;
+    }
+
+    &__info-area.event {
+      height: 105px;
+    }
+
+    &__expensive {
+      width: 22px;
+      height: 22px;
+      margin-top: -4px;
+    }
+
+    &__location {
+      font-size: 10px !important;
+      line-height: 12px !important;
+    }
+
+    &__beach, &__date-area {
+      font-size: 14px;
+    }
+
+    &__temp {
+      font-size: 14px;
+
+      &-o {
+        font-size: 8px;
+      }
+
+      &-C {
+        font-size: 14px;
+      }
+
+      &-area {
+        height: 22px;
+        padding: 6px 10px;
+
+        img {
+          transform: scale(.8);
+          margin-right: 2px;
         }
+      }
+    }
 
-        &__info-area.event {
-          height: 105px;
-        }
+    &__visited {
+      padding: 0;
+      width: 92px;
+      height: 22px;
 
-        &__heart, &__expensive {
-          width: 22px;
-          height: 22px;
-          margin-top: -4px;
-        }
+      &__round {
+        min-width: 16px;
+        min-height: 16px;
+        max-width: 16px;
+        max-height: 16px;
+      }
 
-        &__heart-button {
-          width: 22px;
-          height: 22px;
-        }
-
-        &__location {
-          font-size: 10px !important;
-          line-height: 12px !important;
-        }
-
-        &__beach, &__date-area {
-          font-size: 14px;
-        }
-
-        &__temp {
-          font-size: 14px;
-
-          &-o {
-            font-size: 8px;
-          }
-
-          &-C {
-            font-size: 14px;
-          }
-
-          &-area {
-            height: 22px;
-            padding: 6px 10px;
-
-            img {
-              transform: scale(.8);
-              margin-right: 2px;
-            }
-          }
-        }
+      &__text {
+        margin-left: 4px;
+        margin-right: 5px;
       }
     }
   }
@@ -2596,16 +2995,114 @@ html, body {
       }
     }
   }
+
+  .search-page {
+    &__map-area {
+      .main-page__map {
+        min-height: 600px;
+        height: 70vh;
+      }
+
+      .overlay-map {
+        height: 100%;
+
+        .ymap-container, [class*="ymaps-2-"][class*="-map"]:not([class*="promo"]) {
+          height: 70vh !important;
+        }
+      }
+
+      &__card {
+        flex-direction: column;
+        height: unset;
+
+        &__pic-area {
+          border-radius: 8px 8px 0 0;
+          height: 200px;
+
+          img {
+            border-radius: 8px 8px 0 0;
+          }
+        }
+      }
+
+      &__info-area {
+        padding-top: 30px;
+        padding-right: 20px;
+        padding-left: 20px;
+        min-width: 400px;
+      }
+    }
+  }
+
+  .announcement-card {
+    a {
+      display: flex;
+    }
+
+    &__pic {
+      border-radius: 12px 0 0 12px;
+
+      &-area {
+        border-radius: 12px 0 0 12px;
+        max-height: 340px;
+        height: auto;
+      }
+    }
+
+    &__title {
+      font-size: 32px;
+      line-height: 110%;
+    }
+
+    &__description {
+      font-size: 14px;
+    }
+
+    &__info-area {
+      border-radius: 0 12px 12px 0;
+      min-width: 240px;
+    }
+  }
+
+  .two-part-layout {
+    flex-direction: column;
+
+    &__left {
+      width: 100%;
+      margin-bottom: 50px;
+    }
+
+    &__right {
+      width: 100%;
+      padding-left: 0;
+      min-width: unset;
+    }
+  }
+
+  .beach-event {
+    &__main-info {
+      &__infos {
+        &__item {
+          width: 50%;
+          margin-bottom: 30px;
+        }
+      }
+
+      &__title {
+        font-size: 24px;
+        margin-bottom: 10px;
+
+        &-area {
+          margin-bottom: 40px;
+        }
+      }
+    }
+  }
 }
 
 // at 1150px (TABLET DEFAULT)
 // slider beh breaks, so making it just like in the TABLET version
 @media (max-width: 1150px) {
-  // TEMPORARY
-  .overlay-map {
-    display: none !important;
-  }
-
   .slider {
     &-beh, &-cities {
       padding-right: 10px;
@@ -2643,14 +3140,8 @@ html, body {
 }
 
 @media (max-width: 1058px) {
-  .slider {
-    &-beh {
-      &__slide {
-        &__info-area.event {
-          height: 121px;
-        }
-      }
-    }
+  .custom-card__info-area.event {
+    height: 121px;
   }
 }
 
@@ -2736,15 +3227,19 @@ html, body {
     padding-right: 20px;
   }
 
-  .slider {
-    &-beh {
-      &__slide {
-        &__info-area.event {
-          height: 105px;
-        }
-      }
+  .map {
+    &-beaches-main {
+      padding-left: 32px;
+      min-width: 400px;
+      width: unset;
     }
+  }
 
+  .custom-card__info-area.event {
+    height: 105px;
+  }
+
+  .slider {
     &-dynamic {
       &__slide {
         &:last-of-type {
@@ -2808,7 +3303,7 @@ html, body {
       }
 
       &__search {
-        margin-bottom: 65px;
+        margin-bottom: 40px;
       }
     }
 
@@ -2912,6 +3407,16 @@ html, body {
   }
 }
 
+@media (min-width: 801px) {
+  .beach-event {
+    &__about {
+      &__text-area {
+        height: 100% !important;
+      }
+    }
+  }
+}
+
 // at 800px
 // making the search disappear and be like in the mobile view if it has mobile class (content doesn't change though)
 // changing the height of the header to 62px
@@ -2919,6 +3424,18 @@ html, body {
 @media (max-width: 800px) {
   .header {
     height: 62px;
+  }
+
+  .overlay-map {
+    flex-direction: column;
+
+    .ymap-container {
+      height: 50vh !important;
+    }
+
+    [class*="ymaps-2-"][class*="-map"]:not([class*="promo"]) {
+      height: 50vh !important;
+    }
   }
 
   .search {
@@ -2967,6 +3484,46 @@ html, body {
           margin-bottom: 5px;
         }
       }
+    }
+  }
+
+  .search-page {
+    &__map-area {
+      flex-direction: column;
+      padding-left: 0;
+
+      &__card {
+        margin-bottom: 0;
+      }
+
+      &__info-area {
+        min-width: unset;
+        min-height: unset;
+        height: unset;
+        padding-right: 32px;
+
+        .swiper-container {
+          overflow: visible;
+        }
+
+        &.scroller {
+          display: none;
+        }
+
+        &.slider {
+          display: block;
+          overflow: hidden;
+          padding-left: 32px;
+        }
+      }
+    }
+  }
+
+  .custom-page {
+    padding-top: 82px;
+
+    &__title {
+      font-size: 20px;
     }
   }
 
@@ -3086,17 +3643,147 @@ html, body {
       }
     }
   }
-}
 
-@media (max-width: 763px) {
-  .slider {
-    &-beh {
-      &__slide {
-        &__info-area.event {
-          height: 121px;
+  .favorites-page {
+    &__title {
+      margin-bottom: 16px;
+    }
+
+    &__favorites-type {
+      font-size: 14px;
+      line-height: 17px;
+      padding: 10px 12px;
+
+      &s {
+        margin-bottom: 18px;
+      }
+    }
+  }
+
+  .map {
+    &-beaches-main {
+      min-width: unset;
+      padding-right: 40px;
+
+      &__card {
+        &__pic-area {
+          img {
+            height: auto;
+          }
+        }
+      }
+
+      &__slider {
+        display: block;
+        margin-bottom: 20px;
+
+        .swiper-container {
+          overflow: visible;
+        }
+
+        a {
+          text-decoration: none;
+        }
+      }
+
+      .scroll-area {
+        display: none;
+      }
+    }
+  }
+
+  .beach-page {
+    &__similar-beaches {
+      margin-bottom: 40px;
+    }
+
+    &__quick-data {
+      &__item {
+        margin-right: 20px;
+      }
+    }
+  }
+
+  .beach-event {
+    &__main-info {
+      &__infos {
+        &__item {
+          &:nth-child(odd) {
+            width: 55%;
+          }
+
+          &:nth-child(even) {
+            width: 45%;
+          }
         }
       }
     }
+
+    &__about {
+      &__text-area {
+        position: relative;
+        overflow: hidden;
+        transition: height .3s ease;
+      }
+
+      &__accordion {
+        display: flex;
+        justify-content: flex-end;
+        width: 100%;
+        position: relative;
+
+        &__gradient {
+          position: absolute;
+          bottom: 26px;
+          width: 100%;
+          height: 180px;
+          background: linear-gradient(180deg, rgba(255, 255, 255, 0) 31.84%, #FFFFFF 79.06%);
+          border-radius: 12px;
+          transition: opacity .3s ease;
+
+          &.hidden {
+            opacity: 0;
+          }
+        }
+
+        &__button {
+          background: none;
+          border: none;
+          position: relative;
+          margin-top: 10px;
+          z-index: 2;
+
+          &:focus {
+            outline: none;
+          }
+
+          span {
+            font-weight: normal;
+            font-size: 16px;
+            line-height: 130%;
+            color: #228596;
+            margin-right: 10px;
+          }
+        }
+      }
+    }
+  }
+
+  .two-part-layout {
+    &__card {
+      padding: 25px 20px;
+
+      &__title {
+        font-size: 20px;
+        line-height: 120%;
+      }
+    }
+  }
+}
+
+@media (max-width: 763px) {
+  .custom-card__info-area.event {
+    height: 121px;
   }
 }
 
@@ -3164,13 +3851,172 @@ html, body {
   }
 }
 
-@media (max-width: 700px) {
-  .slider {
-    &-beh {
-      &__slide {
-        &__info-area.event {
-          height: 105px;
+@media (max-width: 740px) {
+  .beach-event {
+    &__main-info {
+      &__infos {
+        &__item {
+          margin-bottom: 20px;
+
+          &:nth-child(odd) {
+            width: 100%;
+          }
+
+          &:nth-child(even) {
+            width: 100%;
+          }
+
+          span {
+            font-size: 18px;
+            line-height: 22px;
+
+            &.gray {
+              font-size: 14px;
+              line-height: 17px;
+              margin-bottom: 5px;
+            }
+
+            &.wrapper {
+              display: flex;
+              flex-direction: column;
+            }
+          }
         }
+      }
+
+      &__hearts {
+        span {
+          font-size: 18px;
+        }
+      }
+
+      &__title {
+        font-size: 18px;
+        line-height: 120%;
+        margin-bottom: 0;
+
+        &-area {
+          margin-bottom: 10px;
+          align-items: center;
+        }
+      }
+
+      &__subtitle {
+        display: none;
+        font-size: 10px;
+        line-height: 12px;
+        margin-top: 10px;
+        margin-bottom: 20px;
+      }
+
+      .mobile {
+        display: block;
+      }
+    }
+  }
+}
+
+@media (max-width: 720px) {
+  .search-page {
+    &__map-area {
+      &__card {
+        &:hover, &.active {
+          box-shadow: none;
+          border-color: transparent;
+        }
+
+        &__info-area {
+          padding: 20px;
+        }
+      }
+
+      &__info-area {
+        margin-bottom: 0;
+
+        &.slider {
+          display: none;
+        }
+
+        &__modal {
+          display: block;
+          background: white;
+          max-width: 300px;
+          width: 100%;
+          position: fixed;
+          left: 50%;
+          transform: translate(-50%, 100vh);
+          bottom: 0;
+          transition: transform .2s ease;
+          z-index: 12;
+          border-radius: 12px;
+          padding: 0;
+
+          .main-page {
+            &__card {
+              &__info-area {
+                &__button {
+                  margin: 20px;
+                  margin-top: 0;
+                }
+              }
+            }
+          }
+
+          &__close-button {
+            position: absolute;
+            border: none;
+            top: 14px;
+            right: 14px;
+            max-width: 26px;
+            min-width: 26px;
+            max-height: 26px;
+            min-height: 26px;
+            padding: 0;
+            background: white;
+            border-radius: 50%;
+            @include flex-center;
+
+            &:focus {
+              outline: none;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 700px) {
+  .custom-card__info-area.event {
+    height: 105px;
+  }
+
+  .beach-page {
+    &__quick-data {
+      &__slider {
+        display: block;
+      }
+
+      &__item {
+        width: auto;
+        align-items: center;
+
+        span {
+          text-align: center;
+        }
+
+        &s {
+          display: none;
+        }
+      }
+
+      .pagination-wrapper {
+        display: block;
+      }
+
+      .swiper-slide {
+        display: flex;
+        justify-content: center;
       }
     }
   }
@@ -3463,6 +4309,10 @@ html, body {
         display: block;
       }
 
+      &-number {
+        right: -14px;
+      }
+
       &-text {
         display: none;
       }
@@ -3519,12 +4369,10 @@ html, body {
     padding-right: 26px;
   }
 
-  .search-page {
-    &__see-all-area {
-      margin-top: 10px;
-      margin-bottom: 10px;
-      justify-content: center;
-    }
+  .pagination-num-wrapper {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    justify-content: center;
   }
 
   .card-grid {
@@ -3543,6 +4391,18 @@ html, body {
 // at 600px
 // change dynamic slider
 @media (max-width: 600px) {
+  .main-page {
+    .overlay-map {
+      .ymap-container {
+        height: 75vh !important;
+      }
+
+      [class*="ymaps-2-"][class*="-map"]:not([class*="promo"]) {
+        height: 75vh !important;
+      }
+    }
+  }
+
   .slider {
     &-dynamic {
       &__slide {
@@ -3577,40 +4437,50 @@ html, body {
         display: block;
       }
     }
+  }
 
-    &-beh {
-      &__slide {
-        max-width: unset;
+  .announcement-card {
+    a {
+      display: initial;
+    }
 
-        &.tall {
-          max-width: unset;
-        }
+    &__pic {
+      border-radius: 12px 12px 0 0;
+
+      &-area {
+        border-radius: 12px 12px 0 0;
+        max-height: 280px;
+        height: 100%;
       }
+    }
+
+    &__title {
+      font-size: 36px;
+      line-height: 90%;
+    }
+
+    &__description {
+      font-size: 16px;
+    }
+
+    &__info-area {
+      border-radius: 0 0 12px 12px;
+      padding-left: 15px;
+      padding-right: 15px;
+      padding-bottom: 25px;
     }
   }
 }
 
 @media (max-width: 592px) {
-  .slider {
-    &-beh {
-      &__slide {
-        &__info-area.event {
-          height: 121px;
-        }
-      }
-    }
+  .custom-card__info-area.event {
+    height: 121px;
   }
 }
 
 @media (max-width: 550px) {
-  .slider {
-    &-beh {
-      &__slide {
-        &__info-area.event {
-          height: 105px;
-        }
-      }
-    }
+  .custom-card__info-area.event {
+    height: 105px;
   }
 }
 
@@ -3620,6 +4490,30 @@ html, body {
   .custom-container {
     padding-left: 20px;
     padding-right: 20px;
+  }
+
+  .custom-page {
+    padding-top: 87px;
+
+    &__title {
+      font-size: 18px;
+    }
+  }
+
+  .favorites-page {
+    &__title {
+      margin-bottom: 10px;
+    }
+
+    &__favorites-type {
+      padding: 6px 10px;
+      font-size: 12px;
+      line-height: 14px;
+
+      &s {
+        margin-bottom: 16px;
+      }
+    }
   }
 
   .main-page {
@@ -3664,7 +4558,7 @@ html, body {
       }
 
       &__search {
-        margin-bottom: 45px;
+        margin-bottom: 0;
 
         .search {
           &__params {
@@ -3778,23 +4672,46 @@ html, body {
     }
   }
 
-  .slider {
-    &-beh {
-      &__slide {
-        &__temp {
-          &-area {
-            top: 6px;
-            left: 6px;
-          }
+  .heart {
+    top: 6px;
+    right: 6px;
+  }
+
+  .custom-card {
+    &__temp {
+      &-area {
+        top: 6px;
+        left: 6px;
+
+        .big {
+          display: none;
         }
 
-        &__heart-button {
-          top: 6px;
-          right: 6px;
+        .small {
+          display: block;
+          margin-right: 1px;
         }
       }
     }
 
+    &__expensive {
+      bottom: 6px;
+      left: 6px;
+    }
+
+
+    &__visited {
+      width: 22px;
+      bottom: 6px;
+      right: 6px;
+
+      &__text {
+        display: none;
+      }
+    }
+  }
+
+  .slider {
     &-weather {
       &__slide {
         // margin-right: unset !important;
@@ -3878,30 +4795,58 @@ html, body {
       display: none;
     }
 
-    .swiper-container {
-      overflow: visible;
-    }
-
-    .swiper-wrapper {
-      height: 48px;
-    }
-
     &__tag {
       margin-bottom: 0;
       width: fit-content !important;
+
+      span {
+        white-space: nowrap;
+      }
     }
 
     &__mobile {
-      padding-top: 87px;
       margin-bottom: 25px;
       display: block;
       width: 100%;
+
+      .swiper-container {
+        overflow: visible;
+      }
+
+      .swiper-wrapper {
+        max-height: 37px;
+        height: 37px;
+      }
     }
   }
 
   .custom-grid-container {
     padding-left: 16px;
     padding-right: 16px;
+  }
+
+  .beach-page {
+    &__similar-beaches {
+      margin-bottom: 15px;
+    }
+  }
+
+  .beach-event {
+    &__about {
+      &__accordion {
+        justify-content: center;
+      }
+    }
+  }
+
+  .two-part-layout {
+    &__card {
+      padding: 20px 10px;
+
+      &__title {
+        font-size: 18px;
+      }
+    }
   }
 }
 
@@ -4015,15 +4960,195 @@ html, body {
       }
     }
   }
+
+  .custom-card {
+    &__title {
+      font-size: 15px !important;
+    }
+  }
+
+
 }
 
 @media (max-width: 392px) {
+  .custom-card__info-area.event {
+    height: 121px;
+  }
+}
+
+// map stuff
+[class*="ymaps-2-"][class*="-panel-pane"] {
+  [class*="ymaps-2-"][class*="-balloon"] {
+    margin-bottom: 10px !important;
+  }
+
+  [id*="id_"] {
+    width: 100%;
+    height: 270px !important;
+    overflow: hidden !important;
+  }
+
+  .map-popup {
+    width: 100%;
+  }
+}
+
+[class*="ymaps-2-"][class*="-controls__control"] {
+  top: 12px !important;
+}
+
+// turning off hovers for touch devices
+body.touch {
+  .custom-card {
+    &__pic {
+      transform: scale(1) !important;
+    }
+
+    &__title {
+      opacity: 1 !important;
+    }
+
+    &__visited {
+      transform: scale(1) !important;
+    }
+  }
+
+  .header {
+    &__favorites-text {
+      color: white !important;
+    }
+  }
+
+  .announcement-card {
+    &__pic {
+      transform: scale(1) !important;
+    }
+  }
+
   .slider {
-    &-beh {
+    &-dynamic {
       &__slide {
-        &__info-area.event {
-          height: 121px;
+        &__pic {
+          transform: scale(1) !important;
         }
+      }
+    }
+
+    &-weather {
+      &__month {
+        &:hover {
+          color: #73767D;
+        }
+
+        &.active {
+          color: white;
+        }
+      }
+    }
+
+    &-cities {
+      &__slide {
+        &__beach {
+          color: #4C515A !important;
+        }
+
+        &__info-area {
+          background: white !important;
+        }
+      }
+    }
+  }
+
+  .footer {
+    &__part {
+      a {
+        &:hover {
+          opacity: 1;
+        }
+      }
+
+      &__social {
+        border: 1px solid rgba(34, 133, 150, 0.5) !important;
+      }
+    }
+
+    &__bottom {
+      .footer {
+        &__part {
+          &:hover {
+            opacity: .5;
+          }
+        }
+      }
+    }
+  }
+
+  .main-page {
+    &__see-all {
+      color: #FCAB2D !important;
+
+      &:after {
+        background: url("../../static/pics/global/svg/arrow_next_orange.svg") no-repeat !important;
+      }
+    }
+
+    &__beach-type {
+      &__card {
+        &__bg {
+          transform: scale(1) !important;
+        }
+
+        &__beach-number-area {
+          color: white !important;
+        }
+      }
+    }
+
+    &__card {
+      &__info-area {
+        &__button {
+          border-color: #FCAB2D !important;
+          background: #FCAB2D !important;
+
+          span {
+            color: white !important;
+          }
+
+          &:after {
+            background: url("../../static/pics/global/svg/arrow_next_white.svg") no-repeat !important;
+          }
+        }
+      }
+    }
+  }
+
+  .search {
+    &__params {
+      &__apply {
+        background: #FCAB2D !important;
+        color: white !important;
+      }
+    }
+  }
+
+  .search-page {
+    &__map-area {
+      &__card {
+        border-color: transparent !important;
+        box-shadow: none !important;
+
+        &.active {
+          box-shadow: 0px 4px 16px rgba(0, 0, 0, 0.1) !important;
+          border-color: #FCAB2D !important;
+        }
+      }
+    }
+  }
+
+  .beach-event {
+    &__main-info {
+      &__hearts {
+        border: 2px solid #FEE6C0 !important;
       }
     }
   }

@@ -10,8 +10,9 @@ eventBus.install = function (Vue) {
 			Vue.prototype.$bus.$emit('showHeaderBgAndBar');
 			Vue.prototype.$bus.$emit('tempHideHeaderBgAndBar');
 		}
+		Vue.prototype.$bus.$emit('transition');
 		Vue.prototype.$bus.$emit('hideParams');
-		router.push(link);
+		setTimeout(() => { router.push(link) }, 500);
 	};
 }
 

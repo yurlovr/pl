@@ -15,8 +15,8 @@
 						<img class="header__favorites-img" alt="Избранное" src="~/static/pics/global/svg/heart_white.svg">
 						<div class="header__favorites-text">
 							<span>Избранное</span>
-							<span class="header__favorites-number" v-show="favoritesNumber != 0">{{ favoritesNumber }}</span>
 						</div>
+						<span class="header__favorites-number" v-show="favoritesNumber != 0"><span>{{ favoritesNumber }}</span></span>
 					</a>
 				</div>
 			</div>

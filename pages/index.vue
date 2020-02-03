@@ -4,7 +4,7 @@
     <div class="main-page__welcome__gradient"></div>
     <Welcome />
     <Search class="main-page__welcome__search" labelId="1" />
-    <BeachSliderArea class="main-page__popular-beaches" :data="mostPopularBeaches" :areaData="mostPopularBeachesAreaData" />
+    <BeachSliderArea class="main-page__popular-beaches" :data="$store.state.beachSliderData" :areaData="mostPopularBeachesAreaData" />
     <Cities :data="cityBeaches" />
     <Map :data="mapData" />
     <BeachEntranceFree />
@@ -16,24 +16,24 @@
     <OnCarNoProblem />
     <BeachType :data="beachTypeData" />
     <YouNeedThis />
-    <BeachSliderArea class="main-page__hotels" :data="hotelData" :areaData="hotelAreaData" />
+    <BeachSliderArea class="main-page__hotels" :data="$store.state.hotelData" :areaData="$store.state.hotelAreaData" />
   </div>
 </template>
 
 <script>
   import Search from '~/components/global/Search';
-  import Welcome from '~/components/pages/main-page/Welcome';
-  import BeachSliderArea from '~/components/pages/main-page/BeachSliderArea';
-  import Cities from '~/components/pages/main-page/Cities';
-  import BeachEntranceFree from '~/components/pages/main-page/BeachEntranceFree';
-  import BeachEvents from '~/components/pages/main-page/BeachEvents';
-  import ChooseBeach from '~/components/pages/main-page/ChooseBeach';
-  import OnCarNoProblem from '~/components/pages/main-page/OnCarNoProblem';
-  import BeachType from '~/components/pages/main-page/BeachType';
-  import YouNeedThis from '~/components/pages/main-page/YouNeedThis';
-  import WeatherSliderArea from '~/components/pages/main-page/WeatherSliderArea';
-  import DynamicSliderArea from '~/components/pages/main-page/DynamicSliderArea';
-  import Map from '~/components/pages/main-page/Map';
+  import Welcome from '~/components/pages/main/Welcome';
+  import BeachSliderArea from '~/components/global/BeachSliderArea';
+  import Cities from '~/components/pages/main/Cities';
+  import BeachEntranceFree from '~/components/pages/main/BeachEntranceFree';
+  import BeachEvents from '~/components/pages/main/BeachEvents';
+  import ChooseBeach from '~/components/pages/main/ChooseBeach';
+  import OnCarNoProblem from '~/components/pages/main/OnCarNoProblem';
+  import BeachType from '~/components/pages/main/BeachType';
+  import YouNeedThis from '~/components/pages/main/YouNeedThis';
+  import WeatherSliderArea from '~/components/pages/main/WeatherSliderArea';
+  import DynamicSliderArea from '~/components/pages/main/DynamicSliderArea';
+  import Map from '~/components/pages/main/Map';
 
   export default {
     components: {
@@ -93,84 +93,6 @@
     data() {
       return {
         // data here
-        mostPopularBeaches: {
-          showArrows: true, // whether to ever show arrows
-          slideNumber: 4,
-          slideData: [
-            {
-              temperature: 21,
-              favorite: false,
-              expensive: false, // ruble sign
-              rating: 4.0,
-              title: 'Массандровский пляж',
-              location: 'Ялта, КРЫМ',
-              pic: '/pics/main/section1_beach1.png'
-            },
-            {
-              temperature: 20,
-              favorite: true,
-              expensive: false,
-              rating: 5.0,
-              title: 'Пляж «Ялта – Интурист»',
-              location: 'Ялта, КРЫМ',
-              pic: '/pics/main/section1_beach2.png'
-            },
-            {
-              temperature: 22,
-              favorite: false,
-              expensive: true,
-              rating: 5.0,
-              title: 'Пляж «Лазурный берег»',
-              location: 'Евпатория, КРЫМ',
-              pic: '/pics/main/section1_beach3.png'
-            },
-            {
-              temperature: 20,
-              favorite: false,
-              expensive: false,
-              rating: 5.0,
-              title: 'Массандровский пляж',
-              location: 'Ялта, КРЫМ',
-              pic: '/pics/main/section1_beach4.png'
-            },
-            {
-              temperature: 21,
-              favorite: false,
-              expensive: false, // ruble sign
-              rating: 5.0,
-              title: 'Массандровский пляж',
-              location: 'Ялта, КРЫМ',
-              pic: '/pics/main/section1_beach1.png'
-            },
-            {
-              temperature: 20,
-              favorite: true,
-              expensive: false,
-              rating: 5.0,
-              title: 'Пляж «Ялта – Интурист»',
-              location: 'Ялта, КРЫМ',
-              pic: '/pics/main/section1_beach2.png'
-            },
-            {
-              temperature: 22,
-              favorite: false,
-              expensive: true,
-              rating: 5.0,
-              title: 'Пляж «Лазурный берег»',
-              location: 'Евпатория, КРЫМ',
-              pic: '/pics/main/section1_beach3.png'
-            },
-            {
-              temperature: 20,
-              favorite: false,
-              expensive: false,
-              rating: 5.0,
-              title: 'Массандровский пляж',
-              location: 'Ялта, КРЫМ',
-              pic: '/pics/main/section1_beach4.png'
-            }
-          ]
-        },
         mostPopularBeachesAreaData: {
           title: 'Самые популярные пляжи',
           subtitle: 'Пологий берег, плавный вход в воду, безопасность и современная инфраструктура',
@@ -178,7 +100,7 @@
         },
         cityBeaches: {
           slideNumber: 4,
-          slideData: [
+          cardData: [
             {
               city: 'Ялта',
               beachNumber: 8,
@@ -486,7 +408,7 @@
           showArrows: true, // whether to ever show arrows
           slideNumber: 6,
           tall: true,
-          slideData: [
+          cardData: [
             {
               temperature: 24,
               favorite: false,
@@ -605,7 +527,7 @@
         eventData: {
           showArrows: true,
           slideNumber: 4,
-          slideData: [
+          cardData: [
             {
               temperature: 24,
               favorite: false,
@@ -704,114 +626,6 @@
           beachNumber2: 18,
           beachLink1: '/',
           beachLink2: '/'
-        },
-        hotelAreaData: {
-          title: 'Где остановиться в Крыму',
-          subtitle: 'Наша подборка отелей, основанная на ваших отзывах',
-          beachNumber: 45
-        },
-        hotelData: {
-          showArrows: true, // whether to ever show arrows
-          slideNumber: 6,
-          tall: true,
-          slideData: [
-            {
-              rating: 5.0,
-              title: 'Отель Мрия Резорт & СПА',
-              location: 'Ялта, КРЫМ',
-              price: 6800,
-              priceLink: '/',
-              pic: '/pics/main/section11_pic1.png'
-            },
-            {
-              rating: 5.0,
-              title: 'Гостиница «Ялта – Интурист»',
-              location: 'Ялта, КРЫМ',
-              price: 2500,
-              priceLink: '/',
-              pic: '/pics/main/section11_pic2.png'
-            },
-            {
-              rating: 5.0,
-              title: 'Отель "Вилла Голубой Залив"',
-              location: 'Евпатория, КРЫМ',
-              price: 1400,
-              priceLink: '/',
-              pic: '/pics/main/section11_pic3.png'
-            },
-            {
-              rating: 5.0,
-              title: 'Гостиница «Ялта – Интурист»',
-              location: 'Ялта, КРЫМ',
-              price: 3000,
-              priceLink: '/',
-              pic: '/pics/main/section11_pic4.png'
-            },
-            {
-              rating: 5.0,
-              title: 'Гостиница «Ялта – Интурист»',
-              location: 'Ялта, КРЫМ',
-              price: 2500,
-              priceLink: '/',
-              pic: '/pics/main/section11_pic5.png'
-            },
-            {
-              rating: 5.0,
-              title: 'Гостиница «Ялта – Интурист»',
-              location: 'Ялта, КРЫМ',
-              price: 2900,
-              priceLink: '/',
-              pic: '/pics/main/section11_pic6.png'
-            },
-            {
-              rating: 5.0,
-              title: 'Отель Мрия Резорт & СПА',
-              location: 'Ялта, КРЫМ',
-              price: 6800,
-              priceLink: '/',
-              pic: '/pics/main/section11_pic1.png'
-            },
-            {
-              rating: 5.0,
-              title: 'Гостиница «Ялта – Интурист»',
-              location: 'Ялта, КРЫМ',
-              price: 2500,
-              priceLink: '/',
-              pic: '/pics/main/section11_pic2.png'
-            },
-            {
-              rating: 5.0,
-              title: 'Отель "Вилла Голубой Залив"',
-              location: 'Евпатория, КРЫМ',
-              price: 1400,
-              priceLink: '/',
-              pic: '/pics/main/section11_pic3.png'
-            },
-            {
-              rating: 5.0,
-              title: 'Гостиница «Ялта – Интурист»',
-              location: 'Ялта, КРЫМ',
-              price: 3000,
-              priceLink: '/',
-              pic: '/pics/main/section11_pic4.png'
-            },
-            {
-              rating: 5.0,
-              title: 'Гостиница «Ялта – Интурист»',
-              location: 'Ялта, КРЫМ',
-              price: 2500,
-              priceLink: '/',
-              pic: '/pics/main/section11_pic5.png'
-            },
-            {
-              rating: 5.0,
-              title: 'Гостиница «Ялта – Интурист»',
-              location: 'Ялта, КРЫМ',
-              price: 2900,
-              priceLink: '/',
-              pic: '/pics/main/section11_pic6.png'
-            }
-          ]
         },
         weatherData: [
           [
