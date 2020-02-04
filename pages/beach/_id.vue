@@ -9,6 +9,8 @@
 					<BeachQuickData :title="'Инфраструктура пляжа'" :data="$store.state.beachInfraData" />
 					<BeachEventAbout :data="$store.state.beachAbout" />
 					<BeachQuickData :title="'Услуги и аренда'" :data="$store.state.beachServicesData" />
+					<BeachEventParkingsTransport :data="$store.state.parkingTransportMapData" />
+					<!-- < -->
 				</main>
 				<aside class="two-part-layout__right">
 					<AnnouncementCard :data="$store.state.announcementData" />
@@ -25,6 +27,7 @@
 	import BeachQuickData from '~/components/pages/beach/BeachQuickData';
 	import SliderHugeBeachEventPage from '~/components/pages/beach-event/SliderHugeBeachEventPage';
 	import BeachEventMainInfo from '~/components/pages/beach-event/BeachEventMainInfo';
+	import BeachEventParkingsTransport from '~/components/pages/beach-event/BeachEventParkingsTransport';
 	import BeachEventAbout from '~/components/pages/beach-event/BeachEventAbout';
 	import AnnouncementCard from '~/components/global/AnnouncementCard';
 	import BeachSliderArea from '~/components/global/BeachSliderArea';
@@ -37,7 +40,8 @@
 			BeachEventMainInfo,
 			BeachSliderArea,
 			BeachQuickData,
-			BeachEventAbout
+			BeachEventAbout,
+			BeachEventParkingsTransport
 		}
 	}
 </script>

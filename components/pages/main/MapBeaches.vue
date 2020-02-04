@@ -1,7 +1,7 @@
 <template>
 	<div class="map-beaches-main">
 		<client-only>
-			<perfect-scrollbar class="scroll-area" :settings="settings" :options="options">
+			<perfect-scrollbar class="scroll-area" :options="options">
 				<div class="map-beaches-main__card" v-for="(card, i) in data" :key="i" :id="`smc-${i}`" :class="{ active : activeCard == i }">
 					<div class="map-beaches-main__card__pic-area">
 						<a href="/" @click.prevent="$bus.goTo('/', $router)">
@@ -75,11 +75,6 @@
 
 		data() {
 			return {
-				settings: {
-					maxScrollbarLength: 60,
-					suppressScrollX: true,
-					swipeEasing: true
-				},
 				options: {
 					swipeEasing: true
 				},

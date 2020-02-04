@@ -8,7 +8,7 @@
 					<img src="~/static/pics/search/cards_orange.svg" alt="Вид: Карточки" v-show="!showCardsOrMap">
 					<img src="~/static/pics/search/cards_gray.svg" alt="Вид: Карточки" v-show="showCardsOrMap">
 				</button>
-				<button class="search-page__title-area__button" :class="{ active: showCardsOrMap }" @click="showCardsOrMap = true">
+				<button class="search-page__title-area__button" :class="{ active: showCardsOrMap }" @click="showMap()">
 					<img src="~/static/pics/search/map_orange.svg" alt="Вид: Карта" v-show="showCardsOrMap">
 					<img src="~/static/pics/search/map_gray.svg" alt="Вид: Карта" v-show="!showCardsOrMap">
 				</button>
@@ -36,8 +36,9 @@
 		data() {
 			return {
 				showCardsOrMap: false, // cards: false, map: true
+				mapShownForTheFirstTime: false,
 				data: {
-					tags: ['Алушта', '7:00-22:00', 'Песчаный', '1-1,5 км', 'Бесплатно', 'Остановка общественного транспорта', 'Инвентарь для активного отдыха', 'Инвентарь для активного отдыха', 'Душевые кабины']
+					tags: ['Алушта', 'Вход с 7:00 до 22:00', 'Песчаный', 'Протяженность 1-1,5 км', 'Вход Бесплатно', 'Остановка общественного транспорта', 'Инвентарь для активного отдыха', 'Инвентарь для активного отдыха', 'Душевые кабины']
 				},
 				searchCardResults: [
 					{
@@ -316,6 +317,16 @@
 						beachSeabedType: 'Ровное'
 					}
 				]
+			}
+		},
+
+		methods: {
+			showMap() {
+				this.showCardsOrMap = true;
+				if (!this.mapShownForTheFirstTime) {
+					this.mapShownForTheFirstTime = true;
+					this.$bus.$emit('updateScrollbar');
+				}
 			}
 		}
 	}

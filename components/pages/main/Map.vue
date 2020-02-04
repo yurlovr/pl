@@ -38,6 +38,7 @@
                         @mouseenter="hover = index"
                         @mouseleave="hover = -1"
                         :options="options"
+                        :cluster-options="coptions"
                     ></ymap-marker>
                 </yandex-map>
             </client-only>
@@ -111,7 +112,18 @@
                 step: 1,
                 map: null,
                 options: {
-                    balloonCloseButton: false
+                    balloonCloseButton: false,
+                    hideHintIcon: false,
+                    hintHideIcon: false,
+                    hint: {
+                        hideIcon: false
+                    }
+                },
+                coptions: {
+                    hideIcon: false,
+                    hint: {
+                        hideIcon: false
+                    }
                 },
                 swipers: {},
                 hover: -1,

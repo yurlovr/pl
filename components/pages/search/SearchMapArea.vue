@@ -1,7 +1,11 @@
 <template>
 	<section class="search-page__map-area">
 		<div class="search-page__map-area__info-area scroller">
-			<SearchMapCard :data="card" v-for="(card, i) in data" :key="i" :id="'smc-' + i" :class="{ active : activeCard == i }" />
+			<client-only>
+				<perfect-scrollbar class="scroll-area" ref="scroll" :options="options">
+					<SearchMapCard :data="card" v-for="(card, i) in data" :key="i" :id="'smc-' + i" :class="{ active : activeCard == i }" />
+				</perfect-scrollbar>
+			</client-only>
 		</div>
 		<div class="search-page__map-area__info-area slider">
 			<div v-swiper:mySwiper="swiperOption">
@@ -60,7 +64,10 @@
 				activeCard: -1,
 				minus: 1,
 				indexToShow: 0, // for mobile
-				modalY: ''
+				modalY: '',
+				options: {
+					swipeEasing: true
+				}
 			}
 		},
 
@@ -84,6 +91,10 @@
 				this.openModal(i);
 			});
 
+			this.$bus.$on('updateScrollbar', (i) => {
+				setTimeout(() => { this.$refs.scroll.update() }, 1);
+			});
+
 			this.closeModal();
 		},
 
@@ -104,7 +115,7 @@
 			},
 
 			scrollToCard(i) {
-				this.$el.querySelector('.search-page__map-area__info-area.scroller').scrollTop = this.$el.querySelector(`#smc-${i}`).offsetTop - this.$el.querySelector('.search-page__map-area__info-area.scroller').offsetTop;
+				this.$el.querySelector('.scroll-area').scrollTop = this.$el.querySelector(`#smc-${i}`).offsetTop - this.$el.querySelector('.search-page__map-area__info-area.scroller').offsetTop;
 				this.activeCard = i;
 				if (this.mySwiper)
 					this.mySwiper.slideTo(i);

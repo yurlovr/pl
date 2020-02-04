@@ -27,11 +27,11 @@ export const state = () => ({
 	{
 		temperature: 21,
 		favorite: false,
-	expensive: false, // ruble sign
-	rating: 4.0,
-	title: 'Массандровский пляж',
-	location: 'Ялта, КРЫМ',
-	pic: '/pics/main/section1_beach1.png'
+		expensive: false, // ruble sign
+		rating: 4.0,
+		title: 'Массандровский пляж',
+		location: 'Ялта, КРЫМ',
+		pic: '/pics/main/section1_beach1.png'
 	},
 	{
 		temperature: 20,
@@ -63,11 +63,11 @@ export const state = () => ({
 	{
 		temperature: 21,
 		favorite: false,
-	expensive: false, // ruble sign
-	rating: 5.0,
-	title: 'Массандровский пляж',
-	location: 'Ялта, КРЫМ',
-	pic: '/pics/main/section1_beach1.png'
+		expensive: false, // ruble sign
+		rating: 5.0,
+		title: 'Массандровский пляж',
+		location: 'Ялта, КРЫМ',
+		pic: '/pics/main/section1_beach1.png'
 	},
 	{
 		temperature: 20,
@@ -274,5 +274,7 @@ export const state = () => ({
 			title: 'Рай на земле',
 			paragraph: 'Всего через 10 минут открывается захватывающий вид на песчаный пляж длиной около 8 км. Мягкий, белый песок, бирюза, кристально чистая вода и совершенно натуральный: идиллический рай на земле. Eagle Bay - это не только один из самых красивых пляжей в Доминиканской Республике, для многих доминиканцев и отдыхающих это также один из самых красивых пляжей в мире. Планы туристических построек постоянно разрабатываются в этом уникальном природном раю, который, благодаря национальным и международным инициативам, до сих пор не удался. Если вы планируете поездку в Доминиканскую Республику, не забудьте посетить эту прекрасную бухту.'
 		}
-	]
+	],
+
+	parkingTransportMapData: []
 })
