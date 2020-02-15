@@ -47,6 +47,16 @@ html, body {
   width: 100%;
 }
 
+a {
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: none;
+  }
+}
+
+input { &::-ms-clear { display: none; } }
+
 *, *:before, *:after {
   box-sizing: border-box;
   margin: 0;
@@ -91,19 +101,56 @@ html, body {
   }
 }
 
+@mixin bg-dark-fixed {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,.5);
+}
+
 .hidden {
   display: none !important;
 }
 
+.h-line {
+  width: 100%;
+  height: 1px;
+  background: #E8E8E8;
+}
+
+.orange {
+  color: #FCAB2D !important;
+}
+
+.bg {
+  &-orange {
+    background-color: #FCAB2D !important;
+  }
+
+  &-blue {
+    background-color: #228596 !important;
+  }
+}
+
+.capitalize {
+  text-transform: capitalize;
+}
+
 .custom-container, .custom-grid-container {
   position: relative;
-  max-width: 1350px;
+  max-width: 1440px;
   margin: 0 auto;
 }
 
 .custom-container {
   padding-left: 74px;
   padding-right: 74px;
+
+  &-inner {
+    position: relative;
+  }
 }
 
 .custom-grid-container {
@@ -122,16 +169,45 @@ html, body {
   }
 }
 
+.custom-checkbox {
+  font-size: 14px;
+  line-height: 100%;
+  color: #242934;
+  display: flex;
+  align-items: flex-start;
+  cursor: pointer;
+
+  &__checkbox {
+    @include flex-center;
+    border: 1px solid #C4C4C4;
+    border-radius: 3px;
+    width: 13px;
+    height: 13px;
+    margin-right: 10px;
+
+    &.checked {
+      background: #FCAB2D;
+      border: 1px solid #FCAB2D;
+    }
+
+    img {
+      width: 9px;
+      height: 7px;
+    }
+  }
+}
+
 .two-part-layout {
   display: flex;
 
   &__left {
-    width: 66%;
+    max-width: 66%;
+    width: 100%;
   }
 
   &__right {
     width: 34%;
-    min-width: 400px;
+    min-width: 424px;
     padding-left: 24px;
   }
 
@@ -504,10 +580,11 @@ html, body {
 
         img {
           height: 12px;
-          transform: scaleY(-1);
+          transform: rotate(180deg) translateY(-3px);
+          transition: transform .2s ease;
 
           &.active {
-            transform: scaleY(1);
+            transform: rotate(0deg);
           }
         }
       }
@@ -587,24 +664,67 @@ html, body {
           margin-right: 24px;
         }
 
-        select {
-          padding: 15px 20px;
-          padding-right: 30px;
+        .v-select {
+          padding: 0;
+          margin: 0;
           font-size: 14px;
           line-height: 120%;
           color: black;
-          border-radius: 6px;
-          border: 1px solid #228596;
+          border: none;
           width: 100%;
           min-width: 85px;
-          appearance: none;
-          background: url('../../static/pics/global/svg/dropdown.svg');
-          background-repeat: no-repeat;
-          background-position: calc(100% - 16px) calc(50% - 2px);
+
+          .vs {
+            &__dropdown {
+              &-toggle {
+                border: 1px solid #228596;
+                border-radius: 6px;
+                padding: 16px 20px;
+                padding-right: 18px;
+                min-height: 55px;
+                height: 100%;
+              }
+
+              &-menu {
+                border-color: #228596;
+              }
+
+              &-option {
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+              }
+            }
+
+            &__actions {
+              padding: 0;
+              align-items: unset;
+            }
+
+            &__selected {
+              margin: 0;
+              padding: 0;
+            }
+
+            &__search {
+              display: none;
+            }
+          }
 
           &.default {
             color: #73767D;
-            border-color: #C4C4C4;
+
+            .vs {
+              &__dropdown {
+                &-toggle {
+                  border-color: #C4C4C4;
+                }
+
+                &-menu {
+                  border-color: #C4C4C4;
+                }
+              }
+            }
           }
         }
 
@@ -613,15 +733,28 @@ html, body {
           flex-wrap: nowrap;
           margin-right: 0 !important;
 
-          select {
+          .v-select {
             &:first-of-type {
-              border-radius: 6px 0 0 6px;
-              border-right: none;
+              .vs {
+                &__dropdown {
+                  &-toggle {
+                    border-radius: 6px 0 0 6px;
+                    border-right: none;
+                  }
+                }
+              }
             }
 
             &:last-of-type {
-              border-radius: 0 6px 6px 0;
               width: auto;
+
+              .vs {
+                &__dropdown {
+                  &-toggle {
+                    border-radius: 0 6px 6px 0;
+                  }
+                }
+              }
             }
           }
         }
@@ -647,51 +780,8 @@ html, body {
 
       &--checkbox {
         width: 33.33%;
-        display: flex;
-        align-items: flex-start;
-        font-size: 14px;
-        line-height: 120%;
-        color: #242934;
         margin-bottom: 15px;
         padding-right: 25px;
-
-        label {
-          cursor: pointer;
-          transition: opacity .2s ease;
-
-          &:hover {
-            opacity: .7;
-          }
-        }
-
-        input {
-          margin-right: 10px;
-          appearance: none;
-          min-width: 14px;
-          min-height: 14px;
-          border: 1px solid #C4C4C4;
-          box-sizing: border-box;
-          border-radius: 3px;
-          cursor: pointer;
-
-          &:checked {
-            background: #FCAB2D;
-            border: 1px solid #FCAB2D;
-            padding: 0;
-            position: relative;
-            @include flex-center;
-
-            &:after {
-              content: '';
-              background: url('../../static/pics/global/svg/check.svg');
-              background-size: 10px;
-              width: 12px;
-              height: 12px;
-              background-repeat: no-repeat;
-              background-position: center;
-            }
-          }
-        }
       }
     }
   }
@@ -814,6 +904,30 @@ html, body {
       &-links {
         display: flex;
       }
+    }
+  }
+}
+
+.rating-5-star {
+  margin-bottom: 20px;
+
+  span {
+    margin-bottom: 15px;
+    font-size: 16px;
+    line-height: 19px;
+    color: #4A4A4A;
+  }
+
+  &__star {
+    margin-right: 2px;
+    cursor: pointer;
+
+    &:last-of-type {
+      margin-right: 0;
+    }
+
+    &s {
+      display: flex;
     }
   }
 }
@@ -1028,6 +1142,7 @@ html, body {
     border-radius: 12px;
     position: relative;
     display: flex;
+    box-shadow: 4px 4px 20px rgba(0, 0, 0, 0.1);
 
     a {
       text-decoration: none;
@@ -1065,7 +1180,11 @@ html, body {
           font-size: 14px;
           line-height: 130%;
           color: #FFFFFF;
-          margin-right: 4px;
+          margin-right: 8px;
+        }
+
+        &:focus {
+          outline: none;
         }
 
         &:after {
@@ -1186,7 +1305,6 @@ html, body {
         max-width: 40%;
         width: 100%;
         background: #FFFFFF;
-        box-shadow: 4px 4px 20px rgba(0, 0, 0, 0.1);
         padding: 50px;
         border-radius: 0 12px 12px 0;
       }
@@ -1216,7 +1334,6 @@ html, body {
         min-width: 35%;
         width: 100%;
         border-radius: 12px 0 0 12px;
-        box-shadow: 4px 4px 20px rgba(0, 0, 0, 0.1);
       }
     }
   }
@@ -1257,7 +1374,7 @@ html, body {
         border-radius: 12px;
         top: 0;
         left: 0;
-        transition: transform .5s ease;
+        transition: transform .2s ease;
       }
 
       &__title {
@@ -1341,7 +1458,6 @@ html, body {
       &__info-area {
         padding: 40px 50px;
         background: #228596;
-        box-shadow: 4px 4px 20px rgba(0, 0, 0, 0.1);
         border-radius: 0 12px 12px 0;
         min-width: 424px;
 
@@ -1477,18 +1593,13 @@ html, body {
       padding-bottom: 20px;
     }
 
-    .ymap-container, [class*="ymaps-2"][class*="-map"]:not([class*="promo"]) {
-      min-height: 600px;
-      height: 70vh !important;
-    }
-
     a {
       text-decoration: none;
     }
 
     &__info-area {
       min-width: 656px;
-      min-height: 600px;
+      min-height: 650px;
       height: 70vh;
 
       &.scroller {
@@ -1656,10 +1767,6 @@ html, body {
 .beach-page {
   overflow: hidden;
 
-  &__similar-beaches {
-    margin-bottom: 128px;
-  }
-
   &__container {
     margin-bottom: 60px;
   }
@@ -1669,7 +1776,7 @@ html, body {
       margin-bottom: 30px;
     }
 
-    &__slider {
+    &__accordion-button {
       display: none;
     }
 
@@ -1677,8 +1784,8 @@ html, body {
       display: flex;
       align-items: flex-start;
       flex-direction: column;
-      margin-right: 30px;
-      width: 25%;
+      margin-right: 20px;
+      width: 20%;
 
       &:last-of-type {
         margin-right: 0;
@@ -1686,13 +1793,14 @@ html, body {
 
       img {
         margin-bottom: 10px;
+        height: 60px;
+        padding: 7px 0;
       }
 
       span {
         font-size: 14px;
         line-height: 120%;
         color: #242934;
-        // max-width: 110px;
       }
 
       &s {
@@ -1706,11 +1814,480 @@ html, body {
   &-sections {
     &.slider {
       &-weather {
-        &__month {
+        &__month {           
           &s {
+             margin-bottom: 15px;
+
             .swiper-wrapper {
               justify-content: flex-start;
             }
+
+            .swiper-slide {
+              &:first-of-type {
+                .slider-weather__month.active:before {
+                  min-width: 10px;
+                }
+              }
+
+              &:last-of-type {
+                .slider-weather__month.active:after {
+                  min-width: 10px;
+                }
+              }
+
+              .slider-weather__month {
+                &:after, &:before {
+                  min-width: 10px;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+
+    .slider-weather__month {
+      font-size: 14px;
+      line-height: 17px;
+    }
+  }
+
+  &__water-temp {
+    &__title {
+      margin-bottom: 15px;
+
+      &-area {
+        img {
+          display: none;
+        }
+      }
+    }
+
+    &__year-month {
+      display: flex;
+      margin-bottom: 25px;
+
+      .slider-weather__month {
+        &.active {
+          cursor: default;
+        }
+
+        &:last-of-type {
+          color: #73767D !important;
+          cursor: default;
+
+          &.active {
+            color: white !important;
+          }
+        }
+      }
+    }
+
+    &__histogram {
+      height: 180px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+
+      &.month {
+        .beach-page {
+          &__water-temp {
+            &__histogram {
+              &__item {
+                width: 9px;
+
+                &__bar {
+                  width: 9px;
+
+                  &__info {
+                    left: -14px;
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+
+      &__item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
+        &__title {
+          font-size: 14px;
+          line-height: 125%;
+          text-transform: capitalize;
+          color: #393E48;
+        }
+
+        &__bar {
+          position: relative;
+          background: #B7DADD;
+          border-radius: 6px;
+          margin-bottom: 21px;
+          margin-right: 10px;
+          width: 20px;
+          transition: background .2s ease;
+          cursor: pointer;
+
+          &:last-of-type {
+            margin-right: 0;
+          }
+
+          &:hover {
+            background: #10828F;
+
+            .beach-page__water-temp__histogram__item__bar__info {
+              display: flex;
+            }
+          }
+
+          &__info {
+            display: none;
+            justify-content: center;
+            align-items: center;
+            position: absolute;
+            top: 8px;
+            left: 0;
+            height: 30px;
+            background: white;
+            border-radius: 20px;
+            padding: 0 13px;
+            z-index: 1;
+            box-shadow: 4px 4px 6px rgba(0, 0, 0, 0.1);
+
+            .slider-weather__slide__temp {
+              &-number, &-C {
+                font-size: 18px;
+                line-height: 22px;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  &__cardless-area {
+    margin: 0;
+    margin-top: 50px;
+    padding: 0;
+  }
+
+  &__events {
+    overflow: hidden;
+
+    &__title {
+      margin-bottom: 30px;
+    }
+
+    .swiper-container {
+      overflow: visible;
+    }
+
+    .swiper-slide {
+      max-width: 300px;
+    }
+  }
+
+  &__barsNrestos {
+    margin-bottom: 50px;
+
+    .swiper-container {
+      padding: 0 24px;
+      margin: 0 -24px;
+    }
+
+    .slider {
+      &__arrow {
+        &-left {
+          left: 10px;
+        }
+
+        &-right {
+          right: 10px;
+        }
+      }
+    }
+
+    &__title {
+      margin-bottom: 20px;
+    }
+
+    &__subtitle, &__description {
+      color: #242934;
+      font-size: 18px;
+      line-height: 170%;
+    }
+
+    &__subtitle {
+      font-weight: 700;
+      margin-bottom: 0;
+
+      &-area {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 18px;
+      }
+    }
+
+    &__description {
+      margin-bottom: 0;
+      font-weight: 300;
+    }
+
+    &__arrow-controls {
+      display: flex;
+      align-items: center;
+
+      button {
+        background: none;
+        border: none;
+
+        &:focus {
+          outline: none;
+        }
+      }
+
+      span {
+        color: #393E48;
+        font-size: 18px;
+        line-height: 170%;
+      }
+
+      &__text {
+        margin: 0 15px;
+      }
+    }
+
+    a {
+      text-decoration: none;
+    }
+
+    &__online-service {
+      margin: 30px 0;
+      display: flex;
+      align-items: center;
+
+      img {
+        margin-right: 15px;
+      }
+
+      span {
+        color: #242934;
+        font-size: 18px;
+        line-height: 170%;
+
+        br {
+          display: none;
+        }
+      }
+    }
+  }
+
+  &__opinions {
+    &__title {
+      margin-bottom: 30px;
+    }
+
+    .slider {
+      &__arrow {
+        &-left {
+          left: 18px;
+        }
+
+        &-right {
+          right: 18px;
+        }
+      }
+    }
+
+    &__people {
+      margin-bottom: 30px;
+      position: relative;
+
+      .swiper-container {
+        padding: 30px;
+        margin: -30px;
+      }
+
+      &__pic {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 110px;
+        height: 110px;
+        transition: box-shadow .2s ease, width .2s ease, height .2s ease;
+        border-radius: 50%;
+
+        &-area {
+          position: relative;
+          border-radius: 50%;
+          width: 130px;
+          height: 130px;
+          margin-bottom: 5px;
+        }
+      }
+
+      span {
+        font-size: 14px;
+        line-height: 120%;
+        text-align: center;
+        color: #242934;
+      }
+
+      &__slide {
+        opacity: .6;
+        transition: opacity .2s ease;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        cursor: pointer;
+
+        &.active {
+          opacity: 1;
+
+          .beach-page {
+            &__opinions {
+              &__people {
+                &__pic {
+                  box-shadow: 4px 4px 20px rgba(0, 0, 0, 0.1);
+                  width: 130px;
+                  height: 130px;
+                }
+
+                &__vk {
+                  opacity: 1;
+                }
+              }
+            }
+          }
+        }
+      }
+
+      &__vk {
+        position: absolute;
+        top: 5px;
+        right: 5px;
+        opacity: 0;
+        transition: opacity .2s ease;
+      }
+    }
+
+    &__opinion {
+      background: #FCAB2D;
+      border-radius: 20px;
+      width: 100%;
+      padding: 30px 48px;
+
+      &__three-dots {
+        display: flex;
+        justify-content: center;
+        width: 100%;
+        margin-bottom: 10px;
+      }
+
+      .swiper-wrapper {
+        align-items: center;
+      }
+
+      p {
+        color: white;
+        margin-bottom: 0;
+        font-size: 16px;
+        font-weight: 300;
+        line-height: 150%;
+        text-align: center;
+      }
+    }
+  }
+
+  &__avg-rating {
+    margin-bottom: 15px;
+    padding-top: 50px;
+    padding-bottom: 30px;
+    padding-left: 35px;
+    padding-right: 35px;
+    background: white;
+    border-radius: 12px;
+
+    &__mobile {
+      display: none;
+    }
+
+    .h-line {
+      margin-top: 15px;
+    }
+
+    &__title {
+      margin-bottom: 0;
+      font-size: 20px;
+      line-height: 24px;
+      color: #393E48;
+      font-weight: 700;
+      margin-right: 15px;
+
+      &-area {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        &__left {
+          display: flex;
+        }
+
+        &__right {
+          display: none;
+        }
+
+        &__info {
+          display: flex;
+          align-items: center;
+          font-size: 24px;
+          font-weight: 700;
+          line-height: 120%;
+          color: #4A4A4A;
+
+          img {
+            width: 28px;
+            height: 28px;
+            margin-right: 4px;
+          }
+        }
+      }
+    }
+
+    &__rating {
+      display: flex;
+      flex-direction: column;
+      width: 50%;
+      padding-right: 15px;
+      margin-bottom: 30px;
+
+      span {
+        font-size: 16px;
+        line-height: 19px;
+        color: #73767D;
+        margin-bottom: 8px;
+      }
+
+      &s {
+        margin-top: 30px;
+        display: flex;
+        flex-wrap: wrap;
+      }
+
+      &__stars {
+        display: flex;
+
+        img {
+          margin-right: 3px;
+
+          &:last-of-type {
+            margin-right: 0;
           }
         }
       }
@@ -1719,6 +2296,18 @@ html, body {
 }
 
 .beach-event {
+  &__similar-beaches {
+    margin-bottom: 128px;
+
+    .main-page {
+      &__section {
+        &-subtitle {
+          max-width: 390px;
+        }
+      }
+    }
+  }
+
   &__main-info {
     &__infos {
       &__item {
@@ -1734,12 +2323,6 @@ html, body {
           }
         }
       }
-    }
-
-    .h-line {
-      width: 100%;
-      height: 1px;
-      background: #E8E8E8;
     }
 
     &__hearts {
@@ -1811,17 +2394,21 @@ html, body {
     &__text-area {
       h3 {
         font-weight: 700;
-        margin-top: 30px;
+        margin-bottom: 0;
       }
 
       p {
-        font-weight: 300;
+        font-weight: 200;
+        margin-bottom: 30px;
+
+        &:last-of-type {
+          margin-bottom: 0;
+        }
       }
 
       h3, p {
         font-size: 16px;
         line-height: 170%;
-        margin-bottom: 0;
         color: #393E48;
       }
     }
@@ -1832,10 +2419,45 @@ html, body {
       margin-bottom: 35px;
     }
 
+    a {
+      text-decoration: none;
+    }
+
+    &-wrapper {
+      margin-top: 15px;
+      margin-bottom: 15px;
+
+      .map {
+        min-height: 430px;
+        border-radius: 0 0 12px 12px;
+        overflow: hidden;
+      }
+
+      .two-part-layout {
+        &__card {
+          padding-bottom: 0;
+        }
+      }
+
+      .main-page {
+        &__card {
+          &__info-area {
+            &__button {
+              margin-bottom: 10px;
+
+              &.bottom {
+                display: none;
+              }
+            }
+          }
+        }
+      }
+    }
+
     &__bottom {
       display: flex;
       justify-content: space-between;
-      align-items: center;
+      align-items: flex-end;
     }
 
     &__left {
@@ -1845,8 +2467,9 @@ html, body {
 
     &__type {
       display: flex;
-      height: 100%;
+      height: 54px;
       border: none;
+      border-bottom: 6px solid transparent;
       background: none;
       margin-right: 40px;
       padding: 0;
@@ -1873,6 +2496,481 @@ html, body {
         display: flex;
         align-items: center;
         margin-bottom: 10px;
+      }
+    }
+  }
+
+  &__review {
+    position: relative;
+    background: white;
+    padding-left: 70px;
+    padding-right: 30px;
+    padding-top: 30px;
+    padding-bottom: 40px;
+    border-radius: 12px;
+    margin-bottom: 20px;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+
+    &s {
+      &__title {
+        margin-bottom: 35px;
+      }
+
+      &__pagination {
+        margin: 40px 0;
+      }
+
+      &__mobile {
+        display: none;
+      }
+    }
+
+    &__pic {
+      position: absolute;
+      width: 60px;
+      height: 60px;
+      top: 15px;
+      left: 0;
+      transform: translateX(-50%);
+
+      img {
+        border-radius: 50%;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+    }
+
+    &__title {
+      margin-bottom: 4px;
+      font-size: 20px;
+      font-weight: 700;
+      line-height: 24px;
+      color: #393E48;
+
+      &-area {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 15px;
+
+        &__left {
+          display: flex;
+          flex-direction: column;
+        }
+
+        &__rating {
+          display: flex;
+
+          img {
+            margin-right: 4px;
+
+            &:last-of-type {
+              margin-right: 0;
+            }
+          }
+        }
+      }
+    }
+
+    &__date {
+      font-size: 14px;
+      line-height: 17px;
+      color: #73767D;
+    }
+
+    &__comment {
+      margin-bottom: 0;
+      color: #4A4A4A;
+      font-size: 16px;
+      line-height: 170%;
+
+      &__button {
+        background: none;
+        border: none;
+        padding: 0;
+        font-size: 16px;
+        line-height: 170%;
+        color: #228596;
+        display: flex;
+        align-items: center;
+
+        &:focus {
+          outline: none;
+        }
+
+        span {
+          margin-right: 6px;
+        }
+
+        img {
+          transform: translateY(-1px);
+
+          &.tablet {
+            display: none;
+          }
+
+          &.active {
+            transform: rotate(180deg) translateY(-3px);
+          }
+        }
+      }
+    }
+  }
+
+  &__leave-review {
+    display: flex;
+    justify-content: flex-end;
+
+    &__modal {
+      position: fixed;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      @include flex-center;
+      z-index: 20;
+      overflow-y: auto;
+
+      &__bg {
+        @include bg-dark-fixed;
+      }
+
+      &__title {
+        font-size: 24px;
+        line-height: 29px;
+        color: #393E48;
+        opacity: 0.9;
+        margin-bottom: 0;
+        display: flex;
+        align-items: center;
+
+        &-area {
+          display: flex;
+          justify-content: space-between;
+          margin-bottom: 5px;
+        }
+      }
+
+      input, textarea {
+        border: 1px solid rgba(0, 0, 0, 0.5);
+        outline: none;
+        opacity: 0.7;
+        padding: 15px;
+        margin-top: 10px;
+        width: 100%;
+        max-width: 100%;
+      }
+
+      &__input-name-area {
+        margin-bottom: 50px;
+      }
+
+      &__rating {
+        padding-right: 20px;
+        width: 33.33%;
+
+        &s {
+          margin-top: 15px;
+          display: flex;
+          flex-wrap: wrap;
+          justify-content: space-between;
+
+          &-area {
+            margin-bottom: 30px;
+          }
+        }
+      }
+
+      &__review {
+        &-area {
+          margin-bottom: 40px;
+
+          textarea {
+            max-height: 300px;
+            min-height: 100px;
+          }
+        }
+      }
+
+      &__part-area {
+        font-size: 14px;
+        line-height: 17px;
+        color: #73767D;
+      }
+
+      &__img-area {
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+
+        span {
+          margin-right: 12px;
+        }
+      }
+
+      &__send-button-area {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+      }
+
+      &__bottom-space {
+        width: 100%;
+        height: 50px;
+      }
+
+      &__card {
+        background: white;
+        box-shadow: 10px 4px 20px rgba(70, 101, 93, 0.3);
+        z-index: 1;
+        width: 630px;
+        padding-top: 50px;
+        padding-left: 60px;
+        padding-right: 60px;
+      }
+
+      &__close {
+        display: none;
+      }
+    }
+  }
+
+  &__visitor-pics {
+    padding-top: 40px;
+    padding-bottom: 65px;
+
+    &__slider {
+      position: relative;
+
+      .slider {
+        &__arrow {
+          &-left, &-right {
+            top: 202px; // 150 + (10*2+32)
+          }
+        }
+      }
+    }
+
+    &-wrapper {
+      margin-bottom: 60px;
+    }
+
+    &__title {
+      margin-bottom: 30px;
+      color: #393E48;
+      opacity: 0.9;
+      font-size: 24px;
+      line-height: 29px;
+      font-weight: 700;
+    }
+
+    &__add-button-area {
+      margin-top: 30px;
+      display: flex;
+      justify-content: flex-end;
+    }
+
+    &__user-area {
+      padding: 10px 0;
+
+      img {
+        margin-right: 10px;
+        border-radius: 50%;
+        width: 32px;
+        height: 32px;
+      }
+
+      span {
+        font-size: 14px;
+        line-height: 120%;
+        color: #73767D;
+      }
+    }
+    
+    &__pic-area {
+      height: 300px;
+
+      img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: 12px;
+      }
+    }
+
+    &__comment-area {
+      padding: 15px 0 8px 0;
+      font-size: 14px;
+      line-height: 17px;
+      color: #73767D;
+
+      span {
+        height: 34px;
+      }
+    }
+
+    &__tag-area {
+      display: flex;
+
+      a {
+        font-size: 14px;
+        line-height: 17px;
+        color: #73767D;
+        margin-right: 10px;
+
+        &:last-of-type {
+          margin-right: 0;
+        }
+      }
+    }
+  }
+
+  &__map-weather {
+    margin-bottom: 15px;
+
+    &__tablet, &__mobile {
+      display: none;
+    }
+
+    &__event-page {
+      display: none;
+    }
+
+    &__map-card {
+      border-radius: 12px;
+      position: relative;
+      overflow: hidden;
+      margin-bottom: 15px;
+
+      &__button-area {
+        position: absolute;
+        left: 50%;
+        bottom: 30px;
+        transform: translateX(-50%);
+
+        a {
+          white-space: nowrap;
+        }
+      }
+    }
+
+    &__weather-card {
+      background: white;
+      padding: 40px 30px;
+      border-radius: 12px;
+
+      &__date {
+        display: flex;
+        margin-bottom: 20px;
+
+        img {
+          margin-right: 8px;
+        }
+
+        span {
+          font-size: 18px;
+          line-height: 22px;
+          color: #242934;
+        }
+      }
+
+      &__title {
+        margin-bottom: 25px;
+        font-size: 24px;
+        line-height: 29px;
+        color: #393E48;
+        font-weight: 700;
+      }
+
+      &__temp-area {
+        margin-top: 25px;
+
+        &__item {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          margin-bottom: 25px;
+
+          &:last-of-type {
+            margin-bottom: 0;
+          }
+
+          &__left {
+            display: flex;
+            align-items: center;
+
+            img {
+              width: 50px;
+              margin-right: 15px;
+            }
+
+            span {
+              font-size: 12px;
+              line-height: 14px;
+              color: #4A4A4A;
+            }
+          }
+
+          &__right {
+            display: flex;
+            font-size: 24px;
+            line-height: 29px;
+            color: #73767D;
+
+            .orange {
+              font-weight: 700;
+            }
+          }
+        }
+
+        &__temp {
+          &-o {
+            span {
+              top: 2px !important;
+            }
+          }
+
+          &-C {
+            font-weight: 500 !important;
+          }
+
+          &-number, &-C {
+            font-size: 24px;
+            line-height: 29px;
+          }
+        }
+      }
+    }
+  }
+
+  &__side-buttons {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    top: 180px;
+    right: 0;
+    z-index: 2;
+    transform: translateX(50%);
+
+    button {
+      background: white;
+      border: none;
+      margin-bottom: 15px;
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      @include flex-center;
+      box-shadow: 4px 4px 6px rgba(0, 0, 0, 0.1);
+
+      &:last-of-type {
+        margin-bottom: 0;
+      }
+
+      &:focus {
+        outline: none;
       }
     }
   }
@@ -1928,8 +3026,7 @@ html, body {
     width: 100%;
     height: 100%;
     object-fit: contain;
-    border-radius: 12px;
-    transition: transform .5s ease;
+    transition: transform .2s ease;
 
     &-area {
       position: relative;
@@ -1940,7 +3037,7 @@ html, body {
       &:hover {
         .custom-card {
           &__pic {
-            transform: scale(1.3);
+            transform: scale(1.2);
           }
 
           &__visited {
@@ -1964,7 +3061,6 @@ html, body {
     color: #73767D;
     display: flex;
     align-items: center;
-    margin-bottom: 5px;        
   }
 
   &__rating-area {
@@ -1990,6 +3086,7 @@ html, body {
     line-height: 120%;
     color: #393E48 !important;
     margin-bottom: 7px;
+    padding-top: 5px;
     display: block;
     transition: opacity .2s ease;
 
@@ -2097,6 +3194,20 @@ html, body {
     overflow: hidden;
     position: relative;
     white-space: nowrap;
+  }
+
+  &__beach-bars-n-restos {
+    position: relative;
+
+    .swiper-slide {
+      img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        height: 250px;
+        border-radius: 12px;
+      }
+    }
   }
 
   &__arrow {
@@ -2247,6 +3358,7 @@ html, body {
         display: inline-block;
         min-width: 20px;
         height: 10px;
+        transition: min-width .2s ease;
       }
 
       &:focus {
@@ -2277,6 +3389,34 @@ html, body {
           @include flex-center;
           overflow: visible;
           width: fit-content !important;
+
+          &:first-of-type {
+            .slider-weather__month {
+              &:before {
+                min-width: 0;
+              }
+
+              &.active {
+                &:before {
+                  min-width: 20px;
+                }
+              }
+            }
+          }
+
+          &:last-of-type {
+            .slider-weather__month {
+              &:after {
+                min-width: 0;
+              }
+
+              &.active {
+                &:after {
+                  min-width: 20px;
+                }
+              }
+            }
+          }
         }
       }
     }
@@ -2326,6 +3466,8 @@ html, body {
       }
 
       &__pic {
+        width: 90px;
+        height: 90px;
         margin-bottom: 10px;
 
         &-area {
@@ -2391,7 +3533,7 @@ html, body {
 
       &:hover {
         .slider-dynamic__slide__pic {
-          transform: scale(1.3);
+          transform: scale(1.2);
         }
       }
 
@@ -2404,7 +3546,8 @@ html, body {
         height: 100%;
         object-fit: cover;
         border-radius: 12px;
-        transition: transform .5s ease;
+        transition: transform .2s ease;
+        transform-origin: center;
       }
 
       &__title {
@@ -2437,6 +3580,336 @@ html, body {
             align-items: flex-end;
           }
         }
+      }
+    }
+  }
+
+  &-beach-event {
+    display: flex;
+    height: 460px;
+    margin-bottom: 15px;
+
+    &__left {
+      max-width: 66%;
+      width: 100%;
+      height: 100%;
+      position: relative;
+
+      .swiper-container {
+        border-radius: 12px;
+        overflow: hidden;
+      }
+    }
+
+    .swiper-container {
+      height: 100%;
+    }
+
+    .swiper-slide {
+      img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: 12px;
+      }
+    }
+
+    .slider {
+      &__arrow {
+        &-left, &-right {
+          top: 50%;
+        }
+
+        &-left {
+          left: 10px;
+        }
+
+        &-right {
+          right: 10px;
+        }
+      }
+    }
+
+    &__right {
+      width: 34%;
+      height: 100%;
+      padding-left: 24px;
+      display: flex;
+      flex-wrap: wrap;
+      position: relative;
+
+      &__item {
+        margin-bottom: 24px;
+        width: 50%;
+        height: auto;
+        position: relative;
+        cursor: pointer;
+
+        &:nth-child(2n-1) {
+          padding-right: 12px;
+        }
+
+        &:nth-child(2n) {
+          padding-left: 12px;
+        }
+
+        &:nth-child(5), &:nth-child(6) {
+          margin-bottom: 0;
+        }
+
+        &:hover {
+          img {
+            transform: scale(1.2);
+          }
+        }
+
+        &__inner {
+          width: 100%;
+          height: 100%;
+          overflow: hidden;
+          border-radius: 12px;
+        }
+
+        img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          border-radius: 12px;
+          filter: brightness(.5);
+          transition: transform .2s ease;
+        }
+
+        span {
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+          font-size: 30px;
+          line-height: 120%;
+          color: #FFFFFF;
+          font-weight: 700;
+        }
+      }
+    }
+
+    &__medal {
+      &-blue {
+        right: 20px;
+      }
+
+      &-gold {
+          left: 20px;
+      }
+
+      &-blue, &-gold {
+        position: absolute;
+        top: 20px;
+        z-index: 5;
+        box-shadow: 4px 4px 6px rgba(0, 0, 0, 0.1);
+        border-radius: 50%;
+      }
+    }
+
+    &__zoom-button {
+      background: none;
+      border: none;
+      position: absolute;
+      bottom: 20px;
+      right: 20px;
+      z-index: 5;
+      padding: 0;
+      box-shadow: 4px 4px 6px rgba(0, 0, 0, 0.1);
+      border-radius: 50%;
+
+      &:focus {
+        outline: none;
+      }
+    }
+
+    &__beach-closed {
+      position: absolute;
+      left: 12px;
+      bottom: 12px;
+      background: #F94A50;
+      border-radius: 10px;
+      font-size: 36px;
+      line-height: 43px;
+      text-align: center;
+      letter-spacing: 0.05em;
+      font-weight: 700;
+      color: #FFFFFF;
+      width: 400px;
+      height: 70px;
+      z-index: 5;
+      @include flex-center;
+    }
+
+    &__modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      display: none;
+      justify-content: center;
+      align-items: center;
+      background: #FAFAFA;
+      z-index: 20;
+
+      &.active {
+        display: flex;
+      }
+
+      &__inner {
+        position: relative;
+      }
+
+      &__close-button {
+        position: absolute;
+        background: white;
+        border: none;
+        border-radius: 50%;
+        top: 40px;
+        right: 40px;
+        width: 26px;
+        height: 26px;
+        padding: 0;
+        @include flex-center;
+
+        &:focus {
+          outline: none;
+        }
+      }
+
+      &__sides {
+        display: flex;
+        height: 100%;
+        max-height: 65vh;
+        position: relative;
+      }
+
+      &__left {
+        width: 100%;
+        max-width: 850px;
+        position: relative;
+
+        .swiper-container {
+          border-radius: 12px;
+        }
+
+        .swiper-slide {
+          img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 12px;
+          }
+        }
+
+        .slider {
+          &__arrow {
+            &-left, &-right {
+              top: 50% !important;
+            }
+
+            &-left {
+              left: -24px;
+              transform: translate(-100%, -50%);
+            }
+
+            &-right {
+              right: -24px;
+              transform: translate(100%, -50%);
+            }
+          }
+        }
+      }
+
+      &__right {
+        width: 86px;
+        margin-left: 130px;
+        position: relative;
+
+        .swiper-slide {
+          border: 2px solid transparent;
+          border-radius: 12px;
+          overflow: hidden;
+          cursor: pointer;
+          max-height: 86px;
+
+          &.active {
+            border-color: #228596;
+
+            &:hover {
+              img {
+                transform: none;
+              }
+            }
+          }
+
+          &:hover {
+            img {
+              transform: scale(1.2);
+            }
+          }
+
+          img {
+            width: 86px;
+            height: 86px;
+            margin-right: -1px;
+            margin-top: -1px;
+            transition: transform .2s ease;
+          }
+        }
+
+        .slider {
+          &__arrow {
+            &-left {
+              top: 0 !important;
+              transform: translate(-50%, -50%) !important;
+
+              img {
+                transform: rotate(90deg);
+              }
+            }
+
+            &-right {
+              top: unset !important;
+              right: unset !important;
+              bottom: 0 !important;
+              transform: translate(-50%, 50%);
+
+              img {
+                transform: rotate(90deg);
+              }
+            }
+
+            &-left, &-right {
+              left: 50% !important;
+            }
+          }
+        }
+      }
+
+      &__title {
+        font-size: 36px;
+        line-height: 120%;
+        margin-bottom: 0;
+
+        &-area {
+          color: #393E48;
+          font-weight: 700;
+          margin-bottom: 35px;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          width: 850px;
+        }
+      }
+
+      &__count {
+        font-size: 18px;
+        line-height: 120%;
       }
     }
   }
@@ -2507,6 +3980,18 @@ html, body {
 }
 
 .map {
+  width: 100%;
+  max-width: 100%;
+  min-height: 650px;
+
+  [class*="ymaps-"][class*="-copyrights-pane"] {
+    display: none;
+  }
+
+  [class*="ymaps-"][class*="-map"] {
+    max-width: 100%;
+  }
+
   &-popup {
     background: white;
     border-radius: 12px;
@@ -2847,20 +4332,24 @@ html, body {
   overflow: hidden;
 }
 
-// FOR TESTING
-.temp {
-  background: #dddddd;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding-top: 162px;
-  padding-bottom: 100px;
+// fixing
+// beach page's parking
+@media (max-width: 1300px) and (min-width: 1201px) {
+  .beach-event {
+    &__pt {
+      &__type {
+        margin-right: 15px;
+      }
 
-  &__el {
-    margin-bottom: 100px;
-
-    &:last-of-type {
-      margin-bottom: 0;
+      .main-page {
+        &__card {
+          &__info-area {
+            &__button {
+              padding: 14px;
+            }
+          }
+        }
+      }
     }
   }
 }
@@ -3034,6 +4523,30 @@ html, body {
       }
     }
   }
+
+  .slider {
+    &-beach-event {
+      &__modal {
+        &__left {
+          .slider {
+            &__arrow {
+              &-left {
+                left: -10px
+              }
+
+              &-right {
+                right: -10px;
+              }
+            }
+          }
+        }
+
+        &__right {
+          margin-left: 70px
+        }
+      }
+    }
+  }
 }
 
 // after 1200px
@@ -3127,7 +4640,7 @@ html, body {
     flex-direction: column;
 
     &__left {
-      width: 100%;
+      max-width: unset;
       margin-bottom: 50px;
     }
 
@@ -3153,6 +4666,168 @@ html, body {
 
         &-area {
           margin-bottom: 40px;
+        }
+      }
+    }
+
+    &__map-weather {
+      display: flex;
+      flex-direction: row-reverse;
+
+      &__desktop {
+        display: none;
+      }
+
+      &__mobile {
+        display: none;
+      }
+
+      &__tablet {
+        display: flex;
+      }
+
+      &__event-page {
+        display: flex !important;
+        flex-direction: column-reverse !important;
+        margin-bottom: 0 !important;
+
+        .beach-event {
+          &__map-weather {
+            &__weather-card {
+              margin-bottom: 10px;
+            }
+          }
+        }
+      }
+
+      &__map-card {
+        margin-left: 10px;
+        margin-bottom: 0;
+
+        .map {
+          min-height: 360px;
+        }
+      }
+
+      &__weather-card {
+        margin-right: 10px;
+
+        &__date {
+          margin-bottom: 10px;
+        }
+
+        &__title {
+          font-size: 18px;
+          line-height: 22px;
+          font-weight: 500;
+          margin-bottom: 20px;
+        }
+
+        &__temp-area {
+          &__item {
+            &__left {
+              span {
+                font-size: 12px;
+                line-height: 14px;
+              }
+            }
+          }
+        }
+      }
+
+      &__map-card, &__weather-card {
+        width: 50%;
+        height: 360px;
+      }
+    }
+  }
+
+  .beach-page {
+    &__events {
+      overflow: visible;
+    }
+
+    &__opinions {
+      .slider {
+        &__arrow {
+          &-left {
+            left: 20px;
+          }
+
+          &-right {
+            right: 20px;
+          }
+        }
+      }
+    }
+
+    &__avg-rating {
+      padding: 25px 20px;
+
+      &__mobile {
+        display: block;
+      }
+
+      &__desktop {
+        display: none;
+      }
+
+      &__modal {
+        display: none;
+      }
+
+      &__title {
+        &-area {
+          &__right {
+            display: block;
+          }
+        }
+      }
+
+      &.active {
+        z-index: 21;
+        position: relative;
+
+        .beach-page__avg-rating {
+          &__bg {
+            @include bg-dark-fixed;
+          }
+
+          &__title {
+            font-size: 18px;
+            line-height: 28px;
+
+            &-area {
+              &__right {
+                display: none;
+              }
+
+              &__info {
+                font-size: 20px;
+              }
+            }
+          }
+
+          &__modal {
+            display: block;
+          }
+
+          &__rating {
+            margin-bottom: 20px;
+          }
+
+          &__card {
+            z-index: 1;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            padding-bottom: 0;
+            width: 320px;
+          }
         }
       }
     }
@@ -3195,6 +4870,32 @@ html, body {
 
   .footer__part {
     padding-right: 20px;
+  }
+
+  .slider {
+    &-beach-event {
+      &__modal {
+        &__left {
+          .slider {
+            &__arrow {
+              &-left {
+                left: 0;
+                transform: translate(-50%, -50%);
+              }
+
+              &-right {
+                right: 0;
+                transform: translate(50%, -50%)
+              }
+            }
+          }
+        }
+
+        &__right {
+          margin-left: 40px;
+        }
+      }
+    }
   }
 }
 
@@ -3270,6 +4971,22 @@ html, body {
         }
       }
     }
+
+    &-beach-event {
+      &__modal {
+        &__title {
+          font-size: 30px;
+
+          &-area {
+            max-width: 600px;
+          }
+        }
+
+        &__left {
+          max-width: 600px;
+        }
+      }
+    }
   }
 }
 
@@ -3286,6 +5003,22 @@ html, body {
     padding-right: 20px;
   }
 
+  .beach-event {
+    &__reviews {
+      &__pagination {
+        margin: 30px 0;
+      }
+    }
+
+    &__leave-review {
+      &__button {
+        width: 190px;
+        height: 46px;
+        white-space: nowrap;
+      }
+    }
+  }
+
   .map {
     &-beaches-main {
       padding-left: 32px;
@@ -3294,8 +5027,10 @@ html, body {
     }
   }
 
-  .custom-card__info-area.event {
-    height: 105px;
+  .custom-card {
+    &__subtitle-area {
+      justify-content: space-between;
+    }
   }
 
   .slider {
@@ -3310,6 +5045,22 @@ html, body {
         }
       }
     }
+
+    &-beach-event {
+      height: 380px;
+
+      &__left {
+        max-width: unset;
+
+        .swiper-container {
+          overflow: visible;
+        }
+      }
+
+      &__right {
+        display: none;
+      }
+    }
   }
 
   .main-page {
@@ -3318,6 +5069,22 @@ html, body {
         &__see-all {
           white-space: nowrap;
           padding-left: 10px;
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 950px) {
+  .beach-page {
+    .slider {
+      &__arrow {
+        &-left {
+          left: 10px;
+        }
+
+        &-right {
+          right: 10px;
         }
       }
     }
@@ -3451,6 +5218,35 @@ html, body {
 
       &:nth-child(3n) {
         margin-bottom: 40px;
+      }
+    }
+  }
+
+  .beach-event {
+    &__visitor-pics {
+      padding-top: 30px;
+      padding-bottom: 30px;
+
+      &__pic-area {
+        height: 220px;
+      }
+
+      &-wrapper {
+        margin-bottom: 50px;
+      }
+
+      &__slider {
+        .swiper-container {
+          overflow: visible;
+        }
+
+        .slider {
+          &__arrow {
+            &-left, &-right {
+              display: none;
+            }
+          }
+        }
       }
     }
   }
@@ -3751,14 +5547,232 @@ html, body {
     }
   }
 
+  .slider {
+    &__beach-bars-n-restos {
+      .swiper-slide {
+        img {
+          height: 200px;
+        }
+      }
+    }
+
+    &-beach-event {
+      &__medal {
+        &-gold, &-blue {
+          top: 10px;
+        }
+
+        &-gold {
+          left: 10px;
+        }
+
+        &-blue {
+          right: 10px;
+        }
+      }
+
+      &__zoom-button {
+        right: 10px;
+        bottom: 10px;
+      }
+
+      &__modal {
+        &__left {
+          max-width: 500px;
+        }
+      }
+    }
+  }
+
   .beach-page {
     &__similar-beaches {
       margin-bottom: 40px;
     }
 
-    &__quick-data {
-      &__item {
-        margin-right: 20px;
+    &__water-temp {
+      &.active {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        overflow-x: scroll;
+        overflow-y: hidden;
+        display: flex;
+        z-index: 20;
+
+        .beach-page {
+          &__water-temp {
+            &__bg {
+              position: absolute;
+              top: 0;
+              left: 0;
+              width: 100%;
+              height: 100vh;
+              background: rgba(0,0,0,.5);
+              z-index: 1;
+            }
+
+            &__inner {
+              position: relative;
+              @include flex-center;
+            }
+          }
+        }
+
+        .two-part-layout__card {
+          position: relative;
+          z-index: 2;
+        }
+      }
+
+      &__title {
+        margin-bottom: 0;
+
+        &-area {
+          cursor: pointer;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+
+          &.active {
+            img {
+              transform: rotate(-90deg);
+            }
+          }
+
+          img {
+            display: block;
+            transition: transform .5s ease;
+          }
+        }
+      }
+
+      &__year-month {
+        padding-top: 20px;
+      }
+
+      &__histogram {
+        &__item {
+          &__title {
+            display: block;
+          }
+        }
+      }
+
+      &__content {
+        min-width: 700px;
+        height: 0;
+        overflow: hidden;
+        padding-right: 5px;
+        // transition: height .5s ease;
+
+        &.active {
+          height: 257px;
+        }
+      }
+    }
+
+    &__sections {
+      &__section {
+        font-size: 14px;
+        line-height: 120%;
+      }
+    }
+
+    &__events {
+      .swiper-slide {
+        max-width: 220px;
+      }
+    }
+
+    &__barsNrestos {
+      .swiper-container {
+        overflow: visible;
+      }
+
+      &__title {
+        font-weight: 900;
+        margin-bottom: 15px;
+      }
+
+      &__subtitle {
+        font-weight: 500;
+
+        &-area {
+          margin-bottom: 0;
+        }
+      }
+
+      &__subtitle, &__description {
+        font-size: 16px;
+      }
+
+      &__online-service {
+        span {
+          font-size: 16px;
+        }
+      }
+
+      .slider {
+        &__beach-bars-n-restos {
+          .swiper-container {
+            overflow: hidden;
+            padding: 0 32px;
+            margin: 0 -32px;
+          }
+        }
+
+        &__arrow {
+          &-left, &-right {
+            display: none;
+          }
+        }
+      }
+    }
+
+    &__opinions {
+      &__people {
+        &__slide {
+          &.active {
+            .beach-page {
+              &__opinions {
+                &__people {
+                  &__pic {
+                    width: 110px;
+                    height: 110px;
+                  }
+                }
+              }
+            }
+          }
+        }
+
+        &__pic {
+          width: 90px;
+          height: 90px;
+
+          &-area {
+            width: 110px;
+            height: 110px;
+          } 
+        }
+      }
+
+      &__opinion {
+        padding: 30px 20px;
+      }
+
+      .slider {
+        &__arrow {
+          &-left {
+            left: 0;
+          }
+
+          &-right {
+            right: 0;
+          }
+        }
       }
     }
   }
@@ -3826,6 +5840,72 @@ html, body {
         }
       }
     }
+
+    &__pt {
+      &__type {
+        margin-right: 35px;
+      }
+
+      &__right {
+        a {
+          padding: 14px;
+        }
+      }
+
+      &-wrapper {
+        .map {
+          min-height: 350px;
+          max-height: 350px;
+        }
+      }
+    }
+
+    &__review {
+      &s {
+        &__desktop {
+          padding-left: 22px;
+        }
+      }
+
+      &__title {
+        font-size: 16px;
+        line-height: 19px;
+      }
+
+      &__comment {
+        &__button {
+          float: right;
+
+          img {
+            &.desktop {
+              display: none;
+            }
+
+            &.tablet {
+              display: block;
+            }
+          }
+        }
+      }
+    }
+
+    &__visitor-pics {
+      &__comment-area {
+        font-size: 12px;
+        line-height: 14px;
+
+        span {
+          height: 28px;
+        }
+      }
+
+      &__tag-area {
+        a {
+          font-size: 12px;
+          line-height: 14px;
+        }
+      }
+    }
   }
 
   .two-part-layout {
@@ -3834,6 +5914,7 @@ html, body {
 
       &__title {
         font-size: 20px;
+        font-weight: 900;
         line-height: 120%;
       }
     }
@@ -4043,6 +6124,14 @@ html, body {
       }
     }
   }
+
+  .beach-event {
+    &__pt {
+      &__type {
+        margin-right: 20px;
+      }
+    }
+  }
 }
 
 @media (max-width: 700px) {
@@ -4052,10 +6141,6 @@ html, body {
 
   .beach-page {
     &__quick-data {
-      &__slider {
-        display: block;
-      }
-
       &__item {
         width: auto;
         align-items: center;
@@ -4063,19 +6148,149 @@ html, body {
         span {
           text-align: center;
         }
+      }
+    }
+  }
 
-        &s {
-          display: none;
+  .beach-event {
+    &__pt {
+      &__left {
+        width: 100%;
+        justify-content: space-around;
+      }
+
+      &__right {
+        display: none;
+      }
+
+      &-wrapper {
+        .main-page {
+          &__card {
+            &__info-area {
+              &__button {
+                margin-top: 10px;
+                margin-bottom: 0;
+
+                &.bottom {
+                  display: flex;
+                }
+              }
+            }
+          }
         }
       }
+    }
 
-      .pagination-wrapper {
-        display: block;
+    &__leave-review {
+      &__modal {
+        padding-top: 54px;
+
+        &__close {
+          display: block;
+          cursor: pointer;
+        }
+
+        &__card {
+          padding-top: 24px;
+          padding-left: 20px;
+          padding-right: 20px;
+        }
+
+        &__bottom-space {
+          height: 24px;
+        }
+
+        &__part-title {
+          color: #73767D;
+        }
+
+        &__ratings-area {
+          margin-bottom: 40px;
+        }
+
+        &__review-area {
+          margin-bottom: 20px;
+        }
+
+        &__input-name-area {
+          margin-bottom: 30px;
+        }
+
+        &__title {
+          font-size: 18px;
+          font-weight: 900;
+          line-height: 22px;
+          color: #393E48;
+          opacity: 0.9;
+          width: 100%;
+          display: flex;
+          justify-content: space-between;
+          margin-bottom: 30px;
+
+          &-area {
+            flex-direction: column;
+            align-items: flex-start;
+            margin-bottom: 30px;
+          }
+        }
+
+        &__rating {
+          width: 100%;
+          padding: 0;
+
+          span {
+            display: block;
+            width: 100%;
+            text-align: center;
+          }
+
+          &s {
+            .rating-5-star {
+              &__star {
+                margin-right: 10px;
+
+                &:last-of-type {
+                  margin-right: 0;
+                }
+
+                &s {
+                  justify-content: center;
+                }
+
+                svg {
+                  width: 44px;
+                  height: 44px;
+                }
+              }
+            }
+          }
+        }
       }
+    }
+  }
 
-      .swiper-slide {
-        display: flex;
-        justify-content: center;
+  .slider {
+    &-beach-event {
+      &__modal {
+        &__title {
+          font-size: 18px;
+
+          &-area {
+            max-width: 400px;
+          }
+        }
+
+        &__count {
+          font-size: 16px;
+        }
+
+        &__sides {
+          max-height: 55vh;
+        }
+
+        &__left {
+          max-width: 400px;
+        }
       }
     }
   }
@@ -4206,8 +6421,7 @@ html, body {
     transform: none;
     transition: height .5s ease;
 
-    &.dark-bg:after {
-      content: '';
+    .dark-bg-inner {
       background: rgba(0,0,0, .5);
       width: 100vw;
       height: 100vh;
@@ -4221,12 +6435,18 @@ html, body {
     }
 
     &__params {
+      position: fixed;
       width: 100vw;
-      top: 0;
+      top: 62px;
       bottom: 0;
+      max-height: unset;
+      border-radius: 12px 12px 0 0;
 
       &.not-main {
+        position: absolute;
+        top: 0;
         bottom: unset;
+        border-radius: 12px;
       }
 
       &__close {
@@ -4377,6 +6597,129 @@ html, body {
       }
     }
   }
+
+  .beach-event {
+    &__map-weather {
+      display: block;
+      margin-bottom: 10px;
+
+      &__tablet, &__desktop {
+        display: none !important;
+      }
+
+      &__mobile {
+        display: block;
+      }
+
+      &__map-card, &__weather-card {
+        width: 100%;
+      }
+
+      &__map-card {
+        margin-left: 0;
+        margin-bottom: 10px;
+      }
+
+      &__weather-card {
+        height: unset;
+        margin-right: 0;
+        padding-top: 20px;
+        padding-bottom: 30px;
+
+        &__temp-area {
+          &__item {
+            &__left {
+              img {
+                width: 40px;
+                margin-right: 10px;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .beach-page {
+    &__quick-data {
+      &__item {
+        flex-direction: row;
+
+        span {
+          text-align: left;
+          font-size: 16px;
+        }
+
+        img {
+          margin-right: 15px;
+        }
+
+        &s {
+          flex-direction: column;
+          height: 120px;
+          overflow: hidden;
+          position: relative;
+          transition: height .5s ease;
+
+          &:before {
+            content: '';
+            display: block;
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 60px;
+            transition: opacity .2s ease;
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0) 0, #FFFFFF 100%);
+          }
+
+          &.active {
+            height: 350px;
+
+            &:before {
+              opacity: 0;
+            }
+          }
+        }
+      }
+
+      &__accordion-button {
+        display: block;
+        margin: 0 auto;
+        background: none;
+        border: none;
+        display: flex;
+        align-items: center;
+
+        &:focus {
+          outline: none;
+        }
+
+        span {
+          margin-right: 10px;
+          font-size: 16px;
+          line-height: 130%;
+          text-align: right;
+          color: #228596;
+        }
+
+        img {
+          width: 18px;
+          height: 18px;
+          margin-bottom: 3px;
+          transition: transform .2s ease;
+        }
+
+        &.active {
+          img {
+            margin-top: 3px;
+            margin-bottom: 0;
+            transform: rotate(-180deg);
+          }
+        }
+      }
+    }
+  }
 }
 
 // at 630px
@@ -4496,6 +6839,71 @@ html, body {
         display: block;
       }
     }
+
+    &-beach-event {
+      &__modal {
+        &__sides {
+          flex-direction: column;
+          max-height: 65vh;
+          max-width: 400px;
+        }
+
+        &__title {
+          &-area {
+            margin-bottom: 20px;
+          }
+        }
+
+        &__left {
+          margin-bottom: 20px;
+          max-width: 100%;
+
+          .slider {
+            &__arrow {
+              &-left {
+                left: 0;
+              }
+
+              &-right {
+                right: 0;
+              }
+            }
+          }
+        }
+
+        &__right {
+          margin-left: 0;
+          width: 100%;
+
+          .swiper-slide {
+            max-width: 86px;
+          }
+
+          .slider {
+            &__arrow {
+              &-left {
+                left: 0 !important;
+                transform: translate(-50%, -50%);
+              }
+
+              &-right {
+                right: 0 !important;
+                left: unset !important;
+                transform: translate(50%, -50%);
+              }
+
+              &-left, &-right {
+                top: 50% !important;
+
+                img {
+                  transform: none;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
   }
 
   .announcement-card {
@@ -4524,9 +6932,37 @@ html, body {
 
     &__info-area {
       border-radius: 0 0 12px 12px;
+      padding-top: 30px;
       padding-left: 15px;
       padding-right: 15px;
       padding-bottom: 25px;
+    }
+  }
+
+  .beach-page {
+    &__opinions {
+      .slider {
+        &__arrow {
+          &-left {
+            left: 15px;
+          }
+
+          &-right {
+            right: 15px;
+          }
+        }
+      }
+    }
+  }
+
+  .slider {
+    &-beach-event {
+      &__beach-closed {
+        width: 300px;
+        height: 50px;
+        font-size: 30px;
+        line-height: 100%;
+      }
     }
   }
 }
@@ -4540,6 +6976,46 @@ html, body {
 @media (max-width: 550px) {
   .custom-card__info-area.event {
     height: 105px;
+  }
+
+  .beach-page-sections {
+    &.slider-weather__months {
+      margin-bottom: 10px;
+    }
+  }
+
+  .slider {
+    &-beach-event {
+      height: 300px;
+      margin-bottom: 10px;
+
+      .slider {
+        &__arrow {
+          &-left, &-right {
+            display: none;
+          }
+        }
+      }
+
+      &__medal {
+        &-gold, &-blue {
+          top: 8px;
+        }
+
+        &-gold {
+          left: 8px;
+        }
+
+        &-blue {
+          right: 8px;
+        }
+      }
+
+      &__zoom-button {
+        right: 8px;
+        bottom: 8px;
+      }
+    }
   }
 }
 
@@ -4683,6 +7159,16 @@ html, body {
           line-height: 130%;
         }
       }
+
+      .custom-card {
+        &__pic-area {
+          margin-bottom: 10px;
+        }
+
+        &__date-area {
+          margin-bottom: 6px;
+        }
+      }
     }
     
     &__card {
@@ -4816,6 +7302,45 @@ html, body {
         }
       }
     }
+
+    &__beach-bars-n-restos {
+      .swiper-slide {
+        img {
+          height: 170px;
+        }
+      }
+    }
+
+    &-beach-event {
+      margin-bottom: 46px;
+
+      .pagination-wrapper {
+        margin-top: 20px;
+      }
+
+      &__modal {
+        &__close-button {
+          top: 10px;
+          right: 10px;
+        }
+
+        &__title {
+          &-area {
+            max-width: 300px;
+          }
+        }
+
+        &__sides {
+          max-width: 300px;
+        }
+
+        &__right {
+          .swiper-container {
+            overflow: visible;
+          }
+        }
+      }
+    }
   }
 
   .pagination-wrapper {
@@ -4888,6 +7413,80 @@ html, body {
     &__similar-beaches {
       margin-bottom: 15px;
     }
+
+    &__events {
+      .swiper-slide {
+        max-width: 135px;
+      }
+    }
+
+    &__barsNrestos {
+      &__subtitle {
+        font-weight: 700;
+      }
+
+      &__arrow-controls {
+        span {
+          font-size: 16px;
+        }
+      }
+
+      &__online-service {
+        margin: 15px 0;
+
+        span {
+          font-size: 12px;
+          line-height: 120%;
+
+          br {
+            display: initial;
+          }
+        }
+      }
+    }
+
+    &__opinions {
+      .custom-pagination {
+        display: none;
+      }
+
+      &__opinion {
+        padding: 20px 10px;
+      }
+
+      .slider {
+        &__arrow {
+          &-left {
+            left: 50px;
+          }
+
+          &-right {
+            right: 50px;
+          }
+        }
+      }
+    }
+
+    &__avg-rating {
+      &__title {
+        font-size: 18px;
+
+        &-area {
+          &__info {
+            white-space: nowrap;
+            font-size: 18px;
+            line-height: 120%;
+          }
+        }
+      }
+    }
+
+    &-sections {
+      .slider-weather__month {
+        font-size: 12px;
+        line-height: 14px;
+      }
+    }
   }
 
   .beach-event {
@@ -4896,14 +7495,103 @@ html, body {
         justify-content: center;
       }
     }
+
+    &__pt {
+      &-wrapper {
+        margin-top: 10px;
+        margin-bottom: 10px;
+
+        .map {
+          min-height: 300px;
+          max-height: 300px;
+        }
+      }
+
+      &__type {
+        margin-right: 0;
+        text-align: left;
+
+        &:first-of-type {
+          .beach-event__pt__type-inner {
+            padding-right: 20px;
+          }
+        }
+
+        span {
+          font-size: 12px;
+        }
+      }
+    }
+
+    &__visitor-pics {
+      &__pic-area {
+        height: 160px;
+      }
+
+      &__comment-area {
+        span {
+          display: block;
+          height: 42px;
+        }
+      }
+
+      &__user-area {
+        a {
+          display: flex;
+        }
+
+        span {
+          display: block;
+          max-width: 70px;
+        }
+      }
+
+      &__title {
+        margin-bottom: 20px;
+      }
+    }
+
+    &__side-buttons {
+      right: 13px;
+      top: 200px;
+    }
   }
 
   .two-part-layout {
     &__card {
       padding: 20px 10px;
+      margin-bottom: 10px;
 
       &__title {
         font-size: 18px;
+      }
+    }
+  }
+}
+
+@media (max-width: 450px) {
+  .beach-page {
+    &__opinions {
+      .slider {
+        &__arrow {
+          &-left {
+            left: 25px;
+          }
+
+          &-right {
+            right: 25px;
+          }
+        }
+      }
+    }
+  }
+
+  .slider {
+    &-beach-event {
+      &__beach-closed {
+        height: 30px;
+        width: 200px;
+        font-size: 20px;
       }
     }
   }
@@ -5026,12 +7714,142 @@ html, body {
     }
   }
 
+  .beach-page {
+    &__opinions {
+      overflow: hidden;
 
+      .custom-pagination {
+        display: flex;
+      }
+
+      .slider {
+        &__arrow {
+          &-left {
+            display: none;
+          }
+
+          &-right {
+            display: none;
+          }
+        }
+      }
+    }
+  }
+
+  .beach-event {
+    &__leave-review {
+      margin-top: 30px;
+
+      &__button {
+        width: 100%;
+      }
+
+      &__modal {
+        &__send-button-area {
+          button {
+            width: 100%;
+          }
+        }
+      }
+    }
+
+    &__visitor-pics {
+      &__add-button-area {
+        button {
+          width: 100%;
+        }
+      }
+    }
+
+    &__review {
+      padding-top: 40px;
+      padding-bottom: 30px;
+      padding-left: 15px;
+      padding-right: 15px;
+
+      &s {
+        &__title {
+          margin-bottom: 45px;
+        }
+
+        &__desktop {
+          display: none;
+        }
+
+        &__mobile {
+          display: block;
+        }
+
+        .swiper-container {
+          overflow: visible;
+        }
+      }
+
+      &__title, &__date {
+        text-align: center;
+      }
+
+      &__title {
+        &-area {
+          flex-direction: column;
+
+          &__left {
+            margin-bottom: 20px;
+          }
+
+          &__rating {
+            justify-content: center;
+          }
+        }
+      }
+
+      &__comment {
+        text-align: center;
+      }
+
+      &__pic {
+        top: 0;
+        left: 50%;
+        transform: translate(-50%, -50%);
+      }
+    }
+
+    &__similar-beaches {
+      .main-page__section-title {
+        max-width: 200px;
+      }
+    }
+  }
 }
 
 @media (max-width: 392px) {
   .custom-card__info-area.event {
     height: 121px;
+  }
+}
+
+@media (max-width: 350px) {
+  .slider {
+    &-beach-event {
+      height: 150px;
+
+      &__medal-gold, &__medal-blue, &__zoom-button {
+        img {
+          width: 40px;
+          height: 40px;
+        }
+      }
+    }
+  }
+}
+
+@media (max-height: 850px) {
+  .beach-event {
+    &__leave-review {
+      &__modal {
+        align-items: flex-start;
+      }
+    }
   }
 }
 
@@ -5050,10 +7868,6 @@ html, body {
   .map-popup {
     width: 100%;
   }
-}
-
-[class*="ymaps-2-"][class*="-controls__control"] {
-  top: 12px !important;
 }
 
 // turning off hovers for touch devices

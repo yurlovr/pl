@@ -1,8 +1,8 @@
 <template>
 	<section class="two-part-layout__card">
-		<h2 class="two-part-layout__card__title beach-event__about__title">О пляже</h2>
+		<h2 class="two-part-layout__card__title beach-event__about__title">{{ data[0].title }}</h2>
 		<div class="beach-event__about__text-area">
-			<template v-for="text in data">
+			<template v-for="(text, i) in data" v-if="i != 0">
 				<h3 v-if="text.title">{{ text.title }}</h3>
 				<p>{{ text.paragraph }}</p>
 			</template>

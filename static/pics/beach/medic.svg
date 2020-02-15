@@ -1,11 +1,6 @@
-<svg width="60" height="60" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
-<mask id="mask0" mask-type="alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="60" height="60">
-<rect x="1" y="1" width="58" height="58" rx="9" fill="#C4C4C4" stroke="black" stroke-width="2"/>
-</mask>
-<g mask="url(#mask0)">
-<path d="M26.25 29.25H27.25V28.25V23L32.75 23V28.25V29.25H33.75H39V34.75H33.75H32.75V35.75V41H27.25V35.75V34.75H26.25H21L21 29.25H26.25Z" stroke="#FCAB2D" stroke-width="2"/>
-<path d="M29.2385 16.964L30 17.8586L30.7615 16.964C33.1479 14.1604 36.3296 13 40.1951 13C46.8701 13 51 18.8208 51 23.579C51 28.847 47.9775 34.0509 43.6695 38.8524C39.5648 43.4272 34.4158 47.502 30 50.759C25.5842 47.502 20.4352 43.4272 16.3305 38.8524C12.0225 34.0509 9 28.847 9 23.579C9 18.8208 13.1299 13 19.8049 13C23.6703 13 26.8521 14.1604 29.2385 16.964Z" stroke="#228596" stroke-width="2"/>
-<path d="M47 25.5L47.0615 25.0079C47.5811 20.8515 44.652 17.0536 40.5 16.5V16.5" stroke="#FCAB2D" stroke-width="2" stroke-linecap="round"/>
-<path d="M18.5 46C22 49 26 52 26 52" stroke="#FCAB2D" stroke-width="2" stroke-linecap="round"/>
-</g>
+<svg width="44" height="41" viewBox="0 0 44 41" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M18.25 17.25H19.25V16.25V11L24.75 11V16.25V17.25H25.75H31V22.75H25.75H24.75V23.75V29H19.25V23.75V22.75H18.25H13L13 17.25H18.25Z" stroke="#FCAB2D" stroke-width="2"/>
+<path d="M21.2385 4.96398L22 5.8586L22.7615 4.96398C25.1479 2.16039 28.3296 1 32.1951 1C38.8701 1 43 6.82083 43 11.579C43 16.847 39.9775 22.0509 35.6695 26.8524C31.5648 31.4272 26.4158 35.502 22 38.759C17.5842 35.502 12.4352 31.4272 8.33052 26.8524C4.02245 22.0509 1 16.847 1 11.579C1 6.82083 5.12993 1 11.8049 1C15.6703 1 18.8521 2.16039 21.2385 4.96398Z" stroke="#228596" stroke-width="2"/>
+<path d="M39 13.5L39.0615 13.0079C39.5811 8.85151 36.652 5.05361 32.5 4.5V4.5" stroke="#FCAB2D" stroke-width="2" stroke-linecap="round"/>
+<path d="M10.5 34C14 37 18 40 18 40" stroke="#FCAB2D" stroke-width="2" stroke-linecap="round"/>
 </svg>

@@ -93,7 +93,7 @@
 						}
 					}
 				},
-				arrowY: 0,
+				arrowY: 45,
 				showLeft: false,
 				showRight: true,
 				activeIndex: 0,
@@ -117,14 +117,6 @@
 
 		methods: {
 			onResize() {
-				let imgs = this.$el.querySelectorAll('.slider-weather__slide__pic'); // this.$el means we're query selecting in this component
-				for (let i = 0; i < imgs.length; i++) {
-					if (imgs[i].offsetHeight > 0) {
-						this.arrowY = imgs[i].offsetHeight / 2;
-						break;
-					}
-				}
-
 				if (window.innerWidth <= 440)
 					this.minus = 1;
 				else this.minus = 2;

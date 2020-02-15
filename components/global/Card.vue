@@ -4,7 +4,7 @@
 			<a href="/" class="custom-card__link" @click.prevent="$bus.goTo('/', $router)">
 				<img :src="data.pic" alt="Фото" class="custom-card__pic">
 			</a>
-			<div class="custom-card__temp-area" v-if="data.temperature">
+			<div class="custom-card__temp-area" v-if="data.temperature && temp != false">
 				<img src="~/static/pics/global/svg/temper_big.svg" alt="Температура" class="big">
 				<img src="~/static/pics/global/svg/temper_small.svg" alt="Температура" class="small">
 				<span class="custom-card__temp">{{ (data.temperature > 0 ? '+ ' : '') + (data.temperature < 0 ? '- ' : '') + data.temperature }}</span>
@@ -49,7 +49,7 @@
 	import AddToFavorites from '~/components/global/AddToFavorites';
 
 	export default {
-		props: ['data', 'showIfVisited'],
+		props: ['data', 'showIfVisited', 'temp'],
 
 		components: {
 	  		VClamp,

@@ -9,7 +9,7 @@
     <Map :data="mapData" />
     <BeachEntranceFree />
     <div class="main-page__white-wrapper"><BeachSliderArea :data="familyData" :areaData="familyAreaData" class="main-page__family-rest" /></div>
-    <BeachEvents :data="eventData" :areaData="beachEventsData" />
+    <BeachEvents :data="$store.state.beachEventsSliderData" :areaData="beachEventsData" />
     <ChooseBeach />
     <DynamicSliderArea :data="dynamicSliderData" />
     <div class="main-page__white-wrapper"><WeatherSliderArea :data="weatherData" /></div>
@@ -17,6 +17,10 @@
     <BeachType :data="beachTypeData" />
     <YouNeedThis />
     <BeachSliderArea class="main-page__hotels" :data="$store.state.hotelData" :areaData="$store.state.hotelAreaData" />
+    <div>Популярные пляжи</div>
+    {{ this.popular_beaches}}
+    <div> Города </div>
+    {{ this.cities}}
   </div>
 </template>
 
@@ -26,7 +30,7 @@
   import BeachSliderArea from '~/components/global/BeachSliderArea';
   import Cities from '~/components/pages/main/Cities';
   import BeachEntranceFree from '~/components/pages/main/BeachEntranceFree';
-  import BeachEvents from '~/components/pages/main/BeachEvents';
+  import BeachEvents from '~/components/pages/beach-event/BeachEvents';
   import ChooseBeach from '~/components/pages/main/ChooseBeach';
   import OnCarNoProblem from '~/components/pages/main/OnCarNoProblem';
   import BeachType from '~/components/pages/main/BeachType';
@@ -34,7 +38,7 @@
   import WeatherSliderArea from '~/components/pages/main/WeatherSliderArea';
   import DynamicSliderArea from '~/components/pages/main/DynamicSliderArea';
   import Map from '~/components/pages/main/Map';
-
+  import {mapActions,mapState } from 'vuex'
   export default {
     components: {
       Search,
@@ -524,102 +528,8 @@
           subtitle: 'Пологий берег, плавный вход в воду, безопасность и инфраструктура',
           beachNumber: 45
         },
-        eventData: {
-          showArrows: true,
-          slideNumber: 4,
-          cardData: [
-            {
-              temperature: 24,
-              favorite: false,
-              expensive: false,
-              date: '12-15.06',
-              title: 'Фестиваль современной культуры и экологии пройдёт в Крыму',
-              beach: 'Пляж «Ялта – Интурист»',
-              beachLink: '/adsa',
-              location: 'Евпатория, КРЫМ',
-              pic: '/pics/main/section5_event1.png'
-            },
-            {
-              temperature: 24,
-              favorite: false,
-              expensive: true,
-              date: '24.05-15.06',
-              title: 'Конкурс надувных матрасов',
-              beach: 'Массандровский пляж',
-              beachLink: '/',
-              location: 'Ялта, КРЫМ',
-              pic: '/pics/main/section5_event2.png'
-            },
-            {
-              temperature: 24,
-              favorite: false,
-              expensive: true,
-              date: '12-15.06',
-              title: 'Фестиваль современной культуры и экологии пройдёт в Крыму',
-              beach: 'Пляж «Лазурный берег»',
-              beachLink: '/',
-              location: 'Евпатория, КРЫМ',
-              pic: '/pics/main/section5_event3.png'
-            },
-            {
-              temperature: 24,
-              favorite: false,
-              expensive: false,
-              date: '19.06',
-              title: 'Коктейльная вечеринка: весёлый отдых для дружной компании',
-              beach: 'Массандровский пляж',
-              beachLink: '/',
-              location: 'Ялта, КРЫМ',
-              pic: '/pics/main/section5_event4.png'
-            },
-            {
-              temperature: 24,
-              favorite: false,
-              expensive: false,
-              date: '12-15.06',
-              title: 'Фестиваль современной культуры и экологии пройдёт в Крыму',
-              beach: 'Пляж «Ялта – Интурист»',
-              beachLink: '/',
-              location: 'Евпатория, КРЫМ',
-              pic: '/pics/main/section5_event1.png'
-            },
-            {
-              temperature: 24,
-              favorite: false,
-              expensive: true,
-              date: '24.05-15.06',
-              title: 'Конкурс надувных матрасов',
-              beach: 'Массандровский пляж',
-              beachLink: '/',
-              location: 'Ялта, КРЫМ',
-              pic: '/pics/main/section5_event2.png'
-            },
-            {
-              temperature: 24,
-              favorite: false,
-              expensive: true,
-              date: '12-15.06',
-              title: 'Фестиваль современной культуры и экологии пройдёт в Крыму',
-              beach: 'Пляж «Лазурный берег»',
-              beachLink: '/',
-              location: 'Евпатория, КРЫМ',
-              pic: '/pics/main/section5_event3.png'
-            },
-            {
-              temperature: 24,
-              favorite: false,
-              expensive: false,
-              date: '19.06',
-              title: 'Коктейльная вечеринка: весёлый отдых для дружной компании',
-              beach: 'Массандровский пляж',
-              beachLink: '/',
-              location: 'Ялта, КРЫМ',
-              pic: '/pics/main/section5_event4.png'
-            }
-          ]
-        },
         beachEventsData: {
-          beachNumber: 45 
+          beachNumber: 45
         },
         beachTypeData: {
           beachNumber1: 26,
@@ -1700,7 +1610,19 @@
           }
         ]
       }
-    }
+    },
+    created() {
+      this.getPopularBeach();
+      this.getCities();
+    },
+    methods: {
+      ...mapActions('beach', ['getPopularBeach']),
+      ...mapActions('beach', ['getCities']),
+    },
+    computed: {
+      ...mapState('beach', ['popular_beaches']),
+      ...mapState('beach', ['cities']),
+    },
   }
 
   // all slide data will be here

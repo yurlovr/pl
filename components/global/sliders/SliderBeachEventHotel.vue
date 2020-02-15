@@ -64,7 +64,7 @@
 				arrowY: 0,
 				showLeft: false,
 				showRight: true,
-				showArrows: true,
+				showArrows: this.data.showArrows,
 				activeIndex: 0
 			}
 		},
@@ -90,7 +90,8 @@
 				if (window.innerWidth < 1150) {
 					this.showArrows = false;
 				} else {
-					this.showArrows = true;
+					if (this.data.showArrows)
+						this.showArrows = true;
 				}
 			},
 

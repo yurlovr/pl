@@ -6,7 +6,7 @@
 				<div v-swiper:mySwiper="swiperOption">
 					<div class="swiper-wrapper">
 						<div class="swiper-slide" v-for="(month, i) in months">
-							<button class="slider-weather__month":class="{ active : i == activeMonth }" @click="activeMonth = i">
+							<button class="slider-weather__month capitalize":class="{ active : i == activeMonth }" @click="activeMonth = i">
 								<span>{{ month }}</span>
 							</button>
 						</div>
@@ -16,11 +16,11 @@
 			<div class="slider-weather__parts">
 				<div class="slider-weather__part-left">
 					<div class="slider-weather__part__info slider-weather__part__temperature-text">
-						<img src="~/static/pics/main/temp_air.svg">
+						<img src="~/static/pics/global/svg/temp_air.svg">
 						<span>Температура воздуха</span>
 					</div>
 					<div class="slider-weather__part__info slider-weather__part__temperature-text">
-						<img src="~/static/pics/main/temp_water.svg">
+						<img src="~/static/pics/global/svg/temp_water.svg">
 						<span>Температура воды</span>
 					</div>
 					<div class="slider-weather__part-left__cover"></div>

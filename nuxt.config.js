@@ -32,7 +32,7 @@ export default {
   */
   plugins: [
     '~/plugins/bus',
-    { src: "~/plugins/yandex-maps", ssr: false },
+    { src: '~/plugins/v-select', ssr: false },
     { src: '~/plugins/scroll-lock', ssr: false },
     { src: '~/plugins/custom-scroll', ssr: false }
   ],
@@ -44,7 +44,8 @@ export default {
 
   generate: {
     routes: [
-      '/beach/1'
+      '/beach/1',
+      '/event/1'
     ]
   },
   /*
@@ -53,8 +54,11 @@ export default {
   modules: [
     // Doc: https://bootstrap-vue.js.org
     'bootstrap-vue/nuxt',
-    'vue-yandex-maps/nuxt'
+    '@nuxtjs/axios'
   ],
+  axios: {
+    baseURL: 'https://crimea.air-dev.agency/api/app'
+  },
   /*
   ** Build configuration
   */

@@ -113,7 +113,7 @@
 							slides[i].style.width = slideWidth + 'px';
 						}
 						if (this.$el.querySelector('.swiper-slide-next'))
-							this.$el.querySelector('.swiper-slide-next').style.width = this.$el.querySelector('.swiper-wrapper').offsetWidth - slideWidth * 2 - this.swiperOption.spaceBetween * 2 + 'px';
+							this.$el.querySelector('.swiper-slide-next').style.width = Math.floor(this.$el.querySelector('.swiper-wrapper').offsetWidth - slideWidth * 2 - this.swiperOption.spaceBetween * 2) + 'px';
 					}, 50);
 				}
 			}
