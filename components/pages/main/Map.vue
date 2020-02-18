@@ -1,7 +1,7 @@
 <template>
-    <div class="main-page__map">
+    <section class="main-page__map">
 	   <div class="map" id="map"></div>
-    </div>
+    </section>
 </template>
 
 <script>
@@ -18,15 +18,22 @@
                     {
                         chunk: [ 44.521199755999035, 34.15580509752773 ],
                         beaches: [
-                            [44.51942103736535, 34.258601507843714],
-                            [44.55842103736535, 34.258601507843714],
-                            [44.5449734958915, 34.265251523169956]
+                            {
+                                pos: [44.51942103736535, 34.258601507843714]
+                            },
+                            {
+                                pos: [44.55842103736535, 34.258601507843714]
+                            },
+                            {
+                                pos: [44.5449734958915, 34.265251523169956]
+                            }
                         ]
                     }
                 ],
-                swipers: {},
                 hover: -1,
                 chosen: -1,
+                step: 1,
+                curSwiper: null,
                 map: null
 			}
 		},
@@ -38,8 +45,8 @@
                       .load()
                       .then(maps => {
                         this.map = new maps.Map(document.getElementById('map'), {
-                          center: [44.50465522867475, 34.21493291965433],
-                          zoom: 8,
+                          center: this.coords,
+                          zoom: this.zoom,
                           controls: []
                         });
                         this.map.behaviors.disable('scrollZoom');
@@ -51,11 +58,12 @@
                         });
 
                         let circleOrangeStep1 = maps.templateLayoutFactory.createClass(
-                            '<div class="map__circle-orange"><span>$[properties.iconContent]</span></div>'
+                            '<div class="map__circle-orange step-1"><span>$[properties.iconContent]</span></div>'
                         );
 
+                        let curPlacemark;
                         for (let i = 0; i < this.addressBeaches.length; i++) {
-                            this.map.geoObjects.add(new maps.Placemark(this.addressBeaches[i].chunk,
+                            this.map.geoObjects.add(curPlacemark = new maps.Placemark(this.addressBeaches[i].chunk,
                             {
                                 iconContent: this.addressBeaches[i].beaches.length,
                             },
@@ -65,7 +73,16 @@
                                 iconImageOffset: [-25, -25],
                                 iconContentLayout: circleOrangeStep1
                             }));
+
+                            curPlacemark.events.add('click', () => {
+                                this.step = 2;
+                                this.zoom = 12;
+                                this.map.setZoom(this.zoom);
+                                curPlacemark.options.set('visible', false);
+                            });
                         }
+
+
                       })
                       .catch(error => console.log('Failed to load Yandex Maps, ', error))
                 }, 1);

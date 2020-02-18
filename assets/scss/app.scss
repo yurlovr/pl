@@ -4440,11 +4440,10 @@ input { &::-ms-clear { display: none; } }
       box-shadow: 4px 4px 6px rgba(0, 0, 0, 0.1);
       border-radius: 50%;
       @include flex-center;
-      // transform: translate(-25px, 0);
 
       span {
         font-size: 18px;
-        line-height: 120%;
+        line-height: 100%;
         color: white;
       }
     }
@@ -4474,8 +4473,23 @@ input { &::-ms-clear { display: none; } }
 }
 
 // fixing
+// main page's map
+@media (max-width: 1400px) {
+  .main-page__map {
+    .map {
+      min-height: 500px;
+      max-height: 500px;
+
+      .ymap-container, [class*="ymaps-2-"][class*="-map"]:not([class*="promo"]) {
+        min-height: 500px;
+        max-height: 500px;
+      }
+    }
+  }
+}
+
+// fixing
 // beach page's parking
-// and main page map
 @media (max-width: 1300px) and (min-width: 1201px) {
   .beach-event {
     &__pt {
@@ -4491,18 +4505,6 @@ input { &::-ms-clear { display: none; } }
             }
           }
         }
-      }
-    }
-  }
-
-  .main-page__map {
-    .map {
-      min-height: 500px;
-      max-height: 500px;
-
-      .ymap-container, [class*="ymaps-2-"][class*="-map"]:not([class*="promo"]) {
-        min-height: 500px;
-        max-height: 500px;
       }
     }
   }
