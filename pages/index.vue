@@ -17,12 +17,10 @@
     <BeachType :data="beachTypeData" />
     <YouNeedThis />
     <BeachSliderArea class="main-page__hotels" :data="$store.state.hotelData" :areaData="$store.state.hotelAreaData" />
-    <div class="hidden">
-      <div>Популярные пляжи</div>
-      {{ this.popular_beaches}}
-      <div> Города </div>
-      {{ this.cities}}
-    </div>
+<!--     <div>Популярные пляжи</div>
+    {{ this.popular_beaches}}
+    <div> Города </div>
+    {{ this.cities}} -->
   </div>
 </template>
 
