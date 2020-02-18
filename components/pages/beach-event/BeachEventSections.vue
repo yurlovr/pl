@@ -1,11 +1,13 @@
 <template>
 	<div class="beach-page-sections slider-weather__months">
-		<div v-swiper:mySwiper="swiperOption">
-			<div class="swiper-wrapper">
-				<div class="swiper-slide" v-for="(section, i) in sections" @click="activeSection = i">
-					<nuxt-link :to="{path: '#id-'+i, hash: '#id-'+i}" class="slider-weather__month beach-page-sections__section" :class="{ active : i == activeSection }">
-						<span>{{ section }}</span>
-					</nuxt-link>
+		<div class="custom-container">
+			<div v-swiper:mySwiper="swiperOption">
+				<div class="swiper-wrapper">
+					<div class="swiper-slide" v-for="(section, i) in sections" @click="activeSection = i" :class="{ active : i == activeSection }">
+						<nuxt-link :to="{path: '#id-'+i, hash: '#id-'+i}" class="slider-weather__month beach-page-sections__section" :class="{ active : i == activeSection }">
+							<span>{{ section }}</span>
+						</nuxt-link>
+					</div>
 				</div>
 			</div>
 		</div>

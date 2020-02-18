@@ -11,6 +11,11 @@
 		</div>
 		<CardGrid :data="beachesData" v-show="!showBeachesOrEvents" />
 		<CardGrid :data="eventsData" :showIfVisited="true" v-show="showBeachesOrEvents" />
+		<div class="custom-container">
+			<h3 class="main-page__section-title">Посещенные мероприятия</h3>
+			<h4 class="favorites-page__visited-empty" v-show="visited.length == 0">Пусто</h4>
+		</div>
+		<CardGrid :data="visited" :showIfVisited="true" :visited="true" v-show="visited.length > 0" />
 	</div>
 </template>
 
@@ -22,9 +27,23 @@
 			CardGrid
 		},
 
+		mounted() {
+			this.$bus.$on('visitedAdd', (link) => { // since beach links for each beach are unique, removing everything from here using them
+				this.visited.push(this.eventsData.find(e => e.beachLink == link));
+			});
+
+			this.$bus.$on('visitedRemove', (link) => {
+				this.visited = this.visited.filter((v) => {
+					return v.beachLink != link;
+				});
+				this.$bus.$emit('updateVisited');
+			});
+		},
+
 		data() {
 			return {
 				showBeachesOrEvents: false, // beaches: false, events: true
+				visited: [],
 				beachesData: [
 		            {
 		              temperature: 21,
@@ -247,7 +266,6 @@
 	          		{
 		              temperature: 24,
 		              favorite: false,
-		              expensive: false,
 		              date: '12-15.06',
 		              title: 'Фестиваль современной культуры и экологии пройдёт в Крыму',
 		              beach: 'Пляж «Ялта – Интурист»',
@@ -258,253 +276,230 @@
 		            {
 		              temperature: 24,
 		              favorite: false,
-		              expensive: true,
 		              date: '24.05-15.06',
 		              title: 'Конкурс надувных матрасов',
 		              beach: 'Массандровский пляж',
-		              beachLink: '/',
+		              beachLink: '/zx',
 		              location: 'Ялта, КРЫМ',
 		              pic: '/pics/main/section5_event2.png'
 		            },
 		            {
 		              temperature: 24,
 		              favorite: false,
-		              expensive: true,
 		              date: '12-15.06',
 		              title: 'Фестиваль современной культуры и экологии пройдёт в Крыму',
 		              beach: 'Пляж «Лазурный берег»',
-		              beachLink: '/',
+		              beachLink: '/xzcc',
 		              location: 'Евпатория, КРЫМ',
 		              pic: '/pics/main/section5_event3.png'
 		            },
 		            {
 		              temperature: 24,
 		              favorite: false,
-		              expensive: false,
 		              date: '19.06',
 		              title: 'Коктейльная вечеринка: весёлый отдых для дружной компании',
 		              beach: 'Массандровский пляж',
-		              beachLink: '/',
+		              beachLink: '/fafa',
 		              location: 'Ялта, КРЫМ',
 		              pic: '/pics/main/section5_event4.png'
 		            },
 		            {
 		              temperature: 24,
 		              favorite: false,
-		              expensive: false,
 		              date: '12-15.06',
 		              title: 'Фестиваль современной культуры и экологии пройдёт в Крыму',
 		              beach: 'Пляж «Ялта – Интурист»',
-		              beachLink: '/',
+		              beachLink: '/wqewq',
 		              location: 'Евпатория, КРЫМ',
 		              pic: '/pics/main/section5_event1.png'
 		            },
 		            {
 		              temperature: 24,
 		              favorite: false,
-		              expensive: true,
 		              date: '24.05-15.06',
 		              title: 'Конкурс надувных матрасов',
 		              beach: 'Массандровский пляж',
-		              beachLink: '/',
+		              beachLink: '/aaa',
 		              location: 'Ялта, КРЫМ',
 		              pic: '/pics/main/section5_event2.png'
 		            },
 		            {
 		              temperature: 24,
 		              favorite: false,
-		              expensive: true,
 		              date: '12-15.06',
 		              title: 'Фестиваль современной культуры и экологии пройдёт в Крыму',
 		              beach: 'Пляж «Лазурный берег»',
-		              beachLink: '/',
+		              beachLink: '/z',
 		              location: 'Евпатория, КРЫМ',
 		              pic: '/pics/main/section5_event3.png'
 		            },
 		            {
 		              temperature: 24,
 		              favorite: false,
-		              expensive: false,
 		              date: '19.06',
 		              title: 'Коктейльная вечеринка: весёлый отдых для дружной компании',
 		              beach: 'Массандровский пляж',
-		              beachLink: '/',
+		              beachLink: '/xxx',
 		              location: 'Ялта, КРЫМ',
 		              pic: '/pics/main/section5_event4.png'
 		            },
 		            {
 		              temperature: 24,
 		              favorite: false,
-		              expensive: false,
 		              date: '12-15.06',
 		              title: 'Фестиваль современной культуры и экологии пройдёт в Крыму',
 		              beach: 'Пляж «Ялта – Интурист»',
-		              beachLink: '/adsa',
+		              beachLink: '/adssa',
 		              location: 'Евпатория, КРЫМ',
 		              pic: '/pics/main/section5_event1.png'
 		            },
 		            {
 		              temperature: 24,
 		              favorite: false,
-		              expensive: true,
 		              date: '24.05-15.06',
 		              title: 'Конкурс надувных матрасов',
 		              beach: 'Массандровский пляж',
-		              beachLink: '/',
+		              beachLink: '/ee',
 		              location: 'Ялта, КРЫМ',
 		              pic: '/pics/main/section5_event2.png'
 		            },
 		            {
 		              temperature: 24,
 		              favorite: false,
-		              expensive: true,
 		              date: '12-15.06',
 		              title: 'Фестиваль современной культуры и экологии пройдёт в Крыму',
 		              beach: 'Пляж «Лазурный берег»',
-		              beachLink: '/',
+		              beachLink: '/rrrr',
 		              location: 'Евпатория, КРЫМ',
 		              pic: '/pics/main/section5_event3.png'
 		            },
 		            {
 		              temperature: 24,
 		              favorite: false,
-		              expensive: false,
 		              date: '19.06',
 		              title: 'Коктейльная вечеринка: весёлый отдых для дружной компании',
 		              beach: 'Массандровский пляж',
-		              beachLink: '/',
+		              beachLink: '/zxczcxz',
 		              location: 'Ялта, КРЫМ',
 		              pic: '/pics/main/section5_event4.png'
 		            },
 		            {
 		              temperature: 24,
 		              favorite: false,
-		              expensive: false,
 		              date: '12-15.06',
 		              title: 'Фестиваль современной культуры и экологии пройдёт в Крыму',
 		              beach: 'Пляж «Ялта – Интурист»',
-		              beachLink: '/',
+		              beachLink: '/xz',
 		              location: 'Евпатория, КРЫМ',
 		              pic: '/pics/main/section5_event1.png'
 		            },
 		            {
 		              temperature: 24,
 		              favorite: false,
-		              expensive: true,
 		              date: '24.05-15.06',
 		              title: 'Конкурс надувных матрасов',
 		              beach: 'Массандровский пляж',
-		              beachLink: '/',
+		              beachLink: '/ffffffff',
 		              location: 'Ялта, КРЫМ',
 		              pic: '/pics/main/section5_event2.png'
 		            },
 		            {
 		              temperature: 24,
 		              favorite: false,
-		              expensive: true,
 		              date: '12-15.06',
 		              title: 'Фестиваль современной культуры и экологии пройдёт в Крыму',
 		              beach: 'Пляж «Лазурный берег»',
-		              beachLink: '/',
+		              beachLink: '/hhhhhhhhhhh',
 		              location: 'Евпатория, КРЫМ',
 		              pic: '/pics/main/section5_event3.png'
 		            },
 		            {
 		              temperature: 24,
 		              favorite: false,
-		              expensive: false,
 		              date: '19.06',
 		              title: 'Коктейльная вечеринка: весёлый отдых для дружной компании',
 		              beach: 'Массандровский пляж',
-		              beachLink: '/',
+		              beachLink: '/jjjjjjjjjjjj',
 		              location: 'Ялта, КРЫМ',
 		              pic: '/pics/main/section5_event4.png'
 		            },
 		            {
 		              temperature: 24,
 		              favorite: false,
-		              expensive: false,
 		              date: '12-15.06',
 		              title: 'Фестиваль современной культуры и экологии пройдёт в Крыму',
 		              beach: 'Пляж «Ялта – Интурист»',
-		              beachLink: '/adsa',
+		              beachLink: '/adsaq',
 		              location: 'Евпатория, КРЫМ',
 		              pic: '/pics/main/section5_event1.png'
 		            },
 		            {
 		              temperature: 24,
 		              favorite: false,
-		              expensive: true,
 		              date: '24.05-15.06',
 		              title: 'Конкурс надувных матрасов',
 		              beach: 'Массандровский пляж',
-		              beachLink: '/',
+		              beachLink: '/yyy',
 		              location: 'Ялта, КРЫМ',
 		              pic: '/pics/main/section5_event2.png'
 		            },
 		            {
 		              temperature: 24,
 		              favorite: false,
-		              expensive: true,
 		              date: '12-15.06',
 		              title: 'Фестиваль современной культуры и экологии пройдёт в Крыму',
 		              beach: 'Пляж «Лазурный берег»',
-		              beachLink: '/',
+		              beachLink: '/iiii',
 		              location: 'Евпатория, КРЫМ',
 		              pic: '/pics/main/section5_event3.png'
 		            },
 		            {
 		              temperature: 24,
 		              favorite: false,
-		              expensive: false,
 		              date: '19.06',
 		              title: 'Коктейльная вечеринка: весёлый отдых для дружной компании',
 		              beach: 'Массандровский пляж',
-		              beachLink: '/',
+		              beachLink: '/oooo',
 		              location: 'Ялта, КРЫМ',
 		              pic: '/pics/main/section5_event4.png'
 		            },
 		            {
 		              temperature: 24,
 		              favorite: false,
-		              expensive: false,
 		              date: '12-15.06',
 		              title: 'Фестиваль современной культуры и экологии пройдёт в Крыму',
 		              beach: 'Пляж «Ялта – Интурист»',
-		              beachLink: '/',
+		              beachLink: '/ppppp',
 		              location: 'Евпатория, КРЫМ',
 		              pic: '/pics/main/section5_event1.png'
 		            },
 		            {
 		              temperature: 24,
 		              favorite: false,
-		              expensive: true,
 		              date: '24.05-15.06',
 		              title: 'Конкурс надувных матрасов',
 		              beach: 'Массандровский пляж',
-		              beachLink: '/',
+		              beachLink: '/cwqa',
 		              location: 'Ялта, КРЫМ',
 		              pic: '/pics/main/section5_event2.png'
 		            },
 		            {
 		              temperature: 24,
 		              favorite: false,
-		              expensive: true,
 		              date: '12-15.06',
 		              title: 'Фестиваль современной культуры и экологии пройдёт в Крыму',
 		              beach: 'Пляж «Лазурный берег»',
-		              beachLink: '/',
+		              beachLink: '/zxwqeg',
 		              location: 'Евпатория, КРЫМ',
 		              pic: '/pics/main/section5_event3.png'
 		            },
 		            {
 		              temperature: 24,
 		              favorite: false,
-		              expensive: false,
 		              date: '19.06',
 		              title: 'Коктейльная вечеринка: весёлый отдых для дружной компании',
 		              beach: 'Массандровский пляж',
-		              beachLink: '/',
+		              beachLink: '/ggggggggg',
 		              location: 'Ялта, КРЫМ',
 		              pic: '/pics/main/section5_event4.png'
 		            }

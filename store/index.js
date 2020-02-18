@@ -25,7 +25,7 @@ export const state = () => ({
 		location: 'Алушта, наб. Профессорского уголка',
 		date: '18—19 октября',
 		price: 250,
-		timeComment: 'Время проведения:',
+		timeComment: 'Режим работы:',
 		time: '8:00-22:00'
 	},
 

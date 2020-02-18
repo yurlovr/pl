@@ -13,9 +13,9 @@
 			</div>
 			<AddToFavorites :fav="data.favorite" />
 			<img class="custom-card__expensive" v-if="data.expensive" src="~/static/pics/global/svg/expensive.svg" alt="Дорого">
-			<button class="custom-card__visited" @click="visited = !visited" v-if="showIfVisited == true">
+			<button class="custom-card__visited" @click="visitedToggle()" v-if="showIfVisited == true">
 				<div class="custom-card__visited__round">
-					<img src="~/static/pics/global/svg/tick.svg" v-show="visited">
+					<img src="~/static/pics/global/svg/tick.svg" v-show="isVisited">
 				</div>
 				<span class="custom-card__visited__text">посетил</span>
 			</button>
@@ -29,7 +29,7 @@
 				<img src="~/static/pics/global/svg/calendar.svg" alt="Дата">
 				<span>{{ data.date }}</span>
 			</div>
-			<a href="/" class="custom-card__title" @click.prevent="$bus.goTo('/', $router)" :style="{ 'font-size': data.beach ? '18px' : '20px' }"><v-clamp autoresize :max-lines="2">{{ data.title }}</v-clamp></a>
+			<div><a href="/" class="custom-card__title" @click.prevent="$bus.goTo('/', $router)" :style="{ 'font-size': data.beach ? '18px' : '20px' }"><v-clamp autoresize :max-lines="max">{{ data.title }}</v-clamp></a></div>
 			<div class="custom-card__subtitle-area">
 				<a :href="data.beachLink" @click.prevent="$bus.goTo(data.beachLink, $router)" class="custom-card__beach" v-if="data.beach">{{ data.beach }}</a>
 				<h6 class="custom-card__location" :style="{ 'font-size': data.beach ? '10px' : '12px' }">{{ data.location }}</h6>
@@ -49,7 +49,7 @@
 	import AddToFavorites from '~/components/global/AddToFavorites';
 
 	export default {
-		props: ['data', 'showIfVisited', 'temp'],
+		props: ['data', 'showIfVisited', 'temp', 'visited'],
 
 		components: {
 	  		VClamp,
@@ -58,7 +58,46 @@
 
 		data() {
 			return {
-				visited: false
+				isVisited: this.visited || false,
+				max: 2
+			}
+		},
+
+		mounted() {
+			window.addEventListener('resize', this.onResize, false);
+			this.onResize();
+
+			this.$bus.$on('updateVisited', () => {
+				this.isVisited = this.visited == true ? true : false;
+			})
+		},
+
+		methods: {
+			visitedAdd() {
+				this.isVisited = true;
+
+				this.$bus.$emit('visitedAdd', this.data.beachLink);
+			},
+
+			visitedRemove() {
+				this.isVisited = false;
+
+				this.$bus.$emit('visitedRemove', this.data.beachLink);
+			},
+
+			visitedToggle() {
+				if (this.isVisited)
+					this.visitedRemove();
+				else this.visitedAdd();
+			},
+
+			onResize() {
+				if (!this.$el.querySelector('.custom-card'))
+					window.removeEventListener('resize', this.onResize, false);
+
+				if (window.innerWidth <= 500)
+					this.max = 3;
+				else this.max = 2;
 			}
 		}
 	}

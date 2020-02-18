@@ -56,11 +56,19 @@
 			}
 		},
 
+		mounted() {
+			this.$bus.$on('cToggleFavorites', () => {
+				this.liked = !this.liked;
+			});
+		},
+
 		methods: {
 			updateHeart() {
 				if (this.liked)
 					this.$bus.$emit('decreaseFavorites');
 				else this.$bus.$emit('increaseFavorites');
+
+				this.$bus.$emit('pToggleFavorites');
 
 				this.liked = !this.liked;
 			}

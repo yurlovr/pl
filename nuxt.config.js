@@ -66,7 +66,7 @@ export default {
     /*
     ** You can extend webpack config here
     */
-    transpile: ['vue-clamp', 'resize-detector'],
+    transpile: ['vue-clamp', 'resize-detector', /(.+)(@company\\library\\src\\utils\\)(.+)(\.js)$/],
     extend (config, ctx) {
     }
   }
