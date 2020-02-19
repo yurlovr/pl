@@ -127,6 +127,13 @@
 					this.slideToCard(i);
 			});
 
+			this.$bus.$on('changeStep', () => {
+				if (this.mySwiper) {
+					this.mySwiper.slideNext();
+					this.mySwiper.slidePrev();
+				}
+			})
+
 			this.mySwiper.init(this.swiperOption);
 		},
 

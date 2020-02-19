@@ -216,7 +216,6 @@
                                             balloonOffset: [-4, -14],
                                             balloonLayout: balloonLayout,
                                             balloonContentLayout: '',
-                                            balloonPanelMaxMapArea: 0,
                                             balloonOffset: [-152, 15]
                                         }
                                     }]

@@ -301,7 +301,7 @@ input { &::-ms-clear { display: none; } }
   height: 100vh;
   transition: opacity 1s ease;
   background: white;
-  z-index: 100;
+  z-index: 12000;
   @include flex-center;
 }
 
@@ -4516,6 +4516,14 @@ input { &::-ms-clear { display: none; } }
         max-height: 500px;
       }
     }
+
+    .map {
+      &-beaches-main {
+        .scroll-area {
+          height: 500px;
+        }
+      }
+    }
   }
 }
 
@@ -5707,6 +5715,10 @@ input { &::-ms-clear { display: none; } }
           min-height: 400px;
           max-height: 400px;
         }
+      }
+
+      &-inner {
+        flex-direction: column;
       }
     }
   }
