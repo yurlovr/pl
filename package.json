@@ -26,6 +26,7 @@
     "ymaps": "^0.2.1"
   },
   "devDependencies": {
+    "@babel/plugin-transform-runtime": "^7.8.3",
     "node-sass": "^4.13.1",
     "sass-loader": "^8.0.2"
   }
