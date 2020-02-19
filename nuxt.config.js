@@ -99,39 +99,39 @@ export default {
          ** You can extend webpack config here
          */
         transpile: ["vue-clamp", "resize-detector"],
-        extend(config, ctx) {},
+        extend(config, ctx) {}
 
-        babel: {
-            presets: function({ isServer }, [preset, options]) {
-                const r = [
-                    [
-                        preset,
-                        {
-                            buildTarget: isServer ? "server" : "client",
-                            ...options
-                        }
-                    ]
-                    // [ Other presets ]
-                ];
+        // babel: {
+        //     presets: function({ isServer }, [preset, options]) {
+        //         const r = [
+        //             [
+        //                 preset,
+        //                 {
+        //                     buildTarget: isServer ? "server" : "client",
+        //                     ...options
+        //                 }
+        //             ]
+        //             // [ Other presets ]
+        //         ];
 
-                r[0][1].targets = {
-                    browsers: ["> 1%", "last 2 versions"],
-                    ie: 11
-                };
+        //         r[0][1].targets = {
+        //             browsers: ["> 1%", "last 2 versions"],
+        //             ie: 11
+        //         };
 
-                r[0][1].polyfills = [
-                    "es6.array.iterator",
-                    "es6.promise",
-                    "es6.object.assign",
-                    "es7.promise.finally",
-                    "es6.symbol",
-                    "es6.array.find",
-                    "es6.array.from"
-                ];
+        //         r[0][1].polyfills = [
+        //             "es6.array.iterator",
+        //             "es6.promise",
+        //             "es6.object.assign",
+        //             "es7.promise.finally",
+        //             "es6.symbol",
+        //             "es6.array.find",
+        //             "es6.array.from"
+        //         ];
 
-                return r;
-            },
-            plugins: ["@babel/plugin-transform-runtime"]
-        }
+        //         return r;
+        //     },
+        //     plugins: ["@babel/plugin-transform-runtime"]
+        // }
     }
 };
