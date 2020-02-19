@@ -39,13 +39,13 @@
             >
             <button
                 class="custom-card__visited"
-                @click="visited = !visited"
+                @click="visitedToggle()"
                 v-if="showIfVisited == true"
             >
                 <div class="custom-card__visited__round">
                     <img
                         src="~/static/pics/global/svg/tick.svg"
-                        v-show="visited"
+                        v-show="isVisited"
                     >
                 </div>
                 <span class="custom-card__visited__text">посетил</span>
@@ -75,17 +75,17 @@
                 >
                 <span>{{ data.date }}</span>
             </div>
-            <a
-                href="/"
-                class="custom-card__title"
-                @click.prevent="$bus.goTo('/', $router)"
-                :style="{ 'font-size': data.beach ? '18px' : '20px' }"
-            >
-                <v-clamp
-                    autoresize
-                    :max-lines="2"
-                >{{ data.title }}</v-clamp>
-            </a>
+            <div><a
+                    href="/"
+                    class="custom-card__title"
+                    @click.prevent="$bus.goTo('/', $router)"
+                    :style="{ 'font-size': data.beach ? '18px' : '20px' }"
+                >
+                    <v-clamp
+                        autoresize
+                        :max-lines="max"
+                    >{{ data.title }}</v-clamp>
+                </a></div>
             <div class="custom-card__subtitle-area">
                 <a
                     :href="data.beachLink"
@@ -123,7 +123,7 @@ import VClamp from 'vue-clamp';
 import AddToFavorites from '~/components/global/AddToFavorites';
 
 export default {
-    props: ['data', 'showIfVisited', 'temp'],
+    props: ['data', 'showIfVisited', 'temp', 'visited'],
 
     components: {
         VClamp,
@@ -132,8 +132,47 @@ export default {
 
     data () {
         return {
-            visited: false
+            isVisited: this.visited || false,
+            max: 2
         };
+    },
+
+    mounted () {
+        window.addEventListener('resize', this.onResize, false);
+        this.onResize();
+
+        this.$bus.$on('updateVisited', () => {
+            this.isVisited = this.visited == true ? true : false;
+        });
+    },
+
+    methods: {
+        visitedAdd () {
+            this.isVisited = true;
+
+            this.$bus.$emit('visitedAdd', this.data.beachLink);
+        },
+
+        visitedRemove () {
+            this.isVisited = false;
+
+            this.$bus.$emit('visitedRemove', this.data.beachLink);
+        },
+
+        visitedToggle () {
+            if (this.isVisited)
+                this.visitedRemove();
+            else this.visitedAdd();
+        },
+
+        onResize () {
+            if (!this.$el.querySelector('.custom-card'))
+                window.removeEventListener('resize', this.onResize, false);
+
+            if (window.innerWidth <= 500)
+                this.max = 3;
+            else this.max = 2;
+        }
     }
 }
 </script>

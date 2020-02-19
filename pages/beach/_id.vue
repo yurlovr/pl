@@ -1,7 +1,7 @@
 <template>
 	<div class="beach-page custom-page">
 		<div class="beach-page__container custom-container">
-			<BeachEventSections :sections="$store.state.beachPageSections" />
+			<BeachEventSections :sections="$store.state.beachPageSections" class="beach-page-sections--w-100" />
 			<SliderHugeBeachEventPage :data="$store.state.beachPageSectionsData" id="id-0" />
 			<div class="custom-container-inner">
 				<BeachEventSideButtons :share="true" :crossBlue="true" :ymaps="true" :yandex="true" />
@@ -25,7 +25,7 @@
 				<aside class="two-part-layout__right">
 					<BeachAvgRating :data="$store.state.avgRating" class="beach-page__avg-rating__desktop" />
 					<BeachEventMapWeather :data="$store.state.mapWeatherData" class="beach-event__map-weather__desktop" />
-					<AnnouncementCard :data="$store.state.announcementData" />
+					<AnnouncementCard :data="$store.state.announcementData" class="beach-page__announcement" />
 				</aside>
 			</div>
 		</div>

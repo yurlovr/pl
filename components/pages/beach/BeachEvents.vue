@@ -1,10 +1,25 @@
 <template>
 	<section class="beach-page__events">
-		<h2 class="two-part-layout__card__title beach-page__events__title">Ближайшие мероприятия на пляже</h2>
+		<div class="main-page__section-subtitle-area beach-page__events__title-area">
+			<h3 class="two-part-layout__card__title beach-page__events__title">Ближайшие мероприятия на пляже</h3>
+			<nuxt-link to="/" class="main-page__section__subtitle-area__see-all beach-page__events__see-all">
+	          <span>Смотреть все (45)</span>
+	        </nuxt-link>
+		</div>
 		<div v-swiper:mySwiper="swiperOption">
 			<div class="swiper-wrapper">
 				<Card v-for="(slide, i) in data.cardData" :data="slide" :temp="temp" :key="i" class="swiper-slide" />
 			</div>
+		</div>
+		<div class="pagination-wrapper">
+			<div class="custom-pagination">
+				<button @click="mySwiper.slideTo(i)" class="custom-pagination-bullet" v-for="(b,i) in data.cardData.length - 1" :class="{ 'custom-pagination-bullet-active' : i == activeIndex }"></button>
+			</div>
+		</div>
+		<div class="main-page__beach-events__see-all-bottom">
+			<nuxt-link to="/" class="main-page__see-all">
+	          <span>Смотреть все (45)</span>
+	        </nuxt-link>
 		</div>
 	</section>
 </template>

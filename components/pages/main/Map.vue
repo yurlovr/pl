@@ -1,40 +1,25 @@
 <template>
-	<div class="map"></div>
+    <section class="main-page__map">
+        <button class="main-page__map__return" v-show="step == 2" id="go-to-step-1-button">
+            <img src="~/static/pics/global/svg/arrow_prev_orange.svg" alt="Назад">
+        </button>
+	   <div class="map" id="map"></div>
+    </section>
 </template>
 
 <script>
 	import ymaps from "ymaps";
 
 	export default {
-		props: ['data'],
+		props: ['addressBeaches', 'center'],
 
 		data() {
 			return {
-				coords: [44.50465522867475, 34.21493291965433],
                 zoom: 8,
-                address: [
-                    {
-                        lat: 44.521199755999035,
-                        lng: 34.15580509752773
-                    },
-                ],
-                address_beaches: [
-                    {
-                        lat: 44.51942103736535,
-                        lng: 34.258601507843714
-                    },
-                    {
-                        lat: 44.55842103736535,
-                        lng: 34.278601507843714
-                    },
-                    {
-                        lat: 44.5449734958915,
-                        lng: 34.265251523169956
-                    }
-                ],
-                swipers: {},
-                hover: -1,
-                chosen: -1
+                chosen: -1,
+                curSwiper: null,
+                map: null,
+                step: 1
 			}
 		},
 
@@ -44,22 +29,231 @@
                     ymaps
                       .load()
                       .then(maps => {
-                        const map = new maps.Map(document.getElementsByClassName('map')[0], {
-                          center: [44.50465522867475, 34.21493291965433],
-                          zoom: 8,
+                        this.map = new maps.Map(document.getElementById('map'), {
+                          center: this.center,
+                          zoom: this.zoom,
                           controls: []
                         });
-                        console.log(map.controls);
-                        map.behaviors.disable('scrollZoom');
-                        map.controls.add('zoomControl', {
+                        this.map.behaviors.disable('scrollZoom');
+                        this.map.controls.add('zoomControl', {
                             position: {
                                 right: '30px',
-                                bottom: '30px',
+                                bottom: '30px'
+                            }
+                        });
+
+                        // markers
+                        let iconStep1 = maps.templateLayoutFactory.createClass(
+                            '<div class="map__circle-orange step-1"><span>$[properties.iconContent]</span></div>'
+                        ),  
+                            iconStep2 = maps.templateLayoutFactory.createClass(
+                            `<div class="map__beach-icon step-2"></div>`
+                        );
+
+                        let step1CounterForChosen = 0, step2CounterForChosen = 0, balloonLayout,
+                        step1ObjectManager = new maps.ObjectManager({
+                            geoObjectOpenBalloonOnClick: false
+                        }),
+                        step2ObjectManager = new maps.ObjectManager({
+                            geoObjectOpenBalloonOnClick: true
+                        });
+                        this.map.geoObjects.add(step1ObjectManager);
+                        this.map.geoObjects.add(step2ObjectManager);
+
+                        let onStep1ObjectEvent = (e) => {
+                            const objectId = e.get('objectId');
+                            if (e.get('type') == 'click') {
+                                this.zoom = 12;
+                                this.map.setZoom(this.zoom);
+                                step1ObjectManager.setFilter('id < 0'); // hide step-1 markers
+                                step2ObjectManager.setFilter(''); // show step-2 markers
+                                this.$bus.$emit("changeStep", 2);
+                                this.onResize();
+                                this.step = 2;
+                            }
+                        }
+
+                        const onStep2ObjectEvent = (e) => {
+                            const objectId = e.get('objectId');
+                            if (e.get('type') == 'mouseenter') {
+                                // The setObjectOptions method allows you to set object options "on the fly".
+                                step2ObjectManager.objects.setObjectOptions(objectId, {
+                                    iconImageHref: '/pics/global/svg/map_beach_gold.svg'
+                                });
+                            } else if (e.get('type') == 'mouseleave') {
+                                if (objectId != this.chosen) {
+                                    step2ObjectManager.objects.setObjectOptions(objectId, {
+                                        iconImageHref: '/pics/global/svg/map_beach_blue.svg'
+                                    });
+                                }
+                            } else if (e.get('type') == 'click') {
+                                if (this.chosen != -1) {
+                                    step2ObjectManager.objects.setObjectOptions(this.chosen, {
+                                        iconImageHref: '/pics/global/svg/map_beach_blue.svg'
+                                    });
+                                }
+                                this.chosen = objectId;
+                                step2ObjectManager.objects.setObjectOptions(this.chosen, {
+                                    iconImageHref: '/pics/global/svg/map_beach_gold.svg'
+                                });
+                                this.$bus.$emit('goToCard', this.chosen);
+                            }
+                        }
+
+                        step1ObjectManager.objects.events.add(['click'], onStep1ObjectEvent);
+                        step2ObjectManager.setFilter('id < 0'); // hide step-2 markers
+                        step2ObjectManager.objects.events.add(['mouseenter', 'mouseleave', 'click'], onStep2ObjectEvent);
+
+                        // step 1 markers
+                        for (let i = 0; i < this.addressBeaches.length; i++) {
+                            step1ObjectManager.add({
+                                type: "FeatureCollection",
+                                features: [{
+                                    type: "Feature",
+                                    id: step1CounterForChosen,
+                                    geometry: {
+                                        type: "Point",
+                                        coordinates: this.addressBeaches[i].chunkCenter
+                                    },
+                                    properties: {
+                                        iconContent: this.addressBeaches[i].beaches.length
+                                    },
+                                    options: {
+                                        iconLayout: 'default#imageWithContent',
+                                        iconImageHref: '',
+                                        iconImageSize: [50,50],
+                                        iconImageOffset: [-25, -25],
+                                        iconContentLayout: iconStep1
+                                    }
+                                }]
+                            });
+
+                            step1CounterForChosen++;
+
+                            // step 2 markers
+                            for (let j = 0; j < this.addressBeaches[i].beaches.length; j++) {
+
+
+                                // adding the balloon
+                                let slides = [];
+
+                                for (let k = 0; k < this.addressBeaches[i].beaches[j].pics.length; k++) {
+                                    slides.push(`
+                                        <div class="swiper-slide map-popup__slide">
+                                            <img src="${this.addressBeaches[i].beaches[j].pics[k]}">
+                                        </div>
+                                    `);
+                                }
+                                balloonLayout = maps.templateLayoutFactory.createClass(`
+                                    <div class="map-popup map-popup--top">
+                                        <div class="map-popup__pic-area">
+                                            <div class="map-popup__slider">
+                                                <div class="swiper-container" id="balloon-swiper">
+                                                    <div class="swiper-wrapper">
+                                                        ${slides.join('')}
+                                                    </div>
+                                                </div>
+                                                <div class="pagination-wrapper"><div class="swiper-pagination"></div></div>
+                                                <button class="slider__arrow-left slider__arrow-left-balloon">
+                                                    <img src="/pics/global/svg/arrow_next_map.svg" alt="Налево">
+                                                </button>
+                                                <button class="slider__arrow-right slider__arrow-right-balloon">
+                                                    <img src="/pics/global/svg/arrow_next_map.svg" alt="Направо">
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <div class="map-popup__info-area">
+                                            <span class="map-popup__rating">
+                                                <img src="/pics/global/svg/star.svg" alt="Рейтинг">
+                                                <span>${this.addressBeaches[i].beaches[i].rating.toFixed(1)}</span>
+                                            </span>
+                                            <h3 class="map-popup__title">${this.addressBeaches[i].beaches[i].title}</h3>
+                                            <h5 class="map-popup__location">${this.addressBeaches[i].beaches[i].location}</h5>
+                                        </div>
+                                    </div>
+                                `, {
+                                    build() {
+                                        this.constructor.superclass.build.call(this);
+
+                                        // init the swiper
+                                        this.swiper = new Swiper(`#balloon-swiper`, {
+                                            slidePerView: 1,
+                                            spaceBetween: 20
+                                        });
+
+                                        // init the arrows
+                                        document.querySelector(`.slider__arrow-left-balloon`).addEventListener('click', () => this.swiper.slidePrev());
+                                        document.querySelector(`.slider__arrow-right-balloon`).addEventListener('click', () => this.swiper.slideNext());
+                                    },
+
+                                    clear() {
+                                        this.swiper.destroy();
+
+                                        this.constructor.superclass.clear.call(this);
+                                    }
+                                });
+
+                                step2ObjectManager.add({
+                                    type: "FeatureCollection",
+                                    features: [{
+                                        type: "Feature",
+                                        id: step2CounterForChosen,
+                                        geometry: {
+                                            type: "Point",
+                                            coordinates: this.addressBeaches[i].beaches[j].pos
+                                        },
+                                        properties: {
+                                            balloonContent: 'hi'
+                                        },
+                                        options: {
+                                            iconLayout: 'default#imageWithContent',
+                                            iconImageHref: '/pics/global/svg/map_beach_blue.svg',
+                                            iconContentLayout: iconStep2,
+                                            balloonShadow: false,
+                                            iconImageSize: [23,30],
+                                            iconImageOffset: [-13.5, -19],
+                                            hideIconOnBalloonOpen: false,
+                                            balloonOffset: [-4, -14],
+                                            balloonLayout: balloonLayout,
+                                            balloonContentLayout: '',
+                                            balloonOffset: [-152, 15]
+                                        }
+                                    }]
+                                });
+
+                                step2CounterForChosen++;
+                            }
+                        }
+
+                        document.getElementById('go-to-step-1-button').addEventListener('click', () => {
+                            this.zoom = 8;
+                            this.map.setZoom(this.zoom);
+                            step1ObjectManager.setFilter(''); // show step-1 markers
+                            step2ObjectManager.setFilter('id < 0'); // hide step-2 markers
+                            this.$bus.$emit("changeStep", 1);
+                            this.step = 1;
+                            setTimeout(() => this.onResize(), 1);
+                            // TODO destroy the swiper
+                        });
+
+                        // closing balloon on map click
+                        this.map.events.add('click', (e) => {
+                            if(e.get('target') === this.map) {
+                                step2ObjectManager.objects.setObjectOptions(this.chosen, {
+                                    iconImageHref: '/pics/global/svg/map_beach_blue.svg'
+                                });
+                                this.chosen = -1;
+                                this.map.balloon.close();
                             }
                         });
                       })
                       .catch(error => console.log('Failed to load Yandex Maps, ', error))
                 }, 1);
+            },
+
+            onResize() {
+                if (this.map)
+                   this.map.container.fitToViewport();
             }
         },
 
@@ -68,6 +262,9 @@
             require('~/plugins/swiper.min').__proto__;
             // making the map
             this.initMap();
+
+            window.addEventListener('resize', this.onResize);
+            this.onResize();
         }
 	}
 </script>

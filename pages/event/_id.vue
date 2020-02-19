@@ -1,14 +1,19 @@
 <template>
 	<div class="beach-page custom-page">
 		<div class="beach-page__container custom-container">
-			<BeachEventSections :sections="$store.state.eventPageSections" />
+			<BeachEventSections :sections="$store.state.eventPageSections" class="beach-page-sections event-page-sections" />
 			<SliderHugeBeachEventPage :data="$store.state.eventPageSectionsData" />
 			<div class="custom-container-inner">
-				<BeachEventSideButtons :mail="true" :telegram="true" :crossOrange="true" />
+				<BeachEventSideButtons :mail="true" :telegram="true" :crossOrange="true" class="event-page__side-buttons" />
 			</div>
 			<div class="two-part-layout">
 				<main class="two-part-layout__left">
-					<BeachEventMainInfo :data="$store.state.eventMainData" />
+					<button class="event-page__hearts" @click="updateHeart()">
+						<img src="~/static/pics/global/svg/heart_button_unclicked.svg" v-show="!liked">
+						<img src="~/static/pics/global/svg/heart_button_clicked.svg" v-show="liked">
+						<span>({{ $store.state.eventMainData.likes + (liked ? 1 : 0) }}) Добавить в избранное</span>
+					</button>
+					<BeachEventMainInfo :data="$store.state.eventMainData" class="event-page__main-info" />
 					<BeachEventMapWeather :data="$store.state.mapWeatherEventData" class="beach-event__map-weather__event-page" />
 					<BeachEventAbout id="id-0" :data="$store.state.eventAbout" />
 					<BeachEventParkingsTransport id="id-1" :data="$store.state.parkingTransportMapData" />
@@ -54,6 +59,30 @@
 			BeachEventMapWeather,
 			BeachEventSideButtons,
 			BeachEvents
+		},
+
+		data() {
+			return {
+				liked: false
+			}
+		},
+
+		mounted() {
+			this.$bus.$on('pToggleFavorites', () => {
+				this.liked = !this.liked;
+			})
+		},
+
+		methods: {
+			updateHeart() {
+				if (this.liked)
+					this.$bus.$emit('decreaseFavorites');
+				else this.$bus.$emit('increaseFavorites');
+
+				this.$bus.$emit('cToggleFavorites');
+
+				this.liked = !this.liked;
+			}
 		}
 	}
 </script>

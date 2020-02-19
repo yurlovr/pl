@@ -27,6 +27,10 @@
         window.history.scrollRestoration = 'auto';
       }
 
+      window.addEventListener('click', () => {
+        this.$bus.$emit('vselectclose');
+      });
+
       function watchForHover() {
         let hasHoverClass = false;
         let container = document.body;

@@ -12,13 +12,13 @@
 			return {
 				coords: [44.50465522867475, 34.21493291965433],
                 zoom: 8,
-                address: [
+                addressBeachesChunk: [
                     {
                         lat: 44.521199755999035,
                         lng: 34.15580509752773
                     },
                 ],
-                address_beaches: [
+                addressBeaches: [
                     {
                         lat: 44.51942103736535,
                         lng: 34.258601507843714
