@@ -3,8 +3,8 @@
         <div class="custom-container">
             <h3 class="main-page__section-title">Карта пляжей Крыма</h3>
         </div>
-        <div class="overlay-map">
-            <MapBeaches :data="data.mapBeachesData" v-if="step == 2"/>
+        <div class="main-page__map-inner">
+            <MapBeaches :data="data.addressBeaches" v-show="step == 2"/>
             <Map :addressBeaches="data.addressBeaches" :center="data.center" />
         </div>
     </section>
