@@ -6,7 +6,7 @@
     <Search class="main-page__welcome__search" labelId="1" />
     <BeachSliderArea class="main-page__popular-beaches" :data="$store.state.beachSliderData" :areaData="mostPopularBeachesAreaData" />
     <Cities :data="cityBeaches" />
-    <Map :data="mapData" />
+    <MapArea :data="mapData" />
     <BeachEntranceFree />
     <div class="main-page__white-wrapper"><BeachSliderArea :data="familyData" :areaData="familyAreaData" class="main-page__family-rest" /></div>
     <BeachEvents :data="$store.state.beachEventsSliderData" :areaData="beachEventsData" />
@@ -37,7 +37,7 @@
   import YouNeedThis from '~/components/pages/main/YouNeedThis';
   import WeatherSliderArea from '~/components/pages/main/WeatherSliderArea';
   import DynamicSliderArea from '~/components/pages/main/DynamicSliderArea';
-  import Map from '~/components/pages/main/Map';
+  import MapArea from '~/components/pages/main/MapArea';
   import {mapActions,mapState } from 'vuex'
   export default {
     components: {
@@ -45,7 +45,7 @@
       Welcome,
       BeachSliderArea,
       Cities,
-      Map,
+      MapArea,
       BeachEntranceFree,
       BeachEvents,
       ChooseBeach,
@@ -168,244 +168,46 @@
           ]
         },
         mapData: {
-          center: { lat: 45.1291821, lng: 33.6680399 },
-          options: {
-            zoomControl: true,
-            mapTypeControl: false,
-            scaleControl: false,
-            streetViewControl: false,
-            rotateControl: false,
-            fullscreenControl: false,
-            disableDefaultUi: false,
-            styles:[
+          center: [44.50465522867475, 34.21493291965433],
+          addressBeaches: [
               {
-                "featureType": "all",
-                "elementType": "labels.text.fill",
-                "stylers": [
-                  {
-                    "saturation": 36
-                  },
-                  {
-                    "color": "#333333"
-                  },
-                  {
-                    "lightness": 40
-                  }
-                ]
-              },
-              {
-                "featureType": "all",
-                "elementType": "labels.text.stroke",
-                "stylers": [
-                  {
-                    "visibility": "on"
-                  },
-                  {
-                    "color": "#ffffff"
-                  },
-                  {
-                    "lightness": 16
-                  }
-                ]
-              },
-              {
-                "featureType": "all",
-                "elementType": "labels.icon",
-                "stylers": [
-                  {
-                    "visibility": "off"
-                  }
-                ]
-              },
-              {
-                "featureType": "administrative",
-                "elementType": "geometry.fill",
-                "stylers": [
-                  {
-                    "color": "#fefefe"
-                  },
-                  {
-                    "lightness": 20
-                  }
-                ]
-              },
-              {
-                "featureType": "administrative",
-                "elementType": "geometry.stroke",
-                "stylers": [
-                  {
-                    "color": "#fefefe"
-                  },
-                  {
-                    "lightness": 17
-                  },
-                  {
-                    "weight": 1.2
-                  }
-                ]
-              },
-              {
-                "featureType": "landscape",
-                "elementType": "all",
-                "stylers": [
-                  {
-                    "visibility": "on"
-                  }
-                ]
-              },
-              {
-                "featureType": "landscape",
-                "elementType": "geometry",
-                "stylers": [
-                  {
-                    "color": "#f5f5f5"
-                  },
-                  {
-                    "lightness": 20
-                  }
-                ]
-              },
-              {
-                "featureType": "poi",
-                "elementType": "all",
-                "stylers": [
-                  {
-                    "visibility": "off"
-                  }
-                ]
-              },
-              {
-                "featureType": "poi",
-                "elementType": "geometry",
-                "stylers": [
-                  {
-                    "color": "#f5f5f5"
-                  },
-                  {
-                    "lightness": 21
-                  }
-                ]
-              },
-              {
-                "featureType": "poi.attraction",
-                "elementType": "all",
-                "stylers": [
-                  {
-                    "visibility": "off"
-                  }
-                ]
-              },
-              {
-                "featureType": "poi.park",
-                "elementType": "geometry",
-                "stylers": [
-                  {
-                    "color": "#dedede"
-                  },
-                  {
-                    "lightness": 21
-                  }
-                ]
-              },
-              {
-                "featureType": "road",
-                "elementType": "all",
-                "stylers": [
-                  {
-                    "visibility": "off"
-                  }
-                ]
-              },
-              {
-                "featureType": "road.highway",
-                "elementType": "geometry.fill",
-                "stylers": [
-                  {
-                    "color": "#ffffff"
-                  },
-                  {
-                    "lightness": 17
-                  }
-                ]
-              },
-              {
-                "featureType": "road.highway",
-                "elementType": "geometry.stroke",
-                "stylers": [
-                  {
-                    "color": "#ffffff"
-                  },
-                  {
-                    "lightness": 29
-                  },
-                  {
-                    "weight": 0.2
-                  }
-                ]
-              },
-              {
-                "featureType": "road.arterial",
-                "elementType": "geometry",
-                "stylers": [
-                  {
-                    "color": "#ffffff"
-                  },
-                  {
-                    "lightness": 18
-                  }
-                ]
-              },
-              {
-                "featureType": "road.local",
-                "elementType": "geometry",
-                "stylers": [
-                  {
-                    "color": "#ffffff"
-                  },
-                  {
-                    "lightness": 16
-                  }
-                ]
-              },
-              {
-                "featureType": "transit",
-                "elementType": "geometry",
-                "stylers": [
-                  {
-                    "color": "#f2f2f2"
-                  },
-                  {
-                    "lightness": 19
-                  }
-                ]
-              },
-              {
-                "featureType": "water",
-                "elementType": "geometry",
-                "stylers": [
-                  {
-                    "color": "#e9e9e9"
-                  },
-                  {
-                    "lightness": 17
-                  }
-                ]
+                  chunkCenter: [ 44.521199755999035, 34.15580509752773 ],
+                  beaches: [
+                      {
+                          pos: [44.51942103736535, 34.258601507843714],
+                          pics: [
+                              '/pics/main/section1_beach1.png',
+                              '/pics/main/section1_beach2.png'
+                          ],
+                          rating: 5.0,
+                          favorite: false,
+                          title: 'Массандровский пляж',
+                          location: 'алушта, КРЫМ'
+                      },
+                      {
+                          pos: [44.55842103736535, 34.258601507843714],
+                          pics: [
+                              '/pics/main/section1_beach3.png',
+                              '/pics/main/section1_beach4.png'
+                          ],
+                          rating: 5.0,
+                          favorite: false,
+                          title: 'Пляж «Лазурный берег»',
+                          location: 'алушта, КРЫМ'
+                      },
+                      {
+                          pos: [44.5449734958915, 34.265251523169956],
+                          pics: [
+                              '/pics/main/section1_beach2.png',
+                              '/pics/main/section1_beach3.png'
+                          ],
+                          rating: 4.0,
+                          favorite: false,
+                          title: 'Массандровский пляж',
+                          location: 'алушта, КРЫМ'
+                      }
+                  ]
               }
-            ]
-          },
-          markers: [
-            {
-                lat: 45.1291821,
-                lng: 33.6680399
-            },
-            {
-                lat: 45.5291821,
-                lng: 33.6680399
-            },
-            {
-                lat: 44.5291821,
-                lng: 33.6680399
-            }
           ]
         },
         familyData: {

@@ -8,31 +8,13 @@
 	import ymaps from "ymaps";
 
 	export default {
-		props: ['data'],
+		props: ['addressBeaches', 'center'],
 
 		data() {
 			return {
-				coords: [44.50465522867475, 34.21493291965433],
                 zoom: 8,
-                addressBeaches: [
-                    {
-                        chunk: [ 44.521199755999035, 34.15580509752773 ],
-                        beaches: [
-                            {
-                                pos: [44.51942103736535, 34.258601507843714]
-                            },
-                            {
-                                pos: [44.55842103736535, 34.258601507843714]
-                            },
-                            {
-                                pos: [44.5449734958915, 34.265251523169956]
-                            }
-                        ]
-                    }
-                ],
-                hover: -1,
+                // hover: -1,
                 chosen: -1,
-                step: 1,
                 curSwiper: null,
                 map: null
 			}
@@ -45,7 +27,7 @@
                       .load()
                       .then(maps => {
                         this.map = new maps.Map(document.getElementById('map'), {
-                          center: this.coords,
+                          center: this.center,
                           zoom: this.zoom,
                           controls: []
                         });
@@ -57,32 +39,72 @@
                             }
                         });
 
-                        let circleOrangeStep1 = maps.templateLayoutFactory.createClass(
+                        let iconStep1 = maps.templateLayoutFactory.createClass(
                             '<div class="map__circle-orange step-1"><span>$[properties.iconContent]</span></div>'
                         );
 
-                        let curPlacemark;
+                        let iconStep2 = maps.templateLayoutFactory.createClass(
+                            `<div class="map__beach-icon step-2"></div>`
+                        );
+
+                        let curPlacemark, step1s = [], step2s = [], counterForChosen = 1;
+                        // step 1 markers
                         for (let i = 0; i < this.addressBeaches.length; i++) {
-                            this.map.geoObjects.add(curPlacemark = new maps.Placemark(this.addressBeaches[i].chunk,
+                            this.map.geoObjects.add(curPlacemark = new maps.Placemark(this.addressBeaches[i].chunkCenter,
                             {
                                 iconContent: this.addressBeaches[i].beaches.length,
                             },
                             {
                                 iconLayout: 'default#imageWithContent',
+                                iconImageHref: '',
                                 iconImageSize: [50,50],
                                 iconImageOffset: [-25, -25],
-                                iconContentLayout: circleOrangeStep1
+                                iconContentLayout: iconStep1
                             }));
 
                             curPlacemark.events.add('click', () => {
-                                this.step = 2;
                                 this.zoom = 12;
                                 this.map.setZoom(this.zoom);
-                                curPlacemark.options.set('visible', false);
+                                for (let j = 0; j < step1s.length; j++)
+                                    step1s[j].options.set('visible', false);
+                                for (let j = 0; j < step2s.length; j++)
+                                    step2s[j].options.set('visible', true);
                             });
+
+                            step1s.push(curPlacemark);
+
+                            // step 2 markers
+                            for (let j = 0; j < this.addressBeaches[i].beaches.length; j++) {
+                                this.map.geoObjects.add(curPlacemark = new maps.Placemark(this.addressBeaches[i].beaches[j].pos,
+                                    {
+                                        balloonContent: 'hi'
+                                    },
+                                    {
+                                        iconLayout: 'default#imageWithContent',
+                                        iconImageHref: '',
+                                        iconContentLayout: iconStep2,
+                                        balloonShadow: false,
+                                        iconImageSize: [27,38],
+                                        iconImageOffset: [-13.5, -19],
+                                        hideIconOnBalloonOpen: false,
+                                        balloonOffset: [3, -40]
+                                    }
+                                ));
+
+                                curPlacemark.options.set('visible', false);
+
+                                curPlacemark.events.add('click', () => {
+                                    if (this.chosen != -1)
+                                        document.getElementById(`step-2-${this.chosen}`).classList.remove('active');
+                                    this.chosen = counterForChosen;
+                                    document.getElementById(`step-2-${this.chosen}`).classList.add('active');
+                                });
+
+                                step2s.push(curPlacemark);
+
+                                counterForChosen++;
+                            }
                         }
-
-
                       })
                       .catch(error => console.log('Failed to load Yandex Maps, ', error))
                 }, 1);

@@ -4448,6 +4448,19 @@ input { &::-ms-clear { display: none; } }
       }
     }
   }
+
+  &__beach-icon {
+    width: 27px;
+    height: 38px;
+    background-image: url('../../static/pics/global/svg/map_beach_blue.svg');
+    background-repeat: no-repeat;
+    background-position: center;
+
+
+    &.active {
+      background-image: url('../../static/pics/global/svg/map_beach_gold.svg');
+    }
+  }
 }
 
 .card-grid {
