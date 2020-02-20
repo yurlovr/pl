@@ -115,7 +115,7 @@
 			},
 
 			scrollToCard(i) {
-				this.$el.querySelector('.scroll-area').scrollTop = this.$el.querySelector(`#smc-${i}`).offsetTop - this.$el.querySelector('.search-page__map-area__info-area.scroller').offsetTop;
+				this.$el.querySelector('.scroll-area').scrollTop = this.$el.querySelector(`#smc-${i}`).offsetTop - this.$el.querySelector('.search-page__map-area__info-area.scroller').offsetTop + 100;
 				this.activeCard = i;
 				if (this.mySwiper)
 					this.mySwiper.slideTo(i);

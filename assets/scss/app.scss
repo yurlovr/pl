@@ -301,7 +301,7 @@ input { &::-ms-clear { display: none; } }
   height: 100vh;
   transition: opacity 1s ease;
   background: white;
-  z-index: 12000;
+  z-index: 100;
   @include flex-center;
 }
 
@@ -375,7 +375,7 @@ input { &::-ms-clear { display: none; } }
   position: fixed;
   width: 100%;
   height: 90px;
-  z-index: 10001;
+  z-index: 99;
 
   &__inner {
     display: flex;
@@ -1144,11 +1144,19 @@ input { &::-ms-clear { display: none; } }
       width: 100vw;
     }
 
+    .swiper-container {
+      padding-top: 10px;
+    }
+
     &-inner {
       overflow: hidden;
       display: flex;
       width: 100%;
       max-width: 100vw;
+
+      .scroll-area {
+        padding-top: 10px;
+      }
     }
 
     &__return {
@@ -1160,7 +1168,7 @@ input { &::-ms-clear { display: none; } }
       background: white;
       border: none;
       @include flex-center;
-      z-index: 10000;
+      z-index: 1;
       border-radius: 50%;
       box-shadow: 0px 4px 16px rgba(0, 0, 0, 0.1);
 
@@ -4286,6 +4294,7 @@ input { &::-ms-clear { display: none; } }
 
         .swiper-container {
           border-radius: 12px;
+          padding-top: 0;
         }
 
         .slider {
@@ -4341,6 +4350,10 @@ input { &::-ms-clear { display: none; } }
             margin: 0 3px;
             width: 4px;
             height: 4px;
+
+            &:focus {
+              outline: none;
+            }
 
             &-active {
               width: 6px;
@@ -4483,6 +4496,32 @@ input { &::-ms-clear { display: none; } }
     width: 27px;
     height: 38px;
   }
+
+  &__zoom {
+    width: 50px;
+    height: 50px;
+    @include flex-center;
+    margin-bottom: 10px;
+    border-radius: 50%;
+    background: white;
+    border: none;
+    box-shadow: 4px 4px 6px rgba(0, 0, 0, 0.1);
+
+    &:focus {
+      outline: none;
+    }
+
+    &:last-of-type {
+      margin-bottom: 0;
+    }
+
+    &-wrapper {
+      position: absolute;
+      bottom: 30px;
+      right: 30px;
+      z-index: 1;
+    }
+  }
 }
 
 .card-grid {
@@ -4506,6 +4545,16 @@ input { &::-ms-clear { display: none; } }
 // fixing
 // main page's map
 @media (max-width: 1400px) {
+  .search-page {
+    &__map-area {
+      &__info-area {
+        min-height: 500px;
+        max-height: 500px;
+        height: auto;
+      }
+    }
+  }
+
   .main-page__map {
     .map {
       min-height: 500px;
@@ -4765,22 +4814,13 @@ input { &::-ms-clear { display: none; } }
 
   .search-page {
     &__map-area {
-      .main-page__map {
-        min-height: 600px;
-        height: 70vh;
-      }
-
-      .overlay-map {
-        height: 100%;
-
-        .ymap-container, [class*="ymaps-2-"][class*="-map"]:not([class*="promo"]) {
-          height: 70vh !important;
-        }
-      }
-
       &__card {
         flex-direction: column;
         height: unset;
+
+        &:last-of-type {
+          margin-bottom: 20px;
+        }
 
         &__pic-area {
           border-radius: 8px 8px 0 0;
@@ -4793,7 +4833,6 @@ input { &::-ms-clear { display: none; } }
       }
 
       &__info-area {
-        padding-top: 30px;
         padding-right: 20px;
         padding-left: 20px;
         min-width: 400px;
@@ -6331,24 +6370,21 @@ input { &::-ms-clear { display: none; } }
         &__modal {
           display: block;
           background: white;
-          max-width: 300px;
+          max-width: 320px;
           width: 100%;
           position: fixed;
           left: 50%;
           transform: translate(-50%, 100vh);
           bottom: 0;
           transition: transform .2s ease;
-          z-index: 12;
+          z-index: 100;
           border-radius: 12px;
           padding: 0;
 
-          .main-page {
-            &__card {
-              &__info-area {
-                &__button {
-                  margin: 20px;
-                  margin-top: 0;
-                }
+          .search-page {
+            &__map-area {
+              &__card {
+                margin-right: 0;
               }
             }
           }
@@ -7478,6 +7514,12 @@ input { &::-ms-clear { display: none; } }
         }
       }
     }
+
+    &__map {
+      .main-page__section-title {
+        margin-bottom: 20px;
+      }
+    }
   }
 
   .heart {
@@ -8265,6 +8307,14 @@ body.touch {
 
         &__info-area {
           background: white !important;
+        }
+      }
+    }
+
+    &__arrow {
+      &-left, &-right {
+        &-balloon {
+          opacity: 0 !important;
         }
       }
     }
