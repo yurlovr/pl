@@ -25,7 +25,6 @@
                     :class="{ active : modalOpen }"
                 >
                     <div class="beach-page__water-temp__year-month">
-                        {{activeMonth}}
                         <button
                             class="slider-weather__month"
                             :class="{ active : activeMonth == -1 }"
