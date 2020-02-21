@@ -1,6 +1,15 @@
 <template>
     <section class="beach-page__barsNrestos">
-        <h2 class="two-part-layout__card__title beach-page__barsNrestos__title">Бары и рестораны</h2>
+        <div class="swiper-bar-display_mobile">
+            <h2 class="two-part-layout__card__title beach-page__barsNrestos__title">Бары и рестораны</h2>
+            <a
+                href="#"
+                class="beach-page__barsNrestos__online-service "
+            >
+                <img src="~/static/pics/beach/online_service.svg">
+                <span>Онлайн обслуживание</span>
+            </a>
+        </div>
         <div v-swiper:mySwiper="swiperOption">
             <div class="swiper-wrapper">
                 <div
@@ -8,15 +17,6 @@
                     v-for="(item, i) in data"
                     :key="i"
                 >
-                    <div>
-                        <a
-                            href="#"
-                            class="beach-page__barsNrestos__online-service swiper-bar-display_none"
-                        >
-                            <img src="~/static/pics/beach/online_service.svg">
-                            <span>Онлайн <br>обслуживание</span>
-                        </a>
-                    </div>
                     <div class="beach-page__barsNrestos__subtitle-area">
                         <h3 class="beach-page__barsNrestos__subtitle">{{ item.title }}</h3>
 
@@ -93,15 +93,35 @@ export default {
 <style lang="scss" scoped>
 .swiper-bar-display {
     display: block;
-    &_none {
+    &_mobile a {
         display: none;
     }
 }
 @media (max-width: 768px) {
     .swiper-bar-display {
         display: none;
-        &_none {
+        &_mobile {
             display: flex;
+            justify-content: space-between;
+            a {
+                display: flex;
+                margin: 0;
+            }
+            h2 {
+                margin: 10px 0;
+            }
+        }
+    }
+}
+@media (max-width: 680px) {
+    .swiper-bar-display {
+        display: none;
+        &_mobile {
+            display: block;
+            a {
+                display: flex;
+                margin: 15px 0;
+            }
         }
     }
 }
