@@ -1,21 +1,25 @@
 <template>
     <div class="beach-event__side-buttons">
-        <button v-if="showShare">
-            <img src="~/static/pics/global/svg/mail.svg">
-        </button>
-        <button v-if="showShare">
-            <img src="~/static/pics/global/svg/telegram-side.svg">
-        </button>
+        <transition name="bounce">
+            <button v-show="showShare">
+                <img src="~/static/pics/global/svg/mail.svg">
+            </button>
+        </transition>
+        <transition name="bounce">
+            <button v-show="showShare">
+                <img src="~/static/pics/global/svg/telegram-side.svg">
+            </button>
+        </transition>
         <button
             class="bg-orange"
-            v-if="showShare"
+            v-show="showShare"
             @click="showShare = !showShare"
         >
             <img src="~/static/pics/global/svg/cross.svg">
         </button>
         <button
             class="bg-orange"
-            v-if="!showShare"
+            v-show="!showShare"
             @click="showShare = !showShare"
         >
             <img src="~/static/pics/global/svg/share.svg">
@@ -23,24 +27,31 @@
 
         <button
             class="bg-blue"
-            v-if="!showPave"
+            v-show="!showPave"
             @click="showPave = !showPave"
         >
             <img src="~/static/pics/global/svg/pave_way.svg">
         </button>
         <button
             class="bg-blue"
-            v-if="showPave"
+            v-show="showPave"
             @click="showPave = !showPave"
         >
             <img src="~/static/pics/global/svg/cross.svg">
         </button>
-        <button v-if="ymaps && showPave">
-            <img src="~/static/pics/global/svg/ymaps.svg">
-        </button>
-        <button v-if="yandex && showPave">
-            <img src="~/static/pics/global/svg/yandex.svg">
-        </button>
+        <transition name="bounce">
+            <button v-show="ymaps && showPave">
+                <img src="~/static/pics/global/svg/ymaps.svg">
+            </button>
+        </transition>
+        <transition name="bounce">
+            <button
+                v-show="yandex && showPave"
+                class="btn-display"
+            >
+                <img src="~/static/pics/global/svg/yandex.svg">
+            </button>
+        </transition>
     </div>
 </template>
 
@@ -53,5 +64,45 @@ export default {
             showPave: false
         };
     },
+
 }
 </script>
+<style lang="scss" scoped>
+.bounce-enter-active {
+    animation: bounce-in 0.5s;
+}
+.bounce-leave-active {
+    animation: bounce-in 0.5s reverse;
+}
+@keyframes bounce-in {
+    0% {
+        transform: scale(0);
+        height: 10px;
+    }
+
+    50% {
+        transform: scale(1.5);
+        height: 60px;
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+// .fade-enter-active,
+// .fade-leave-active {
+//     transition: opacity 1.5s;
+// }
+// .fade-enter, .fade-leave-to /* .fade-leave-active до версии 2.1.8 */ {
+//     opacity: 0;
+// }
+
+.btn-display {
+    display: block;
+}
+
+@media (max-width: 680px) {
+    .btn-display {
+        display: none;
+    }
+}
+</style>
