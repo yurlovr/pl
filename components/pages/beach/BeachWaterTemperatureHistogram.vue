@@ -34,7 +34,7 @@
                             class="slider-weather__month"
                             :class="{ active : activeMonth > -1 }"
                             @click="handlerActiveMonth"
-                        ><span>Месяц</span></button>
+                        ><span style="cursor: pointer;">Месяц</span></button>
                     </div>
                     <div
                         class="beach-page__water-temp__histogram"
