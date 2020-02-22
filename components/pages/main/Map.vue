@@ -81,10 +81,6 @@
                             const objectId = e.get('objectId');
                             if (e.get('type') == 'click') {
                                 this.zoom = 12;
-                                console.log([
-                                        this.addressBeaches[e.originalEvent.currentTarget._objectsById[0].id].beaches.reduce((a, b) => { if (typeof a === 'object') a = a.pos[0]; return a + b.pos[0]; }) / this.addressBeaches[e.originalEvent.currentTarget._objectsById[0].id].beaches.length,
-                                        this.addressBeaches[e.originalEvent.currentTarget._objectsById[0].id].beaches.reduce((a, b) => { if (typeof a === 'object') a = a.pos[1]; return a + b.pos[1]; }) / this.addressBeaches[e.originalEvent.currentTarget._objectsById[0].id].beaches.length
-                                    ])
                                 this.map.setCenter(
                                     [
                                         this.addressBeaches[e.originalEvent.currentTarget._objectsById[0].id].beaches.reduce((a, b) => { if (typeof a === 'object') a = a.pos[0]; return a + b.pos[0]; }) / this.addressBeaches[e.originalEvent.currentTarget._objectsById[0].id].beaches.length,
@@ -113,16 +109,22 @@
                                     });
                                 }
                             } else if (e.get('type') == 'click') {
-                                if (this.chosen != -1) {
+                                // open the balloon
+                                if (this.chosen != objectId) {
+                                    if (this.chosen != -1) {
+                                        step2ObjectManager.objects.setObjectOptions(this.chosen, {
+                                            iconImageHref: '/pics/global/svg/map_beach_blue.svg'
+                                        });
+                                    }
+                                    this.chosen = objectId;
                                     step2ObjectManager.objects.setObjectOptions(this.chosen, {
-                                        iconImageHref: '/pics/global/svg/map_beach_blue.svg'
+                                        iconImageHref: '/pics/global/svg/map_beach_gold.svg'
                                     });
+                                    this.$bus.$emit('goToCard', this.chosen);
+                                // close the balloon
+                                } else {
+                                    closeBalloon();
                                 }
-                                this.chosen = objectId;
-                                step2ObjectManager.objects.setObjectOptions(this.chosen, {
-                                    iconImageHref: '/pics/global/svg/map_beach_gold.svg'
-                                });
-                                this.$bus.$emit('goToCard', this.chosen);
                             }
                         }
 
@@ -161,8 +163,6 @@
 
                             // step 2 markers
                             for (let j = 0; j < this.addressBeaches[i].beaches.length; j++) {
-
-
                                 // adding the balloon
                                 let slides = [];
 
@@ -224,6 +224,16 @@
                                         this.swiper.destroy();
 
                                         this.constructor.superclass.clear.call(this);
+                                    },
+
+                                    getShape() {
+                                        return new maps.shape.Rectangle(new maps.geometry.pixel.Rectangle([
+                                            [25, 0], [275, 0] // balloon's width is always 300 and -25 for the margin
+                                        ]));
+                                    },
+
+                                    _isElement(element) {
+                                        return element && element[0];
                                     }
                                 });
 
@@ -240,15 +250,15 @@
                                             iconLayout: 'default#imageWithContent',
                                             iconImageHref: '/pics/global/svg/map_beach_blue.svg',
                                             iconContentLayout: iconStep2,
-                                            balloonShadow: false,
                                             iconImageSize: [40,53],
                                             iconImageOffset: [-18, -50],
                                             hideIconOnBalloonOpen: false,
+                                            balloonShadow: false,
                                             balloonLayout: balloonLayout,
                                             balloonContentLayout: '',
                                             balloonOffset: [-151, -345],
                                             balloonPane: 'balloon',
-                                            ballonAutoPan: true,
+                                            balloonAutoPan: true,
                                             balloonPanelMaxMapArea: 0
                                         }
                                     }]
@@ -277,13 +287,18 @@
                         // closing balloon on map click
                         this.map.events.add('click', (e) => {
                             if(e.get('target') === this.map) {
-                                step2ObjectManager.objects.setObjectOptions(this.chosen, {
-                                    iconImageHref: '/pics/global/svg/map_beach_blue.svg'
-                                });
-                                this.chosen = -1;
-                                this.map.balloon.close();
+                                closeBalloon();
                             }
                         });
+
+                        const closeBalloon = () => {
+                            step2ObjectManager.objects.setObjectOptions(this.chosen, {
+                                iconImageHref: '/pics/global/svg/map_beach_blue.svg'
+                            });
+                            this.chosen = -1;
+                            this.map.balloon.close();
+                            this.$bus.$emit('releaseSelection');
+                        }
                       })
                       .catch(error => console.log('Failed to load Yandex Maps, ', error))
                 }, 1);

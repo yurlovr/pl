@@ -14,7 +14,7 @@ export const mutations = {
 
 
 export const actions = {
-    async getPopularBeach({commit}) {
+    async getPopularBeaches({commit}) {
         const data = await this.$axios.$get('/beach/top');
         commit('SET_POPULAR_BEACH', data)
     },

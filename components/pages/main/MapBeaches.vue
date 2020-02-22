@@ -134,6 +134,10 @@
 				}
 			})
 
+			this.$bus.$on('releaseSelection', () => {
+				this.activeCard = -1;
+			})
+
 			this.mySwiper.init(this.swiperOption);
 		},
 

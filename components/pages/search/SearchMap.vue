@@ -87,6 +87,11 @@
                                     });
                                 }
                             } else if (e.get('type') == 'click') {
+                                if (this.chosen == objectId) {
+                                    this.$bus.$emit('closeModalAndUnscrollToCard');
+                                    return;
+                                }
+
                                 if (this.chosen != -1) {
                                     objectManager.objects.setObjectOptions(this.chosen, {
                                         iconImageHref: '/pics/global/svg/map_beach_blue.svg'
@@ -101,6 +106,15 @@
                             }
                         }
                         objectManager.objects.events.add(['mouseenter', 'mouseleave', 'click'], objectEvent);
+
+                        this.$bus.$on('modalClosed', () => {
+                            objectManager.objects.setObjectOptions(this.chosen, {
+                                iconImageHref: '/pics/global/svg/map_beach_blue.svg'
+                            });
+                            this.chosen = -1;
+                        });
+
+                        this.$bus.$on('log', m => console.log(m));
 
                         // placing the markers
                         for (let i = 0; i < this.beaches.length; i++) {

@@ -12,7 +12,7 @@ eventBus.install = function (Vue) {
 		}
 		Vue.prototype.$bus.$emit('transition');
 		Vue.prototype.$bus.$emit('hideParams');
-		setTimeout(() => { router.push(link) }, 500);
+		setTimeout(() => { router.push(link) }, 600);
 	};
 }
 
