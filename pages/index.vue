@@ -41,7 +41,9 @@ import YouNeedThis from '~/components/pages/main/YouNeedThis';
 import WeatherSliderArea from '~/components/pages/main/WeatherSliderArea';
 import DynamicSliderArea from '~/components/pages/main/DynamicSliderArea';
 import MapArea from '~/components/pages/main/MapArea';
+
 import { mapActions, mapState } from 'vuex';
+
 export default {
   components: {
     Search,
@@ -62,39 +64,10 @@ export default {
   mounted() {
     this.$bus.$emit('dontShowSearch');
 
-    let scrollTop;
-    let onScroll = () => {
-      if (document.querySelector('.main-page')) {
-        scrollTop = window.scrollY || document.body.scrollTop || document.documentElement.scrollTop;
-
-        // show or hide the search background and the bar depending on the scroll
-        if (window.innerWidth > 900 && scrollTop >= 346 || window.innerWidth <= 900 && window.innerWidth > 800 && scrollTop >= 230 || window.innerWidth <= 800 && window.innerWidth > 500 && scrollTop >= 75 || window.innerWidth <= 500 && scrollTop >= 20) {
-          this.$bus.$emit("showHeaderBgAndBar");
-        } else {
-          this.$bus.$emit("hideHeaderBgAndBar");
-        }
-      } else {
-        window.removeEventListener('scroll', onScroll, false);
-      }
-    };
-
-    let onResize = () => {
-      if (document.querySelector('.main-page')) {
-        // correct the text for the mobile
-        if (window.innerWidth <= 650) {
-          this.$bus.$emit('showCorrectSelectText');
-        } else {
-          this.$bus.$emit('dontShowCorrectSelectText');
-        }
-      } else {
-        window.removeEventListener('scroll', onScroll, false);
-      }
-    };
-
-    window.addEventListener('scroll', onScroll, false);
-    window.addEventListener('resize', onResize, false);
-    onScroll();
-    onResize();
+    window.addEventListener('scroll', this.onScroll, false);
+    window.addEventListener('resize', this.onResize, false);
+    this.onScroll();
+    this.onResize();
   },
 
   data() {
@@ -171,8 +144,7 @@ export default {
       },
       mapData: {
         center: [44.50465522867475, 34.21493291965433],
-        addressBeaches: [{
-          chunkCenter: [44.521199755999035, 34.15580509752773],
+        addressBeaches: [{ // cluster 1
           beaches: [{
               pos: [44.51942103736535, 34.258601507843714],
               pics: [
@@ -1396,22 +1368,49 @@ export default {
           link: '/'
         }
       ]
-    };
+    }
   },
+
   created() {
-    this.getPopularBeach();
+    this.getPopularBeaches();
     this.getCities();
   },
+
   methods: {
-    ...mapActions('beach', ['getPopularBeach']),
+    ...mapActions('beach', ['getPopularBeaches']),
     ...mapActions('beach', ['getCities']),
+
+    onScroll() {
+      let scrollTop = window.scrollY || document.body.scrollTop || document.documentElement.scrollTop;
+
+      // show or hide the search background and the bar depending on the scroll
+      if (window.innerWidth > 900 && scrollTop >= 346 || window.innerWidth <= 900 && window.innerWidth > 800 && scrollTop >= 230 || window.innerWidth <= 800 && window.innerWidth > 500 && scrollTop >= 75 || window.innerWidth <= 500 && scrollTop >= 20) {
+        this.$bus.$emit("showHeaderBgAndBar");
+      } else {
+        this.$bus.$emit("hideHeaderBgAndBar");
+      }
+    },
+
+    onResize() {
+      // correct the text for the mobile
+      if (window.innerWidth <= 650) {
+        this.$bus.$emit('showCorrectSelectText');
+      } else {
+        this.$bus.$emit('dontShowCorrectSelectText');
+      }
+    }
   },
+
   computed: {
     ...mapState('beach', ['popular_beaches']),
     ...mapState('beach', ['cities']),
   },
-};
 
-// all slide data will be here
-
+  beforeRouteLeave(to, from, next) {
+    window.removeEventListener('scroll', this.onScroll, false);
+    window.removeEventListener('resize', this.onResize, false);
+    this.$bus.$emit("showHeaderBgAndBar");
+    next();
+  }
+}
 </script>

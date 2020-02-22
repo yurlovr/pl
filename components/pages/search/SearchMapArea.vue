@@ -19,12 +19,15 @@
 				</div>
 			</div>
 		</div>
-		<div class="search-page__map-area__info-area search-page__map-area__info-area__modal" :style="{ transform: `translate(-50%, ${modalY}px)` }">
-			<SearchMapCard :data="data[indexToShow]" />
-			<button class="search-page__map-area__info-area__modal__close-button" @click="closeModal()">
-				<img src="~/static/pics/global/svg/cross_blue.svg">
-			</button>
-			<a href="/search" @click.prevent="$bus.goTo('/', $router)" class="main-page__card__info-area__button"><span>Подробнее</span></a>
+		<div class="search-page__map-area__info-area__modal-bg" :class="{ active: indexToShow != -1 }" @click="closeModal()"></div>
+		<div class="search-page__map-area__info-area search-page__map-area__info-area__modal" :class="{ active: indexToShow != -1 }">
+			<SearchMapCard :data="data[indexToShow == -1 ? 0 : indexToShow]" />
+			<div class="search-page__map-area__info-area__modal__close-button-wrapper">
+				<button class="search-page__map-area__info-area__modal__close-button" @click="closeModal()">
+					<img src="~/static/pics/global/svg/cross_blue.svg">
+				</button>
+				<a href="/search" @click.prevent="$bus.goTo('/', $router)" class="main-page__card__info-area__button"><span>Подробнее</span></a>
+			</div>
 		</div>
 		<SearchMap />
 	</section>
@@ -63,8 +66,7 @@
 				activeIndex: 0,
 				activeCard: -1,
 				minus: 1,
-				indexToShow: 0, // for mobile
-				modalY: '',
+				indexToShow: -1, // for mobile
 				options: {
 					swipeEasing: true
 				}
@@ -91,8 +93,14 @@
 				this.openModal(i);
 			});
 
+			this.$bus.$on('closeModalAndUnscrollToCard', (i) => {
+				this.closeModal();
+				this.activeCard = -1;
+			});
+
 			this.$bus.$on('updateScrollbar', (i) => {
-				setTimeout(() => { this.$refs.scroll.update() }, 1);
+				if (this.$refs.scroll && window.innerWidth > 720)
+					setTimeout(() => { this.$refs.scroll.update() }, 1);
 			});
 
 			this.closeModal();
@@ -107,15 +115,15 @@
 
 			openModal(i) {
 				this.indexToShow = i;
-				setTimeout(() => { this.modalY = -30; }, 10);
 			},
 
 			closeModal() {
-				this.modalY = window.innerHeight;
+				this.indexToShow = -1;
+				this.$bus.$emit('modalClosed');
 			},
 
 			scrollToCard(i) {
-				this.$el.querySelector('.scroll-area').scrollTop = this.$el.querySelector(`#smc-${i}`).offsetTop - this.$el.querySelector('.search-page__map-area__info-area.scroller').offsetTop;
+				this.$el.querySelector('.scroll-area').scrollTop = this.$el.querySelector(`#smc-${i}`).offsetTop - this.$el.querySelector('.search-page__map-area__info-area.scroller').offsetTop + 100;
 				this.activeCard = i;
 				if (this.mySwiper)
 					this.mySwiper.slideTo(i);

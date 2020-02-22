@@ -298,11 +298,11 @@
 						pic: '/pics/main/section1_beach4.png',
 						title: 'Массандровский пляж',
 						location: 'Ялта, КРЫМ',
-						rating: 5.0,
+						rating: 4.0,
 						beachLength: '1,6 км',
 						beachPrice: 250,
 						beachType: 'Песчаный',
-						beachWorktime: '7:00-22:00',
+						beachWorktime: '8:00-23:00',
 						beachSeabedType: 'Ровное'
 					},
 					{

@@ -114,7 +114,7 @@ input {
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.5);
+  background: rgba(0, 0, 0, .5);
 }
 
 .hidden {
@@ -309,7 +309,7 @@ input {
   height: 100vh;
   transition: opacity 1s ease;
   background: white;
-  z-index: 12000;
+  z-index: 100;
   @include flex-center;
 }
 
@@ -332,7 +332,7 @@ input {
     top: 0;
     width: 50vw;
     height: 100vh;
-    transition: transform 0.5s ease;
+    transition: transform .5s ease;
     background-color: white;
   }
 
@@ -351,7 +351,7 @@ input {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    transition: opacity 0.5s ease;
+    transition: opacity .5s ease;
     opacity: 0;
   }
 }
@@ -389,7 +389,7 @@ input {
   position: fixed;
   width: 100%;
   height: 90px;
-  z-index: 10001;
+  z-index: 99;
 
   &__inner {
     display: flex;
@@ -1160,11 +1160,19 @@ input {
       width: 100vw;
     }
 
+    .swiper-container {
+      padding-top: 10px;
+    }
+
     &-inner {
       overflow: hidden;
       display: flex;
       width: 100%;
       max-width: 100vw;
+
+      .scroll-area {
+        padding-top: 10px;
+      }
     }
 
     &__return {
@@ -1176,7 +1184,7 @@ input {
       background: white;
       border: none;
       @include flex-center;
-      z-index: 10000;
+      z-index: 1;
       border-radius: 50%;
       box-shadow: 0px 4px 16px rgba(0, 0, 0, 0.1);
 
@@ -2021,7 +2029,6 @@ input {
               }
 
               .slider-weather__month {
-
                 &:after,
                 &:before {
                   min-width: 10px;
@@ -2145,7 +2152,6 @@ input {
             box-shadow: 4px 4px 6px rgba(0, 0, 0, 0.1);
 
             .slider-weather__slide__temp {
-
               &-number,
               &-C {
                 font-size: 18px;
@@ -2947,7 +2953,6 @@ input {
 
       .slider {
         &__arrow {
-
           &-left,
           &-right {
             top: 202px; // 150 + (10*2+32)
@@ -3417,7 +3422,6 @@ input {
   }
 
   &__arrow {
-
     &-left,
     &-right {
       position: absolute;
@@ -3646,7 +3650,7 @@ input {
 
         &-o,
         &-C {
-          color: #73767d;
+          color: #73767D;
         }
       }
 
@@ -3802,7 +3806,6 @@ input {
 
     .slider {
       &__arrow {
-
         &-left,
         &-right {
           top: 50%;
@@ -3998,7 +4001,6 @@ input {
 
         .slider {
           &__arrow {
-
             &-left,
             &-right {
               top: 50% !important;
@@ -4192,6 +4194,7 @@ input {
     padding-bottom: 12px;
     width: 300px;
     position: relative;
+    box-shadow: 6px 12px 16px rgba(0, 0, 0, 0.2);
 
     &-text {
       color: #393e48;
@@ -4336,11 +4339,11 @@ input {
 
         .swiper-container {
           border-radius: 12px;
+          padding-top: 0;
         }
 
         .slider {
           &__arrow {
-
             &-left,
             &-right {
               background: none;
@@ -4393,6 +4396,10 @@ input {
             margin: 0 3px;
             width: 4px;
             height: 4px;
+
+            &:focus {
+              outline: none;
+            }
 
             &-active {
               width: 6px;
@@ -4536,6 +4543,32 @@ input {
     width: 27px;
     height: 38px;
   }
+
+  &__zoom {
+    width: 50px;
+    height: 50px;
+    @include flex-center;
+    margin-bottom: 10px;
+    border-radius: 50%;
+    background: white;
+    border: none;
+    box-shadow: 4px 4px 6px rgba(0, 0, 0, 0.1);
+
+    &:focus {
+      outline: none;
+    }
+
+    &:last-of-type {
+      margin-bottom: 0;
+    }
+
+    &-wrapper {
+      position: absolute;
+      bottom: 30px;
+      right: 30px;
+      z-index: 1;
+    }
+  }
 }
 
 .card-grid {
@@ -4557,8 +4590,18 @@ input {
 }
 
 // fixing
-// main page's map
+// main page"s map
 @media (max-width: 1400px) {
+  .search-page {
+    &__map-area {
+      &__info-area {
+        min-height: 500px;
+        max-height: 500px;
+        height: auto;
+      }
+    }
+  }
+
   .main-page__map {
     .map {
       min-height: 500px;
@@ -4819,23 +4862,13 @@ input {
 
   .search-page {
     &__map-area {
-      .main-page__map {
-        min-height: 600px;
-        height: 70vh;
-      }
-
-      .overlay-map {
-        height: 100%;
-
-        .ymap-container,
-        [class*="ymaps-2-"][class*="-map"]:not([class*="promo"]) {
-          height: 70vh !important;
-        }
-      }
-
       &__card {
         flex-direction: column;
         height: unset;
+
+        &:last-of-type {
+          margin-bottom: 20px;
+        }
 
         &__pic-area {
           border-radius: 8px 8px 0 0;
@@ -4848,7 +4881,6 @@ input {
       }
 
       &__info-area {
-        padding-top: 30px;
         padding-right: 20px;
         padding-left: 20px;
         min-width: 400px;
@@ -5102,7 +5134,6 @@ input {
 // slider beh breaks, so making it just like in the TABLET version
 @media (max-width: 1150px) {
   .slider {
-
     &-beh,
     &-cities {
       padding-right: 10px;
@@ -5120,7 +5151,6 @@ input {
   }
 
   .main-page {
-
     &__beach-slider-area,
     &__beach-events,
     &__cities {
@@ -5512,7 +5542,6 @@ input {
 
         .slider {
           &__arrow {
-
             &-left,
             &-right {
               display: none;
@@ -5851,7 +5880,6 @@ input {
       margin-top: 31px;
 
       &__medal {
-
         &-gold,
         &-blue {
           top: 10px;
@@ -5904,7 +5932,7 @@ input {
               left: 0;
               width: 100%;
               height: 100vh;
-              background: rgba(0, 0, 0, 0.5);
+              background: rgba(0, 0, 0, .5);
               z-index: 1;
             }
 
@@ -5960,8 +5988,8 @@ input {
         height: 0;
         overflow: hidden;
         padding-right: 5px;
-
         // transition: height .5s ease;
+
         &.active {
           height: 257px;
         }
@@ -6039,7 +6067,6 @@ input {
         }
 
         &__arrow {
-
           &-left,
           &-right {
             display: none;
@@ -6277,8 +6304,6 @@ input {
         &s {
           a {
             font-size: 18px;
-
-            &:hover {}
           }
 
           img {
@@ -6380,7 +6405,6 @@ input {
   .search-page {
     &__map-area {
       &__card {
-
         &:hover,
         &.active {
           box-shadow: none;
@@ -6402,26 +6426,30 @@ input {
         &__modal {
           display: block;
           background: white;
-          max-width: 300px;
+          max-width: 320px;
           width: 100%;
           position: fixed;
           left: 50%;
-          transform: translate(-50%, 100vh);
+          transform: translate(-50%, 102%);
           bottom: 0;
-          transition: transform 0.2s ease;
-          z-index: 12;
+          transition: transform .2s ease;
+          z-index: 100;
           border-radius: 12px;
           padding: 0;
+          max-height: unset;
 
-          .main-page {
-            &__card {
-              &__info-area {
-                &__button {
-                  margin: 20px;
-                  margin-top: 0;
-                }
+          .search-page {
+            &__map-area {
+              &__card {
+                margin-right: 0;
+                margin-bottom: 0;
               }
             }
+          }
+
+          &.active {
+            transform: translate(-50%, 50%);
+            bottom: 50%;
           }
 
           &__close-button {
@@ -6434,12 +6462,19 @@ input {
             max-height: 26px;
             min-height: 26px;
             padding: 0;
+            z-index: 1;
             background: white;
             border-radius: 50%;
             @include flex-center;
 
             &:focus {
               outline: none;
+            }
+
+            &-wrapper {
+              padding-left: 20px;
+              padding-right: 20px;
+              padding-bottom: 20px;
             }
           }
         }
@@ -6715,7 +6750,6 @@ input {
 
     &__ynt {
       &__card {
-
         &__pic-area,
         &__info-area {
           max-width: unset;
@@ -6746,7 +6780,7 @@ input {
     transition: height 0.5s ease;
 
     .dark-bg-inner {
-      background: rgba(0, 0, 0, 0.5);
+      background: rgba(0, 0, 0, .5);
       width: 100vw;
       height: 100vh;
       left: 0;
@@ -7058,7 +7092,6 @@ input {
 // changing footer to MOBILE version
 @media (max-width: 630px) {
   .footer {
-
     &__top,
     &__bottom {
       flex-direction: column;
@@ -7326,7 +7359,6 @@ input {
 
       .slider {
         &__arrow {
-
           &-left,
           &-right {
             display: none;
@@ -7335,7 +7367,6 @@ input {
       }
 
       &__medal {
-
         &-gold,
         &-blue {
           top: 8px;
@@ -7562,6 +7593,12 @@ input {
         }
       }
     }
+
+    &__map {
+      .main-page__section-title {
+        margin-bottom: 20px;
+      }
+    }
   }
 
   .heart {
@@ -7620,7 +7657,6 @@ input {
           position: relative;
 
           .slider__arrow {
-
             &-right,
             &-left {
               display: none;
@@ -7849,7 +7885,6 @@ input {
 
     &-sections {
       &.slider-weather__months {
-
         .swiper-wrapper,
         .swiper-slide {
           &:before {
@@ -8087,7 +8122,6 @@ input {
 
   .card-grid {
     &__card {
-
       &__heart-button,
       &__expensive {
         width: 22px;
@@ -8249,6 +8283,40 @@ input {
       }
     }
   }
+
+  .search-page {
+    &__map-area {
+      &__info-area {
+        &__modal {
+          max-width: unset;
+          width: 100%;
+          border-radius: 12px 12px 0 0;
+          z-index: 102;
+
+          &.active {
+            transform: translate(-50%, 0);
+            bottom: 0;
+          }
+
+          &-bg {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, .5);
+            cursor: pointer;
+            z-index: 101;
+
+            &.active {
+              display: block;
+            }
+          }
+        }
+      }
+    }
+  }
 }
 
 @media (max-width: 392px) {
@@ -8358,6 +8426,16 @@ body.touch {
 
         &__info-area {
           background: white !important;
+        }
+      }
+    }
+
+    &__arrow {
+
+      &-left,
+      &-right {
+        &-balloon {
+          opacity: 0 !important;
         }
       }
     }
