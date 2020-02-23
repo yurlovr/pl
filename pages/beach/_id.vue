@@ -54,6 +54,8 @@
 	import BeachSliderArea from '~/components/global/BeachSliderArea';
 	import BeachEvents from '~/components/pages/beach/BeachEvents';
 
+	import { mapActions, mapState } from 'vuex';
+
 	export default {
 		components: {
 			BeachEventSections,
@@ -73,6 +75,34 @@
 			BeachAvgRating,
 			BeachEventMapWeather,
 			BeachEventSideButtons
-		}
+		},
+
+		// data() {
+		// 	return {
+		// 		beachId: null
+		// 	}
+		// },
+
+		// validate({ params }) {
+		// 	this.beachId = params.id;
+		//     // Must be a number
+		//     return /^\d+$/.test(params.id);
+		// },
+
+		// created() {
+		// 	this.getBeach(1);
+		// },
+
+		// computed: {
+		//     ...mapState('beach', ['beachData'])
+		// },
+
+		// methods: {
+  //   		...mapActions('beach', ['getBeach'])
+  //   	},
+
+  //   	mounted() {
+  //   		console.log(this.beachData);
+  //   	}
 	}
 </script>

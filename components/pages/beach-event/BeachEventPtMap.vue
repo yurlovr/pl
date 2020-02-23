@@ -10,30 +10,7 @@
 
 		data() {
 			return {
-				coords: [44.50465522867475, 34.21493291965433],
                 zoom: 8,
-                addressBeachesChunk: [
-                    {
-                        lat: 44.521199755999035,
-                        lng: 34.15580509752773
-                    },
-                ],
-                addressBeaches: [
-                    {
-                        lat: 44.51942103736535,
-                        lng: 34.258601507843714
-                    },
-                    {
-                        lat: 44.55842103736535,
-                        lng: 34.278601507843714
-                    },
-                    {
-                        lat: 44.5449734958915,
-                        lng: 34.265251523169956
-                    }
-                ],
-                swipers: {},
-                hover: -1,
                 chosen: -1,
                 map: null
 			}
@@ -50,14 +27,6 @@
                           zoom: 8,
                           controls: []
                         });
-                        console.log(this.map.controls);
-                        this.map.behaviors.disable('scrollZoom');
-                        this.map.controls.add('zoomControl', {
-                            position: {
-                                right: '30px',
-                                bottom: '30px',
-                            }
-                        });
                       })
                       .catch(error => console.log('Failed to load Yandex Maps, ', error))
                 }, 1);
@@ -70,9 +39,6 @@
         },
 
         async mounted() {
-            // requiring the Swiper
-            // require('~/plugins/swiper.min').__proto__;
-            // making the map
             this.initMap();
 
             window.addEventListener('resize', this.onResize);

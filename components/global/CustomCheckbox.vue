@@ -8,20 +8,25 @@
 </template>
 
 <script>
-	export default {
-		props: ['label', 'emit'],
+export default {
+	props: ['label'],
 
-		data() {
-			return {
-				checked: false
-			}
-		},
+	model: {
+		prop: 'checked',
+    	event: 'change'
+	},
 
-		methods: {
-			toggle() {
-				this.checked = !this.checked;
-				this.$bus.$emit(this.emit, this.checked);
-			}
+	data() {
+		return {
+			checked: false
+		}
+	},
+
+	methods: {
+		toggle() {
+			this.checked = !this.checked;
+			this.$emit('change', this.checked);
 		}
 	}
+}
 </script>

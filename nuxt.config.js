@@ -42,9 +42,6 @@ export default {
    */
   plugins: [
     '~/plugins/bus', {
-      src: '~/plugins/v-select',
-      ssr: false
-    }, {
       src: '~/plugins/scroll-lock',
       ssr: false
     }, {

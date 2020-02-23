@@ -80,17 +80,17 @@
                         let onStep1ObjectEvent = (e) => {
                             const objectId = e.get('objectId');
                             if (e.get('type') == 'click') {
+                                this.$bus.$emit("changeStep", 2);
+                                step1ObjectManager.setFilter('id < 0'); // hide step-1 markers
+                                step2ObjectManager.setFilter(''); // show step-2 markers
+                                setTimeout(this.onResize, 100);
                                 this.zoom = 12;
                                 this.map.setCenter(
                                     [
                                         this.addressBeaches[e.originalEvent.currentTarget._objectsById[0].id].beaches.reduce((a, b) => { if (typeof a === 'object') a = a.pos[0]; return a + b.pos[0]; }) / this.addressBeaches[e.originalEvent.currentTarget._objectsById[0].id].beaches.length,
                                         this.addressBeaches[e.originalEvent.currentTarget._objectsById[0].id].beaches.reduce((a, b) => { if (typeof a === 'object') a = a.pos[1]; return a + b.pos[1]; }) / this.addressBeaches[e.originalEvent.currentTarget._objectsById[0].id].beaches.length
                                     ],
-                                    this.zoom);
-                                step1ObjectManager.setFilter('id < 0'); // hide step-1 markers
-                                step2ObjectManager.setFilter(''); // show step-2 markers
-                                this.$bus.$emit("changeStep", 2);
-                                this.onResize();
+                                this.zoom);
                                 this.step = 2;
                             }
                         }
@@ -280,8 +280,9 @@
                                 iconImageHref: '/pics/global/svg/map_beach_blue.svg'
                             });
                             this.chosen = -1;
+                            if (this.swiper)
+                                this.swiper.destroy();
                             this.map.balloon.close();
-                            // TODO destroy the swiper
                         });
 
                         // closing balloon on map click
