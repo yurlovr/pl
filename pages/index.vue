@@ -21,8 +21,8 @@
     <BeachType :data="beachTypeData" />
     <YouNeedThis />
     <BeachSliderArea class="main-page__hotels" :data="$store.state.hotelData" :areaData="$store.state.hotelAreaData" />
-    <!--     <div>Популярные пляжи</div>
-    {{ this.popular_beaches}}
+    <!-- <div>Популярные пляжи</div>
+    {{ this.popularBeaches}}
     <div> Города </div>
     {{ this.cities}} -->
   </div>
@@ -1402,7 +1402,7 @@ export default {
   },
 
   computed: {
-    ...mapState('beach', ['popular_beaches']),
+    ...mapState('beach', ['popularBeaches']),
     ...mapState('beach', ['cities']),
   },
 

@@ -32,6 +32,7 @@
 		<BeachEventVisitorPics id="id-8" :data="$store.state.visitorPicsData" class="main-page__white-wrapper beach-event__visitor-pics-wrapper" />
 		<BeachSliderArea class="beach-event__similar-beaches" :data="$store.state.beachSliderData" :areaData="$store.state.similarNearAreaData" />
 		<BeachSliderArea class="main-page__hotels" :data="$store.state.hotelData" :areaData="$store.state.hotelAreaData" />
+		<div>{{ this.beachData }}</div>
 	</div>
 </template>
 
@@ -77,32 +78,28 @@
 			BeachEventSideButtons
 		},
 
-		// data() {
-		// 	return {
-		// 		beachId: null
-		// 	}
-		// },
+		data() {
+			return {
+				beachId: null
+			}
+		},
 
-		// validate({ params }) {
-		// 	this.beachId = params.id;
-		//     // Must be a number
-		//     return /^\d+$/.test(params.id);
-		// },
+		validate({ params }) {
+			this.beachId = params.id;
+		    // Must be a number
+		    return /^\d+$/.test(params.id);
+		},
 
-		// created() {
-		// 	this.getBeach(1);
-		// },
+		created() {
+			this.getBeach(this.$route.params.id);
+		},
 
-		// computed: {
-		//     ...mapState('beach', ['beachData'])
-		// },
+		computed: {
+		    ...mapState('beach', ['beachData'])
+		},
 
-		// methods: {
-  //   		...mapActions('beach', ['getBeach'])
-  //   	},
-
-  //   	mounted() {
-  //   		console.log(this.beachData);
-  //   	}
+		methods: {
+    		...mapActions('beach', ['getBeach'])
+    	}
 	}
 </script>

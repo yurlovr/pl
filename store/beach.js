@@ -1,12 +1,12 @@
 export const state = () => ({
-    popular_beaches: [],
+    popularBeaches: [],
     cities: [],
-    beach: []
+    beachData: []
 })
 
 export const mutations = {
     SET_POPULAR_BEACH: (state, payload) => {
-           state.popular_beaches = payload;
+           state.popularBeaches = payload;
     },
 
     SET_CITIES: (state, payload) => {
@@ -30,8 +30,8 @@ export const actions = {
         commit('SET_CITIES', data)
     },
 
-    async getBeach({commit}, id) {
-        const data = await this.$axios.$get(`/beach/item?id=${id}`);
-        commit('SET_BEACH', data)
+    async getBeach({commit}, payload) {
+        console.log('wow', payload)
+        commit('SET_BEACH', await this.$axios.$get(`/beach/item?id=${payload}`))
     }
 }

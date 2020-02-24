@@ -6,8 +6,7 @@
                     <div
                         class="swiper-slide"
                         v-for="(section, i) in sections"
-                        @click="activeSection = i"
-                        :key="i+0.2"
+                        :key="i"
                         :class="{ active : i == activeSection }"
                     >
                         <nuxt-link
@@ -52,6 +51,23 @@ export default {
 
     mounted () {
         this.mySwiper.init(this.swiperOption);
+
+        window.addEventListener('scroll', this.onScroll, false);
+    },
+
+    beforeDestroy() {
+        window.removeEventListener('scroll', this.onScroll, false);
+    },
+
+    methods: {
+        onScroll() {
+            let bounding;
+            for (let i = 0; i < this.sections.length; i++) {
+                bounding = document.querySelector(`#id-${i}`).getBoundingClientRect();
+                if (bounding.top <= 300 && bounding.bottom >= 300)
+                        this.activeSection = i;
+            }
+        }
     }
 }
 </script>

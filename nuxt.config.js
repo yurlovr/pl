@@ -55,7 +55,25 @@ export default {
   buildModules: [],
 
   generate: {
-    routes: ["/beach/1", "/event/1"]
+    routes () {
+      let beach = axios.get('https://crimea.air-dev.agency/api/app/beach/list').then((res) => {
+        return res.data.posts.map((b) => {
+          return '/beach/' + b.id
+        })
+      })
+
+      let event = axios.get('https://crimea.air-dev.agency/api/app/event/list').then((res) => {
+        return res.data.content.map((e) => {
+          return '/event/' + e.id
+        })
+      })
+
+      return Promise.all([beach, event]).then(values => {
+        return values.join().split(',');
+      })
+    }
+
+    // routes: ["/beach/1", "/event/1"]
     // babel: {
     //     presets: function({ isServer }, [preset, options]) {
     //         const r = [

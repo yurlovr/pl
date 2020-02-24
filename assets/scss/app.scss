@@ -382,7 +382,7 @@ input {
   height: 100vh;
   transition: opacity 1s ease;
   background: white;
-  z-index: 100;
+  z-index: 200;
   @include flex-center;
 }
 
@@ -393,7 +393,7 @@ input {
   display: none;
   width: 100vw;
   height: 100vh;
-  z-index: 100;
+  z-index: 200;
 
   &.active {
     display: block;
@@ -462,7 +462,7 @@ input {
   position: fixed;
   width: 100%;
   height: 90px;
-  z-index: 99;
+  z-index: 100;
 
   &__inner {
     display: flex;
@@ -543,7 +543,7 @@ input {
   min-width: 240px;
   height: 56px;
   display: flex;
-  z-index: 12;
+  z-index: 100;
   max-width: 820px;
 
   &__bar,
@@ -628,7 +628,7 @@ input {
     background: white;
     box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
     border-radius: 10px;
-    z-index: 12;
+    z-index: 100;
     transition: height 1s ease;
     max-height: calc(100vh - 25px);
     overflow: hidden;
@@ -759,6 +759,40 @@ input {
           margin-right: 0 !important;
 
           .custom-new-select {
+            &.open {
+              &.default {
+                .custom-new-select {
+                  &__bottom {
+                    border-top: 1px solid #C4C4C4;
+                  }
+                }
+              }
+              
+              .custom-new-select {
+                &__top {
+                  border-bottom: none;
+                }
+
+                &__bottom {
+                  border-top: 1px solid #228596;
+                }
+              }
+
+              &:first-of-type {
+                .custom-new-select__top {
+                  border-radius: 6px 0 0 0;
+                }
+              }
+
+              &:last-of-type {
+                .custom-new-select {
+                  &__top {
+                    border-radius: 0 6px 0 0;
+                  }
+                }
+              }
+            }
+
             &:first-of-type {
               .custom-new-select {
                 &__top {
@@ -777,6 +811,8 @@ input {
                 }
 
                 &__bottom {
+                  width: 100%;
+                  min-width: 101px;
                   margin-left: -1px;
                 }
               }
@@ -1920,7 +1956,7 @@ input {
     &.event-page-sections {
       &.slider-weather__months {
         .custom-container {
-          margin: 0;
+          width: 100%;
         }
 
         .swiper-wrapper {

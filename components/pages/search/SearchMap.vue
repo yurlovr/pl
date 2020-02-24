@@ -108,13 +108,8 @@
                         objectManager.objects.events.add(['mouseenter', 'mouseleave', 'click'], objectEvent);
 
                         this.$bus.$on('modalClosed', () => {
-                            objectManager.objects.setObjectOptions(this.chosen, {
-                                iconImageHref: '/pics/global/svg/map_beach_blue.svg'
-                            });
-                            this.chosen = -1;
+                            unchoose();
                         });
-
-                        this.$bus.$on('log', m => console.log(m));
 
                         // placing the markers
                         for (let i = 0; i < this.beaches.length; i++) {
@@ -136,6 +131,20 @@
                                     }
                                 }]
                             });
+                        }
+
+                        // on map click
+                        this.map.events.add('click', (e) => {
+                            if(e.get('target') === this.map) {
+                                this.$bus.$emit('closeModalAndUnscrollToCard');
+                            }
+                        });
+
+                        let unchoose = () => {
+                            objectManager.objects.setObjectOptions(this.chosen, {
+                                iconImageHref: '/pics/global/svg/map_beach_blue.svg'
+                            });
+                            this.chosen = -1;
                         }
                       })
                       .catch(error => console.log('Failed to load Yandex Maps, ', error))
