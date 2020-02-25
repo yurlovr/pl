@@ -45,7 +45,8 @@ export default {
                 spaceBetween: 0,
                 slidesPerView: 'auto',
                 init: false
-            }
+            },
+            margin: 300
         };
     },
 
@@ -53,6 +54,8 @@ export default {
         this.mySwiper.init(this.swiperOption);
 
         window.addEventListener('scroll', this.onScroll, false);
+        window.addEventListener('scroll', this.onResize, false);
+        this.onResize();
     },
 
     beforeDestroy() {
@@ -64,9 +67,15 @@ export default {
             let bounding;
             for (let i = 0; i < this.sections.length; i++) {
                 bounding = document.querySelector(`#id-${i}`).getBoundingClientRect();
-                if (bounding.top <= 300 && bounding.bottom >= 300)
+                if (bounding.top <= this.margin && bounding.bottom >= this.margin)
                         this.activeSection = i;
             }
+        },
+
+        onResize() {
+            if (window.innerWidth > 500)
+                this.margin = 300;
+            else this.margin = 200;
         }
     }
 }

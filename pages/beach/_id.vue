@@ -10,17 +10,23 @@
 				<main class="two-part-layout__left">
 					<BeachEventMainInfo :data="$store.state.beachMainData" />
 					<BeachAvgRating :data="$store.state.avgRating" class="beach-page__avg-rating__mobile" />
+					<a name="id-1"></a>
 					<BeachQuickData id="id-1" :title="'Инфраструктура пляжа'" :data="$store.state.beachInfraData" />
 					<BeachEventMapWeather :data="$store.state.mapWeatherData" class="beach-event__map-weather__tablet" />
-					<BeachEventAbout id="id-2" :data="$store.state.beachAbout" />
+					<a name="id-2"></a>
+					<BeachEventAbout id="id-2" name="id-2" :data="$store.state.beachAbout" />
 					<BeachEventMapWeather :data="$store.state.mapWeatherData" class="beach-event__map-weather__mobile" />
-					<BeachQuickData id="id-3" :title="'Услуги и аренда'" :data="$store.state.beachServicesData" />
-					<BeachEventParkingsTransport id="id-4" :data="$store.state.parkingTransportMapData" />
-					<BeachWaterTemperatureHistogram id="id-5" :data="$store.state.beachWaterTemperatureData" />
-					<BeachEvents id="id-6" :temp="false" :data="$store.state.beachEventData" class="beach-page__cardless-area" />
-					<BeachBarsNRestos id="id-7" :data="$store.state.beachBarsNRestos" class="beach-page__cardless-area" />
+					<a name="id-3"></a>
+					<BeachQuickData id="id-3" name="id-3" :title="'Услуги и аренда'" :data="$store.state.beachServicesData" />
+					<a name="id-4"></a>
+					<BeachEventParkingsTransport id="id-4" name="id-4" :data="$store.state.parkingTransportMapData" />
+					<a name="id-5"></a>
+					<BeachWaterTemperatureHistogram id="id-5" name="id-5" :data="$store.state.beachWaterTemperatureData" />
+					<a name="id-6"></a>
+					<BeachEvents id="id-6" name="id-6" :temp="false" :data="$store.state.beachEventData" class="beach-page__cardless-area" />
+					<BeachBarsNRestos id="id-7" name="id-7" :data="$store.state.beachBarsNRestos" class="beach-page__cardless-area" />
 					<BeachOpinions :data="$store.state.opinionsData" />
-					<BeachEventReviews id="id-9" :data="$store.state.guestReviewsData" class="beach-page__cardless-area" />
+					<BeachEventReviews id="id-9" name="id-9" :data="$store.state.guestReviewsData" class="beach-page__cardless-area" />
 				</main>
 				<aside class="two-part-layout__right">
 					<BeachAvgRating :data="$store.state.avgRating" class="beach-page__avg-rating__desktop" />
@@ -29,10 +35,9 @@
 				</aside>
 			</div>
 		</div>
-		<BeachEventVisitorPics id="id-8" :data="$store.state.visitorPicsData" class="main-page__white-wrapper beach-event__visitor-pics-wrapper" />
+		<BeachEventVisitorPics id="id-8" name="id-8" :data="$store.state.visitorPicsData" class="main-page__white-wrapper beach-event__visitor-pics-wrapper" />
 		<BeachSliderArea class="beach-event__similar-beaches" :data="$store.state.beachSliderData" :areaData="$store.state.similarNearAreaData" />
 		<BeachSliderArea class="main-page__hotels" :data="$store.state.hotelData" :areaData="$store.state.hotelAreaData" />
-		<div>{{ this.beachData }}</div>
 	</div>
 </template>
 
@@ -55,7 +60,7 @@
 	import BeachSliderArea from '~/components/global/BeachSliderArea';
 	import BeachEvents from '~/components/pages/beach/BeachEvents';
 
-	import { mapActions, mapState } from 'vuex';
+	import { mapActions, mapGetters } from 'vuex';
 
 	export default {
 		components: {
@@ -78,12 +83,6 @@
 			BeachEventSideButtons
 		},
 
-		data() {
-			return {
-				beachId: null
-			}
-		},
-
 		validate({ params }) {
 			this.beachId = params.id;
 		    // Must be a number
@@ -95,7 +94,7 @@
 		},
 
 		computed: {
-		    ...mapState('beach', ['beachData'])
+		    ...mapGetters('beach', ['beachData'])
 		},
 
 		methods: {

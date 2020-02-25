@@ -767,7 +767,7 @@ input {
                   }
                 }
               }
-              
+
               .custom-new-select {
                 &__top {
                   border-bottom: none;
@@ -2053,7 +2053,7 @@ input {
                   width: 9px;
 
                   &__info {
-                    left: -14px;
+                    left: -35px; // -14px
                   }
                 }
               }
@@ -2066,6 +2066,23 @@ input {
         display: flex;
         flex-direction: column;
         align-items: center;
+
+        &:last-of-type {
+          .beach-page {
+            &__water-temp {
+              &__histogram {
+                &__item {
+                  &__bar {
+                    &__info {
+                      left: unset;
+                      right: 0;
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
 
         &__title {
           font-size: 14px;
@@ -2795,7 +2812,7 @@ input {
       top: 0;
       left: 0;
       @include flex-center;
-      z-index: 20;
+      z-index: 105;
       overflow-y: auto;
 
       &__bg {
@@ -5040,7 +5057,7 @@ input {
       }
 
       &.active {
-        z-index: 21;
+        z-index: 105;
         position: relative;
 
         .beach-page__avg-rating {
@@ -5879,7 +5896,7 @@ input {
         overflow-x: scroll;
         overflow-y: hidden;
         display: flex;
-        z-index: 20;
+        z-index: 105;
 
         .beach-page {
           &__water-temp {
