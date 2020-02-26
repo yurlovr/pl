@@ -152,6 +152,8 @@
 			this.mySwiper.init(this.swiperOption);
 			this.mySwiperModal.init(this.swiperOption);
 			this.mySwiperModalSmall.init(this.swiperOption);
+
+			this.updateArrows();
 		},
 
 		methods: {

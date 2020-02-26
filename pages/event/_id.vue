@@ -2,9 +2,9 @@
 	<div class="beach-page custom-page">
 		<div class="beach-page__container custom-container">
 			<BeachEventSections :sections="$store.state.eventPageSections" class="beach-page-sections event-page-sections" />
-			<SliderHugeBeachEventPage :data="$store.state.eventPageSectionsData" />
+			<SliderHugeBeachEventPage :data="eventData.hugeSliderData" />
 			<div class="custom-container-inner">
-				<BeachEventSideButtons :mail="true" :telegram="true" :crossOrange="true" class="event-page__side-buttons" />
+				<BeachEventSideButtons :share="true" :crossBlue="true" :ymaps="true" :yandex="true" class="event-page__side-buttons" />
 			</div>
 			<div class="two-part-layout">
 				<main class="two-part-layout__left">
@@ -45,6 +45,8 @@
 	import AnnouncementCard from '~/components/global/AnnouncementCard';
 	import BeachSliderArea from '~/components/global/BeachSliderArea';
 
+	import { mapGetters } from 'vuex';
+
 	export default {
 		components: {
 			BeachEventSections,
@@ -83,6 +85,19 @@
 
 				this.liked = !this.liked;
 			}
+		},
+
+		validate({ params }) {
+		    // Must be a number
+		    return /^\d+$/.test(params.id);
+		},
+
+		async fetch({ store, params }) {
+			await store.dispatch('event/getEvent', params.id);
+		},
+
+		computed: {
+		    ...mapGetters('event', ['eventData'])
 		}
 	}
 </script>

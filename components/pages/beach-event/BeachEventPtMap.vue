@@ -33,8 +33,8 @@
             },
 
             onResize() {
-                if (this.map)
-            	   this.map.container.fitToViewport();
+              if (this.map)
+                this.map.container.fitToViewport();
             }
         },
 

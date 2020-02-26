@@ -24,7 +24,15 @@ export default {
     }]
   },
   router: {
-    base: '/'
+    base: '/',
+
+    extendRoutes (routes, resolve) {
+      routes.push({
+        name: 'custom',
+        path: '*',
+        component: resolve(__dirname, 'pages/404.vue')
+      })
+    }
   },
   /*
    ** Customize the progress-bar color
@@ -58,19 +66,21 @@ export default {
 
   generate: {
     async routes () {
-      let beachAsync = await axios.get('https://crimea.air-dev.agency/api/app/beach/top'),
+      let beachAsync = await axios.get('https://crimea.air-dev.agency/api/app/beach/list'),
           beachRoutes = beachAsync.data.data.list.map((b) => {
         return {
           route: `/beach/${b.ID}`
         }
       });
 
-      // let eventRoutes = axios.get('https://crimea.air-dev.agency/api/app/event/list').then((res) => {
-      //   return res.data.data.list.map((e) => {
-      //     return '/event/' + e.ID
-      //   })
+      let eventAsync = await axios.get('https://crimea.air-dev.agency/api/app/event/list'),
+        eventRoutes = eventAsync.data.data.list.map((e) => {
+        return {
+          route: `/event/${e.ID}`
+        }
+      });
 
-      return [...beachRoutes, { route: '/event/43' }];
+      return [...beachRoutes, ...eventRoutes];
     }
 
     // routes: ["/event/43"]

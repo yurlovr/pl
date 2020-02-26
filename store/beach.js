@@ -76,7 +76,8 @@ export const getters = {
                 beachLength: state.beach.data.item.PARAMETERS.P_LINE_LENGTH,
                 price: state.beach.data.item.PARAMETERS.P_PRICE,
                 beachType: state.beach.data.item.PARAMETERS.P_BEACH_TYPE.NAME,
-                beachSeabedType: state.beach.data.item.PARAMETERS.P_BOTTOM
+                beachSeabedType: state.beach.data.item.PARAMETERS.P_BOTTOM,
+                time: state.beach.data.item.PARAMETERS.P_MODE.NAME
             },
 
             hugeSliderData: {
@@ -95,7 +96,11 @@ export const getters = {
                 }
             ],
 
-            servicesData: []
+            servicesData: [],
+
+            // waterHistogramData: [
+            //     ...state.beach.data.item.
+            // ],
         };
 
         // adding formatted infrastructures
