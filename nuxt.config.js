@@ -1,3 +1,5 @@
+import axios from 'axios';
+
 export default {
   mode: "universal",
   /*
@@ -55,25 +57,23 @@ export default {
   buildModules: [],
 
   generate: {
-    routes () {
-      let beach = axios.get('https://crimea.air-dev.agency/api/app/beach/list').then((res) => {
-        return res.data.posts.map((b) => {
-          return '/beach/' + b.id
-        })
-      })
+    async routes () {
+      let beachAsync = await axios.get('https://crimea.air-dev.agency/api/app/beach/top'),
+          beachRoutes = beachAsync.data.data.list.map((b) => {
+        return {
+          route: `/beach/${b.ID}`
+        }
+      });
 
-      let event = axios.get('https://crimea.air-dev.agency/api/app/event/list').then((res) => {
-        return res.data.content.map((e) => {
-          return '/event/' + e.id
-        })
-      })
+      // let eventRoutes = axios.get('https://crimea.air-dev.agency/api/app/event/list').then((res) => {
+      //   return res.data.data.list.map((e) => {
+      //     return '/event/' + e.ID
+      //   })
 
-      return Promise.all([beach, event]).then(values => {
-        return values.join().split(',');
-      })
+      return [...beachRoutes, { route: '/event/43' }];
     }
 
-    // routes: ["/beach/1", "/event/1"]
+    // routes: ["/event/43"]
     // babel: {
     //     presets: function({ isServer }, [preset, options]) {
     //         const r = [
