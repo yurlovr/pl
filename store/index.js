@@ -323,52 +323,52 @@ export const state = () => ({
 		beachNumber: 45
 	},
 
-	beachInfraData: {
-		data1: {
+	beachInfraData: [
+		{
 			pic: '/pics/beach/medic.svg',
 			title: 'Пункт медицинской помощи',
 			slideTitle: 'Пункт медицинской<br>помощи'
 		},
-		data2: {
+		{
 			pic: '/pics/beach/rescuer.svg',
 			title: 'Спасательный пункт'
 		},
-		data3: {
+		{
 			pic: '/pics/beach/shower.svg',
 			title: 'Душевые кабины'
 		},
-		data4: {
+		{
 			pic: '/pics/beach/closet.svg',
 			title: 'Переодевалки'
 		},
-		data5: {
+		{
 			pic: '/pics/beach/transportation.svg',
 			title: 'Остановка общественного транспорта'
 		}
-	},
+	],
 
-	beachServicesData: {
-		data1: {
+	beachServicesData: [
+		{
 			pic: '/pics/beach/lounger.svg',
 			title: 'Шезлонги'
 		},
-		data2: {
+		{
 			pic: '/pics/beach/umbrella.svg',
 			title: 'Пляжные зонтики'
 		},
-		data3: {
+		{
 			pic: '/pics/beach/equipment.svg',
 			title: 'Инвентарь для плавания'
 		},
-		data4: {
+		{
 			pic: '/pics/beach/towel.svg',
 			title: 'Пляжные полотенца'
 		},
-		data5: {
+		{
 			pic: '/pics/beach/sports.svg',
 			title: 'Инвентарь для активного отдыха'
 		}
-	},
+	],
 
 	beachAbout: [
 		{

@@ -45,8 +45,6 @@
 		methods: {
 			toggleModal() {
 				if (window.innerWidth <= 1200) {
-
-
 					this.modalOpen = !this.modalOpen;
 				}
 			}

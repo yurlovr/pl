@@ -2,34 +2,28 @@
 	<div class="beach-page custom-page">
 		<div class="beach-page__container custom-container">
 			<BeachEventSections :sections="$store.state.beachPageSections" class="beach-page-sections--w-100" />
-			<SliderHugeBeachEventPage :data="$store.state.beachPageSectionsData" id="id-0" />
+			<SliderHugeBeachEventPage :data="beachData.hugeSliderData" id="id-0" />
 			<div class="custom-container-inner">
 				<BeachEventSideButtons :share="true" :crossBlue="true" :ymaps="true" :yandex="true" />
 			</div>
 			<div class="two-part-layout">
 				<main class="two-part-layout__left">
-					<BeachEventMainInfo :data="$store.state.beachMainData" />
-					<BeachAvgRating :data="$store.state.avgRating" class="beach-page__avg-rating__mobile" />
-					<a name="id-1"></a>
-					<BeachQuickData id="id-1" :title="'Инфраструктура пляжа'" :data="$store.state.beachInfraData" />
+					<BeachEventMainInfo :data="beachData.mainData" />
+					<BeachAvgRating :data="beachData.avgRating" class="beach-page__avg-rating__mobile" />
+					<BeachQuickData id="id-1" :title="'Инфраструктура пляжа'" :data="beachData.infraData" />
 					<BeachEventMapWeather :data="$store.state.mapWeatherData" class="beach-event__map-weather__tablet" />
-					<a name="id-2"></a>
-					<BeachEventAbout id="id-2" name="id-2" :data="$store.state.beachAbout" />
+					<BeachEventAbout id="id-2" name="id-2" :data="beachData.about" />
 					<BeachEventMapWeather :data="$store.state.mapWeatherData" class="beach-event__map-weather__mobile" />
-					<a name="id-3"></a>
-					<BeachQuickData id="id-3" name="id-3" :title="'Услуги и аренда'" :data="$store.state.beachServicesData" />
-					<a name="id-4"></a>
+					<BeachQuickData id="id-3" name="id-3" :title="'Услуги и аренда'" :data="beachData.servicesData" />
 					<BeachEventParkingsTransport id="id-4" name="id-4" :data="$store.state.parkingTransportMapData" />
-					<a name="id-5"></a>
 					<BeachWaterTemperatureHistogram id="id-5" name="id-5" :data="$store.state.beachWaterTemperatureData" />
-					<a name="id-6"></a>
 					<BeachEvents id="id-6" name="id-6" :temp="false" :data="$store.state.beachEventData" class="beach-page__cardless-area" />
 					<BeachBarsNRestos id="id-7" name="id-7" :data="$store.state.beachBarsNRestos" class="beach-page__cardless-area" />
 					<BeachOpinions :data="$store.state.opinionsData" />
 					<BeachEventReviews id="id-9" name="id-9" :data="$store.state.guestReviewsData" class="beach-page__cardless-area" />
 				</main>
 				<aside class="two-part-layout__right">
-					<BeachAvgRating :data="$store.state.avgRating" class="beach-page__avg-rating__desktop" />
+					<BeachAvgRating :data="beachData.avgRating" class="beach-page__avg-rating__desktop" />
 					<BeachEventMapWeather :data="$store.state.mapWeatherData" class="beach-event__map-weather__desktop" />
 					<AnnouncementCard :data="$store.state.announcementData" class="beach-page__announcement" />
 				</aside>
@@ -60,7 +54,7 @@
 	import BeachSliderArea from '~/components/global/BeachSliderArea';
 	import BeachEvents from '~/components/pages/beach/BeachEvents';
 
-	import { mapActions, mapGetters } from 'vuex';
+	import { mapGetters } from 'vuex';
 
 	export default {
 		components: {
@@ -84,21 +78,16 @@
 		},
 
 		validate({ params }) {
-			this.beachId = params.id;
 		    // Must be a number
 		    return /^\d+$/.test(params.id);
 		},
 
-		created() {
-			this.getBeach(this.$route.params.id);
+		async fetch({ store, params }) {
+			await store.dispatch('beach/getBeach', params.id);
 		},
 
 		computed: {
 		    ...mapGetters('beach', ['beachData'])
-		},
-
-		methods: {
-    		...mapActions('beach', ['getBeach'])
-    	}
+		}
 	}
 </script>

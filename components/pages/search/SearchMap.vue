@@ -24,12 +24,15 @@
                 map: null,
                 beaches: [
                     {
+                        title: 'Масяковский пляж',
                         pos: [44.51942103736535, 34.258601507843714]
                     },
                     {
+                        title: 'Массандровский пляж',
                         pos: [44.55842103736535, 34.258601507843714]
                     },
                     {
+                        title: 'Какой-то пляж',
                         pos: [44.5449734958915, 34.265251523169956]
                     }
                 ]
@@ -89,6 +92,7 @@
                             } else if (e.get('type') == 'click') {
                                 if (this.chosen == objectId) {
                                     this.$bus.$emit('closeModalAndUnscrollToCard');
+                                    this.map.balloon.close();
                                     return;
                                 }
 
@@ -113,6 +117,30 @@
 
                         // placing the markers
                         for (let i = 0; i < this.beaches.length; i++) {
+                            balloonLayout = maps.templateLayoutFactory.createClass(`
+                                <div class="map__sidename">
+                                    <span>${this.beaches[i].title}</span>
+                                </div>
+                            `, {
+                                build() {
+                                    this.constructor.superclass.build.call(this);
+                                },
+
+                                clear() {
+                                    this.constructor.superclass.clear.call(this);
+                                },
+
+                                getShape() {
+                                    return new maps.shape.Rectangle(new maps.geometry.pixel.Rectangle([
+                                        [0, 0], [100, 0] // balloon's width is always 300 and -25 for the margin
+                                    ]));
+                                },
+
+                                _isElement(element) {
+                                    return element && element[0];
+                                }
+                            });
+
                             objectManager.add({
                                 type: "FeatureCollection",
                                 features: [{
@@ -127,7 +155,15 @@
                                         iconImageHref: '/pics/global/svg/map_beach_blue.svg',
                                         iconContentLayout: icon,
                                         iconImageSize: [40,53],
-                                        iconImageOffset: [-18, -50]
+                                        iconImageOffset: [-18, -50],
+                                        balloonAutoPan: true,
+                                        balloonPanelMaxMapArea: 0,
+                                        balloonContentLayout: '',
+                                        balloonLayout: balloonLayout,
+                                        hideIconOnBalloonOpen: false,
+                                        balloonShadow: false,
+                                        balloonPane: 'balloon',
+                                        balloonOffset: [25, -20]
                                     }
                                 }]
                             });
@@ -137,6 +173,7 @@
                         this.map.events.add('click', (e) => {
                             if(e.get('target') === this.map) {
                                 this.$bus.$emit('closeModalAndUnscrollToCard');
+                                this.map.balloon.close();
                             }
                         });
 

@@ -18,6 +18,7 @@
                 type="text"
                 placeholder="Искать пляж"
                 v-model="searchInput"
+                @input="autocomplete()"
             >
             <a
                 href="/search"
@@ -249,6 +250,15 @@
                     </form>
                 </div>
             </div>
+            <div class="search__autocomplete" v-show="searchInput.length >= 3">
+                <div class="search__autocomplete__inner">
+                    <span class="search__autocomplete__empty" v-show="autocompleteResults.length == 0">Ничего не найдено</span>
+                    <a :href="result.link" @click.prevent="$bus.goTo(result.link, $router)" v-for="result in autocompleteResults">
+                        <span>{{ result.title }}</span>
+                        <span class="orange">{{ result.type }}</span>
+                    </a>
+                </div>
+            </div>
         </div>
         <div
             class="dark-bg-inner"
@@ -303,6 +313,8 @@ export default {
 
             // mobileView starts from 650px and less
             mobileView: false,
+
+            autocompleteResults: [],
 
             // all parameters v-model here
             params: {
@@ -550,6 +562,23 @@ export default {
 
             this.beachLengthFromValues[0] = this.params.searchBeachLengthFrom;
             this.waterTemperatureFromValues[0] = this.params.searchWaterTempFrom;
+        },
+
+        async autocomplete() {
+            if (this.searchInput.length >= 3) {
+                let res = await this.$axios.$get(`https://crimea.air-dev.agency/api/app/search/autocomplete?q=${this.searchInput}`);
+                if (res.data && res.data.list) {
+                    this.autocompleteResults = [];
+                    for (let i = 0; i < res.data.list.length; i++) {
+                        this.autocompleteResults.push({
+                            title: res.data.list[i].TITLE,
+                            type: res.data.list[i].TYPE == 'beach' ? 'Пляж' : 'Мероприятие',
+                            link: `/${res.data.list[i].TYPE}/${res.data.list[i].ID}`
+                        });
+                    }
+                }
+                console.log(res)
+            }
         }
     }
 }

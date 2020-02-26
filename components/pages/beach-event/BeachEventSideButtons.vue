@@ -40,7 +40,7 @@
             <img src="~/static/pics/global/svg/cross.svg">
         </button>
         <transition name="bounce">
-            <button v-show="ymaps && showPave">
+            <button v-show="ymaps && showPave" class="btn-ymaps">
                 <img src="~/static/pics/global/svg/ymaps.svg">
             </button>
         </transition>
@@ -63,46 +63,6 @@ export default {
             showShare: false,
             showPave: false
         };
-    },
-
+    }
 }
 </script>
-<style lang="scss" scoped>
-.bounce-enter-active {
-    animation: bounce-in 0.5s;
-}
-.bounce-leave-active {
-    animation: bounce-in 0.5s reverse;
-}
-@keyframes bounce-in {
-    0% {
-        transform: scale(0);
-        height: 10px;
-    }
-
-    50% {
-        transform: scale(1.5);
-        height: 60px;
-    }
-    100% {
-        transform: scale(1);
-    }
-}
-// .fade-enter-active,
-// .fade-leave-active {
-//     transition: opacity 1.5s;
-// }
-// .fade-enter, .fade-leave-to /* .fade-leave-active до версии 2.1.8 */ {
-//     opacity: 0;
-// }
-
-.btn-display {
-    display: block;
-}
-
-@media (max-width: 680px) {
-    .btn-display {
-        display: none;
-    }
-}
-</style>

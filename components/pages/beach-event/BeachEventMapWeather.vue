@@ -8,7 +8,7 @@
 				</nuxt-link>
 			</div>
 		</div>
-    <div class="beach-event__map-weather__weather-card">
+    <!-- <div class="beach-event__map-weather__weather-card">
       <div class="beach-event__map-weather__weather-card__date">
         <img src="~/static/pics/global/svg/calendar_big.svg">
         <span>{{ data.date }}</span>
@@ -48,7 +48,7 @@
           </div>
         </div>
       </div>
-    </div>
+    </div> -->
 	</div>
 </template>
 
