@@ -14,6 +14,7 @@ eventBus.install = function (Vue) {
 		Vue.prototype.$bus.$emit('hideParams');
 		setTimeout(() => { router.push(link) }, 600);
 	};
+	Vue.prototype.$bus.searchParams = {};
 }
 
 Vue.use(eventBus);

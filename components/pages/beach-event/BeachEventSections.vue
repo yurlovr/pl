@@ -66,9 +66,11 @@ export default {
         onScroll() {
             let bounding;
             for (let i = 0; i < this.sections.length; i++) {
-                bounding = document.querySelector(`#id-${i}`).getBoundingClientRect();
-                if (bounding.top <= this.margin && bounding.bottom >= this.margin)
-                        this.activeSection = i;
+                if (document.querySelector(`#id-${i}`)) {
+                    bounding = document.querySelector(`#id-${i}`).getBoundingClientRect();
+                    if (bounding.top <= this.margin && bounding.bottom >= this.margin)
+                            this.activeSection = i;
+                }
             }
         },
 

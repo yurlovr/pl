@@ -1,7 +1,7 @@
 <template>
-	<div class="custom-new-select" :class="{ open: dropdownOpen }" v-on-clickaway="onBlur">
+	<div class="custom-new-select" :class="{ open: dropdownOpen }" v-on-clickaway="onBlur" v-if="options">
 		<div class="custom-new-select__top" @click="dropdownOpen = !dropdownOpen">
-			<span>{{ options[chosenIndex] }}</span>
+			<span>{{ value }}</span>
 			<img src="~/static/pics/global/svg/dropdown.svg">
 		</div>
 		<div class="custom-new-select__bottom" v-show="dropdownOpen">
@@ -16,15 +16,10 @@
 import { directive as onClickaway } from 'vue-clickaway';
 
 export default {
-	props: ['options'],
+	props: ['options', 'value', 'var'],
 
 	directives: {
 		onClickaway: onClickaway,
-	},
-
-	model: {
-	    prop: 'chosenIndex',
-	    event: 'change'
 	},
 
 	data() {
@@ -34,15 +29,11 @@ export default {
 		}
 	},
 
-	mounted() {
-		
-	},
-
 	methods: {
 		choose(i) {
 			this.chosenIndex = i;
 			this.dropdownOpen = false;
-			this.$emit('change', this.options[i]);
+			this.$bus.$emit('updateSearchParams', { p: this.var, v: this.options[i] }); // p -> param, v -> value
 		},
 
 		onBlur() {

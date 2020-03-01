@@ -1,13 +1,13 @@
 <template>
-	<div class="beach-event__map-weather">
-		<div class="beach-event__map-weather__map-card">
-			<div class="map"></div>
-			<div class="beach-event__map-weather__map-card__button-area">
-				<nuxt-link to="/" class="main-page__card__info-area__button">
-					<span>Перейти на карту</span>
-				</nuxt-link>
-			</div>
-		</div>
+  <div class="beach-event__map-weather">
+    <div class="beach-event__map-weather__map-card">
+      <div class="map"></div>
+      <div class="beach-event__map-weather__map-card__button-area">
+        <nuxt-link to="/" class="main-page__card__info-area__button">
+          <span>Перейти на карту</span>
+        </nuxt-link>
+      </div>
+    </div>
     <!-- <div class="beach-event__map-weather__weather-card">
       <div class="beach-event__map-weather__weather-card__date">
         <img src="~/static/pics/global/svg/calendar_big.svg">
@@ -49,50 +49,77 @@
         </div>
       </div>
     </div> -->
-	</div>
+  </div>
 </template>
 
 <script>
-	import ymaps from "ymaps";
+import ymaps from "ymaps";
 
-	export default {
-		props: ['data'],
+export default {
+  props: ['data'],
 
-		data() {
-			return {
-				map: null
-			}
-		},
+  data() {
+    return {
+      map: null
+    }
+  },
 
-		methods: {
-            initMap() {
-              setTimeout(() => {
-                ymaps
-                  .load()
-                  .then(maps => {
-                    this.map = new maps.Map(this.$el.getElementsByClassName('map')[0], {
-                      center: [44.50465522867475, 34.21493291965433],
-                      zoom: 8,
-                      controls: []
-                    });
-                    // console.log(this.map.controls);
-                    // this.map.behaviors.disable('scrollZoom');
-                  })
-                  .catch(error => console.log('Failed to load Yandex Maps, ', error))
-              }, 1);
-            },
+  methods: {
+    initMap() {
+      setTimeout(() => {
+        ymaps
+          .load()
+          .then(maps => {
+            this.map = new maps.Map(this.$el.getElementsByClassName('map')[0], {
+              center: [44.50465522867475, 34.21493291965433],
+              zoom: 14,
+              controls: []
+            });
 
-            onResize() {
-              if (this.map)
-          	   this.map.container.fitToViewport();
-            }
-        },
+            let icon = maps.templateLayoutFactory.createClass(
+                `<div class="map__beach-icon">
+                  <div class="map__beach-caption">${this.data.title}</div>
+                </div>`
+              ),
+              objectManager = new maps.ObjectManager({
+                geoObjectOpenBalloonOnClick: false
+              });
+            this.map.geoObjects.add(objectManager);
 
-        async mounted() {
-          // making the map
-          this.initMap();
+            objectManager.add({
+              type: "FeatureCollection",
+              features: [{
+                type: "Feature",
+                id: 0,
+                geometry: {
+                  type: "Point",
+                  coordinates: [44.50465522867475, 34.21493291965433]
+                },
+                options: {
+                  iconLayout: 'default#imageWithContent',
+                  iconImageHref: '/pics/global/svg/map_beach_blue.svg',
+                  iconContentLayout: icon,
+                  iconImageSize: [30, 43],
+                  iconImageOffset: [-18, -50]
+                }
+              }]
+            });
+          })
+          .catch(error => console.log('Failed to load Yandex Maps, ', error))
+      }, 1);
+    },
 
-          window.addEventListener('resize', this.onResize);
-        }
-	}
+    onResize() {
+      if (this.map)
+        this.map.container.fitToViewport();
+    }
+  },
+
+  async mounted() {
+    // making the map
+    this.initMap();
+
+    window.addEventListener('resize', this.onResize);
+  }
+}
 </script>

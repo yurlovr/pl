@@ -43,7 +43,7 @@
 		</div>
 		<div class="beach-event__visitor-pics__add-button-area">
 			<button class="main-page__card__info-area__button">
-				<span>Добавить фоторгафию</span>
+				<span>Добавить фотографию</span>
 			</button>
 		</div>
 	</div>

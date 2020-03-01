@@ -2,7 +2,7 @@
     <div class="slider-beh">
         <div v-swiper:mySwiper="swiperOption">
             <div class="swiper-wrapper">
-                <Card
+                <Card v-if="data"
                     v-for="(slide, i) in data.cardData"
                     :data="slide"
                     :key="i"
@@ -12,7 +12,7 @@
         </div>
         <div class="pagination-wrapper">
             <div class="custom-pagination">
-                <button
+                <button v-if="data && data.cardData"
                     @click="mySwiper.slideTo(i)"
                     class="custom-pagination-bullet"
                     v-for="(b,i) in data.cardData.length - 1"
@@ -23,7 +23,7 @@
         </div>
         <button
             class="slider__arrow-left"
-            :style="{ transform: 'translate(-50%, -50%)', top: arrowY + 'px', display: showLeft && showArrows ? '' : 'none' }"
+            :style="{ transform: 'translate(-50%, -50%)', display: showLeft && showArrows ? '' : 'none' }"
             @click="mySwiper.slidePrev()"
         >
             <img
@@ -33,7 +33,7 @@
         </button>
         <button
             class="slider__arrow-right"
-            :style="{ transform: 'translate(50%, -50%)', top: arrowY + 'px', display: showRight && showArrows ? '' : 'none' }"
+            :style="{ transform: 'translate(50%, -50%)', display: showRight && showArrows ? '' : 'none' }"
             @click="mySwiper.slideNext();"
         >
             <img
@@ -67,7 +67,7 @@ export default {
         return {
             swiperOption: {
                 spaceBetween: 24,
-                slidesPerView: this.data.slideNumber,
+                slidesPerView: this.data && this.data.slideNumber ? this.data.slideNumber : 4,
                 init: false,
                 breakpoints: {
                     1150: {
@@ -86,10 +86,9 @@ export default {
                     }
                 }
             },
-            arrowY: 0,
             showLeft: false,
-            showRight: true,
-            showArrows: this.data.showArrows,
+            showRight: false,
+            showArrows: true,
             activeIndex: 0
         };
     },
@@ -106,12 +105,11 @@ export default {
         });
 
         this.mySwiper.init(this.swiperOption);
+        this.updateArrows();
     },
 
     methods: {
         onResize () {
-            this.arrowY = this.$el.querySelector('.custom-card__pic').offsetHeight / 2; // this.$el means we're query selecting in this component
-
             if (window.innerWidth < 1150) {
                 this.showArrows = false;
             } else {

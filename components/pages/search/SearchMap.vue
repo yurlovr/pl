@@ -16,37 +16,36 @@
     import ymaps from "ymaps";
 
     export default {
+        props: ['beaches'],
+
         data() {
             return {
-                center: [44.50465522867475, 34.21493291965433],
-                zoom: 12,
+                zoom: 9,
                 chosen: -1,
-                map: null,
-                beaches: [
-                    {
-                        title: 'Масяковский пляж',
-                        pos: [44.51942103736535, 34.258601507843714]
-                    },
-                    {
-                        title: 'Массандровский пляж',
-                        pos: [44.55842103736535, 34.258601507843714]
-                    },
-                    {
-                        title: 'Какой-то пляж',
-                        pos: [44.5449734958915, 34.265251523169956]
-                    }
-                ]
+                map: null
             }
         },
 
         methods: {
             initMap() {
                 setTimeout(() => {
+                    let filteredBeaches = this.beaches.filter(v => !isNaN(v.pos[0]) && v.pos != undefined);
+                    if (!filteredBeaches || filteredBeaches.length == 0)
+                        return;
+
                     ymaps
                       .load()
                       .then(maps => {
                         this.map = new maps.Map(document.getElementById('map'), {
-                          center: this.center,
+                          center: filteredBeaches.length != 1 ? ([ filteredBeaches.reduce((a, b) => {
+                                    if (typeof a === 'object') a = a.pos[0];
+                                        return a + b.pos[0];
+                                }) / filteredBeaches.length,
+                                filteredBeaches.reduce((a, b) => {
+                                    if (typeof a === 'object') a = a.pos[1];
+                                        return a + b.pos[1];
+                                }) / filteredBeaches.length
+                          ]) : filteredBeaches[0].pos,
                           zoom: this.zoom,
                           controls: []
                         });
@@ -76,6 +75,14 @@
                             geoObjectOpenBalloonOnClick: true
                         });
                         this.map.geoObjects.add(objectManager);
+
+
+                        let unchoose = () => {
+                            objectManager.objects.setObjectOptions(this.chosen, {
+                                iconImageHref: '/pics/global/svg/map_beach_blue.svg'
+                            });
+                            this.chosen = -1;
+                        }
 
                         const objectEvent = (e) => {
                             const objectId = e.get('objectId');
@@ -115,59 +122,80 @@
                             unchoose();
                         });
 
-                        // placing the markers
-                        for (let i = 0; i < this.beaches.length; i++) {
-                            balloonLayout = maps.templateLayoutFactory.createClass(`
-                                <div class="map__sidename">
-                                    <span>${this.beaches[i].title}</span>
-                                </div>
-                            `, {
-                                build() {
-                                    this.constructor.superclass.build.call(this);
-                                },
+                        let placeMarks = () => {
+                            filteredBeaches = this.beaches.filter(v => !isNaN(v.pos[0]) && v.pos != undefined);
+                            if (!filteredBeaches || filteredBeaches.length == 0)
+                                return;
 
-                                clear() {
-                                    this.constructor.superclass.clear.call(this);
-                                },
+                            this.map.setCenter(filteredBeaches.length != 1 ? ([ filteredBeaches.reduce((a, b) => {
+                                    if (typeof a === 'object') a = a.pos[0];
+                                        return a + b.pos[0];
+                                }) / filteredBeaches.length,
+                                filteredBeaches.reduce((a, b) => {
+                                    if (typeof a === 'object') a = a.pos[1];
+                                        return a + b.pos[1];
+                                }) / filteredBeaches.length
+                            ]) : filteredBeaches[0].pos, this.zoom);
 
-                                getShape() {
-                                    return new maps.shape.Rectangle(new maps.geometry.pixel.Rectangle([
-                                        [0, 0], [100, 0] // balloon's width is always 300 and -25 for the margin
-                                    ]));
-                                },
+                            objectManager.removeAll();
 
-                                _isElement(element) {
-                                    return element && element[0];
-                                }
-                            });
-
-                            objectManager.add({
-                                type: "FeatureCollection",
-                                features: [{
-                                    type: "Feature",
-                                    id: i,
-                                    geometry: {
-                                        type: "Point",
-                                        coordinates: this.beaches[i].pos
+                            // placing the markers
+                            for (let i = 0; i < filteredBeaches.length; i++) {
+                                balloonLayout = maps.templateLayoutFactory.createClass(`
+                                    <div class="map__sidename">
+                                        <span>${filteredBeaches[i].title}</span>
+                                    </div>
+                                `, {
+                                    build() {
+                                        this.constructor.superclass.build.call(this);
                                     },
-                                    options: {
-                                        iconLayout: 'default#imageWithContent',
-                                        iconImageHref: '/pics/global/svg/map_beach_blue.svg',
-                                        iconContentLayout: icon,
-                                        iconImageSize: [40,53],
-                                        iconImageOffset: [-18, -50],
-                                        balloonAutoPan: true,
-                                        balloonPanelMaxMapArea: 0,
-                                        balloonContentLayout: '',
-                                        balloonLayout: balloonLayout,
-                                        hideIconOnBalloonOpen: false,
-                                        balloonShadow: false,
-                                        balloonPane: 'balloon',
-                                        balloonOffset: [25, -20]
+
+                                    clear() {
+                                        this.constructor.superclass.clear.call(this);
+                                    },
+
+                                    getShape() {
+                                        return new maps.shape.Rectangle(new maps.geometry.pixel.Rectangle([
+                                            [0, 0], [100, 0] // balloon's width is always 300 and -25 for the margin
+                                        ]));
+                                    },
+
+                                    _isElement(element) {
+                                        return element && element[0];
                                     }
-                                }]
-                            });
+                                });
+
+                                objectManager.add({
+                                    type: "FeatureCollection",
+                                    features: [{
+                                        type: "Feature",
+                                        id: i,
+                                        geometry: {
+                                            type: "Point",
+                                            coordinates: filteredBeaches[i].pos
+                                        },
+                                        options: {
+                                            iconLayout: 'default#imageWithContent',
+                                            iconImageHref: '/pics/global/svg/map_beach_blue.svg',
+                                            iconContentLayout: icon,
+                                            iconImageSize: [40,53],
+                                            iconImageOffset: [-18, -50],
+                                            balloonAutoPan: true,
+                                            balloonPanelMaxMapArea: 0,
+                                            balloonContentLayout: '',
+                                            balloonLayout: balloonLayout,
+                                            hideIconOnBalloonOpen: false,
+                                            balloonShadow: false,
+                                            balloonPane: 'balloon',
+                                            balloonOffset: [25, -20]
+                                        }
+                                    }]
+                                });
+                            }
                         }
+
+                        this.$bus.$on('updateMap', () => { placeMarks() });
+                        placeMarks();
 
                         // on map click
                         this.map.events.add('click', (e) => {
@@ -176,13 +204,6 @@
                                 this.map.balloon.close();
                             }
                         });
-
-                        let unchoose = () => {
-                            objectManager.objects.setObjectOptions(this.chosen, {
-                                iconImageHref: '/pics/global/svg/map_beach_blue.svg'
-                            });
-                            this.chosen = -1;
-                        }
                       })
                       .catch(error => console.log('Failed to load Yandex Maps, ', error))
                 }, 1);

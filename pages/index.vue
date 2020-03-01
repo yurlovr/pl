@@ -4,27 +4,23 @@
     <div class="main-page__welcome__gradient"></div>
     <Welcome />
     <Search class="main-page__welcome__search" labelId="1" />
-    <BeachSliderArea class="main-page__popular-beaches" :data="$store.state.beachSliderData" :areaData="mostPopularBeachesAreaData" />
-    <Cities :data="cityBeaches" />
+    <BeachSliderArea class="main-page__popular-beaches" :data="popularBeachesData" v-if="popularBeachesData" />
+    <Cities :data="citiesData" />
     <MapArea :data="mapData" />
     <BeachEntranceFree />
     <div class="main-page__white-wrapper">
-      <BeachSliderArea :data="familyData" :areaData="familyAreaData" class="main-page__family-rest" />
+      <BeachSliderArea :data="familyData" class="main-page__family-rest" v-if="familyData" />
     </div>
-    <BeachEvents :data="$store.state.beachEventsSliderData" :areaData="beachEventsData" />
+    <BeachEvents :data="eventsData" v-if="eventsData" />
     <ChooseBeach />
-    <DynamicSliderArea :data="dynamicSliderData" />
+    <DynamicSliderArea :data="dynamicSliderDatax" />
     <div class="main-page__white-wrapper">
-      <WeatherSliderArea :data="weatherData" />
+      <WeatherSliderArea :data="weatherDatax" />
     </div>
     <OnCarNoProblem />
     <BeachType :data="beachTypeData" />
     <YouNeedThis />
-    <BeachSliderArea class="main-page__hotels" :data="$store.state.hotelData" :areaData="$store.state.hotelAreaData" />
-    <!-- <div>Популярные пляжи</div>
-    {{ this.popularBeaches}}
-    <div> Города </div>
-    {{ this.cities}} -->
+    <!-- <BeachSliderArea class="main-page__hotels" :data="$store.state.hotelData" v-if="false" /> -->
   </div>
 </template>
 <script>
@@ -33,7 +29,7 @@ import Welcome from '~/components/pages/main/Welcome';
 import BeachSliderArea from '~/components/global/BeachSliderArea';
 import Cities from '~/components/pages/main/Cities';
 import BeachEntranceFree from '~/components/pages/main/BeachEntranceFree';
-import BeachEvents from '~/components/pages/beach-event/BeachEvents';
+import BeachEvents from '~/components/global/BeachEvents';
 import ChooseBeach from '~/components/pages/main/ChooseBeach';
 import OnCarNoProblem from '~/components/pages/main/OnCarNoProblem';
 import BeachType from '~/components/pages/main/BeachType';
@@ -42,7 +38,7 @@ import WeatherSliderArea from '~/components/pages/main/WeatherSliderArea';
 import DynamicSliderArea from '~/components/pages/main/DynamicSliderArea';
 import MapArea from '~/components/pages/main/MapArea';
 
-import { mapActions, mapState } from 'vuex';
+import { mapGetters } from 'vuex';
 
 export default {
   components: {
@@ -72,76 +68,6 @@ export default {
 
   data() {
     return {
-      // data here
-      mostPopularBeachesAreaData: {
-        title: 'Самые популярные пляжи',
-        subtitle: 'Пологий берег, плавный вход в воду, безопасность и современная инфраструктура',
-        beachNumber: 45
-      },
-      cityBeaches: {
-        slideNumber: 4,
-        cardData: [{
-            city: 'Ялта',
-            beachNumber: 8,
-            pic: '/pics/main/section2_pic1.png'
-          },
-          {
-            city: 'Новый свет',
-            beachNumber: 6,
-            pic: '/pics/main/section2_pic2.png'
-          },
-          {
-            city: 'Алупка',
-            beachNumber: 11,
-            pic: '/pics/main/section2_pic3.png'
-          },
-          {
-            city: 'Партенит',
-            beachNumber: 5,
-            pic: '/pics/main/section2_pic4.png'
-          },
-          {
-            city: 'Судак',
-            beachNumber: 9,
-            pic: '/pics/main/section2_pic5.png'
-          },
-          {
-            city: 'Форос',
-            beachNumber: 12,
-            pic: '/pics/main/section2_pic6.png'
-          },
-          {
-            city: 'Ялта',
-            beachNumber: 8,
-            pic: '/pics/main/section2_pic1.png'
-          },
-          {
-            city: 'Новый свет',
-            beachNumber: 6,
-            pic: '/pics/main/section2_pic2.png'
-          },
-          {
-            city: 'Алупка',
-            beachNumber: 11,
-            pic: '/pics/main/section2_pic3.png'
-          },
-          {
-            city: 'Партенит',
-            beachNumber: 5,
-            pic: '/pics/main/section2_pic4.png'
-          },
-          {
-            city: 'Судак',
-            beachNumber: 9,
-            pic: '/pics/main/section2_pic5.png'
-          },
-          {
-            city: 'Форос',
-            beachNumber: 12,
-            pic: '/pics/main/section2_pic6.png'
-          }
-        ]
-      },
       mapData: {
         center: [44.50465522867475, 34.21493291965433],
         addressBeaches: [{ // cluster 1
@@ -182,220 +108,127 @@ export default {
         }]
       },
       familyData: {
-        showArrows: true, // whether to ever show arrows
-        slideNumber: 6,
-        tall: true,
-        cardData: [{
-            temperature: 24,
-            favorite: false,
-            expensive: false,
-            rating: 5.0,
-            title: 'Массандровский пляж',
-            location: 'Ялта, КРЫМ',
-            pic: '/pics/main/section4_pic1.png'
-          },
-          {
-            temperature: 22,
-            favorite: false,
-            expensive: true,
-            rating: 5.0,
-            title: 'Пляж Ялта – Интурист',
-            location: 'Ялта, КРЫМ',
-            pic: '/pics/main/section4_pic2.png'
-          },
-          {
-            temperature: 21,
-            favorite: false,
-            expensive: false,
-            rating: 5.0,
-            title: 'Пляж «Лазурный берег»',
-            location: 'Евпатория, КРЫМ',
-            pic: '/pics/main/section4_pic3.png'
-          },
-          {
-            temperature: 20,
-            favorite: false,
-            expensive: true,
-            rating: 5.0,
-            title: 'Массандровский пляж',
-            location: 'Ялта, КРЫМ',
-            pic: '/pics/main/section4_pic4.png'
-          },
-          {
-            temperature: 26,
-            favorite: false,
-            expensive: false,
-            rating: 5.0,
-            title: 'Массандровский пляж',
-            location: 'Ялта, КРЫМ',
-            pic: '/pics/main/section4_pic1.png'
-          },
-          {
-            temperature: 24,
-            favorite: false,
-            expensive: false,
-            rating: 5.0,
-            title: 'Песчаный пляж Ялта – Интурист»',
-            location: 'Ялта, КРЫМ',
-            pic: '/pics/main/section4_pic5.png'
-          },
-          {
-            temperature: 24,
-            favorite: false,
-            expensive: false,
-            rating: 5.0,
-            title: 'Массандровский пляж',
-            location: 'Ялта, КРЫМ',
-            pic: '/pics/main/section4_pic1.png'
-          },
-          {
-            temperature: 22,
-            favorite: false,
-            expensive: true,
-            rating: 5.0,
-            title: 'Пляж Ялта – Интурист',
-            location: 'Ялта, КРЫМ',
-            pic: '/pics/main/section4_pic2.png'
-          },
-          {
-            temperature: 21,
-            favorite: false,
-            expensive: false,
-            rating: 5.0,
-            title: 'Пляж «Лазурный берег»',
-            location: 'Евпатория, КРЫМ',
-            pic: '/pics/main/section4_pic3.png'
-          },
-          {
-            temperature: 20,
-            favorite: false,
-            expensive: true,
-            rating: 5.0,
-            title: 'Массандровский пляж',
-            location: 'Ялта, КРЫМ',
-            pic: '/pics/main/section4_pic4.png'
-          },
-          {
-            temperature: 26,
-            favorite: false,
-            expensive: false,
-            rating: 5.0,
-            title: 'Массандровский пляж',
-            location: 'Ялта, КРЫМ',
-            pic: '/pics/main/section4_pic1.png'
-          },
-          {
-            temperature: 24,
-            favorite: false,
-            expensive: false,
-            rating: 5.0,
-            title: 'Песчаный пляж Ялта – Интурист»',
-            location: 'Ялта, КРЫМ',
-            pic: '/pics/main/section4_pic5.png'
-          }
-        ]
-      },
-      familyAreaData: {
         title: 'Отдых для всей семьи',
-        subtitle: 'Пологий берег, плавный вход в воду, безопасность и инфраструктура',
-        beachNumber: 45
+        subtitle: 'Пологий берег, плавный вход в воду, безопасность и современная инфраструктура',
+        beachNumber: 45,
+        beachSliderData: {
+          slideNumber: 6,
+          cardData: [
+            {
+              temperature: 24,
+              favorite: false,
+              paid: false,
+              rating: 5.0,
+              title: 'Массандровский пляж',
+              location: 'Ялта, КРЫМ',
+              pic: '/pics/main/section4_pic1.png'
+            },
+            {
+              temperature: 22,
+              favorite: false,
+              paid: true,
+              rating: 5.0,
+              title: 'Пляж Ялта – Интурист',
+              location: 'Ялта, КРЫМ',
+              pic: '/pics/main/section4_pic2.png'
+            },
+            {
+              temperature: 21,
+              favorite: false,
+              paid: false,
+              rating: 5.0,
+              title: 'Пляж «Лазурный берег»',
+              location: 'Евпатория, КРЫМ',
+              pic: '/pics/main/section4_pic3.png'
+            },
+            {
+              temperature: 20,
+              favorite: false,
+              paid: true,
+              rating: 5.0,
+              title: 'Массандровский пляж',
+              location: 'Ялта, КРЫМ',
+              pic: '/pics/main/section4_pic4.png'
+            },
+            {
+              temperature: 26,
+              favorite: false,
+              paid: false,
+              rating: 5.0,
+              title: 'Массандровский пляж',
+              location: 'Ялта, КРЫМ',
+              pic: '/pics/main/section4_pic1.png'
+            },
+            {
+              temperature: 24,
+              favorite: false,
+              paid: false,
+              rating: 5.0,
+              title: 'Песчаный пляж Ялта – Интурист»',
+              location: 'Ялта, КРЫМ',
+              pic: '/pics/main/section4_pic5.png'
+            },
+            {
+              temperature: 24,
+              favorite: false,
+              paid: false,
+              rating: 5.0,
+              title: 'Массандровский пляж',
+              location: 'Ялта, КРЫМ',
+              pic: '/pics/main/section4_pic1.png'
+            },
+            {
+              temperature: 22,
+              favorite: false,
+              paid: true,
+              rating: 5.0,
+              title: 'Пляж Ялта – Интурист',
+              location: 'Ялта, КРЫМ',
+              pic: '/pics/main/section4_pic2.png'
+            },
+            {
+              temperature: 21,
+              favorite: false,
+              paid: false,
+              rating: 5.0,
+              title: 'Пляж «Лазурный берег»',
+              location: 'Евпатория, КРЫМ',
+              pic: '/pics/main/section4_pic3.png'
+            },
+            {
+              temperature: 20,
+              favorite: false,
+              paid: true,
+              rating: 5.0,
+              title: 'Массандровский пляж',
+              location: 'Ялта, КРЫМ',
+              pic: '/pics/main/section4_pic4.png'
+            },
+            {
+              temperature: 26,
+              favorite: false,
+              paid: false,
+              rating: 5.0,
+              title: 'Массандровский пляж',
+              location: 'Ялта, КРЫМ',
+              pic: '/pics/main/section4_pic1.png'
+            },
+            {
+              temperature: 24,
+              favorite: false,
+              paid: false,
+              rating: 5.0,
+              title: 'Песчаный пляж Ялта – Интурист»',
+              location: 'Ялта, КРЫМ',
+              pic: '/pics/main/section4_pic5.png'
+            }
+          ]
+
+        }
       },
-      beachEventsData: {
-        beachNumber: 45
-      },
-      beachTypeData: {
-        beachNumber1: 26,
-        beachNumber2: 18,
-        beachLink1: '/',
-        beachLink2: '/'
-      },
-      weatherData: [
-        [{
-            city: 'Алушта',
-            airTemperature: 26,
-            waterTemperature: 23,
-            pic: '/pics/main/section8_pic.png'
-          },
+      weatherDatax: [
+        [
           {
-            city: 'Севастополь',
-            airTemperature: 27,
-            waterTemperature: 24,
-            pic: '/pics/main/section8_pic.png'
-          },
-          {
-            city: 'Алупка',
-            airTemperature: 25,
-            waterTemperature: 21,
-            pic: '/pics/main/section8_pic.png'
-          },
-          {
-            city: 'Инкерман',
-            airTemperature: 28,
-            waterTemperature: 25,
-            pic: '/pics/main/section8_pic.png'
-          },
-          {
-            city: 'Феодосия',
-            airTemperature: 24,
-            waterTemperature: 22,
-            pic: '/pics/main/section8_pic.png'
-          },
-          {
-            city: 'Ялта',
-            airTemperature: 27,
-            waterTemperature: 23,
-            pic: '/pics/main/section8_pic.png'
-          },
-          {
-            city: 'Алупка',
-            airTemperature: 25,
-            waterTemperature: 21,
-            pic: '/pics/main/section8_pic.png'
-          },
-          {
-            city: 'Алушта',
-            airTemperature: 26,
-            waterTemperature: 23,
-            pic: '/pics/main/section8_pic.png'
-          },
-          {
-            city: 'Севастополь',
-            airTemperature: 27,
-            waterTemperature: 24,
-            pic: '/pics/main/section8_pic.png'
-          },
-          {
-            city: 'Алупка',
-            airTemperature: 25,
-            waterTemperature: 21,
-            pic: '/pics/main/section8_pic.png'
-          },
-          {
-            city: 'Инкерман',
-            airTemperature: 28,
-            waterTemperature: 25,
-            pic: '/pics/main/section8_pic.png'
-          },
-          {
-            city: 'Феодосия',
-            airTemperature: 24,
-            waterTemperature: 22,
-            pic: '/pics/main/section8_pic.png'
-          },
-          {
-            city: 'Ялта',
-            airTemperature: 27,
-            waterTemperature: 23,
-            pic: '/pics/main/section8_pic.png'
-          },
-          {
-            city: 'Алупка',
-            airTemperature: 25,
-            waterTemperature: 21,
-            pic: '/pics/main/section8_pic.png'
-          }
-        ],
-        [{
             city: 'Алушта',
             airTemperature: 26,
             waterTemperature: 23,
@@ -480,92 +313,8 @@ export default {
             pic: '/pics/main/section8_pic.png'
           }
         ],
-        [{
-            city: 'Алушта',
-            airTemperature: 26,
-            waterTemperature: 23,
-            pic: '/pics/main/section8_pic.png'
-          },
+        [
           {
-            city: 'Севастополь',
-            airTemperature: 27,
-            waterTemperature: 24,
-            pic: '/pics/main/section8_pic.png'
-          },
-          {
-            city: 'Алупка',
-            airTemperature: 25,
-            waterTemperature: 21,
-            pic: '/pics/main/section8_pic.png'
-          },
-          {
-            city: 'Инкерман',
-            airTemperature: 28,
-            waterTemperature: 25,
-            pic: '/pics/main/section8_pic.png'
-          },
-          {
-            city: 'Феодосия',
-            airTemperature: 24,
-            waterTemperature: 22,
-            pic: '/pics/main/section8_pic.png'
-          },
-          {
-            city: 'Ялта',
-            airTemperature: 27,
-            waterTemperature: 23,
-            pic: '/pics/main/section8_pic.png'
-          },
-          {
-            city: 'Алупка',
-            airTemperature: 25,
-            waterTemperature: 21,
-            pic: '/pics/main/section8_pic.png'
-          },
-          {
-            city: 'Алушта',
-            airTemperature: 26,
-            waterTemperature: 23,
-            pic: '/pics/main/section8_pic.png'
-          },
-          {
-            city: 'Севастополь',
-            airTemperature: 27,
-            waterTemperature: 24,
-            pic: '/pics/main/section8_pic.png'
-          },
-          {
-            city: 'Алупка',
-            airTemperature: 25,
-            waterTemperature: 21,
-            pic: '/pics/main/section8_pic.png'
-          },
-          {
-            city: 'Инкерман',
-            airTemperature: 28,
-            waterTemperature: 25,
-            pic: '/pics/main/section8_pic.png'
-          },
-          {
-            city: 'Феодосия',
-            airTemperature: 24,
-            waterTemperature: 22,
-            pic: '/pics/main/section8_pic.png'
-          },
-          {
-            city: 'Ялта',
-            airTemperature: 27,
-            waterTemperature: 23,
-            pic: '/pics/main/section8_pic.png'
-          },
-          {
-            city: 'Алупка',
-            airTemperature: 25,
-            waterTemperature: 21,
-            pic: '/pics/main/section8_pic.png'
-          }
-        ],
-        [{
             city: 'Алушта',
             airTemperature: 26,
             waterTemperature: 23,
@@ -650,92 +399,8 @@ export default {
             pic: '/pics/main/section8_pic.png'
           }
         ],
-        [{
-            city: 'Алушта',
-            airTemperature: 26,
-            waterTemperature: 23,
-            pic: '/pics/main/section8_pic.png'
-          },
+        [
           {
-            city: 'Севастополь',
-            airTemperature: 27,
-            waterTemperature: 24,
-            pic: '/pics/main/section8_pic.png'
-          },
-          {
-            city: 'Алупка',
-            airTemperature: 25,
-            waterTemperature: 21,
-            pic: '/pics/main/section8_pic.png'
-          },
-          {
-            city: 'Инкерман',
-            airTemperature: 28,
-            waterTemperature: 25,
-            pic: '/pics/main/section8_pic.png'
-          },
-          {
-            city: 'Феодосия',
-            airTemperature: 24,
-            waterTemperature: 22,
-            pic: '/pics/main/section8_pic.png'
-          },
-          {
-            city: 'Ялта',
-            airTemperature: 27,
-            waterTemperature: 23,
-            pic: '/pics/main/section8_pic.png'
-          },
-          {
-            city: 'Алупка',
-            airTemperature: 25,
-            waterTemperature: 21,
-            pic: '/pics/main/section8_pic.png'
-          },
-          {
-            city: 'Алушта',
-            airTemperature: 26,
-            waterTemperature: 23,
-            pic: '/pics/main/section8_pic.png'
-          },
-          {
-            city: 'Севастополь',
-            airTemperature: 27,
-            waterTemperature: 24,
-            pic: '/pics/main/section8_pic.png'
-          },
-          {
-            city: 'Алупка',
-            airTemperature: 25,
-            waterTemperature: 21,
-            pic: '/pics/main/section8_pic.png'
-          },
-          {
-            city: 'Инкерман',
-            airTemperature: 28,
-            waterTemperature: 25,
-            pic: '/pics/main/section8_pic.png'
-          },
-          {
-            city: 'Феодосия',
-            airTemperature: 24,
-            waterTemperature: 22,
-            pic: '/pics/main/section8_pic.png'
-          },
-          {
-            city: 'Ялта',
-            airTemperature: 27,
-            waterTemperature: 23,
-            pic: '/pics/main/section8_pic.png'
-          },
-          {
-            city: 'Алупка',
-            airTemperature: 25,
-            waterTemperature: 21,
-            pic: '/pics/main/section8_pic.png'
-          }
-        ],
-        [{
             city: 'Алушта',
             airTemperature: 26,
             waterTemperature: 23,
@@ -820,92 +485,8 @@ export default {
             pic: '/pics/main/section8_pic.png'
           }
         ],
-        [{
-            city: 'Алушта',
-            airTemperature: 26,
-            waterTemperature: 23,
-            pic: '/pics/main/section8_pic.png'
-          },
+        [
           {
-            city: 'Севастополь',
-            airTemperature: 27,
-            waterTemperature: 24,
-            pic: '/pics/main/section8_pic.png'
-          },
-          {
-            city: 'Алупка',
-            airTemperature: 25,
-            waterTemperature: 21,
-            pic: '/pics/main/section8_pic.png'
-          },
-          {
-            city: 'Инкерман',
-            airTemperature: 28,
-            waterTemperature: 25,
-            pic: '/pics/main/section8_pic.png'
-          },
-          {
-            city: 'Феодосия',
-            airTemperature: 24,
-            waterTemperature: 22,
-            pic: '/pics/main/section8_pic.png'
-          },
-          {
-            city: 'Ялта',
-            airTemperature: 27,
-            waterTemperature: 23,
-            pic: '/pics/main/section8_pic.png'
-          },
-          {
-            city: 'Алупка',
-            airTemperature: 25,
-            waterTemperature: 21,
-            pic: '/pics/main/section8_pic.png'
-          },
-          {
-            city: 'Алушта',
-            airTemperature: 26,
-            waterTemperature: 23,
-            pic: '/pics/main/section8_pic.png'
-          },
-          {
-            city: 'Севастополь',
-            airTemperature: 27,
-            waterTemperature: 24,
-            pic: '/pics/main/section8_pic.png'
-          },
-          {
-            city: 'Алупка',
-            airTemperature: 25,
-            waterTemperature: 21,
-            pic: '/pics/main/section8_pic.png'
-          },
-          {
-            city: 'Инкерман',
-            airTemperature: 28,
-            waterTemperature: 25,
-            pic: '/pics/main/section8_pic.png'
-          },
-          {
-            city: 'Феодосия',
-            airTemperature: 24,
-            waterTemperature: 22,
-            pic: '/pics/main/section8_pic.png'
-          },
-          {
-            city: 'Ялта',
-            airTemperature: 27,
-            waterTemperature: 23,
-            pic: '/pics/main/section8_pic.png'
-          },
-          {
-            city: 'Алупка',
-            airTemperature: 25,
-            waterTemperature: 21,
-            pic: '/pics/main/section8_pic.png'
-          }
-        ],
-        [{
             city: 'Алушта',
             airTemperature: 26,
             waterTemperature: 23,
@@ -990,92 +571,8 @@ export default {
             pic: '/pics/main/section8_pic.png'
           }
         ],
-        [{
-            city: 'Алушта',
-            airTemperature: 26,
-            waterTemperature: 23,
-            pic: '/pics/main/section8_pic.png'
-          },
+        [
           {
-            city: 'Севастополь',
-            airTemperature: 27,
-            waterTemperature: 24,
-            pic: '/pics/main/section8_pic.png'
-          },
-          {
-            city: 'Алупка',
-            airTemperature: 25,
-            waterTemperature: 21,
-            pic: '/pics/main/section8_pic.png'
-          },
-          {
-            city: 'Инкерман',
-            airTemperature: 28,
-            waterTemperature: 25,
-            pic: '/pics/main/section8_pic.png'
-          },
-          {
-            city: 'Феодосия',
-            airTemperature: 24,
-            waterTemperature: 22,
-            pic: '/pics/main/section8_pic.png'
-          },
-          {
-            city: 'Ялта',
-            airTemperature: 27,
-            waterTemperature: 23,
-            pic: '/pics/main/section8_pic.png'
-          },
-          {
-            city: 'Алупка',
-            airTemperature: 25,
-            waterTemperature: 21,
-            pic: '/pics/main/section8_pic.png'
-          },
-          {
-            city: 'Алушта',
-            airTemperature: 26,
-            waterTemperature: 23,
-            pic: '/pics/main/section8_pic.png'
-          },
-          {
-            city: 'Севастополь',
-            airTemperature: 27,
-            waterTemperature: 24,
-            pic: '/pics/main/section8_pic.png'
-          },
-          {
-            city: 'Алупка',
-            airTemperature: 25,
-            waterTemperature: 21,
-            pic: '/pics/main/section8_pic.png'
-          },
-          {
-            city: 'Инкерман',
-            airTemperature: 28,
-            waterTemperature: 25,
-            pic: '/pics/main/section8_pic.png'
-          },
-          {
-            city: 'Феодосия',
-            airTemperature: 24,
-            waterTemperature: 22,
-            pic: '/pics/main/section8_pic.png'
-          },
-          {
-            city: 'Ялта',
-            airTemperature: 27,
-            waterTemperature: 23,
-            pic: '/pics/main/section8_pic.png'
-          },
-          {
-            city: 'Алупка',
-            airTemperature: 25,
-            waterTemperature: 21,
-            pic: '/pics/main/section8_pic.png'
-          }
-        ],
-        [{
             city: 'Алушта',
             airTemperature: 26,
             waterTemperature: 23,
@@ -1160,7 +657,8 @@ export default {
             pic: '/pics/main/section8_pic.png'
           }
         ],
-        [{
+        [
+          {
             city: 'Алушта',
             airTemperature: 26,
             waterTemperature: 23,
@@ -1245,7 +743,438 @@ export default {
             pic: '/pics/main/section8_pic.png'
           }
         ],
-        [{
+        [
+          {
+            city: 'Алушта',
+            airTemperature: 26,
+            waterTemperature: 23,
+            pic: '/pics/main/section8_pic.png'
+          },
+          {
+            city: 'Севастополь',
+            airTemperature: 27,
+            waterTemperature: 24,
+            pic: '/pics/main/section8_pic.png'
+          },
+          {
+            city: 'Алупка',
+            airTemperature: 25,
+            waterTemperature: 21,
+            pic: '/pics/main/section8_pic.png'
+          },
+          {
+            city: 'Инкерман',
+            airTemperature: 28,
+            waterTemperature: 25,
+            pic: '/pics/main/section8_pic.png'
+          },
+          {
+            city: 'Феодосия',
+            airTemperature: 24,
+            waterTemperature: 22,
+            pic: '/pics/main/section8_pic.png'
+          },
+          {
+            city: 'Ялта',
+            airTemperature: 27,
+            waterTemperature: 23,
+            pic: '/pics/main/section8_pic.png'
+          },
+          {
+            city: 'Алупка',
+            airTemperature: 25,
+            waterTemperature: 21,
+            pic: '/pics/main/section8_pic.png'
+          },
+          {
+            city: 'Алушта',
+            airTemperature: 26,
+            waterTemperature: 23,
+            pic: '/pics/main/section8_pic.png'
+          },
+          {
+            city: 'Севастополь',
+            airTemperature: 27,
+            waterTemperature: 24,
+            pic: '/pics/main/section8_pic.png'
+          },
+          {
+            city: 'Алупка',
+            airTemperature: 25,
+            waterTemperature: 21,
+            pic: '/pics/main/section8_pic.png'
+          },
+          {
+            city: 'Инкерман',
+            airTemperature: 28,
+            waterTemperature: 25,
+            pic: '/pics/main/section8_pic.png'
+          },
+          {
+            city: 'Феодосия',
+            airTemperature: 24,
+            waterTemperature: 22,
+            pic: '/pics/main/section8_pic.png'
+          },
+          {
+            city: 'Ялта',
+            airTemperature: 27,
+            waterTemperature: 23,
+            pic: '/pics/main/section8_pic.png'
+          },
+          {
+            city: 'Алупка',
+            airTemperature: 25,
+            waterTemperature: 21,
+            pic: '/pics/main/section8_pic.png'
+          }
+        ],
+        [
+          {
+            city: 'Алушта',
+            airTemperature: 26,
+            waterTemperature: 23,
+            pic: '/pics/main/section8_pic.png'
+          },
+          {
+            city: 'Севастополь',
+            airTemperature: 27,
+            waterTemperature: 24,
+            pic: '/pics/main/section8_pic.png'
+          },
+          {
+            city: 'Алупка',
+            airTemperature: 25,
+            waterTemperature: 21,
+            pic: '/pics/main/section8_pic.png'
+          },
+          {
+            city: 'Инкерман',
+            airTemperature: 28,
+            waterTemperature: 25,
+            pic: '/pics/main/section8_pic.png'
+          },
+          {
+            city: 'Феодосия',
+            airTemperature: 24,
+            waterTemperature: 22,
+            pic: '/pics/main/section8_pic.png'
+          },
+          {
+            city: 'Ялта',
+            airTemperature: 27,
+            waterTemperature: 23,
+            pic: '/pics/main/section8_pic.png'
+          },
+          {
+            city: 'Алупка',
+            airTemperature: 25,
+            waterTemperature: 21,
+            pic: '/pics/main/section8_pic.png'
+          },
+          {
+            city: 'Алушта',
+            airTemperature: 26,
+            waterTemperature: 23,
+            pic: '/pics/main/section8_pic.png'
+          },
+          {
+            city: 'Севастополь',
+            airTemperature: 27,
+            waterTemperature: 24,
+            pic: '/pics/main/section8_pic.png'
+          },
+          {
+            city: 'Алупка',
+            airTemperature: 25,
+            waterTemperature: 21,
+            pic: '/pics/main/section8_pic.png'
+          },
+          {
+            city: 'Инкерман',
+            airTemperature: 28,
+            waterTemperature: 25,
+            pic: '/pics/main/section8_pic.png'
+          },
+          {
+            city: 'Феодосия',
+            airTemperature: 24,
+            waterTemperature: 22,
+            pic: '/pics/main/section8_pic.png'
+          },
+          {
+            city: 'Ялта',
+            airTemperature: 27,
+            waterTemperature: 23,
+            pic: '/pics/main/section8_pic.png'
+          },
+          {
+            city: 'Алупка',
+            airTemperature: 25,
+            waterTemperature: 21,
+            pic: '/pics/main/section8_pic.png'
+          }
+        ],
+        [
+          {
+            city: 'Алушта',
+            airTemperature: 26,
+            waterTemperature: 23,
+            pic: '/pics/main/section8_pic.png'
+          },
+          {
+            city: 'Севастополь',
+            airTemperature: 27,
+            waterTemperature: 24,
+            pic: '/pics/main/section8_pic.png'
+          },
+          {
+            city: 'Алупка',
+            airTemperature: 25,
+            waterTemperature: 21,
+            pic: '/pics/main/section8_pic.png'
+          },
+          {
+            city: 'Инкерман',
+            airTemperature: 28,
+            waterTemperature: 25,
+            pic: '/pics/main/section8_pic.png'
+          },
+          {
+            city: 'Феодосия',
+            airTemperature: 24,
+            waterTemperature: 22,
+            pic: '/pics/main/section8_pic.png'
+          },
+          {
+            city: 'Ялта',
+            airTemperature: 27,
+            waterTemperature: 23,
+            pic: '/pics/main/section8_pic.png'
+          },
+          {
+            city: 'Алупка',
+            airTemperature: 25,
+            waterTemperature: 21,
+            pic: '/pics/main/section8_pic.png'
+          },
+          {
+            city: 'Алушта',
+            airTemperature: 26,
+            waterTemperature: 23,
+            pic: '/pics/main/section8_pic.png'
+          },
+          {
+            city: 'Севастополь',
+            airTemperature: 27,
+            waterTemperature: 24,
+            pic: '/pics/main/section8_pic.png'
+          },
+          {
+            city: 'Алупка',
+            airTemperature: 25,
+            waterTemperature: 21,
+            pic: '/pics/main/section8_pic.png'
+          },
+          {
+            city: 'Инкерман',
+            airTemperature: 28,
+            waterTemperature: 25,
+            pic: '/pics/main/section8_pic.png'
+          },
+          {
+            city: 'Феодосия',
+            airTemperature: 24,
+            waterTemperature: 22,
+            pic: '/pics/main/section8_pic.png'
+          },
+          {
+            city: 'Ялта',
+            airTemperature: 27,
+            waterTemperature: 23,
+            pic: '/pics/main/section8_pic.png'
+          },
+          {
+            city: 'Алупка',
+            airTemperature: 25,
+            waterTemperature: 21,
+            pic: '/pics/main/section8_pic.png'
+          }
+        ],
+        [
+          {
+            city: 'Алушта',
+            airTemperature: 26,
+            waterTemperature: 23,
+            pic: '/pics/main/section8_pic.png'
+          },
+          {
+            city: 'Севастополь',
+            airTemperature: 27,
+            waterTemperature: 24,
+            pic: '/pics/main/section8_pic.png'
+          },
+          {
+            city: 'Алупка',
+            airTemperature: 25,
+            waterTemperature: 21,
+            pic: '/pics/main/section8_pic.png'
+          },
+          {
+            city: 'Инкерман',
+            airTemperature: 28,
+            waterTemperature: 25,
+            pic: '/pics/main/section8_pic.png'
+          },
+          {
+            city: 'Феодосия',
+            airTemperature: 24,
+            waterTemperature: 22,
+            pic: '/pics/main/section8_pic.png'
+          },
+          {
+            city: 'Ялта',
+            airTemperature: 27,
+            waterTemperature: 23,
+            pic: '/pics/main/section8_pic.png'
+          },
+          {
+            city: 'Алупка',
+            airTemperature: 25,
+            waterTemperature: 21,
+            pic: '/pics/main/section8_pic.png'
+          },
+          {
+            city: 'Алушта',
+            airTemperature: 26,
+            waterTemperature: 23,
+            pic: '/pics/main/section8_pic.png'
+          },
+          {
+            city: 'Севастополь',
+            airTemperature: 27,
+            waterTemperature: 24,
+            pic: '/pics/main/section8_pic.png'
+          },
+          {
+            city: 'Алупка',
+            airTemperature: 25,
+            waterTemperature: 21,
+            pic: '/pics/main/section8_pic.png'
+          },
+          {
+            city: 'Инкерман',
+            airTemperature: 28,
+            waterTemperature: 25,
+            pic: '/pics/main/section8_pic.png'
+          },
+          {
+            city: 'Феодосия',
+            airTemperature: 24,
+            waterTemperature: 22,
+            pic: '/pics/main/section8_pic.png'
+          },
+          {
+            city: 'Ялта',
+            airTemperature: 27,
+            waterTemperature: 23,
+            pic: '/pics/main/section8_pic.png'
+          },
+          {
+            city: 'Алупка',
+            airTemperature: 25,
+            waterTemperature: 21,
+            pic: '/pics/main/section8_pic.png'
+          }
+        ],
+        [
+          {
+            city: 'Алушта',
+            airTemperature: 26,
+            waterTemperature: 23,
+            pic: '/pics/main/section8_pic.png'
+          },
+          {
+            city: 'Севастополь',
+            airTemperature: 27,
+            waterTemperature: 24,
+            pic: '/pics/main/section8_pic.png'
+          },
+          {
+            city: 'Алупка',
+            airTemperature: 25,
+            waterTemperature: 21,
+            pic: '/pics/main/section8_pic.png'
+          },
+          {
+            city: 'Инкерман',
+            airTemperature: 28,
+            waterTemperature: 25,
+            pic: '/pics/main/section8_pic.png'
+          },
+          {
+            city: 'Феодосия',
+            airTemperature: 24,
+            waterTemperature: 22,
+            pic: '/pics/main/section8_pic.png'
+          },
+          {
+            city: 'Ялта',
+            airTemperature: 27,
+            waterTemperature: 23,
+            pic: '/pics/main/section8_pic.png'
+          },
+          {
+            city: 'Алупка',
+            airTemperature: 25,
+            waterTemperature: 21,
+            pic: '/pics/main/section8_pic.png'
+          },
+          {
+            city: 'Алушта',
+            airTemperature: 26,
+            waterTemperature: 23,
+            pic: '/pics/main/section8_pic.png'
+          },
+          {
+            city: 'Севастополь',
+            airTemperature: 27,
+            waterTemperature: 24,
+            pic: '/pics/main/section8_pic.png'
+          },
+          {
+            city: 'Алупка',
+            airTemperature: 25,
+            waterTemperature: 21,
+            pic: '/pics/main/section8_pic.png'
+          },
+          {
+            city: 'Инкерман',
+            airTemperature: 28,
+            waterTemperature: 25,
+            pic: '/pics/main/section8_pic.png'
+          },
+          {
+            city: 'Феодосия',
+            airTemperature: 24,
+            waterTemperature: 22,
+            pic: '/pics/main/section8_pic.png'
+          },
+          {
+            city: 'Ялта',
+            airTemperature: 27,
+            waterTemperature: 23,
+            pic: '/pics/main/section8_pic.png'
+          },
+          {
+            city: 'Алупка',
+            airTemperature: 25,
+            waterTemperature: 21,
+            pic: '/pics/main/section8_pic.png'
+          }
+        ],
+        [
+          {
             city: 'Алушта',
             airTemperature: 26,
             waterTemperature: 23,
@@ -1331,7 +1260,8 @@ export default {
           }
         ]
       ],
-      dynamicSliderData: [{
+      dynamicSliderDatax: [
+        {
           title: 'Серфинг',
           beachNumber: 21,
           pic: '/pics/main/section7_pic2.png',
@@ -1371,15 +1301,16 @@ export default {
     }
   },
 
-  created() {
-    this.getPopularBeaches();
-    this.getCities();
+  async fetch({ store }) {
+    await store.dispatch('main/getPopularBeaches');
+    await store.dispatch('main/getCities');
+    await store.dispatch('main/getEvents');
+    await store.dispatch('main/getDynamicSlider');
+    await store.dispatch('main/getWeather');
+    await store.dispatch('main/getBeachTypes');
   },
 
   methods: {
-    ...mapActions('beach', ['getPopularBeaches']),
-    ...mapActions('beach', ['getCities']),
-
     onScroll() {
       let scrollTop = window.scrollY || document.body.scrollTop || document.documentElement.scrollTop;
 
@@ -1402,8 +1333,12 @@ export default {
   },
 
   computed: {
-    ...mapState('beach', ['popularBeaches']),
-    ...mapState('beach', ['cities']),
+    ...mapGetters('main', ['popularBeachesData']),
+    ...mapGetters('main', ['citiesData']),
+    ...mapGetters('main', ['eventsData']),
+    ...mapGetters('main', ['dynamicSliderData']),
+    ...mapGetters('main', ['weatherData']),
+    ...mapGetters('main', ['beachTypeData'])
   },
 
   beforeRouteLeave(to, from, next) {

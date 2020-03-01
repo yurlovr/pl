@@ -17,13 +17,13 @@
                 class="search__bar__input"
                 type="text"
                 placeholder="Искать пляж"
-                v-model="searchInput"
-                @input="autocomplete()"
+                :value="searchInput"
+                @input="onInput"
             >
             <a
                 href="/search"
                 class="search__bar__right-search"
-                @click.prevent="$bus.goTo('/search', $router)"
+                @click.prevent="searchFilter()"
             >
                 <img
                     src="~/static/pics/global/svg/search.svg"
@@ -34,7 +34,7 @@
             <button
                 class="search__bar__right-cross"
                 v-show="searchInput.length > 0"
-                @click="searchInput = ''"
+                @click="clearInput"
             >
                 <img
                     src="~/static/pics/global/svg/close.svg"
@@ -63,36 +63,44 @@
                     >
                         <h3 class="search__params__title search__params__title--first">Параметры поиска</h3>
                         <div class="search__params__part__dropdowns-area">
-                            <div class="search__params__part__dropdowns-row">
+                            <div class="search__params__part__dropdowns-row" v-if="searchValues">
                                 <div class="search__params__part__dropdowns">
                                     <div class="search__params__part--dropdown search__params__part--dropdown--wider">
                                         <c-select
-                                            v-model="params.searchCity"
-                                            :class="{ default : params.searchCity == 'Любой город' }"
-                                            :options="cityValues"
+                                            v-if="searchValues"
+                                            :value="searchParams.searchCity"
+                                            :var="'searchCity'"
+                                            :class="{ default : searchParams.searchCity == 'Любой город' }"
+                                            :options="searchValues.cityValues.map(v => v.title)"
                                         ></c-select>
                                     </div>
                                     <div class="search__params__part--dropdown">
                                         <c-select
-                                            v-model="params.searchBeachType"
-                                            :class="{ default : params.searchBeachType == 'Тип пляжа' }"
-                                            :options="beachTypeValues"
+                                            v-if="searchValues"
+                                            :value="searchParams.searchBeachType"
+                                            :var="'searchBeachType'"
+                                            :class="{ default : searchParams.searchBeachType == 'Тип пляжа' }"
+                                            :options="searchValues.beachTypeValues.map(v => v.title)"
                                         ></c-select>
                                     </div>
                                 </div>
                                 <div class="search__params__part__dropdowns">
                                     <div class="search__params__part--dropdown search__params__part--dropdown--wider">
                                         <c-select
-                                            v-model="params.searchWorkSchedule"
-                                            :class="{ default : params.searchWorkSchedule == 'Режим работы' }"
-                                            :options="workScheduleValues"
+                                            v-if="searchValues"
+                                            :value="searchParams.searchWorkSchedule"
+                                            :var="'searchWorkSchedule'"
+                                            :class="{ default : searchParams.searchWorkSchedule == 'Режим работы' }"
+                                            :options="searchValues.workScheduleValues.map(v => v.title)"
                                         ></c-select>
                                     </div>
                                     <div class="search__params__part--dropdown">
                                         <c-select
-                                            v-model="params.searchPrice"
-                                            :class="{ default : params.searchPrice == 'Стоимость' }"
-                                            :options="priceValues"
+                                            v-if="searchValues"
+                                            :value="searchParams.searchPrice"
+                                            :var="'searchPrice'"
+                                            :class="{ default : searchParams.searchPrice == 'Стоимость' }"
+                                            :options="searchValues.priceValues"
                                         ></c-select>
                                     </div>
                                 </div>
@@ -108,13 +116,15 @@
                                     >Протяженность линии, метров</span>
                                     <div class="search__params__part--dropdown search__params__part--dropdown--merged">
                                         <c-select
-                                            v-model="params.searchBeachLengthFrom"
-                                            :class="{ default : params.searchBeachLengthFrom == 'От' || params.searchBeachLengthFrom == 'Протяженность линии от, м' }"
+                                            :value="searchParams.searchBeachLengthFrom"
+                                            :var="'searchBeachLengthFrom'"
+                                            :class="{ default : searchParams.searchBeachLengthFrom == 'От' || searchParams.searchBeachLengthFrom == 'Протяженность линии от, м' }"
                                             :options="beachLengthFromValues"
                                         ></c-select>
                                         <c-select
-                                            v-model="params.searchBeachLengthTo"
-                                            :class="{ default : params.searchBeachLengthTo == 'До' }"
+                                            :value="searchParams.searchBeachLengthTo"
+                                            :var="'searchBeachLengthTo'"
+                                            :class="{ default : searchParams.searchBeachLengthTo == 'До' }"
                                             :options="beachLengthToValues"
                                         ></c-select>
                                     </div>
@@ -129,13 +139,15 @@
                                     >Температура воды от, &deg;C</span>
                                     <div class="search__params__part--dropdown search__params__part--dropdown--merged">
                                         <c-select
-                                            v-model="params.searchWaterTempFrom"
-                                            :class="{ default : params.searchWaterTempFrom == 'От' || params.searchWaterTempFrom == 'Температура воды от, °C' }"
+                                            :value="searchParams.searchWaterTempFrom"
+                                            :var="'searchWaterTempFrom'"
+                                            :class="{ default : searchParams.searchWaterTempFrom == 'От' || searchParams.searchWaterTempFrom == 'Температура воды от, °C' }"
                                             :options="waterTemperatureFromValues"
                                         ></c-select>
                                         <c-select
-                                            v-model="params.searchWaterTempTo"
-                                            :class="{ default : params.searchWaterTempTo == 'До' }"
+                                            :value="searchParams.searchWaterTempTo"
+                                            :var="'searchWaterTempTo'"
+                                            :class="{ default : searchParams.searchWaterTempTo == 'До' }"
                                             :options="waterTemperatureToValues"
                                         ></c-select>
                                     </div>
@@ -146,32 +158,38 @@
                             <CustomCheckbox
                                 class="search__params__part--checkbox"
                                 :label="'Городские'"
-                                v-model="params.cbCity"
+                                :value="searchParams.cbCity"
+                                :var="'cbCity'"
                             />
                             <CustomCheckbox
                                 class="search__params__part--checkbox"
                                 :label="'Популярные пляжи'"
-                                v-model="params.cbPopularBeaches"
+                                :value="searchParams.cbPopularBeaches"
+                                :var="'cbPopularBeaches'"
                             />
                             <CustomCheckbox
                                 class="search__params__part--checkbox"
                                 :label="'Активный отдых'"
-                                v-model="params.cbActiveRest"
+                                :value="searchParams.cbActiveRest"
+                                :var="'cbActiveRest'"
                             />
                             <CustomCheckbox
                                 class="search__params__part--checkbox"
                                 :label="'Дикие'"
-                                v-model="params.cbWild"
+                                :value="searchParams.cbWild"
+                                :var="'cbWild'"
                             />
                             <CustomCheckbox
                                 class="search__params__part--checkbox"
                                 :label="'Отдых для всей семьи'"
-                                v-model="params.cbFamilyRest"
+                                :value="searchParams.cbFamilyRest"
+                                :var="'cbFamilyRest'"
                             />
                             <CustomCheckbox
                                 class="search__params__part--checkbox"
                                 :label="'Мероприятия'"
-                                v-model="params.cbEvents"
+                                :value="searchParams.cbEvents"
+                                :var="'cbEvents'"
                             />
                         </div>
                         <div
@@ -191,58 +209,68 @@
                             <CustomCheckbox
                                 class="search__params__part--checkbox"
                                 :label="'Остановка общественного<br>транспорта'"
-                                v-model="params.cbTransport"
+                                :value="searchParams.cbTransport"
+                                :var="'cbTransport'"
                             />
                             <CustomCheckbox
                                 class="search__params__part--checkbox"
                                 :label="'Инвентарь для активного<br>отдыха'"
-                                v-model="params.cbActiveRest"
+                                :value="searchParams.cbInventoryActive"
+                                :var="'cbInventoryActive'"
                             />
                             <CustomCheckbox
                                 class="search__params__part--checkbox"
                                 :label="'Пункт медицинской<br>помощи'"
-                                v-model="params.cbMedic"
+                                :value="searchParams.cbMedic"
+                                :var="'cbMedic'"
                             />
                             <CustomCheckbox
                                 class="search__params__part--checkbox"
                                 :label="'Бары, рестораны'"
-                                v-model="params.cbBarsRestos"
+                                :value="searchParams.cbBarsRestos"
+                                :var="'cbBarsRestos'"
                             />
                             <CustomCheckbox
                                 class="search__params__part--checkbox"
                                 :label="'Душевые кабины'"
-                                v-model="params.cbShowers"
+                                :value="searchParams.cbShowers"
+                                :var="'cbShowers'"
                             />
                             <CustomCheckbox
                                 class="search__params__part--checkbox"
                                 :label="'Спасательный пункт'"
-                                v-model="params.cbRescuer"
+                                :value="searchParams.cbRescuer"
+                                :var="'cbRescuer'"
                             />
                             <CustomCheckbox
                                 class="search__params__part--checkbox"
                                 :label="'Парковка'"
-                                v-model="params.cbParking"
+                                :value="searchParams.cbParking"
+                                :var="'cbParking'"
                             />
                             <CustomCheckbox
                                 class="search__params__part--checkbox"
                                 :label="'Инвентарь для плавания'"
-                                v-model="params.cbInventorySwimming"
+                                :value="searchParams.cbInventorySwimming"
+                                :var="'cbInventorySwimming'"
                             />
                             <CustomCheckbox
                                 class="search__params__part--checkbox"
                                 :label="'Чистота воды'"
-                                v-model="params.cbCleanWater"
+                                :value="searchParams.cbCleanWater"
+                                :var="'cbCleanWater'"
                             />
                             <CustomCheckbox
                                 class="search__params__part--checkbox"
-                                :label="'Безопаснось'"
-                                v-model="params.cbSecurity"
+                                :label="'Безопасность'"
+                                :value="searchParams.cbSecurity"
+                                :var="'cbSecurity'"
                             />
                         </div>
                         <div class="search__params__apply-area">
                             <a
                                 href="/search"
-                                @click.prevent="$bus.goTo('/search', $router)"
+                                @click.prevent="searchFilter()"
                                 class="search__params__apply"
                             ><span>Применить</span></a>
                             <div class="search__params__apply-area__blank"></div>
@@ -287,10 +315,24 @@
 import CustomCheckbox from '~/components/global/CustomCheckbox';
 import CustomSelect from '~/components/global/CustomSelect';
 
+import { mapGetters, mapActions, mapState, mapMutations } from 'vuex';
+import { debounce } from '~/helpers/index';
+
 export default {
     // if labelId is given, it means that it's not the slider in the header
     // differentiates IDs for parameters
     props: ['labelId'],
+
+    created() {
+        this.getSearch();
+    },
+
+    computed: {
+        ...mapGetters('search', ['searchValues']),
+        ...mapState('search', ['searchInput']),
+        ...mapState('search', ['searchParams']),
+        ...mapState('search', ['autocompleteResults'])
+    },
 
     components: {
         CustomCheckbox,
@@ -314,66 +356,6 @@ export default {
             // mobileView starts from 650px and less
             mobileView: false,
 
-            autocompleteResults: [],
-
-            // all parameters v-model here
-            params: {
-                searchCity: 'Любой город',
-                searchBeachType: 'Тип пляжа',
-                searchWorkSchedule: 'Режим работы',
-                searchPrice: 'Стоимость',
-                searchBeachLengthFrom: 'Протяженность линии от, м',
-                searchBeachLengthTo: 'До',
-                searchWaterTempFrom: 'Температура воды от, °C',
-                searchWaterTempTo: 'До',
-
-                cbCity: false,
-                cbWild: false,
-                cbPopularBeaches: false,
-                cbActiveRest: false,
-                cbFamilyRest: false,
-                cbEvents: false,
-                cbTransport: false,
-                cbInventoryActive: false,
-                cbMedic: false,
-                cbBarsRestos: false,
-                cbShowers: false,
-                cbRescuer: false,
-                cbParking: false,
-                cbInventorySwimming: false,
-                cbCleanWater: false,
-                cbSecurity: false
-            },
-            searchInput: "",
-
-            cityValues: [
-                'Любой город',
-                'Алушта',
-                'Камчатка',
-                'Москва',
-                'Лондон',
-                'Париж',
-                'Непариж'
-            ],
-            beachTypeValues: [
-                'Тип пляжа',
-                'Песчаный',
-                'Ракушечный',
-                'Каменный',
-                'Паркетный',
-                'Нормальный'
-            ],
-            workScheduleValues: [
-                'Режим работы',
-                'С 7:00 до 22:00',
-                'С 8:00 до 23:00',
-                'С 6:00 до 20:00'
-            ],
-            priceValues: [
-                'Стоимость',
-                'Платно',
-                'Бесплатно'
-            ],
             beachLengthFromValues: [
                 `${(this.searchMobileText && !this.labelId || this.showCorrectSelectText) ? 'От' : 'Протяженность линии от, м'}`,
                 'Протяженность от, 100 м',
@@ -457,33 +439,25 @@ export default {
             this.hideParams();
         });
 
-        // checkboxes
-        this.$bus.$on('cbCity', (b) => { this.cbCity = b; });
-        this.$bus.$on('cbWild', (b) => { this.cbWild = b; });
-        this.$bus.$on('cbPopularBeaches', (b) => { this.cbPopularBeaches = b; });
-        this.$bus.$on('cbActiveRest', (b) => { this.cbActiveRest = b; });
-        this.$bus.$on('cbFamilyRest', (b) => { this.cbFamilyRest = b; });
-        this.$bus.$on('cbEvents', (b) => { this.cbEvents = b; });
-        this.$bus.$on('cbTransport', (b) => { this.cbTransport = b; });
-        this.$bus.$on('cbInventoryActive', (b) => { this.cbInventoryActive = b; });
-        this.$bus.$on('cbMedic', (b) => { this.cbMedic = b; });
-        this.$bus.$on('cbBarsRestos', (b) => { this.cbBarsRestos = b; });
-        this.$bus.$on('cbShowers', (b) => { this.cbShowers = b; });
-        this.$bus.$on('cbRescuer', (b) => { this.cbRescuer = b; });
-        this.$bus.$on('cbParking', (b) => { this.cbParking = b; });
-        this.$bus.$on('cbInventorySwimming', (b) => { this.cbInventorySwimming = b; });
-        this.$bus.$on('cbCleanWater', (b) => { this.cbCleanWater = b; });
-        this.$bus.$on('cbSecurity', (b) => { this.cbSecurity = b; });
+        this.$bus.$on('updateSearchParams', (payload) => {
+            this.updateSearchParams(payload);
+        });
     },
 
     methods: {
+        ...mapActions('search', ['getSearch']),
+        ...mapActions('search', ['search']),
+        ...mapActions('search', ['searchAutocomplete']),
+        ...mapMutations('search', ['updateSearchFilter']),
+        ...mapMutations('search', ['updateSearchBeachLengthFrom']),
+        ...mapMutations('search', ['updateSearchWaterTempFrom']),
+        ...mapMutations('search', ['updateInput']),
+        ...mapMutations('search', ['updateSearchParams']),
+
         showParams () {
             // check, if not the main search (the search in the header) (has labelId), then
             // if the screen size is less than 450px, then open the one in the header by calling an event (temporary)
             if (this.labelId && window.innerWidth <= 450) {
-                // document.documentElement.style.overflow = 'hidden';
-                // document.addEventListener('touchmove', function(e) { e.preventDefault() }, false);
-                // this.$el.querySelector('.search__params').addEventListener('touchmove', function(e) { e.stopPropagation() }, false);
                 this.$bus.$emit('tempShowHeaderBgAndBar');
                 this.$bus.$emit('tempShowMobileSearchBar');
                 setTimeout(() => { this.$bus.$emit('showParams'); }, 1);
@@ -511,6 +485,23 @@ export default {
             if (this.paramsShown)
                 this.hideParams();
             else this.showParams();
+        },
+
+        searchFilter() {
+            this.hideParams();
+            this.updateSearchFilter(this.searchValues);
+            if (this.$nuxt.$route.name != 'search')
+                this.$bus.goTo('/search', this.$router);
+            else this.search();
+        },
+
+        clearInput() {
+            this.updateInput('');
+        },
+
+        onInput(e) {
+            this.updateInput(e.target.value);
+            this.autocomplete();
         },
 
         onResize () {
@@ -545,40 +536,30 @@ export default {
 
             // correcting the params values if they area set to default for different screen width
             if (this.searchMobileText && !this.labelId || this.showCorrectSelectText) {
-                if (this.params.searchBeachLengthFrom == 'Протяженность линии от, м') {
-                    this.params.searchBeachLengthFrom = 'От';
+                if (this.searchParams.searchBeachLengthFrom == 'Протяженность линии от, м') {
+                    this.updateSearchBeachLengthFrom('От');
                 }
-                if (this.params.searchWaterTempFrom == 'Температура воды от, °C') {
-                    this.params.searchWaterTempFrom = 'От';
+                if (this.searchParams.searchWaterTempFrom == 'Температура воды от, °C') {
+                    this.updateSearchWaterTempFrom('От');
                 }
             } else {
-                if (this.params.searchBeachLengthFrom == 'От') {
-                    this.params.searchBeachLengthFrom = 'Протяженность линии от, м';
+                if (this.searchParams.searchBeachLengthFrom == 'От') {
+                    this.updateSearchBeachLengthFrom('Протяженность линии от, м');
                 }
-                if (this.params.searchWaterTempFrom == 'От') {
-                    this.params.searchWaterTempFrom = 'Температура воды от, °C';
+                if (this.searchParams.searchWaterTempFrom == 'От') {
+                    this.updateSearchWaterTempFrom('Температура воды от, °C');
                 }
             }
 
-            this.beachLengthFromValues[0] = this.params.searchBeachLengthFrom;
-            this.waterTemperatureFromValues[0] = this.params.searchWaterTempFrom;
+            this.beachLengthFromValues[0] = this.searchParams.searchBeachLengthFrom;
+            this.waterTemperatureFromValues[0] = this.searchParams.searchWaterTempFrom;
         },
 
-        async autocomplete() {
+        autocomplete: debounce(async function () {
             if (this.searchInput.length >= 3) {
-                let res = await this.$axios.$get(`https://crimea.air-dev.agency/api/app/search/autocomplete?q=${this.searchInput}`);
-                if (res.data && res.data.list) {
-                    this.autocompleteResults = [];
-                    for (let i = 0; i < res.data.list.length; i++) {
-                        this.autocompleteResults.push({
-                            title: res.data.list[i].TITLE,
-                            type: res.data.list[i].TYPE == 'beach' ? 'Пляж' : 'Мероприятие',
-                            link: `/${res.data.list[i].TYPE}/${res.data.list[i].ID}`
-                        });
-                    }
-                }
+                this.searchAutocomplete();
             }
-        }
+        }, 250)
     }
 }
 </script>

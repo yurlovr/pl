@@ -27,7 +27,7 @@
 				</div>
 			</div>
 		</section>
-		<BeachEventPtMap :markerData="$store.state.ptAutoMarkData" />
+		<BeachEventPtMap :data="data" />
 		<nuxt-link to="/" class="main-page__card__info-area__button bottom">
 			<span>Проложить маршрут</span>
 		</nuxt-link>

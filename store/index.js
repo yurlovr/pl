@@ -29,299 +29,293 @@ export const state = () => ({
 		time: '8:00-22:00'
 	},
 
-	beachSliderData: {
-		showArrows: true, // whether to ever show arrows
-		slideNumber: 4,
-		cardData: [
-		{
-			temperature: 21,
-			favorite: false,
-		expensive: false, // ruble sign
-		rating: 4.0,
-		title: 'Массандровский пляж',
-		location: 'Ялта, КРЫМ',
-		pic: '/pics/main/section1_beach1.png'
-	},
-	{
-		temperature: 20,
-		favorite: false,
-		expensive: false,
-		rating: 5.0,
-		title: 'Пляж «Ялта – Интурист»',
-		location: 'Ялта, КРЫМ',
-		pic: '/pics/main/section1_beach2.png'
-	},
-	{
-		temperature: 22,
-		favorite: false,
-		expensive: true,
-		rating: 5.0,
-		title: 'Пляж «Лазурный берег»',
-		location: 'Евпатория, КРЫМ',
-		pic: '/pics/main/section1_beach3.png'
-	},
-	{
-		temperature: 20,
-		favorite: false,
-		expensive: false,
-		rating: 5.0,
-		title: 'Массандровский пляж',
-		location: 'Ялта, КРЫМ',
-		pic: '/pics/main/section1_beach4.png'
-	},
-	{
-		temperature: 21,
-		favorite: false,
-		expensive: false, // ruble sign
-		rating: 5.0,
-		title: 'Массандровский пляж',
-		location: 'Ялта, КРЫМ',
-		pic: '/pics/main/section1_beach1.png'
-	},
-	{
-		temperature: 20,
-		favorite: false,
-		expensive: false,
-		rating: 5.0,
-		title: 'Пляж «Ялта – Интурист»',
-		location: 'Ялта, КРЫМ',
-		pic: '/pics/main/section1_beach2.png'
-	},
-	{
-		temperature: 22,
-		favorite: false,
-		expensive: true,
-		rating: 5.0,
-		title: 'Пляж «Лазурный берег»',
-		location: 'Евпатория, КРЫМ',
-		pic: '/pics/main/section1_beach3.png'
-	},
-	{
-		temperature: 20,
-		favorite: false,
-		expensive: false,
-		rating: 5.0,
-		title: 'Массандровский пляж',
-		location: 'Ялта, КРЫМ',
-		pic: '/pics/main/section1_beach4.png'
-	}
-	]
-	},
-
-	beachEventsSliderData: {
-		slideNumber: 4,
-          cardData: [
-            {
-              temperature: 24,
-              favorite: false,
-              expensive: false,
-              date: '12-15.06',
-              title: 'Фестиваль современной культуры и экологии пройдёт в Крыму',
-              beach: 'Пляж «Ялта – Интурист»',
-              beachLink: '/adsa',
-              location: 'Евпатория, КРЫМ',
-              pic: '/pics/main/section5_event1.png'
-            },
-            {
-              temperature: 24,
-              favorite: false,
-              expensive: true,
-              date: '24.05-15.06',
-              title: 'Конкурс надувных матрасов',
-              beach: 'Массандровский пляж',
-              beachLink: '/',
-              location: 'Ялта, КРЫМ',
-              pic: '/pics/main/section5_event2.png'
-            },
-            {
-              temperature: 24,
-              favorite: false,
-              expensive: true,
-              date: '12-15.06',
-              title: 'Фестиваль современной культуры и экологии пройдёт в Крыму',
-              beach: 'Пляж «Лазурный берег»',
-              beachLink: '/',
-              location: 'Евпатория, КРЫМ',
-              pic: '/pics/main/section5_event3.png'
-            },
-            {
-              temperature: 24,
-              favorite: false,
-              expensive: false,
-              date: '19.06',
-              title: 'Коктейльная вечеринка: весёлый отдых для дружной компании',
-              beach: 'Массандровский пляж',
-              beachLink: '/',
-              location: 'Ялта, КРЫМ',
-              pic: '/pics/main/section5_event4.png'
-            },
-            {
-              temperature: 24,
-              favorite: false,
-              expensive: false,
-              date: '12-15.06',
-              title: 'Фестиваль современной культуры и экологии пройдёт в Крыму',
-              beach: 'Пляж «Ялта – Интурист»',
-              beachLink: '/',
-              location: 'Евпатория, КРЫМ',
-              pic: '/pics/main/section5_event1.png'
-            },
-            {
-              temperature: 24,
-              favorite: false,
-              expensive: true,
-              date: '24.05-15.06',
-              title: 'Конкурс надувных матрасов',
-              beach: 'Массандровский пляж',
-              beachLink: '/',
-              location: 'Ялта, КРЫМ',
-              pic: '/pics/main/section5_event2.png'
-            },
-            {
-              temperature: 24,
-              favorite: false,
-              expensive: true,
-              date: '12-15.06',
-              title: 'Фестиваль современной культуры и экологии пройдёт в Крыму',
-              beach: 'Пляж «Лазурный берег»',
-              beachLink: '/',
-              location: 'Евпатория, КРЫМ',
-              pic: '/pics/main/section5_event3.png'
-            },
-            {
-              temperature: 24,
-              favorite: false,
-              expensive: false,
-              date: '19.06',
-              title: 'Коктейльная вечеринка: весёлый отдых для дружной компании',
-              beach: 'Массандровский пляж',
-              beachLink: '/',
-              location: 'Ялта, КРЫМ',
-              pic: '/pics/main/section5_event4.png'
-            }
-          ]
-	},
-
-	similarNearAreaData: {
+	similarNearData: {
 		title: 'Похожие пляжи рядом',
 		subtitle: 'Пологий берег, плавный вход в воду, безопасность и инфраструктура',
-		beachNumber: 45
+		beachNumber: 45,
+		beachSliderData: {
+			slideNumber: 4,
+			cardData: [
+				{
+					temperature: 21,
+					favorite: false,
+					expensive: false, // ruble sign
+					rating: 4.0,
+					title: 'Массандровский пляж',
+					location: 'Ялта, КРЫМ',
+					pic: '/pics/main/section1_beach1.png'
+				},
+				{
+					temperature: 20,
+					favorite: false,
+					expensive: false,
+					rating: 5.0,
+					title: 'Пляж «Ялта – Интурист»',
+					location: 'Ялта, КРЫМ',
+					pic: '/pics/main/section1_beach2.png'
+				},
+				{
+					temperature: 22,
+					favorite: false,
+					expensive: true,
+					rating: 5.0,
+					title: 'Пляж «Лазурный берег»',
+					location: 'Евпатория, КРЫМ',
+					pic: '/pics/main/section1_beach3.png'
+				},
+				{
+					temperature: 20,
+					favorite: false,
+					expensive: false,
+					rating: 5.0,
+					title: 'Массандровский пляж',
+					location: 'Ялта, КРЫМ',
+					pic: '/pics/main/section1_beach4.png'
+				},
+				{
+					temperature: 21,
+					favorite: false,
+					expensive: false, // ruble sign
+					rating: 5.0,
+					title: 'Массандровский пляж',
+					location: 'Ялта, КРЫМ',
+					pic: '/pics/main/section1_beach1.png'
+				},
+				{
+					temperature: 20,
+					favorite: false,
+					expensive: false,
+					rating: 5.0,
+					title: 'Пляж «Ялта – Интурист»',
+					location: 'Ялта, КРЫМ',
+					pic: '/pics/main/section1_beach2.png'
+				},
+				{
+					temperature: 22,
+					favorite: false,
+					expensive: true,
+					rating: 5.0,
+					title: 'Пляж «Лазурный берег»',
+					location: 'Евпатория, КРЫМ',
+					pic: '/pics/main/section1_beach3.png'
+				},
+				{
+					temperature: 20,
+					favorite: false,
+					expensive: false,
+					rating: 5.0,
+					title: 'Массандровский пляж',
+					location: 'Ялта, КРЫМ',
+					pic: '/pics/main/section1_beach4.png'
+				}
+			]
+		}
 	},
 
 	otherEventsData: {
 		title: 'Другие мероприятия на этом пляже',
-		beachNumber: 45
+		beachNumber: 45,
+		beachSliderData: {
+            slideNumber: 4,
+            cardData: [
+            	{
+	              temperature: 24,
+	              favorite: false,
+	              expensive: false,
+	              date: '12-15.06',
+	              title: 'Фестиваль современной культуры и экологии пройдёт в Крыму',
+	              beach: 'Пляж «Ялта – Интурист»',
+	              beachLink: '/adsa',
+	              location: 'Евпатория, КРЫМ',
+	              pic: '/pics/main/section5_event1.png'
+	            },
+	            {
+	              temperature: 24,
+	              favorite: false,
+	              expensive: true,
+	              date: '24.05-15.06',
+	              title: 'Конкурс надувных матрасов',
+	              beach: 'Массандровский пляж',
+	              beachLink: '/',
+	              location: 'Ялта, КРЫМ',
+	              pic: '/pics/main/section5_event2.png'
+	            },
+	            {
+	              temperature: 24,
+	              favorite: false,
+	              expensive: true,
+	              date: '12-15.06',
+	              title: 'Фестиваль современной культуры и экологии пройдёт в Крыму',
+	              beach: 'Пляж «Лазурный берег»',
+	              beachLink: '/',
+	              location: 'Евпатория, КРЫМ',
+	              pic: '/pics/main/section5_event3.png'
+	            },
+	            {
+	              temperature: 24,
+	              favorite: false,
+	              expensive: false,
+	              date: '19.06',
+	              title: 'Коктейльная вечеринка: весёлый отдых для дружной компании',
+	              beach: 'Массандровский пляж',
+	              beachLink: '/',
+	              location: 'Ялта, КРЫМ',
+	              pic: '/pics/main/section5_event4.png'
+	            },
+	            {
+	              temperature: 24,
+	              favorite: false,
+	              expensive: false,
+	              date: '12-15.06',
+	              title: 'Фестиваль современной культуры и экологии пройдёт в Крыму',
+	              beach: 'Пляж «Ялта – Интурист»',
+	              beachLink: '/',
+	              location: 'Евпатория, КРЫМ',
+	              pic: '/pics/main/section5_event1.png'
+	            },
+	            {
+	              temperature: 24,
+	              favorite: false,
+	              expensive: true,
+	              date: '24.05-15.06',
+	              title: 'Конкурс надувных матрасов',
+	              beach: 'Массандровский пляж',
+	              beachLink: '/',
+	              location: 'Ялта, КРЫМ',
+	              pic: '/pics/main/section5_event2.png'
+	            },
+	            {
+	              temperature: 24,
+	              favorite: false,
+	              expensive: true,
+	              date: '12-15.06',
+	              title: 'Фестиваль современной культуры и экологии пройдёт в Крыму',
+	              beach: 'Пляж «Лазурный берег»',
+	              beachLink: '/',
+	              location: 'Евпатория, КРЫМ',
+	              pic: '/pics/main/section5_event3.png'
+	            },
+	            {
+	              temperature: 24,
+	              favorite: false,
+	              expensive: false,
+	              date: '19.06',
+	              title: 'Коктейльная вечеринка: весёлый отдых для дружной компании',
+	              beach: 'Массандровский пляж',
+	              beachLink: '/',
+	              location: 'Ялта, КРЫМ',
+	              pic: '/pics/main/section5_event4.png'
+	            }
+            ]
+        }
 	},
 
 	hotelData: {
-	showArrows: true, // whether to ever show arrows
-	slideNumber: 6,
-	tall: true,
-	cardData: [
-	{
-		rating: 5.0,
-		title: 'Отель Мрия Резорт & СПА',
-		location: 'Ялта, КРЫМ',
-		price: 6800,
-		priceLink: '/',
-		pic: '/pics/main/section11_pic1.png'
-	},
-	{
-		rating: 5.0,
-		title: 'Гостиница «Ялта – Интурист»',
-		location: 'Ялта, КРЫМ',
-		price: 2500,
-		priceLink: '/',
-		pic: '/pics/main/section11_pic2.png'
-	},
-	{
-		rating: 5.0,
-		title: 'Отель "Вилла Голубой Залив"',
-		location: 'Евпатория, КРЫМ',
-		price: 1400,
-		priceLink: '/',
-		pic: '/pics/main/section11_pic3.png'
-	},
-	{
-		rating: 5.0,
-		title: 'Гостиница «Ялта – Интурист»',
-		location: 'Ялта, КРЫМ',
-		price: 3000,
-		priceLink: '/',
-		pic: '/pics/main/section11_pic4.png'
-	},
-	{
-		rating: 5.0,
-		title: 'Гостиница «Ялта – Интурист»',
-		location: 'Ялта, КРЫМ',
-		price: 2500,
-		priceLink: '/',
-		pic: '/pics/main/section11_pic5.png'
-	},
-	{
-		rating: 5.0,
-		title: 'Гостиница «Ялта – Интурист»',
-		location: 'Ялта, КРЫМ',
-		price: 2900,
-		priceLink: '/',
-		pic: '/pics/main/section11_pic6.png'
-	},
-	{
-		rating: 5.0,
-		title: 'Отель Мрия Резорт & СПА',
-		location: 'Ялта, КРЫМ',
-		price: 6800,
-		priceLink: '/',
-		pic: '/pics/main/section11_pic1.png'
-	},
-	{
-		rating: 5.0,
-		title: 'Гостиница «Ялта – Интурист»',
-		location: 'Ялта, КРЫМ',
-		price: 2500,
-		priceLink: '/',
-		pic: '/pics/main/section11_pic2.png'
-	},
-	{
-		rating: 5.0,
-		title: 'Отель "Вилла Голубой Залив"',
-		location: 'Евпатория, КРЫМ',
-		price: 1400,
-		priceLink: '/',
-		pic: '/pics/main/section11_pic3.png'
-	},
-	{
-		rating: 5.0,
-		title: 'Гостиница «Ялта – Интурист»',
-		location: 'Ялта, КРЫМ',
-		price: 3000,
-		priceLink: '/',
-		pic: '/pics/main/section11_pic4.png'
-	},
-	{
-		rating: 5.0,
-		title: 'Гостиница «Ялта – Интурист»',
-		location: 'Ялта, КРЫМ',
-		price: 2500,
-		priceLink: '/',
-		pic: '/pics/main/section11_pic5.png'
-	},
-	{
-		rating: 5.0,
-		title: 'Гостиница «Ялта – Интурист»',
-		location: 'Ялта, КРЫМ',
-		price: 2900,
-		priceLink: '/',
-		pic: '/pics/main/section11_pic6.png'
-	}
-	]
-	},
-
-	hotelAreaData: {
 		title: 'Где остановиться в Крыму',
-		subtitle: 'Наша подборка отелей, основанная на ваших отзывах',
-		beachNumber: 45
-	},
+		subtitle: 'Пологий берег, плавный вход в воду, безопасность и современная инфраструктура',
+		beachNumber: 45,
+		beachSliderData: {
+			slideNumber: 6,
+			cardData: [
+				{
+					rating: 5.0,
+					title: 'Отель Мрия Резорт & СПА',
+					location: 'Ялта, КРЫМ',
+					price: 6800,
+					priceLink: '/',
+					pic: '/pics/main/section11_pic1.png'
+				},
+				{
+					rating: 5.0,
+					title: 'Гостиница «Ялта – Интурист»',
+					location: 'Ялта, КРЫМ',
+					price: 2500,
+					priceLink: '/',
+					pic: '/pics/main/section11_pic2.png'
+				},
+				{
+					rating: 5.0,
+					title: 'Отель "Вилла Голубой Залив"',
+					location: 'Евпатория, КРЫМ',
+					price: 1400,
+					priceLink: '/',
+					pic: '/pics/main/section11_pic3.png'
+				},
+				{
+					rating: 5.0,
+					title: 'Гостиница «Ялта – Интурист»',
+					location: 'Ялта, КРЫМ',
+					price: 3000,
+					priceLink: '/',
+					pic: '/pics/main/section11_pic4.png'
+				},
+				{
+					rating: 5.0,
+					title: 'Гостиница «Ялта – Интурист»',
+					location: 'Ялта, КРЫМ',
+					price: 2500,
+					priceLink: '/',
+					pic: '/pics/main/section11_pic5.png'
+				},
+				{
+					rating: 5.0,
+					title: 'Гостиница «Ялта – Интурист»',
+					location: 'Ялта, КРЫМ',
+					price: 2900,
+					priceLink: '/',
+					pic: '/pics/main/section11_pic6.png'
+				},
+				{
+					rating: 5.0,
+					title: 'Отель Мрия Резорт & СПА',
+					location: 'Ялта, КРЫМ',
+					price: 6800,
+					priceLink: '/',
+					pic: '/pics/main/section11_pic1.png'
+				},
+				{
+					rating: 5.0,
+					title: 'Гостиница «Ялта – Интурист»',
+					location: 'Ялта, КРЫМ',
+					price: 2500,
+					priceLink: '/',
+					pic: '/pics/main/section11_pic2.png'
+				},
+				{
+					rating: 5.0,
+					title: 'Отель "Вилла Голубой Залив"',
+					location: 'Евпатория, КРЫМ',
+					price: 1400,
+					priceLink: '/',
+					pic: '/pics/main/section11_pic3.png'
+				},
+				{
+					rating: 5.0,
+					title: 'Гостиница «Ялта – Интурист»',
+					location: 'Ялта, КРЫМ',
+					price: 3000,
+					priceLink: '/',
+					pic: '/pics/main/section11_pic4.png'
+				},
+				{
+					rating: 5.0,
+					title: 'Гостиница «Ялта – Интурист»',
+					location: 'Ялта, КРЫМ',
+					price: 2500,
+					priceLink: '/',
+					pic: '/pics/main/section11_pic5.png'
+				},
+				{
+					rating: 5.0,
+					title: 'Гостиница «Ялта – Интурист»',
+					location: 'Ялта, КРЫМ',
+					price: 2900,
+					priceLink: '/',
+					pic: '/pics/main/section11_pic6.png'
+				}
+				]
+			},
+		},
 
 	beachInfraData: [
 		{
@@ -408,8 +402,6 @@ export const state = () => ({
 		}
 	],
 
-	parkingTransportMapData: [],
-
 	beachWaterTemperatureData: [
 		[
 			45, 77, 52, 62, 75, 80, 52, 44, 89, 34, 36, 38, 22, 69, 77, 27, 93, 55, 38, 25, 78, 20, 64, 86, 88, 58, 49, 96, 46, 27, 27
@@ -457,7 +449,7 @@ export const state = () => ({
         {
           temperature: 24,
           favorite: false,
-          expensive: false,
+          paid: false,
           date: '12-15.06',
           title: 'Фестиваль современной культуры и экологии пройдёт в Крыму',
           beach: 'Пляж «Ялта – Интурист»',
@@ -468,7 +460,7 @@ export const state = () => ({
         {
           temperature: 24,
           favorite: false,
-          expensive: true,
+          paid: true,
           date: '24.05-15.06',
           title: 'Конкурс надувных матрасов',
           beach: 'Массандровский пляж',
@@ -479,7 +471,7 @@ export const state = () => ({
         {
           temperature: 24,
           favorite: false,
-          expensive: true,
+          paid: true,
           date: '12-15.06',
           title: 'Фестиваль современной культуры и экологии пройдёт в Крыму',
           beach: 'Пляж «Лазурный берег»',
@@ -490,7 +482,7 @@ export const state = () => ({
         {
           temperature: 24,
           favorite: false,
-          expensive: false,
+          paid: false,
           date: '19.06',
           title: 'Коктейльная вечеринка: весёлый отдых для дружной компании',
           beach: 'Массандровский пляж',
@@ -501,7 +493,7 @@ export const state = () => ({
         {
           temperature: 24,
           favorite: false,
-          expensive: false,
+          paid: false,
           date: '12-15.06',
           title: 'Фестиваль современной культуры и экологии пройдёт в Крыму',
           beach: 'Пляж «Ялта – Интурист»',
@@ -512,7 +504,7 @@ export const state = () => ({
         {
           temperature: 24,
           favorite: false,
-          expensive: true,
+          paid: true,
           date: '24.05-15.06',
           title: 'Конкурс надувных матрасов',
           beach: 'Массандровский пляж',
@@ -523,7 +515,7 @@ export const state = () => ({
         {
           temperature: 24,
           favorite: false,
-          expensive: true,
+          paid: true,
           date: '12-15.06',
           title: 'Фестиваль современной культуры и экологии пройдёт в Крыму',
           beach: 'Пляж «Лазурный берег»',
@@ -534,7 +526,7 @@ export const state = () => ({
         {
           temperature: 24,
           favorite: false,
-          expensive: false,
+          paid: false,
           date: '19.06',
           title: 'Коктейльная вечеринка: весёлый отдых для дружной компании',
           beach: 'Массандровский пляж',

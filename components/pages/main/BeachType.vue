@@ -10,10 +10,10 @@
 						Оборудованные ляжи, со всей<br>необходимой инфраструктурой<br>для комфортного отдыха
 					</p>
 				</div>
-				<nuxt-link :to="data.beachLink1" class="main-page__beach-type__card__beach-number-area">
+				<a href="/search" @click.prevent="search(1)" class="main-page__beach-type__card__beach-number-area">
 					<span class="main-page__beach-type__card__beach-number">{{ data.beachNumber1 }}</span>
-					<span class="main-page__beach-type__card__beach">ПЛЯЖЕЙ</span>
-				</nuxt-link>
+					<span class="main-page__beach-type__card__beach">{{ getBeach(data.beachNumber1) }}</span>
+				</a>
 			</div>
 			<div class="main-page__beach-type__card">
 				<img src="~/static/pics/main/section10_pic2.png" class="main-page__beach-type__card__bg">
@@ -23,10 +23,10 @@
 						Уединение с природой, релакс.<br>Хотите тишины и спокойствия –<br>посмотрите нашу подборку
 					</p>
 				</div>
-				<nuxt-link :to="data.beachLink2" class="main-page__beach-type__card__beach-number-area">
+				<a href="/search" @click.prevent="search(2)" class="main-page__beach-type__card__beach-number-area">
 					<span class="main-page__beach-type__card__beach-number">{{ data.beachNumber2 }}</span>
-					<span class="main-page__beach-type__card__beach">ПЛЯЖЕЙ</span>
-				</nuxt-link>
+					<span class="main-page__beach-type__card__beach">{{ getBeach(data.beachNumber2) }}</span>
+				</a>
 			</div>
 		</div>
 	</section>
@@ -34,6 +34,18 @@
 
 <script>
 	export default {
-		props: ['data']
+		props: ['data'],
+
+		methods: {
+			// TODO
+			search(i) {
+
+			},
+
+			getBeach(i) {
+				if (i % 10 > 1 && i % 10 < 5) return 'пляжа';
+				return (i % 10 == 1 && i % 100 != 11) ? 'пляж' : 'пляжей';
+			}
+		}
 	}
 </script>

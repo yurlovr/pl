@@ -53,10 +53,12 @@
 
 		methods: {
 			onResize() {
-				if (!this.$el.querySelector('.beach-event__review'))
+				if (!this.$el.querySelector('.beach-event__review')) {
 					window.removeEventListener('resize', this.onResize, false);
+					return;
+				}
 
-				if (this.$refs.clamper.offset > 340 && !this.lines != 0)
+				if (this.$refs.clamper && this.$refs.clamper.offset > 340 && !this.lines != 0)
 					this.maxLines = 4;
 			}
 		}

@@ -1,37 +1,40 @@
 <template>
 	<div class="slider-beach-event">
 		<div class="slider-beach-event__left">
-			<div class="slider-beach-event__medal-gold" v-if="data.goldMedal">
-				<img src="~/static/pics/global/svg/goldMedal.svg">
-			</div>
-			<div class="slider-beach-event__medal-blue" v-if="data.blueMedal">
-				<img src="~/static/pics/global/svg/blueMedal.svg">
-			</div>
-			<div class="slider-beach-event__beach-closed" v-if="data.isBeachClosed"><span>ПЛЯЖ ЗАКРЫТ</span></div>
-			<button class="slider-beach-event__zoom-button" @click="modalOpen = !modalOpen">
-				<img src="~/static/pics/global/svg/zoom.svg">
-			</button>
-			<div v-swiper:mySwiper="swiperOption">
-				<div class="swiper-wrapper">
-					<div class="swiper-slide" v-for="(pic, i) in data.pics" :key="i">
-						<img :src="pic">
+			<div class="slider-beach-event__left__inner">
+				<div class="slider-beach-event__medal-gold" v-if="data.goldMedal">
+					<img src="~/static/pics/global/svg/goldMedal.svg">
+				</div>
+				<div class="slider-beach-event__medal-blue" v-if="data.blueMedal">
+					<img src="~/static/pics/global/svg/blueMedal.svg">
+				</div>
+				<div class="slider-beach-event__beach-closed" v-if="data.isBeachClosed"><span>ПЛЯЖ ЗАКРЫТ</span></div>
+				<button class="slider-beach-event__zoom-button" @click="modalOpen = !modalOpen">
+					<img src="~/static/pics/global/svg/zoom.svg">
+				</button>
+				<div v-swiper:mySwiper="swiperOption">
+					<div class="swiper-wrapper">
+						<div class="swiper-slide" v-for="(pic, i) in data.pics" :key="i">
+							<img :src="pic">
+						</div>
 					</div>
 				</div>
-			</div>
-			<div class="pagination-wrapper">
-				<div class="custom-pagination">
-					<button @click="mySwiper.slideTo(i)" class="custom-pagination-bullet" v-for="(b,i) in data.pics.length" :class="{ 'custom-pagination-bullet-active' : i == activeIndex }"></button>
+				<div class="pagination-wrapper">
+					<div class="custom-pagination">
+						<button @click="mySwiper.slideTo(i)" class="custom-pagination-bullet" v-for="(b,i) in data.pics.length" :class="{ 'custom-pagination-bullet-active' : i == activeIndex }"></button>
+					</div>
 				</div>
+				<button class="slider__arrow-left" :style="{ transform: 'translate(-50%, -50%)', display: showLeft ? '' : 'none' }" @click="mySwiper.slidePrev()">
+					<img src="~/static/pics/global/svg/slider_arrow_left.svg" alt="Налево">
+				</button>
+				<button class="slider__arrow-right" :style="{ transform: 'translate(50%, -50%)', display: showRight ? '' : 'none' }" @click="mySwiper.slideNext();">
+					<img src="~/static/pics/global/svg/slider_arrow_right.svg" alt="Направо">
+				</button>
 			</div>
-			<button class="slider__arrow-left" :style="{ transform: 'translate(-50%, -50%)', display: showLeft ? '' : 'none' }" @click="mySwiper.slidePrev()">
-				<img src="~/static/pics/global/svg/slider_arrow_left.svg" alt="Налево">
-			</button>
-			<button class="slider__arrow-right" :style="{ transform: 'translate(50%, -50%)', display: showRight ? '' : 'none' }" @click="mySwiper.slideNext();">
-				<img src="~/static/pics/global/svg/slider_arrow_right.svg" alt="Направо">
-			</button>
 		</div>
 		<div class="slider-beach-event__right">
-			<div class="slider-beach-event__right__item" v-for="(pic, i) in data.pics" :key="i" v-if="i != 0 && i <= 6">
+			<div class="slider-beach-event__right__item" v-for="(pic, i) in data.pics" :key="i" v-if="i != 0 && i <= 6"
+			:style="{ height: `${(100 / (Math.min(data.pics.length - 1, 6) / 2)).toFixed(2)}%` }">
 				<div class="slider-beach-event__right__item__inner" @click="openModal(i)">
 					<img :src="pic">
 					<span v-if="i == 6 && data.pics.length - 7 > 0">+{{ data.pics.length - 7 }}</span>

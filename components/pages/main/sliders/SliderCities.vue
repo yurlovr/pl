@@ -2,10 +2,11 @@
 	<div class="slider-cities">
 		<div v-swiper:mySwiper="swiperOption">
 			<div class="swiper-wrapper slider-cities__wrapper">
-				<div class="swiper-slide slider-cities__slide" v-for="slide in data.cardData">
+				<div class="swiper-slide slider-cities__slide" v-for="slide in data">
 					<a href="/" @click.prevent="$bus.goTo('/', $router)" class="slider__slide__link">
 						<div class="slider-cities__slide__pic-area">
-							<img :src="slide.pic" alt="Фото" class="slider-cities__slide__pic">
+							<img v-if="slide.pic" :src="slide.pic" class="slider-cities__slide__pic">
+							<img v-if="!slide.pic" src="~/static/pics/global/pics/slider_cities_placeholder.png">
 							<h4 class="slider-cities__slide__title">{{ slide.city }}</h4>
 						</div>
 						<div class="slider-cities__slide__info-area">
@@ -18,7 +19,7 @@
 		</div>
 		<div class="pagination-wrapper">
 			<div class="custom-pagination">
-				<button @click="mySwiper.slideTo(i)" class="custom-pagination-bullet" v-for="(b,i) in data.cardData.length - 1" :class="{ 'custom-pagination-bullet-active' : i == activeIndex }"></button>
+				<button @click="mySwiper.slideTo(i)" class="custom-pagination-bullet" v-for="(b,i) in data.length - 1" :class="{ 'custom-pagination-bullet-active' : i == activeIndex }"></button>
 			</div>
 		</div>
 		<button class="slider__arrow-left" :style="{ transform: 'translate(-50%, -50%)', top: arrowY + 'px', display: showLeft && showArrows ? '' : 'none' }" @click="mySwiper.slidePrev()">

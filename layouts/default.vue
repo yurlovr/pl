@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div id="content">
     <PageTransitioner />
     <Preloader />
     <Header />
@@ -15,6 +15,8 @@
   import Footer from '~/components/global/Footer';
 
   export default {
+    middleware: 'error',
+
     components: {
       PageTransitioner,
       Preloader,

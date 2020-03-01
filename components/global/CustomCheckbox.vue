@@ -1,7 +1,7 @@
 <template>
 	<div class="custom-checkbox" @click="toggle()">
-		<div class="custom-checkbox__checkbox" :class="{ checked: checked }">
-			<img src="~/static/pics/global/svg/check.svg" v-show="checked">
+		<div class="custom-checkbox__checkbox" :class="{ checked: value }">
+			<img src="~/static/pics/global/svg/check.svg" v-show="value">
 		</div>
 		<span v-html="label"></span>
 	</div>
@@ -9,23 +9,11 @@
 
 <script>
 export default {
-	props: ['label'],
-
-	model: {
-		prop: 'checked',
-    	event: 'change'
-	},
-
-	data() {
-		return {
-			checked: false
-		}
-	},
+	props: ['label', 'value', 'var'],
 
 	methods: {
 		toggle() {
-			this.checked = !this.checked;
-			this.$emit('change', this.checked);
+			this.$bus.$emit('updateSearchParams', { p: this.var, v: !this.value });
 		}
 	}
 }

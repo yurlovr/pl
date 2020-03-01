@@ -40,7 +40,10 @@
 }
 
 html,
-body {
+body,
+#__nuxt,
+#__layout,
+#content {
   box-sizing: border-box;
   background: #fafafa;
   font-family: Museo Sans Cyrl;
@@ -266,6 +269,8 @@ input {
     z-index: 1;
     cursor: pointer;
     padding: 5px 0;
+    max-height: 200px;
+    overflow-y: auto;
 
     &__item {
       padding: 5px 20px;
@@ -1045,6 +1050,14 @@ input {
 
   &__popular-beaches {
     margin-bottom: 60px;
+
+    .slider {
+      &__arrow {
+        &-left, &-right {
+          top: 90px;
+        }
+      }
+    }
   }
 
   &__welcome {
@@ -1101,7 +1114,7 @@ input {
       left: 0;
       top: 17px;
       margin-bottom: 130px;
-      z-index: 99;
+      z-index: 100;
     }
   }
 
@@ -1123,8 +1136,10 @@ input {
     padding-top: 50px;
     padding-bottom: 50px;
 
-    .main-page__section-subtitle {
-      // max-width: 397px;
+    .custom-card {
+      &__pic {
+        height: 300px;
+      }
     }
   }
 
@@ -1194,6 +1209,11 @@ input {
         }
       }
     }
+  }
+
+  &__cities {
+    position: relative;
+    z-index: 3;
   }
 
   &__map {
@@ -1648,6 +1668,7 @@ input {
 
 .search-page {
   padding-bottom: 40px;
+  min-height: calc(100vh - 313px);
 
   &__desktop-tablet {
     display: flex;
@@ -1745,8 +1766,7 @@ input {
 
     &__info-area {
       min-width: 656px;
-      min-height: 650px;
-      height: 70vh;
+      max-height: 650px;
 
       &.scroller {
         .scroll-area {
@@ -1766,7 +1786,8 @@ input {
     }
 
     &__card {
-      height: 250px;
+      max-width: 630px;
+      min-height: 250px;
       background: white;
       border-radius: 8px;
       display: flex;
@@ -1786,8 +1807,8 @@ input {
       }
 
       &__pic-area {
-        min-width: 250px;
-        height: 100%;
+        max-width: 250px;
+        width: 100%;
 
         img {
           width: 100%;
@@ -1802,6 +1823,7 @@ input {
         line-height: 120%;
         color: #393e48;
         margin-bottom: 5px;
+        padding-right: 10px;
 
         &-area {
           display: flex;
@@ -1832,6 +1854,7 @@ input {
         line-height: 14px;
         color: #73767d;
         margin-bottom: 30px;
+        text-transform: uppercase;
       }
 
       &__infos {
@@ -1843,6 +1866,7 @@ input {
           display: flex;
           align-items: center;
           margin-bottom: 15px;
+          padding-right: 10px;
 
           img {
             width: 28px;
@@ -2047,7 +2071,7 @@ input {
 
       &s {
         display: flex;
-        justify-content: space-between;
+        justify-content: flex-start;
         flex-wrap: nowrap;
       }
     }
@@ -3341,9 +3365,13 @@ input {
 
   &__pic {
     width: 100%;
-    height: 100%;
-    object-fit: contain;
+    height: 180px;
+    object-fit: cover;
     transition: transform 0.2s ease;
+
+    &.tall {
+      height: 300px;
+    }
 
     &-area {
       position: relative;
@@ -3423,13 +3451,10 @@ input {
 
   &__info {
     &-area {
-      &.event {
-        height: 114px;
-      }
-
       a {
-        text-decoration: none;
-        color: #228596;
+        &.custom__card__beach {
+          color: #228596;
+        }
       }
     }
   }
@@ -3437,7 +3462,7 @@ input {
   &__location {
     line-height: 14px;
     text-transform: uppercase;
-    color: #73767d;
+    color: #73767d !important;
     margin-bottom: 0;
   }
 
@@ -3488,7 +3513,7 @@ input {
     }
   }
 
-  &__expensive {
+  &__paid {
     position: absolute;
     bottom: 12px;
     left: 12px;
@@ -3599,6 +3624,14 @@ input {
         &-area {
           position: relative;
           border-radius: 12px 12px 0px 0px;
+          height: 96px;
+
+          img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 12px 12px 0 0;
+          }
         }
       }
 
@@ -3885,13 +3918,19 @@ input {
     display: flex;
     height: 460px;
     margin-top: 18px;
-    margin-bottom: 15px;
+    margin-bottom: -9px;
 
     &__left {
       max-width: 66%;
       width: 100%;
       height: 100%;
-      position: relative;
+      padding-bottom: 24px;
+
+      &__inner {
+        width: 100%;
+        height: 100%;
+        position: relative;
+      }
 
       .swiper-container {
         border-radius: 12px;
@@ -3938,9 +3977,9 @@ input {
       position: relative;
 
       &__item {
-        margin-bottom: 24px;
+        padding-bottom: 24px;
         width: 50%;
-        height: auto;
+        height: 33.33%;
         position: relative;
         cursor: pointer;
 
@@ -3950,11 +3989,6 @@ input {
 
         &:nth-child(2n) {
           padding-left: 12px;
-        }
-
-        &:nth-child(5),
-        &:nth-child(6) {
-          margin-bottom: 0;
         }
 
         &:hover {
@@ -4547,10 +4581,6 @@ input {
         flex-direction: column;
         margin-bottom: 32px;
 
-        a {
-          text-decoration: none;
-        }
-
         &:hover,
         &.active {
           .map-beaches-main__card__pic-area {
@@ -4647,9 +4677,59 @@ input {
     }
   }
 
-  &__beach-icon {
-    width: 27px;
-    height: 38px;
+  &-pt {
+    &__popup {
+      background: white;
+      width: 300px;
+      padding: 22px;
+      line-height: 120%;
+      color: #393E48;
+
+      &__title {
+        font-weight: 700;
+        margin-bottom: 4px;
+      }
+
+      &__info {
+        font-size: 14px;
+      }
+
+      &__info, &__subtitle {
+        margin-bottom: 10px;
+      }
+
+      &__title, &__subtitle, &__price {
+        font-size: 16px;
+      }
+
+      &__title, &__subtitle, &__price, &__info {
+        display: block;
+      }
+    }
+  }
+
+  &__beach {
+    &-icon {
+      width: 27px;
+      height: 38px;
+      position: relative;
+    }
+
+    &__parking-icon {
+      width: 27px;
+      height: 33px;
+    }
+
+    &-caption {
+      position: absolute;
+      left: 35px;
+      bottom: -5px;
+      font-size: 16px;
+      line-height: 120%;
+      color: #393E48;
+      text-align: left;
+      white-space: nowrap;
+    }
   }
 
   &__zoom {
@@ -4843,11 +4923,7 @@ input {
       font-size: 16px !important;
     }
 
-    &__info-area.event {
-      height: 105px;
-    }
-
-    &__expensive {
+    &__paid {
       width: 22px;
       height: 22px;
       margin-top: -4px;
@@ -4988,6 +5064,7 @@ input {
         &__pic-area {
           border-radius: 8px 8px 0 0;
           height: 200px;
+          max-width: unset;
 
           img {
             border-radius: 8px 8px 0 0;
@@ -5043,6 +5120,7 @@ input {
 
     &__right {
       width: 100%;
+      max-width: unset;
       padding-left: 0;
       min-width: unset;
     }
@@ -5264,6 +5342,12 @@ input {
     }
   }
 
+  &__arrow {
+    &-left, &-right {
+      display: none;
+    }
+  }
+
   .main-page {
     &__beach-slider-area,
     &__beach-events,
@@ -5279,6 +5363,10 @@ input {
     &__dynamic-slider-area {
       margin-bottom: 50px;
     }
+  }
+
+  .search-page {
+    min-height: calc(100vh - 352px);
   }
 
   .footer__part {
@@ -5309,12 +5397,6 @@ input {
         }
       }
     }
-  }
-}
-
-@media (max-width: 1058px) {
-  .custom-card__info-area.event {
-    height: 121px;
   }
 }
 
@@ -5461,9 +5543,11 @@ input {
 
     &-beach-event {
       height: 380px;
+      margin-bottom: 15px;
 
       &__left {
         max-width: unset;
+        padding-bottom: 0;
 
         .swiper-container {
           overflow: visible;
@@ -5658,6 +5742,7 @@ input {
 
   .search-page {
     padding-bottom: 20px;
+    min-height: calc(100vh - 437px);
   }
 
   .card-grid {
@@ -5799,6 +5884,12 @@ input {
     }
   }
 
+  .custom-card {
+    &__pic {
+      height: 150px;
+    }
+  }
+
   .search-page {
     &__map-area {
       flex-direction: column;
@@ -5806,6 +5897,14 @@ input {
 
       &__card {
         margin-bottom: 0;
+
+        &:last-of-type {
+          margin-bottom: 0;
+        }
+
+        &.swiper-slide {
+          height: auto;
+        }
       }
 
       &__info-area {
@@ -6426,12 +6525,6 @@ input {
   }
 }
 
-@media (max-width: 763px) {
-  .custom-card__info-area.event {
-    height: 121px;
-  }
-}
-
 // TABLET OFFICIAL
 @media (max-width: 768px) {
   .main-page {
@@ -6556,6 +6649,10 @@ input {
       }
     }
   }
+
+  .search-page {
+    min-height: calc(100vh - 455px);
+  }
 }
 
 @media (max-width: 720px) {
@@ -6649,10 +6746,6 @@ input {
 }
 
 @media (max-width: 700px) {
-  .custom-card__info-area.event {
-    height: 105px;
-  }
-
   .beach-page {
     &__quick-data {
       &__item {
@@ -7361,6 +7454,10 @@ input {
       }
     }
   }
+
+  .search-page {
+    min-height: calc(100vh - 529px);
+  }
 }
 
 // at 600px
@@ -7541,17 +7638,7 @@ input {
   }
 }
 
-@media (max-width: 592px) {
-  .custom-card__info-area.event {
-    height: 121px;
-  }
-}
-
 @media (max-width: 550px) {
-  .custom-card__info-area.event {
-    height: 105px;
-  }
-
   .beach-page-sections {
     &.slider-weather__months {
       margin-bottom: 10px;
@@ -7817,6 +7904,10 @@ input {
   }
 
   .custom-card {
+    &__pic {
+      height: 110px;
+    }
+
     &__temp {
       &-area {
         top: 6px;
@@ -7833,7 +7924,7 @@ input {
       }
     }
 
-    &__expensive {
+    &__paid {
       bottom: 6px;
       left: 6px;
     }
@@ -8339,7 +8430,7 @@ input {
   .card-grid {
     &__card {
       &__heart-button,
-      &__expensive {
+      &__paid {
         width: 22px;
         height: 22px;
       }
@@ -8350,7 +8441,7 @@ input {
         right: 6px;
       }
 
-      &__expensive {
+      &__paid {
         bottom: 6px;
         left: 6px;
       }
@@ -8501,6 +8592,8 @@ input {
   }
 
   .search-page {
+    min-height: calc(100vh - 907px);
+
     &__map-area {
       &__info-area {
         &__modal {
@@ -8532,12 +8625,6 @@ input {
         }
       }
     }
-  }
-}
-
-@media (max-width: 392px) {
-  .custom-card__info-area.event {
-    height: 121px;
   }
 }
 
@@ -8662,6 +8749,16 @@ body.touch {
       &-right {
         &-balloon {
           opacity: 0 !important;
+        }
+      }
+    }
+
+    &__beach-event {
+      &__right {
+        &__item {
+          img {
+            transform: scale(1) !important;
+          }
         }
       }
     }

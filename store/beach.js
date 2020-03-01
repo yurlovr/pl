@@ -1,41 +1,47 @@
 export const state = () => ({
-    popularBeaches: [],
-    cities: [],
     beach: [],
+    temperatures: [],
+    events: [],
+    barsNRestos: [],
+    opinions: [],
     api: 'https://crimea.air-dev.agency'
 })
 
 export const mutations = {
-    SET_POPULAR_BEACH: (state, payload) => {
-           state.popularBeaches = payload;
-    },
-
-    SET_CITIES: (state, payload) => {
-        state.cities = payload;
-    },
-
     SET_BEACH: (state, payload) => {
         state.beach = payload;
+    },
+
+    SET_TEMPERATURES: (state, payload) => {
+        state.temperatures = payload;
+    },
+
+    SET_EVENTS: (state, payload) => {
+        state.events = payload;
+    },
+
+    SET_BARS_N_RESTOS: (state, payload) => {
+        state.barsNRestos = payload;
+    },
+
+    SET_OPINIONS: (state, payload) => {
+        state.opinions = payload;
     }
 }
 
 export const actions = {
-    async getPopularBeaches({commit}) {
-        commit('SET_POPULAR_BEACH', await this.$axios.$get('/beach/top'));
-    },
-
-    async getCities({commit}) {
-        commit('SET_CITIES', await this.$axios.$get('/city/list'));
-    },
-
     async getBeach({commit}, id) {
         commit('SET_BEACH', await this.$axios.$get(`/beach/item?id=${id}`));
+        commit('SET_EVENTS', await this.$axios.$get(`/event/list?beachId=${id}`));
+        commit('SET_BARS_N_RESTOS', await this.$axios.$get(`/restaurant/list?beachId=${id}`));
+        commit('SET_OPINIONS', await this.$axios.$get(`/opinion/list?entityId=${id}`));
+        commit('SET_TEMPERATURES', await this.$axios.$get(`/weather/list`));
     }
 }
 
 export const getters = {
     beachData: (state) => {
-        if (!state.beach.data) return {};
+        if (!state.beach.data) return null;
 
         let ret = {
             avgRating: {
@@ -77,7 +83,7 @@ export const getters = {
                 price: state.beach.data.item.PARAMETERS.P_PRICE,
                 beachType: state.beach.data.item.PARAMETERS.P_BEACH_TYPE.NAME,
                 beachSeabedType: state.beach.data.item.PARAMETERS.P_BOTTOM,
-                time: state.beach.data.item.PARAMETERS.P_MODE.NAME
+                time: (state.beach.data.item.PARAMETERS.P_MODE ? state.beach.data.item.PARAMETERS.P_MODE.NAME : '')
             },
 
             hugeSliderData: {
@@ -98,9 +104,32 @@ export const getters = {
 
             servicesData: [],
 
-            // waterHistogramData: [
-            //     ...state.beach.data.item.
-            // ],
+            waterHistogramData: [],
+
+            sideMapData: {
+                title: state.beach.data.item.NAME
+            },
+
+            ptData: {
+                title: state.beach.data.item.NAME,
+                parkings: state.beach.data.item.PARKINGS
+            },
+
+            events: {
+                cardData: []
+            },
+
+            barsNRestos: [],
+
+            opinions: [],
+
+            sections: [
+                'Галерея',
+                'Инфраструктура',
+                'О пляже',
+                'Услуги и аренда',
+                'Парковки и транспорт'
+            ]
         };
 
         // adding formatted infrastructures
@@ -177,6 +206,52 @@ export const getters = {
                 pic: '/pics/beach/sports.svg'
             });
         }
+
+        // adding formatted temperatures
+        for (let i = 0; i < state.temperatures.data.list.length; i++) {
+            if (state.temperatures.data.list[i].CITY.ID == state.beach.data.item.CITY.ID) {
+                for (let j in state.temperatures.data.list[i].TEMP.WATER) {
+                    ret.waterHistogramData.push(parseFloat(state.temperatures.data.list[i].TEMP.WATER[j]));
+                }
+                break;
+            }
+        }
+
+        // adding formatted events
+        for (let i = 0; i < state.events.data.list.length; i++) {
+            ret.events.cardData.push({
+                title: state.events.data.list[i].NAME,
+                date: `${state.events.data.list[i].ACTIVE_FROM} - ${state.events.data.list[i].ACTIVE_TO}`,
+                beach: state.events.data.list[i].BEACH.NAME,
+                beachLink: `beach/${state.events.data.list[i].BEACH.ID}`,
+                location: state.events.data.list[i].BEACH.CITY.NAME,
+                pic: state.api + state.events.data.list[i].PHOTOS[0]         
+            });
+        }
+
+        // adding formatted bars and restos
+        for (let i = 0; i < state.barsNRestos.data.list.length; i++) {
+            ret.barsNRestos.push({
+                title: state.barsNRestos.data.list[i].NAME,
+                description: state.barsNRestos.data.list[i].DESCRIPTION,
+                pics: state.barsNRestos.data.list[i].PHOTOS.map(v => state.api + v)
+            });
+        }
+
+        // adding formatted opinions
+        for (let i = 0; i < state.opinions.data.list.length; i++) {
+            ret.opinions.push({
+                pic: state.api + state.opinions.data.list[i].PICTURE,
+                name: state.opinions.data.list[i].NAME,
+                opinion: state.opinions.data.list[i].DESCRIPTION
+            });
+        }
+
+        // adding formatted sections
+        if (ret.waterHistogramData.length > 0) {
+            ret.sections.push('Температура воды');
+        }
+        ret.sections.push('Мероприятия', 'Бары и рестораны', 'Фото посетителей', 'Отзывы');
 
         return ret;
     }

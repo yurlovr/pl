@@ -1,6 +1,6 @@
 <template>
-	<div class="search-page__tag" v-show="!tagRemoved">
-		<span>{{ tag }}</span>
+	<div class="search-page__tag">
+		<span>{{ tag.tag }}</span>
 		<button class="search-page__tag__remove" @click="removeTag()">
 			<img src="~/static/pics/global/svg/close.svg" alt="Убрать">
 		</button>
@@ -8,19 +8,24 @@
 </template>
 
 <script>
+	import { mapGetters, mapMutations, mapActions } from 'vuex';
+
 	export default {
 		props: ['tag'],
 
-		data() {
-			return {
-				tagRemoved: false
-			}
+		computed: {
+			...mapGetters('search', ['searchValues']),
 		},
 
 		methods: {
+			...mapMutations('search', ['updateSearchFilter']),
+			...mapMutations('search', ['updateSearchParams']),
+			...mapActions('search', ['search']),
+
 			removeTag() {
-				this.tagRemoved = true;
-				setTimeout(() => { this.$bus.$emit('updateSearchTagsSlider') }, 10);
+				this.updateSearchParams({p: this.tag.param, v: this.tag.default});
+				this.updateSearchFilter(this.searchValues);
+				this.search();
 			}
 		}
 	}

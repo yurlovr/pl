@@ -1,9 +1,9 @@
 <template>
 	<div class="search-page custom-page">
-		<SearchTags :tags="data.tags" />
+		<SearchTags :tags="tags" />
 		<div class="search-page__title-area custom-container">
 			<h3 class="main-page__section-title">Результаты поиска</h3>
-			<div class="search-page__title-area__buttons">
+			<div class="search-page__title-area__buttons" v-if="getSearchResult">
 				<button class="search-page__title-area__button" :class="{ active: !showCardsOrMap }" @click="showCardsOrMap = false">
 					<img src="~/static/pics/search/cards_orange.svg" alt="Вид: Карточки" v-show="!showCardsOrMap">
 					<img src="~/static/pics/search/cards_gray.svg" alt="Вид: Карточки" v-show="showCardsOrMap">
@@ -14,8 +14,11 @@
 				</button>
 			</div>
 		</div>
-		<CardGrid :data="searchCardResults" v-show="!showCardsOrMap" />
-		<SearchMapArea :data="searchMapData" v-show="showCardsOrMap" />
+		<div class="custom-container search-page__empty" v-if="!getSearchResult || getSearchResult.length == 0">
+			<div class="favorites-page__visited-empty">К сожалению по Вашему запросу ничего не найдено.<br>Попробуйте изменить запрос, или начните <a href="/" @click.prevent="$bus.goTo('/', $router)">сначала</a></div>
+		</div>
+		<CardGrid :data="getSearchResult" v-show="!showCardsOrMap" v-if="getSearchResult" />
+		<SearchMapArea :data="getSearchResult" v-show="showCardsOrMap" v-if="getSearchResult" />
 	</div>
 </template>
 
@@ -25,6 +28,8 @@
 	import CardGrid from '~/components/global/CardGrid';
 	import RouterPagination from '~/components/global/RouterPagination';
 
+	import { mapGetters, mapActions, mapState } from 'vuex';
+
 	export default {
 		components: {
 			SearchTags,
@@ -33,291 +38,27 @@
 			RouterPagination
 		},
 
+		computed: {
+			...mapGetters('search', ['getSearchResult']),
+			...mapState('search', ['tags'])
+		},
+
+		watch: {
+			getSearchResult: function (newS, oldS) {
+				if (this.tags.length > 0 && oldS != null)
+					setTimeout(() => { this.$bus.$emit('updateMap')}, 100);
+			}
+		},
+
 		data() {
 			return {
 				showCardsOrMap: false, // cards: false, map: true
-				mapShownForTheFirstTime: false,
-				data: {
-					tags: ['Алушта', 'Вход с 7:00 до 22:00', 'Песчаный', 'Протяженность 1-1,5 км', 'Вход Бесплатно', 'Остановка общественного транспорта', 'Инвентарь для активного отдыха', 'Инвентарь для активного отдыха', 'Душевые кабины']
-				},
-				searchCardResults: [
-					{
-						temperature: 22,
-						favorite: false,
-						expensive: true,
-						rating: 5.0,
-						title: 'Пляж «Лазурный берег»',
-						location: 'Евпатория, КРЫМ',
-						pic: '/pics/main/section1_beach3.png',
-						link: '/'
-					},
-					{
-						temperature: 20,
-						favorite: false,
-						expensive: false,
-						rating: 5.0,
-						title: 'Массандровский пляж',
-						location: 'Ялта, КРЫМ',
-						pic: '/pics/main/section1_beach4.png',
-						link: '/'
-					},
-					{
-						temperature: 21,
-						favorite: false,
-						expensive: false,
-						rating: 5.0,
-						title: 'Массандровский пляж',
-						location: 'Ялта, КРЫМ',
-						pic: '/pics/main/section1_beach1.png',
-						link: '/'
-					},
-					{
-						temperature: 20,
-						favorite: false,
-						expensive: false,
-						rating: 5.0,
-						title: 'Пляж «Ялта – Интурист»',
-						location: 'Ялта, КРЫМ',
-						pic: '/pics/main/section1_beach2.png',
-						link: '/'
-					},
-					{
-						temperature: 22,
-						favorite: false,
-						expensive: true,
-						rating: 5.0,
-						title: 'Пляж «Лазурный берег»',
-						location: 'Евпатория, КРЫМ',
-						pic: '/pics/main/section1_beach3.png',
-						link: '/'
-					},
-					{
-						temperature: 20,
-						favorite: false,
-						expensive: false,
-						rating: 5.0,
-						title: 'Массандровский пляж',
-						location: 'Ялта, КРЫМ',
-						pic: '/pics/main/section1_beach4.png',
-						link: '/'
-					},
-					{
-						temperature: 21,
-						favorite: false,
-						expensive: false,
-						rating: 5.0,
-						title: 'Массандровский пляж',
-						location: 'Ялта, КРЫМ',
-						pic: '/pics/main/section1_beach1.png',
-						link: '/'
-					},
-					{
-						temperature: 20,
-						favorite: false,
-						expensive: false,
-						rating: 5.0,
-						title: 'Пляж «Ялта – Интурист»',
-						location: 'Ялта, КРЫМ',
-						pic: '/pics/main/section1_beach2.png',
-						link: '/'
-					},
-					{
-						temperature: 22,
-						favorite: false,
-						expensive: true,
-						rating: 5.0,
-						title: 'Пляж «Лазурный берег»',
-						location: 'Евпатория, КРЫМ',
-						pic: '/pics/main/section1_beach3.png',
-						link: '/'
-					},
-					{
-						temperature: 20,
-						favorite: false,
-						expensive: false,
-						rating: 5.0,
-						title: 'Массандровский пляж',
-						location: 'Ялта, КРЫМ',
-						pic: '/pics/main/section1_beach4.png',
-						link: '/'
-					},
-					{
-						temperature: 21,
-						favorite: false,
-						expensive: false,
-						rating: 5.0,
-						title: 'Массандровский пляж',
-						location: 'Ялта, КРЫМ',
-						pic: '/pics/main/section1_beach1.png',
-						link: '/'
-					},
-					{
-						temperature: 20,
-						favorite: false,
-						expensive: false,
-						rating: 5.0,
-						title: 'Пляж «Ялта – Интурист»',
-						location: 'Ялта, КРЫМ',
-						pic: '/pics/main/section1_beach2.png',
-						link: '/'
-					},
-					{
-						temperature: 22,
-						favorite: false,
-						expensive: true,
-						rating: 5.0,
-						title: 'Пляж «Лазурный берег»',
-						location: 'Евпатория, КРЫМ',
-						pic: '/pics/main/section1_beach3.png',
-						link: '/'
-					},
-					{
-						temperature: 20,
-						favorite: false,
-						expensive: false,
-						rating: 5.0,
-						title: 'Массандровский пляж',
-						location: 'Ялта, КРЫМ',
-						pic: '/pics/main/section1_beach4.png',
-						link: '/'
-					},
-					{
-						temperature: 21,
-						favorite: false,
-						expensive: false,
-						rating: 5.0,
-						title: 'Массандровский пляж',
-						location: 'Ялта, КРЫМ',
-						pic: '/pics/main/section1_beach1.png',
-						link: '/'
-					},
-					{
-						temperature: 20,
-						favorite: false,
-						expensive: false,
-						rating: 5.0,
-						title: 'Пляж «Ялта – Интурист»',
-						location: 'Ялта, КРЫМ',
-						pic: '/pics/main/section1_beach2.png',
-						link: '/'
-					},
-					{
-						temperature: 22,
-						favorite: false,
-						expensive: true,
-						rating: 5.0,
-						title: 'Пляж «Лазурный берег»',
-						location: 'Евпатория, КРЫМ',
-						pic: '/pics/main/section1_beach3.png',
-						link: '/'
-					},
-					{
-						temperature: 20,
-						favorite: false,
-						expensive: false,
-						rating: 5.0,
-						title: 'Массандровский пляж',
-						location: 'Ялта, КРЫМ',
-						pic: '/pics/main/section1_beach4.png',
-						link: '/'
-					},
-					{
-						temperature: 21,
-						favorite: false,
-						expensive: false,
-						rating: 5.0,
-						title: 'Массандровский пляж',
-						location: 'Ялта, КРЫМ',
-						pic: '/pics/main/section1_beach1.png',
-						link: '/'
-					},
-					{
-						temperature: 20,
-						favorite: false,
-						expensive: false,
-						rating: 5.0,
-						title: 'Пляж «Ялта – Интурист»',
-						location: 'Ялта, КРЫМ',
-						pic: '/pics/main/section1_beach2.png',
-						link: '/'
-					},
-					{
-						temperature: 22,
-						favorite: false,
-						expensive: true,
-						rating: 5.0,
-						title: 'Пляж «Лазурный берег»',
-						location: 'Евпатория, КРЫМ',
-						pic: '/pics/main/section1_beach3.png',
-						link: '/'
-					},
-					{
-						temperature: 20,
-						favorite: false,
-						expensive: false,
-						rating: 5.0,
-						title: 'Массандровский пляж',
-						location: 'Ялта, КРЫМ',
-						pic: '/pics/main/section1_beach4.png',
-						link: '/'
-					},
-					{
-						temperature: 21,
-						favorite: false,
-						expensive: false,
-						rating: 5.0,
-						title: 'Массандровский пляж',
-						location: 'Ялта, КРЫМ',
-						pic: '/pics/main/section1_beach1.png',
-						link: '/'
-					},
-					{
-						temperature: 20,
-						favorite: false,
-						expensive: false,
-						rating: 5.0,
-						title: 'Пляж «Ялта – Интурист»',
-						location: 'Ялта, КРЫМ',
-						pic: '/pics/main/section1_beach2.png',
-						link: '/'
-					}
-				],
-				searchMapData: [
-					{
-						pic: '/pics/main/section1_beach4.png',
-						title: 'Массандровский пляж',
-						location: 'Ялта, КРЫМ',
-						rating: 5.0,
-						beachLength: '1,6 км',
-						beachPrice: 250,
-						beachType: 'Песчаный',
-						beachWorktime: '7:00-22:00',
-						beachSeabedType: 'Ровное'
-					},
-					{
-						pic: '/pics/main/section1_beach4.png',
-						title: 'Массандровский пляж',
-						location: 'Ялта, КРЫМ',
-						rating: 4.0,
-						beachLength: '1,6 км',
-						beachPrice: 250,
-						beachType: 'Песчаный',
-						beachWorktime: '8:00-23:00',
-						beachSeabedType: 'Ровное'
-					},
-					{
-						pic: '/pics/main/section1_beach4.png',
-						title: 'Массандровский пляж',
-						location: 'Ялта, КРЫМ',
-						rating: 5.0,
-						beachLength: '1,6 км',
-						beachPrice: 250,
-						beachType: 'Песчаный',
-						beachWorktime: '7:00-22:00',
-						beachSeabedType: 'Ровное'
-					}
-				]
+				mapShownForTheFirstTime: false
 			}
+		},
+
+		async fetch({ store }) {
+			await store.dispatch('search/search');
 		},
 
 		methods: {
