@@ -6,25 +6,21 @@
 				<div class="swiper-wrapper">
 					<div class="swiper-slide" v-for="(review, i) in data" :key="i">
 						<div class="beach-event__visitor-pics__user-area">
-							<a href="#">
-								<img :src="review.avatar">
-								<span>{{ review.name }}</span>
-							</a>
+							<img :src="review.avatar">
+							<span>{{ review.name }}</span>
 						</div>
-						<a href="#">
-							<div class="beach-event__visitor-pics__pic-area">
-								<img :src="review.pic">
-							</div>
-							<div class="beach-event__visitor-pics__comment-area">
-								<span>
-									<v-clamp autoresize :max-lines="max">
-										{{ review.comment }}
-									</v-clamp>
-								</span>
-							</div>
-						</a>
+						<div class="beach-event__visitor-pics__pic-area">
+							<img :src="review.pic">
+						</div>
+						<div class="beach-event__visitor-pics__comment-area">
+							<span>
+								<v-clamp autoresize :max-lines="max">
+									{{ review.comment }}
+								</v-clamp>
+							</span>
+						</div>
 						<div class="beach-event__visitor-pics__tag-area" v-if="review.tags">
-							<a href="#" v-for="tag in review.tags">{{ tag }}</a>
+							<span href="#" v-for="tag in review.tags">{{ tag }}</span>
 						</div>
 					</div>
 				</div>
@@ -42,7 +38,7 @@
 			</button>
 		</div>
 		<div class="beach-event__visitor-pics__add-button-area">
-			<button class="main-page__card__info-area__button">
+			<button class="banner__card__info-area__button">
 				<span>Добавить фотографию</span>
 			</button>
 		</div>

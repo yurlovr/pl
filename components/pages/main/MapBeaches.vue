@@ -2,56 +2,52 @@
 	<div class="map-beaches-main">
 		<client-only>
 			<perfect-scrollbar class="scroll-area" :options="options">
-				<template v-for="chunk in data">
-					<div class="map-beaches-main__card" v-for="(card, i) in chunk.beaches" :key="i" :id="`smc-${i}`" :class="{ active : activeCard == i }">
-						<div class="map-beaches-main__card__pic-area">
-							<a href="/" @click.prevent="$bus.goTo('/', $router)">
-								<img :src="card.pics[0]">
-							</a>
-							<AddToFavorites :fav="card.favorite" />
-						</div>
+				<div class="map-beaches-main__card" v-for="(beach, i) in getBeaches" :id="`smc-${i}`" :class="{ active : activeCard == i}">
+					<div class="map-beaches-main__card__pic-area">
 						<a href="/" @click.prevent="$bus.goTo('/', $router)">
-							<div class="map-beaches-main__card__info-area">
-								<div class="map-beaches-main__card__rating-area">
-									<img src="~/static/pics/global/svg/star.svg" alt="Рейтинг">
-									<span>{{ card.rating.toFixed(1) }}</span>
-								</div>
-								<h3 class="map-beaches-main__card__title">{{ card.title }}</h3>
-								<h5 class="map-beaches-main__card__location">{{ card.location }}</h5>
-							</div>
+							<img :src="beach.pics[0]">
 						</a>
+						<AddToFavorites :fav="beach.favorite" />
 					</div>
-				</template>
+					<a href="/" @click.prevent="$bus.goTo('/', $router)">
+						<div class="map-beaches-main__card__info-area">
+							<div class="map-beaches-main__card__rating-area">
+								<img src="~/static/pics/global/svg/star.svg" alt="Рейтинг">
+								<span>{{ beach.rating.toFixed(1) }}</span>
+							</div>
+							<h3 class="map-beaches-main__card__title">{{ beach.title }}</h3>
+							<h5 class="map-beaches-main__card__location">{{ beach.location }}</h5>
+						</div>
+					</a>
+				</div>
 			</perfect-scrollbar>
 		</client-only>
 		<div class="map-beaches-main__slider">
 			<div v-swiper:mySwiper="swiperOption">
 				<div class="swiper-wrapper">
-					<template v-for="chunk in data">
-						<div class="swiper-slide map-beaches-main__slide" v-for="(slide, i) in chunk.beaches" :key="i" :class="{ active : activeCard == i }">
-							<div class="map-beaches-main__card__pic-area">
-								<a href="/" @click.prevent="$bus.goTo('/', $router)">
-									<img class="map-beaches-main__card__pic" :src="slide.pics[0]">
-								</a>
-								<AddToFavorites :fav="slide.favorite" />
-							</div>
+					<div class="swiper-slide map-beaches-main__slide" v-for="(beach, i) in getBeaches" :class="{ active : activeCard == i}">
+						<div class="map-beaches-main__card__pic-area">
 							<a href="/" @click.prevent="$bus.goTo('/', $router)">
-								<div class="map-beaches-main__card__info-area">
-									<div class="map-beaches-main__card__rating-area">
-										<img src="~/static/pics/global/svg/star.svg" alt="Рейтинг">
-										<span>{{ slide.rating.toFixed(1) }}</span>
-									</div>
-									<h3 class="map-beaches-main__card__title">{{ slide.title }}</h3>
-									<h5 class="map-beaches-main__card__location">{{ slide.location }}</h5>
-								</div>
+								<img class="map-beaches-main__card__pic" :src="beach.pics[0]">
 							</a>
+							<AddToFavorites :fav="beach.favorite" />
 						</div>
-					</template>
+						<a href="/" @click.prevent="$bus.goTo('/', $router)">
+							<div class="map-beaches-main__card__info-area">
+								<div class="map-beaches-main__card__rating-area">
+									<img src="~/static/pics/global/svg/star.svg" alt="Рейтинг">
+									<span>{{ beach.rating.toFixed(1) }}</span>
+								</div>
+								<h3 class="map-beaches-main__card__title">{{ beach.title }}</h3>
+								<h5 class="map-beaches-main__card__location">{{ beach.location }}</h5>
+							</div>
+						</a>
+					</div>
 				</div>
 			</div>
 			<div class="pagination-wrapper">
 				<div class="custom-pagination">
-					<button @click="mySwiper.slideTo(i)" class="custom-pagination-bullet" v-for="(b,i) in (getBeachesNumber - minus)" :class="{ 'custom-pagination-bullet-active' : i == activeIndex }"></button>
+					<button @click="mySwiper.slideTo(i)" class="custom-pagination-bullet" v-for="(b,i) in Math.max(getBeachesNumber - minus, 0)" :class="{ 'custom-pagination-bullet-active' : i == activeIndex }"></button>
 				</div>
 			</div>
 		</div>
@@ -80,8 +76,18 @@
 		computed: {
 			getBeachesNumber() {
 				let sum = 0;
-				this.data.forEach(chunk => { sum += chunk.beaches.length });
+				if (this.data)
+					this.data.forEach(chunk => { sum += chunk.beaches.length });
 				return sum;
+			},
+
+			getBeaches() {
+				let allBeaches = [];
+				for (let i = 0; i < this.data.length; i++) {
+					for (let j = 0; j < this.data[i].beaches.length; j++)
+						allBeaches.push(this.data[i].beaches[j]);
+				}
+				return allBeaches
 			}
 		},
 
@@ -151,7 +157,8 @@
 			},
 
 			scrollToCard(i) {
-				this.$el.querySelector('.scroll-area').scrollTop = this.$el.querySelector(`#smc-${i}`).offsetTop - this.$el.querySelector('.scroll-area').offsetTop;
+				if (this.$el.querySelector('.scroll-area') && this.$el.querySelector(`#smc-${i}`) && this.$el.querySelector('.scroll-area'))
+					this.$el.querySelector('.scroll-area').scrollTop = this.$el.querySelector(`#smc-${i}`).offsetTop - this.$el.querySelector('.scroll-area').offsetTop;
 			},
 
 			slideToCard(i) {

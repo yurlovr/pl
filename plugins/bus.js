@@ -14,7 +14,11 @@ eventBus.install = function (Vue) {
 		Vue.prototype.$bus.$emit('hideParams');
 		setTimeout(() => { router.push(link) }, 600);
 	};
-	Vue.prototype.$bus.searchParams = {};
+	// Vue.prototype._router.afterEach((to, from) => {
+	// 	Vue.prototype.$bus.$emit('transitionEnd');
+	// });
+
+	// console.log(Vue.prototype.$routes)
 }
 
 Vue.use(eventBus);

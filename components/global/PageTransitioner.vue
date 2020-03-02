@@ -20,6 +20,9 @@
 				logo = document.getElementById('page-transitioner__logo'),
 				transitioner = document.getElementById('transitioner');
 			this.$bus.$on('transition', () => { this.transition(left, right, logo, transitioner); });
+			this.$bus.$on('transitionEnd', () => {
+				console.log('lol')
+			})
 		},
 
 		methods: {

@@ -34,7 +34,7 @@
 		</div>
 		<div class="slider-beach-event__right">
 			<div class="slider-beach-event__right__item" v-for="(pic, i) in data.pics" :key="i" v-if="i != 0 && i <= 6"
-			:style="{ height: `${(100 / (Math.min(data.pics.length - 1, 6) / 2)).toFixed(2)}%` }">
+			:style="{ height: getRightPicsHeight }">
 				<div class="slider-beach-event__right__item__inner" @click="openModal(i)">
 					<img :src="pic">
 					<span v-if="i == 6 && data.pics.length - 7 > 0">+{{ data.pics.length - 7 }}</span>
@@ -98,6 +98,14 @@
 				require('swiper/dist/css/swiper.css');
 				const VueAwesomeSwiper = require('vue-awesome-swiper/dist/ssr');
 				Vue.use(VueAwesomeSwiper);
+			}
+		},
+
+		computed: {
+			getRightPicsHeight() {
+				if (Math.min(this.data.pics.length - 1, 6) % 2 == 0)
+					return `${(100 / (Math.min(this.data.pics.length - 1, 6) / 2)).toFixed(2)}%`;
+				else return `${(100 / (Math.min(this.data.pics.length, 6) / 2)).toFixed(2)}%`;
 			}
 		},
 

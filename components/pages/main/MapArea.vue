@@ -5,7 +5,7 @@
         </div>
         <div class="main-page__map-inner">
             <MapBeaches :data="data.addressBeaches" v-show="step == 2"/>
-            <Map :addressBeaches="data.addressBeaches" :center="data.center" />
+            <Map :data="data" />
         </div>
     </section>
 </template>

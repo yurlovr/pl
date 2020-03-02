@@ -3,7 +3,7 @@
     <div class="custom-card__pic-area">
       <a :href="data.mainLink ? data.mainLink : '#'" class="custom-card__link" @click.prevent="$bus.goTo(data.mainLink ? data.mainLink : '#', $router)">
         <img :src="data.pic" v-show="this.picLoaded" alt="Фото" class="custom-card__pic" @load="picLoaded = true">
-        <img v-if="!this.picLoaded" class="custom-card__pic" src="~/static/pics/global/pics/slider_beh_placeholder.png">
+        <img v-show="!this.picLoaded" class="custom-card__pic" src="~/static/pics/global/pics/slider_beh_placeholder.png">
       </a>
       <div class="custom-card__temp-area" v-if="data.temperature && temp != false">
         <img src="~/static/pics/global/svg/temper_big.svg" alt="Температура" class="big">

@@ -3,14 +3,7 @@
 		<div v-swiper:mySwiper="swiperOption">
 			<div class="swiper-wrapper slider-dynamic__wrapper">
 				<div class="swiper-slide slider-dynamic__slide" v-for="slide in data">
-					<nuxt-link :to="slide.link">
-						<img :src="slide.pic" class="slider-dynamic__slide__pic">
-						<h3 class="slider-dynamic__slide__title">{{ slide.title }}</h3>
-						<div class="slider-dynamic__slide__beach-number-area">
-							<span class="slider-dynamic__slide__beach-number">{{ slide.beachNumber }}</span>
-							<span class="slider-dynamic__slide__beach">{{ (slide.beachNumber % 10 == 1 && slide.beachNumber % 100 != 11) ? 'пляж' : 'пляжей' }}</span>
-						</div>
-					</nuxt-link>
+					<DynamicSlide :slide="slide" />
 				</div>
 				<div class="swiper-slide slider-dynamic__slide"></div>
 			</div>
@@ -20,10 +13,10 @@
 				<div class="custom-pagination-bullet" v-for="(b,i) in data" :class="{ 'custom-pagination-bullet-active' : i == activeIndex }" v-if="i != data.length - 1"></div>
 			</div>
 		</div>
-		<button class="slider__arrow-left" :style="{ transform: 'translate(-50%, -50%)', top: arrowY + 'px', display: showLeft && showArrows ? '' : 'none' }" @click="mySwiper.slidePrev()">
+		<button class="slider__arrow-left" :style="{ transform: 'translate(-50%, -50%)', display: showLeft && showArrows ? '' : 'none' }" @click="mySwiper.slidePrev()">
 			<img src="~/static/pics/global/svg/slider_arrow_left.svg" alt="Налево">
 		</button>
-		<button class="slider__arrow-right" :style="{ transform: 'translate(50%, -50%)', top: arrowY + 'px', display: showRight && showArrows ? '' : 'none' }" @click="mySwiper.slideNext();">
+		<button class="slider__arrow-right" :style="{ transform: 'translate(50%, -50%)', display: showRight && showArrows ? '' : 'none' }" @click="mySwiper.slideNext();">
 			<img src="~/static/pics/global/svg/slider_arrow_right.svg" alt="Направо">
 		</button>
 	</div>
@@ -31,9 +24,14 @@
 
 <script>
 	import Vue from 'vue';
+	import DynamicSlide from '~/components/pages/main/DynamicSlide';
 
 	export default {
 		props: ['data'],
+
+		components: {
+			DynamicSlide
+		},
 
 		beforeMount () {
 			if (process.browser) {
@@ -60,9 +58,8 @@
 						}
 					}
 				},
-				arrowY: 0,
 				showLeft: false,
-				showRight: true,
+				showRight: false,
 				showArrows: true,
 				activeIndex: 0
 			}
@@ -82,6 +79,7 @@
 			});
 
 			this.mySwiper.init(this.swiperOption);
+			this.updateArrows();
 		},
 
 		methods: {
@@ -89,7 +87,6 @@
 				if (!document.querySelector('.slider-dynamic'))
 					window.removeEventListener('resize', this.onResize, false);
 
-				this.arrowY = this.$el.querySelector('.slider-dynamic__slide__pic').offsetHeight / 2; // this.$el means we're query selecting in this component
 				this.updateActiveSlide();
 
 				if (window.innerWidth <= 1000) {

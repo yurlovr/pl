@@ -13,10 +13,10 @@
 					</div>
 				</div>
 			</div>
-			<button class="slider__arrow-left" :style="{ transform: 'translate(-50%, 0)', top: arrowY + 'px', display: showLeft ? '' : 'none' }" @click="slideLeft()">
+			<button class="slider__arrow-left" :style="{ transform: 'translate(-50%, 0)', display: showLeft ? '' : 'none' }" @click="slideLeft()">
 				<img src="~/static/pics/global/svg/slider_arrow_left.svg" alt="Налево">
 			</button>
-			<button class="slider__arrow-right" :style="{ transform: 'translate(50%, 0)', top: arrowY + 'px', display: showRight ? '' : 'none' }" @click="slideRight()">
+			<button class="slider__arrow-right" :style="{ transform: 'translate(50%, 0)', display: showRight ? '' : 'none' }" @click="slideRight()">
 				<img src="~/static/pics/global/svg/slider_arrow_right.svg" alt="Направо">
 			</button>
 		</div>
@@ -88,7 +88,6 @@
 						}
 					}
 				},
-				arrowY: 70,
 				showLeft: false,
 				showRight: true,
 				activeIndex: 0,

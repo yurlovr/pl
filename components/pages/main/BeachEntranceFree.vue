@@ -39,10 +39,16 @@
 				<p class="main-page__card__info-area__text">
 					Пологий берег, плавный вход в воду, единение с природой, безопасность и инфраструктура
 				</p>
-				<nuxt-link to="/" class="main-page__card__info-area__button">
+				<a :href="data.link" @click="$bus.goTo(data.link, $router)" class="main-page__card__info-area__button">
 					<span>Подробнее</span>
-				</nuxt-link>
+				</a>
 			</div>
 		</div>
 	</section>
 </template>
+
+<script>
+	export default {
+		props: ['data']
+	}
+</script>

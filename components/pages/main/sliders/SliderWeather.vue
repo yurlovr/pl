@@ -27,10 +27,10 @@
 				<button @click="mySwiper.slideTo(i)" class="custom-pagination-bullet" v-for="(b,i) in slideData.length - minus" :class="{ 'custom-pagination-bullet-active' : i == activeIndex }"></button>
 			</div>
 		</div>
-		<button class="slider__arrow-left" :style="{ transform: 'translate(-50%, -50%)', top: arrowY + 'px', display: showLeft ? '' : 'none' }" @click="!mySwiper.isBeginning ? mySwiper.slidePrev() : ''">
+		<button class="slider__arrow-left" :style="{ transform: 'translate(-50%, -50%)', display: showLeft ? '' : 'none' }" @click="!mySwiper.isBeginning ? mySwiper.slidePrev() : ''">
 			<img src="~/static/pics/global/svg/slider_arrow_left.svg" alt="Налево">
 		</button>
-		<button class="slider__arrow-right" :style="{ transform: 'translate(50%, -50%)', top: arrowY + 'px', display: showRight ? '' : 'none' }" @click="!mySwiper.isEnd ? mySwiper.slideNext() : ''">
+		<button class="slider__arrow-right" :style="{ transform: 'translate(50%, -50%)', display: showRight ? '' : 'none' }" @click="!mySwiper.isEnd ? mySwiper.slideNext() : ''">
 			<img src="~/static/pics/global/svg/slider_arrow_right.svg" alt="Направо">
 		</button>
 	</div>
@@ -93,7 +93,6 @@
 						}
 					}
 				},
-				arrowY: 45,
 				showLeft: false,
 				showRight: true,
 				activeIndex: 0,
@@ -113,6 +112,7 @@
 			});
 
 			this.mySwiper.init(this.swiperOption);
+			this.updateArrows();
 		},
 
 		methods: {

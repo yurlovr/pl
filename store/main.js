@@ -6,6 +6,10 @@ export const state = () => ({
     dynamicSlider: [],
     weather: [],
     beachTypes: {},
+    collection: {},
+    collectionList: {},
+    banners: {},
+    map: {},
     api: 'https://crimea.air-dev.agency'
 })
 
@@ -40,6 +44,25 @@ export const mutations = {
 
     SET_WILD_BEACH_TYPE: (state, payload) => {
         state.beachTypes.wild = payload;
+    },
+
+    SET_COLLECTION: (state, payload) => {
+        state.collection = payload;
+    },
+
+    SET_COLLECTION_LIST: (state, payload) => {
+        state.collectionList = payload;
+    },
+
+    SET_MAP: (state, payload) => {
+        state.map = payload;
+    },
+
+    SET_BANNERS: (state, payload) => {
+        state.banners = payload;
+
+        if (state.banners.data)
+            state.banners.data.list.sort((a,b) => (parseInt(a.POSITION)-parseInt(b.POSITION)));
     }
 }
 
@@ -68,6 +91,22 @@ export const actions = {
     async getBeachTypes({commit}) {
         commit('SET_CITY_BEACH_TYPE', await this.$axios.$get('/search/filter?tags%5B%5D=14'));
         commit('SET_WILD_BEACH_TYPE', await this.$axios.$get('/search/filter?tags%5B%5D=15'));
+    },
+
+    async getCollection({commit}) {
+        commit('SET_COLLECTION', await this.$axios.$get('/collection/list/'));
+    },
+
+    async getCollectionList({commit}) {
+        commit('SET_COLLECTION_LIST', await this.$axios.$get('/collectionList/list/'));
+    },
+
+    async getBanners({commit}) {
+        commit('SET_BANNERS', await this.$axios.$get('/banner/list/'));
+    },
+
+    async getMap({commit}) {
+        commit('SET_MAP', await this.$axios.$get('/beach/clusters/'));
     }
 }
 
@@ -157,31 +196,10 @@ export const getters = {
 
         for (let i = 0; i < state.dynamicSlider.data.list.length; i++) {
             ret.push({
-                // TODO
                 title: state.dynamicSlider.data.list[i],
                 beachNumber: state.dynamicSlider.data.list[i],
                 pic: state.dynamicSlider.data.list[i]
             });
-        }
-
-        return ret;
-    },
-
-    weatherData: (state) => {
-        if (!state.weather.data) return null;
-
-        let ret = [];
-
-        for (let i = 0; i < state.weather.data.list.length; i++) {
-            ret.push([]);
-            for (let j = 0; j < state.weather.data.list[i].TEMP.AIR.length; j++) {
-                ret[i].push({
-                    city: state.weather.data.list[i].CITY,
-                    airTemperature: state.weather.data.list[i].TEMP.AIR,
-                    waterTemperature: state.weather.data.list[i].TEMP.WATER,
-                    pic: state.weather.data.list[i].CITY.PREVIEW_PICTURE
-                });
-            }
         }
 
         return ret;
@@ -194,6 +212,179 @@ export const getters = {
             beachNumber1: state.beachTypes.city.data.list.length,
             beachNumber2: state.beachTypes.wild.data.list.length
         };
+
+        return ret;
+    },
+
+    familyData: (state) => {
+        if (!state.collection.data) return null;
+        
+        let family = state.collection.data.list.find(v => v.CODE == 'for_all_family');
+
+        let ret = {
+            title: 'Отдых для всей семьи',
+            subtitle: 'Пологий берег, плавный вход в воду, безопасность и современная инфраструктура',
+            beachNumber: family.BEACHES.length,
+            beachSliderData: {
+                slideNumber: 6,
+                cardData: []
+            }
+        }
+
+        // adding formatted beaches
+        for (let i = 0; i < Math.min(8, family.BEACHES.length); i++) {
+            ret.beachSliderData.cardData.push({
+                temperature: family.BEACHES[i].TEMP.WATER,
+                favorite: false,
+                paid: family.BEACHES[i].PAID,
+                rating: parseFloat(family.BEACHES[i].AVERAGE_RATING),
+                title: family.BEACHES[i].NAME,
+                location: family.BEACHES[i].CITY.NAME,
+                pic: state.api + family.BEACHES[i].PHOTOS[0],
+                mainLink: `beach/${family.BEACHES[i].ID}`,
+                beachLink: `beach/${family.BEACHES[i].ID}`
+            });
+        }
+
+        return ret;
+    },
+
+    activeRestData: (state) => {
+        if (!state.collectionList.data) return null;
+
+        let activeRest = state.collectionList.data.list.find(v => v.CODE == 'active-leisure');
+
+        let ret = [];
+
+        for (let i = 0; i < activeRest.COLLECTIONS.length; i++) {
+            ret.push({
+                link: '#',
+                title: activeRest.COLLECTIONS[i].NAME,
+                pic: activeRest.COLLECTIONS[i].PREVIEW_PICTURE ? (state.api + activeRest.COLLECTIONS[i].PREVIEW_PICTURE) : null,
+                beachNumber: activeRest.COLLECTIONS[i].BEACHES.length
+            });
+        }
+
+        return ret;
+    },
+
+    beachTypeData: (state) => {
+        if (!state.collectionList.data) return null;
+
+        let beachType = state.collectionList.data.list.find(v => v.CODE == 'choose-to-your-wishes');
+    
+        let ret = {
+            title: beachType.NAME,
+            cards: []
+        };
+
+        for (let i = 0; i < beachType.COLLECTIONS.length; i++) {
+            ret.cards.push({
+                title: beachType.COLLECTIONS[i].NAME,
+                pic: beachType.COLLECTIONS[i].PREVIEW_PICTURE ? (state.api + beachType.COLLECTIONS[i].PREVIEW_PICTURE) : null,
+                beachNumber: beachType.COLLECTIONS[i].BEACHES.length,
+                description: beachType.COLLECTIONS[i].DESCRIPTION,
+                code: beachType.COLLECTIONS[i].CODE
+            });
+        }
+
+        return ret;
+    },
+
+    bannersData: (state) => {
+        if (!state.banners.data) return null;
+
+        let ret = [];
+
+        for (let i = 0; i < state.banners.data.list.length; i++) {
+            ret.push({
+                title: state.banners.data.list[i].NAME,
+                description: state.banners.data.list[i].DESCRIPTION,
+                link: state.banners.data.list[i].LINK,
+                pic: state.api + state.banners.data.list[i].PREVIEW_PICTURE,
+                buttonText: state.banners.data.list[i].BUTTON_NAME,
+                // by default pic is on the left
+                rightToLeft: state.banners.data.list[i].PICTURE_POSITION == 'right'
+            });
+        }
+
+        return ret;
+    },
+
+    weatherData: (state) => {
+        if (!state.weather.data) return null;
+
+        let ret = [],
+        curCluster,
+        weatherData = Object.keys(state.weather.data.list).map((k) => state.weather.data.list[k]);
+
+        for (let i = 0; i < weatherData.length; i++) {
+            curCluster = [];
+            for (let j = 0; j < weatherData[i].length; j++) {
+                curCluster.push({
+                    city: weatherData[i][j].CITY.NAME,
+                    pic: state.api + '/' + weatherData[i][j].CITY.PREVIEW_PICTURE,
+                    airTemperature: parseFloat(weatherData[i][j].TEMP.AIR),
+                    waterTemperature: parseFloat(weatherData[i][j].TEMP.WATER)
+                })
+            }
+            ret.push(curCluster);
+        }
+
+        return ret;
+    },
+
+    mapData: (state) => {
+        if (!state.map.data) return null;
+
+        let clusterCenters = [], curCluster;
+        let clusters = Object.keys(state.map.data.list).map((k) => state.map.data.list[k]);
+        for (let i = 0; i < clusters.length; i++) {
+            curCluster = clusters[i].filter(v => v.COORDINATES != '');
+            clusterCenters.push(
+                curCluster.length != 1 ? ([ curCluster.reduce((a, b) => {
+                        if (typeof a === 'object') a = parseFloat(a.COORDINATES.split(',')[0]);
+                            return a + parseFloat(b.COORDINATES.split(',')[0]);
+                    }) / curCluster.length,
+                    curCluster.reduce((a, b) => {
+                        if (typeof a === 'object') a = parseFloat(a.COORDINATES.split(',')[1]);
+                            return a + parseFloat(b.COORDINATES.split(',')[1]);
+                    }) / curCluster.length
+                ]) : curCluster[0].COORDINATES.split(',').map(v => parseFloat(v)));
+        }
+
+        let ret = {
+            center: [
+                clusterCenters.length != 1 ? ([ clusterCenters.reduce((a, b) => {
+                        if (typeof a === 'object') a = a[0];
+                            return a + b[0];
+                    }) / clusterCenters.length,
+                    clusterCenters.reduce((a, b) => {
+                        if (typeof a === 'object') a = a[1];
+                            return a + b[1];
+                    }) / clusterCenters.length
+                ]) : clusterCenters[0]
+            ],
+            addressBeaches: []
+        }
+
+        for (let i = 0; i < clusters.length; i++) {
+            curCluster = [];
+            for (let j = 0; j < clusters[i].length; j++) {
+                if (isNaN(clusters[i][j].COORDINATES.split(',').map(v => parseFloat(v))[0])) continue;
+                curCluster.push({
+                    pos: clusters[i][j].COORDINATES.split(',').map(v => parseFloat(v)),
+                    rating: parseFloat(clusters[i][j].AVERAGE_RATING),
+                    title: clusters[i][j].NAME,
+                    location: clusters[i][j].CITY.NAME,
+                    pics: [ ...clusters[i][j].PHOTOS.map(v => state.api + v) ]
+                });
+            }
+            ret.addressBeaches.push({
+                clusterCenter: clusterCenters[i],
+                beaches: curCluster
+            });
+        }
 
         return ret;
     }

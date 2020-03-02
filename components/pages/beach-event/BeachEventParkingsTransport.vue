@@ -20,7 +20,7 @@
 						</button>
 					</div>
 					<div class="beach-event__pt__right">
-						<nuxt-link to="/" class="main-page__card__info-area__button">
+						<nuxt-link to="/" class="beach-event__pt__right__button banner__card__info-area__button">
 							<span>Проложить маршрут</span>
 						</nuxt-link>
 					</div>

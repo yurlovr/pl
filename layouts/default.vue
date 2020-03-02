@@ -29,9 +29,7 @@
         window.history.scrollRestoration = 'auto';
       }
 
-      window.addEventListener('click', () => {
-        this.$bus.$emit('vselectclose');
-      });
+      // console.log(this.$router)
 
       function watchForHover() {
         let hasHoverClass = false;

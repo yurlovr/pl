@@ -2,7 +2,7 @@
 	<div class="beach-page custom-page">
 		<div class="beach-page__container custom-container">
 			<BeachEventSections :sections="beachData.sections" class="beach-page-sections--w-100" />
-			<SliderHugeBeachEventPage :data="beachData.hugeSliderData" id="id-0" />
+			<SliderHugeBeachEventPage :data="beachData.hugeSliderData" id="gallery" />
 			<div class="custom-container-inner">
 				<BeachEventSideButtons :share="true" :crossBlue="true" :ymaps="true" :yandex="true" />
 			</div>
@@ -10,17 +10,17 @@
 				<main class="two-part-layout__left">
 					<BeachEventMainInfo :data="beachData.mainData" />
 					<BeachAvgRating :data="beachData.avgRating" class="beach-page__avg-rating__mobile" />
-					<BeachQuickData id="id-1" :title="'Инфраструктура пляжа'" :data="beachData.infraData" />
+					<BeachQuickData id="infra" :title="'Инфраструктура пляжа'" :data="beachData.infraData" v-if="beachData.infraData.length > 0" />
 					<BeachEventMap :data="beachData.sideMapData" class="beach-event__map-weather__tablet" />
-					<BeachEventAbout id="id-2" name="id-2" :data="beachData.about" />
+					<BeachEventAbout id="about" :data="beachData.about" />
 					<BeachEventMap :data="beachData.sideMapData" class="beach-event__map-weather__mobile" />
-					<BeachQuickData id="id-3" name="id-3" :title="'Услуги и аренда'" :data="beachData.servicesData" />
-					<BeachEventParkingsTransport id="id-4" name="id-4" :data="beachData.ptData" />
-					<BeachWaterTemperatureHistogram id="id-5" name="id-5" v-if="beachData.waterHistogramData.length > 0" :data="beachData.waterHistogramData" />
-					<BeachEvents id="id-6" name="id-6" :temp="false" :data="beachData.events" class="beach-page__cardless-area" />
-					<BeachBarsNRestos id="id-7" name="id-7" :data="beachData.barsNRestos" class="beach-page__cardless-area" />
-					<BeachOpinions :data="beachData.opinions" />
-					<BeachEventReviews id="id-9" name="id-9" :data="$store.state.guestReviewsData" class="beach-page__cardless-area" />
+					<BeachQuickData id="services" :title="'Услуги и аренда'" :data="beachData.servicesData" v-if="beachData.servicesData.length > 0" />
+					<BeachEventParkingsTransport id="pt" :data="beachData.ptData" />
+					<BeachWaterTemperatureHistogram id="waterTemp" v-if="beachData.waterHistogramData.length > 0" :data="beachData.waterHistogramData" />
+					<BeachEvents id="events" :temp="false" :data="beachData.events" class="beach-page__cardless-area" v-if="beachData.events.cardData.length > 0" />
+					<BeachBarsNRestos id="barsNRestos" :data="beachData.barsNRestos" v-if="beachData.barsNRestos.length > 0" class="beach-page__cardless-area" />
+					<BeachOpinions :data="beachData.opinions" v-if="beachData.opinions.length > 0" />
+					<BeachEventReviews id="reviews" :data="$store.state.guestReviewsData" class="beach-page__cardless-area" />
 				</main>
 				<aside class="two-part-layout__right">
 					<BeachAvgRating :data="beachData.avgRating" class="beach-page__avg-rating__desktop" />
@@ -29,7 +29,7 @@
 				</aside>
 			</div>
 		</div>
-		<BeachEventVisitorPics id="id-8" name="id-8" :data="$store.state.visitorPicsData" class="main-page__white-wrapper beach-event__visitor-pics-wrapper" />
+		<div class="main-page__white-wrapper beach-event__visitor-pics-wrapper"><BeachEventVisitorPics id="visitorPics" :data="$store.state.visitorPicsData" /></div>
 		<BeachSliderArea class="beach-event__similar-beaches" :data="$store.state.similarNearData" />
 		<BeachSliderArea class="main-page__hotels" :data="$store.state.hotelData" :areaData="$store.state.hotelAreaData" v-if="false" />
 	</div>

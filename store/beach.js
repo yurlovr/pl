@@ -107,12 +107,13 @@ export const getters = {
             waterHistogramData: [],
 
             sideMapData: {
-                title: state.beach.data.item.NAME
+                title: state.beach.data.item.NAME,
+                pos: (state.beach.data.item.COORDINATES != '') ? state.beach.data.item.COORDINATES.split(',').map(v => parseFloat(v)) : null
             },
 
             ptData: {
                 title: state.beach.data.item.NAME,
-                parkings: state.beach.data.item.PARKINGS
+                parkings: state.beach.data.item.PARKINGS || []
             },
 
             events: {
@@ -124,11 +125,10 @@ export const getters = {
             opinions: [],
 
             sections: [
-                'Галерея',
-                'Инфраструктура',
-                'О пляже',
-                'Услуги и аренда',
-                'Парковки и транспорт'
+                {
+                    title: 'Галерея',
+                    hash: 'gallery'
+                }
             ]
         };
 
@@ -248,10 +248,49 @@ export const getters = {
         }
 
         // adding formatted sections
-        if (ret.waterHistogramData.length > 0) {
-            ret.sections.push('Температура воды');
-        }
-        ret.sections.push('Мероприятия', 'Бары и рестораны', 'Фото посетителей', 'Отзывы');
+        if (ret.infraData.length > 0)
+            ret.sections.push({
+                title: 'Инфраструктура',
+                hash: 'infra'
+            });
+        if (ret.about.length > 1)
+            ret.sections.push({
+                title: 'О пляже',
+                hash: 'about'
+            });
+        if (ret.waterHistogramData.length > 0)
+            ret.sections.push({
+                title: 'Температура воды',
+                hash: 'waterTemp'
+            });
+        if (ret.servicesData.length > 0)
+            ret.sections.push({
+                title: 'Услуги и аренда',
+                hash: 'services'
+            });
+        if (ret.ptData.parkings.length > 0)
+            ret.sections.push({
+                title: 'Парковки и транспорт',
+                hash: 'pt'
+            });
+        if (ret.events.cardData.length > 0)
+            ret.sections.push({
+                title: 'Мероприятия',
+                hash: 'events'
+            });
+        if (ret.barsNRestos.length > 0)
+            ret.sections.push({
+                title: 'Бары и рестораны',
+                hash: 'barsNRestos'
+            });
+        // TODO: once apis are connected, add these to the sections
+        ret.sections.push({
+            title: 'Отзывы',
+            hash: 'reviews'
+        }, {
+            title: 'Фото посетителей',
+            hash: 'visitorPics'
+        });
 
         return ret;
     }

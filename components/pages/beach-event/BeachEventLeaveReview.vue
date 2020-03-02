@@ -1,6 +1,6 @@
 <template>
 	<div class="beach-event__leave-review">
-		<button class="main-page__card__info-area__button beach-event__leave-review__button" @click="modalOpen = true">
+		<button class="banner__card__info-area__button beach-event__leave-review__button" @click="modalOpen = true">
 			<span>Оставить отзыв</span>
 		</button>
 		<div class="beach-event__leave-review__modal" v-show="modalOpen" v-body-scroll-lock="modalOpen">
@@ -33,7 +33,7 @@
 					<textarea maxlength="10000" placeholder="Введите текст"></textarea>
 				</div>
 				<div class="beach-event__leave-review__modal__send-button-area">
-					<button class="main-page__card__info-area__button">
+					<button class="banner__card__info-area__button">
 						<span>Отправить</span>
 					</button>
 					<div class="beach-event__leave-review__modal__bottom-space"></div>

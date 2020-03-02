@@ -19,7 +19,7 @@
 	import ymaps from "ymaps";
 
 	export default {
-		props: ['addressBeaches', 'center'],
+		props: ['data'],
 
 		data() {
 			return {
@@ -38,7 +38,7 @@
                       .load()
                       .then(maps => {
                         this.map = new maps.Map(document.getElementById('map'), {
-                          center: this.center,
+                          center: this.data.center[0],
                           zoom: this.zoom,
                           controls: []
                         });
@@ -85,11 +85,7 @@
                                 step2ObjectManager.setFilter(''); // show step-2 markers
                                 setTimeout(this.onResize, 100);
                                 this.zoom = 12;
-                                this.map.setCenter(
-                                    [
-                                        this.addressBeaches[e.originalEvent.currentTarget._objectsById[0].id].beaches.reduce((a, b) => { if (typeof a === 'object') a = a.pos[0]; return a + b.pos[0]; }) / this.addressBeaches[e.originalEvent.currentTarget._objectsById[0].id].beaches.length,
-                                        this.addressBeaches[e.originalEvent.currentTarget._objectsById[0].id].beaches.reduce((a, b) => { if (typeof a === 'object') a = a.pos[1]; return a + b.pos[1]; }) / this.addressBeaches[e.originalEvent.currentTarget._objectsById[0].id].beaches.length
-                                    ],
+                                this.map.setCenter(this.data.addressBeaches[objectId].clusterCenter,
                                 this.zoom);
                                 this.step = 2;
                             }
@@ -133,7 +129,7 @@
                         step2ObjectManager.objects.events.add(['mouseenter', 'mouseleave', 'click'], onStep2ObjectEvent);
 
                         // step 1 markers
-                        for (let i = 0; i < this.addressBeaches.length; i++) {
+                        for (let i = 0; i < this.data.addressBeaches.length; i++) {
                             step1ObjectManager.add({
                                 type: "FeatureCollection",
                                 features: [{
@@ -141,13 +137,10 @@
                                     id: step1CounterForChosen,
                                     geometry: {
                                         type: "Point",
-                                        coordinates: [
-                                            this.addressBeaches[i].beaches.reduce((a, b) => { if (typeof a === 'object') a = a.pos[0]; return a + b.pos[0]; }) / this.addressBeaches[i].beaches.length,
-                                            this.addressBeaches[i].beaches.reduce((a, b) => { if (typeof a === 'object') a = a.pos[1]; return a + b.pos[1]; }) / this.addressBeaches[i].beaches.length
-                                        ]
+                                        coordinates: this.data.addressBeaches[i].clusterCenter
                                     },
                                     properties: {
-                                        iconContent: this.addressBeaches[i].beaches.length
+                                        iconContent: this.data.addressBeaches[i].beaches.length
                                     },
                                     options: {
                                         iconLayout: 'default#imageWithContent',
@@ -162,17 +155,18 @@
                             step1CounterForChosen++;
 
                             // step 2 markers
-                            for (let j = 0; j < this.addressBeaches[i].beaches.length; j++) {
+                            for (let j = 0; j < this.data.addressBeaches[i].beaches.length; j++) {
                                 // adding the balloon
                                 let slides = [];
 
-                                for (let k = 0; k < this.addressBeaches[i].beaches[j].pics.length; k++) {
+                                for (let k = 0; k < this.data.addressBeaches[i].beaches[j].pics.length; k++) {
                                     slides.push(`
                                         <div class="swiper-slide map-popup__slide">
-                                            <img src="${this.addressBeaches[i].beaches[j].pics[k]}">
+                                            <img src="${this.data.addressBeaches[i].beaches[j].pics[k]}">
                                         </div>
                                     `);
                                 }
+
                                 balloonLayout = maps.templateLayoutFactory.createClass(`
                                     <div class="map-popup map-popup--bottom">
                                         <div class="map-popup__pic-area">
@@ -194,10 +188,10 @@
                                         <div class="map-popup__info-area">
                                             <span class="map-popup__rating">
                                                 <img src="/pics/global/svg/star.svg" alt="Рейтинг">
-                                                <span>${this.addressBeaches[i].beaches[i].rating.toFixed(1)}</span>
+                                                <span>${this.data.addressBeaches[i].beaches[j].rating.toFixed(1)}</span>
                                             </span>
-                                            <h3 class="map-popup__title">${this.addressBeaches[i].beaches[i].title}</h3>
-                                            <h5 class="map-popup__location">${this.addressBeaches[i].beaches[i].location}</h5>
+                                            <h3 class="map-popup__title">${this.data.addressBeaches[i].beaches[j].title}</h3>
+                                            <h5 class="map-popup__location">${this.data.addressBeaches[i].beaches[j].location}</h5>
                                         </div>
                                     </div>
                                 `, {
@@ -244,7 +238,7 @@
                                         id: step2CounterForChosen,
                                         geometry: {
                                             type: "Point",
-                                            coordinates: this.addressBeaches[i].beaches[j].pos
+                                            coordinates: this.data.addressBeaches[i].beaches[j].pos
                                         },
                                         options: {
                                             iconLayout: 'default#imageWithContent',

@@ -11,7 +11,7 @@ export default {
   data() {
     return {
       center: [44.50465522867475, 34.21493291965433],
-      zoom: 3,
+      zoom: 15,
       chosen: -1,
       map: null
     }

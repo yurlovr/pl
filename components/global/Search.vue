@@ -479,7 +479,6 @@ export default {
             if (this.tempMobileSearchBarShown) {
                 this.tempMobileSearchBarShown = false;
                 this.$bus.$emit('tempHideHeaderBgAndBar');
-                // document.documentElement.style.overflow = '';
             }
 
             if (this.paramsShown)

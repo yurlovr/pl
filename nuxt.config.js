@@ -57,7 +57,8 @@ export default {
     }, {
       src: '~/plugins/custom-scroll',
       ssr: false
-    }
+    },
+    '~/plugins/transition-end'
   ],
   /*
    ** Nuxt.js dev-modules

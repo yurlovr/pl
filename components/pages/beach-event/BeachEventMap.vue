@@ -2,10 +2,10 @@
   <div class="beach-event__map-weather">
     <div class="beach-event__map-weather__map-card">
       <div class="map"></div>
-      <div class="beach-event__map-weather__map-card__button-area">
-        <nuxt-link to="/" class="main-page__card__info-area__button">
+      <div class="beach-event__map-weather__map-card__button-area" v-if="data.pos">
+        <a :href="`https://yandex.ru/maps/?ll=${data.pos[0]},${data.pos[1]}&z=14&l=map`" class="banner__card__info-area__button">
           <span>Перейти на карту</span>
-        </nuxt-link>
+        </a>
       </div>
     </div>
     <!-- <div class="beach-event__map-weather__weather-card">
@@ -71,39 +71,41 @@ export default {
           .load()
           .then(maps => {
             this.map = new maps.Map(this.$el.getElementsByClassName('map')[0], {
-              center: [44.50465522867475, 34.21493291965433],
-              zoom: 14,
+              center: this.data.pos || [44.50465522867475, 34.21493291965433],
+              zoom: this.data.pos ? 14 : 8,
               controls: []
             });
 
-            let icon = maps.templateLayoutFactory.createClass(
-                `<div class="map__beach-icon">
-                  <div class="map__beach-caption">${this.data.title}</div>
-                </div>`
-              ),
-              objectManager = new maps.ObjectManager({
-                geoObjectOpenBalloonOnClick: false
-              });
-            this.map.geoObjects.add(objectManager);
+            if (this.data.pos) {
+              let icon = maps.templateLayoutFactory.createClass(
+                  `<div class="map__beach-icon">
+                    <div class="map__beach-caption">${this.data.title}</div>
+                  </div>`
+                ),
+                objectManager = new maps.ObjectManager({
+                  geoObjectOpenBalloonOnClick: false
+                });
+              this.map.geoObjects.add(objectManager);
 
-            objectManager.add({
-              type: "FeatureCollection",
-              features: [{
-                type: "Feature",
-                id: 0,
-                geometry: {
-                  type: "Point",
-                  coordinates: [44.50465522867475, 34.21493291965433]
-                },
-                options: {
-                  iconLayout: 'default#imageWithContent',
-                  iconImageHref: '/pics/global/svg/map_beach_blue.svg',
-                  iconContentLayout: icon,
-                  iconImageSize: [30, 43],
-                  iconImageOffset: [-18, -50]
-                }
-              }]
-            });
+              objectManager.add({
+                type: "FeatureCollection",
+                features: [{
+                  type: "Feature",
+                  id: 0,
+                  geometry: {
+                    type: "Point",
+                    coordinates: this.data.pos
+                  },
+                  options: {
+                    iconLayout: 'default#imageWithContent',
+                    iconImageHref: '/pics/global/svg/map_beach_blue.svg',
+                    iconContentLayout: icon,
+                    iconImageSize: [30, 43],
+                    iconImageOffset: [-18, -50]
+                  }
+                }]
+              });
+            }
           })
           .catch(error => console.log('Failed to load Yandex Maps, ', error))
       }, 1);

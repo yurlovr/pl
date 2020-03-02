@@ -53,6 +53,7 @@ body,
 
 a {
   text-decoration: none;
+  outline: none;
 
   &:hover {
     text-decoration: none;
@@ -1016,6 +1017,213 @@ input {
   }
 }
 
+.banner {
+  &__card {
+    width: 100%;
+    height: 400px;
+    border-radius: 12px;
+    position: relative;
+    display: flex;
+    box-shadow: 4px 4px 20px rgba(0, 0, 0, 0.1);
+
+    a {
+      text-decoration: none;
+      width: fit-content;
+    }
+
+    &.rlt {
+      flex-direction: row-reverse;
+
+      .banner {
+        &__card {
+          &__pic {
+            &-area {
+
+            }
+          }
+
+          &__info-area {
+
+          }
+        }
+      }
+    }
+
+    &__pic {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+
+        &-area {
+          position: relative;
+          width: 100%;
+          border-radius: 12px 0 0 12px;
+          overflow: hidden;
+
+          &__bottom-gradient {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 150px;
+            background: linear-gradient(180deg, rgba(30, 44, 55, 0)  0%, #1E2C37  100%);
+          }
+
+          &__pretitle {
+            position: absolute;
+            top: -5px;
+            right: 0;
+            margin-bottom: 0;
+            font-size: 12px;
+            font-weight: 500;
+            line-height: 130%;
+            color: #393e48;
+            margin-right: 5px;
+          }
+
+          &__title {
+            font-size: 48px;
+            font-weight: 900;
+            line-height: 110%;
+            color: #ffffff;
+            margin-bottom: 0;
+
+            &-area {
+              position: absolute;
+              top: 50px;
+              right: 50px;
+              display: flex;
+              flex-direction: column;
+              justify-content: flex-end;
+            }
+          }
+
+          &__icon {
+            margin-bottom: 10px;
+            width: 60px;
+            height: 60px;
+            object-fit: contain;
+
+            &-area {
+              @include flex-center;
+              width: 100%;
+              padding: 0 50px;
+              position: absolute;
+              left: 0;
+              bottom: 30px;
+              z-index: 1;
+            }
+
+            &-wrapper {
+              display: flex;
+              align-items: center;
+              flex-direction: column;
+              margin-right: 45px;
+
+              &:last-of-type {
+                margin-right: 0;
+              }
+
+              span {
+                font-size: 12px;
+                line-height: 130%;
+                color: #ffffff;
+                text-align: center;
+                white-space: nowrap;
+              }
+            }
+          }
+        }
+    }
+
+    &__info-area {
+      padding: 50px;
+
+      &__title {
+        font-size: 48px;
+        font-weight: 900;
+        line-height: 110%;
+        color: #393e48;
+        margin-bottom: 24px;
+      }
+
+      &__text {
+        font-size: 16px;
+        font-weight: 300;
+        line-height: 140%;
+        color: #73767d;
+        margin-bottom: 35px;
+      }
+
+      &__button {
+        border: 2px solid #fcab2d;
+        background: #fcab2d;
+        box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+        border-radius: 8px;
+        padding: 14px 34px;
+        transition: background 0.2s ease, border-color 0.2s ease;
+        @include flex-center;
+
+        span {
+          font-weight: 500;
+          font-size: 14px;
+          line-height: 130%;
+          color: #ffffff;
+          margin-right: 8px;
+        }
+
+        &:focus {
+          outline: none;
+        }
+
+        &:after {
+          content: "";
+          display: block;
+          vertical-align: middle;
+          width: 6px;
+          height: 8px;
+          padding-left: 5px;
+          background: url("../../static/pics/global/svg/arrow_next_white.svg");
+        }
+
+        &.border-orange {
+          &:hover {
+            border-color: #fcab2d;
+          }
+        }
+
+        &:hover {
+          background: white;
+          border-color: #228596;
+
+          span {
+            color: #fcab2d;
+          }
+
+          &:after {
+            background: url("../../static/pics/global/svg/arrow_next_orange.svg");
+          }
+        }
+      }
+    }
+  }
+
+  &-1 {
+    padding-top: 110px;
+    padding-bottom: 110px;
+  }
+
+  &-2 {
+    padding-top: 65px;
+    padding-bottom: 65px;
+  }
+
+  &-3 {
+    padding-top: 60px;
+    padding-bottom: 60px;
+  }
+}
+
 .rating-5-star {
   margin-bottom: 20px;
 
@@ -1141,6 +1349,14 @@ input {
         height: 300px;
       }
     }
+
+    .slider {
+      &__arrow {
+        &-left, &-right {
+          top: 150px;
+        }
+      }
+    }
   }
 
   &__beach-events {
@@ -1214,6 +1430,14 @@ input {
   &__cities {
     position: relative;
     z-index: 3;
+
+    .slider {
+      &__arrow {
+        &-left, &-right {
+          top: 48px;
+        }
+      }
+    }
   }
 
   &__map {
@@ -1297,207 +1521,6 @@ input {
     }
   }
 
-  &__card {
-    width: 100%;
-    border-radius: 12px;
-    position: relative;
-    display: flex;
-    box-shadow: 4px 4px 20px rgba(0, 0, 0, 0.1);
-
-    a {
-      text-decoration: none;
-      width: fit-content;
-    }
-
-    &__info-area {
-      &__title {
-        font-size: 48px;
-        font-weight: 900;
-        line-height: 110%;
-        color: #393e48;
-        margin-bottom: 24px;
-      }
-
-      &__text {
-        font-size: 16px;
-        font-weight: 300;
-        line-height: 140%;
-        color: #73767d;
-        margin-bottom: 35px;
-      }
-
-      &__button {
-        border: 2px solid #fcab2d;
-        background: #fcab2d;
-        box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
-        border-radius: 8px;
-        padding: 14px 34px;
-        transition: background 0.2s ease, border-color 0.2s ease;
-        @include flex-center;
-
-        span {
-          font-weight: 500;
-          font-size: 14px;
-          line-height: 130%;
-          color: #ffffff;
-          margin-right: 8px;
-        }
-
-        &:focus {
-          outline: none;
-        }
-
-        &:after {
-          content: "";
-          display: block;
-          vertical-align: middle;
-          width: 6px;
-          height: 8px;
-          padding-left: 5px;
-          background: url("../../static/pics/global/svg/arrow_next_white.svg");
-        }
-
-        &.border-orange {
-          &:hover {
-            border-color: #fcab2d;
-          }
-        }
-
-        &:hover {
-          background: white;
-          border-color: #228596;
-
-          span {
-            color: #fcab2d;
-          }
-
-          &:after {
-            background: url("../../static/pics/global/svg/arrow_next_orange.svg");
-          }
-        }
-      }
-    }
-  }
-
-  &__bef {
-    padding-top: 110px;
-    padding-bottom: 110px;
-
-    &__card {
-      &__pic {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        border-radius: 12px 0 0 12px;
-
-        &-area {
-          position: relative;
-          max-width: 60%;
-          width: 100%;
-
-          &__pretitle {
-            position: absolute;
-            top: -5px;
-            right: 0;
-            margin-bottom: 0;
-            font-size: 12px;
-            font-weight: 500;
-            line-height: 130%;
-            color: #393e48;
-            margin-right: 5px;
-          }
-
-          &__title {
-            font-size: 48px;
-            font-weight: 900;
-            line-height: 110%;
-            color: #ffffff;
-            margin-bottom: 0;
-
-            &-area {
-              position: absolute;
-              top: 50px;
-              right: 50px;
-              display: flex;
-              flex-direction: column;
-              justify-content: flex-end;
-            }
-          }
-
-          &__icon {
-            margin-bottom: 10px;
-            width: 60px;
-            height: 60px;
-            object-fit: contain;
-
-            &-area {
-              @include flex-center;
-              width: 100%;
-              padding: 0 50px;
-              position: absolute;
-              left: 0;
-              bottom: 30px;
-            }
-
-            &-wrapper {
-              display: flex;
-              align-items: center;
-              flex-direction: column;
-              margin-right: 45px;
-
-              &:last-of-type {
-                margin-right: 0;
-              }
-
-              span {
-                font-size: 12px;
-                line-height: 130%;
-                color: #ffffff;
-                text-align: center;
-                white-space: nowrap;
-              }
-            }
-          }
-        }
-      }
-
-      &__info-area {
-        max-width: 40%;
-        width: 100%;
-        background: #ffffff;
-        padding: 50px;
-        border-radius: 0 12px 12px 0;
-      }
-    }
-  }
-
-  &__ocnp {
-    padding-top: 70px;
-    padding-bottom: 60px;
-
-    &__card {
-      &__pic {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        border-radius: 0 12px 12px 0;
-
-        &-area {
-          min-width: 65%;
-          width: 100%;
-        }
-      }
-
-      &__info-area {
-        padding: 50px 40px;
-        background: white;
-        min-width: 35%;
-        width: 100%;
-        border-radius: 12px 0 0 12px;
-      }
-    }
-  }
-
   &__beach-type {
     margin-bottom: 125px;
 
@@ -1535,6 +1558,7 @@ input {
         top: 0;
         left: 0;
         transition: transform 0.2s ease;
+        filter: brightness(.6);
       }
 
       &__title {
@@ -1550,6 +1574,7 @@ input {
         line-height: 140%;
         color: #ffffff;
         font-weight: 500;
+        max-width: 330px;
 
         &-area {
           position: absolute;
@@ -1604,52 +1629,6 @@ input {
     }
   }
 
-  &__ynt {
-    margin-bottom: 60px;
-
-    &__card {
-      height: 400px;
-
-      &__pic {
-        object-fit: cover;
-        width: 100%;
-        height: 100%;
-        border-radius: 12px 0 0 12px;
-
-        &-area {
-          width: 100%;
-        }
-      }
-
-      &__info-area {
-        padding: 40px 50px;
-        background: #228596;
-        border-radius: 0 12px 12px 0;
-        min-width: 424px;
-
-        h4 {
-          line-height: 90%;
-        }
-
-        &__title {
-          &--white {
-            color: white;
-          }
-
-          &--orange {
-            color: #fcab2d;
-          }
-        }
-
-        &__text {
-          &--white {
-            color: white;
-          }
-        }
-      }
-    }
-  }
-
   &__weather-slider-area {
     padding-top: 60px;
     padding-bottom: 60px;
@@ -1659,6 +1638,14 @@ input {
   &__dynamic-slider-area {
     margin-bottom: 70px;
     overflow: hidden;
+
+    .slider {
+      &__arrow {
+        &-left, &-right {
+          top: 170px;
+        }
+      }
+    }
   }
 
   &__see-all {
@@ -2433,6 +2420,10 @@ input {
         &-right {
           right: 18px;
         }
+
+        &-left, &-right {
+          top: 70px;
+        }
       }
     }
 
@@ -2631,6 +2622,14 @@ input {
   &__similar-beaches {
     margin-bottom: 128px;
 
+    .slider {
+      &__arrow {
+        &-left, &-right {
+          top: 90px;
+        }
+      }
+    }
+
     .main-page {
       &__section {
         &-subtitle {
@@ -2828,6 +2827,12 @@ input {
       &-inner {
         display: flex;
         align-items: center;
+        margin-bottom: 10px;
+      }
+    }
+    
+    &__right {
+      &__button {
         margin-bottom: 10px;
       }
     }
@@ -3150,7 +3155,7 @@ input {
     &__tag-area {
       display: flex;
 
-      a {
+      span {
         font-size: 14px;
         line-height: 17px;
         color: #73767d;
@@ -3676,6 +3681,14 @@ input {
   &-weather {
     position: relative;
 
+    .slider {
+      &__arrow {
+        &-left, &-right {
+          top: 45px;
+        }
+      }
+    }
+
     .swiper-container {
       padding-right: 10px;
       padding-left: 10px;
@@ -3755,6 +3768,7 @@ input {
         line-height: 22px;
         color: #000000;
         opacity: 0.9;
+        white-space: nowrap;
       }
 
       &__temp {
@@ -3798,6 +3812,8 @@ input {
       &__pic {
         width: 90px;
         height: 90px;
+        border-radius: 50%;
+        object-fit: cover;
         margin-bottom: 10px;
 
         &-area {
@@ -4022,6 +4038,7 @@ input {
           line-height: 120%;
           color: #ffffff;
           font-weight: 700;
+          padding-bottom: 24px;
         }
       }
     }
@@ -4555,7 +4572,7 @@ input {
 
   &-beaches {
     &-main {
-      min-width: 514px;
+      max-width: 514px;
       padding-left: 74px;
 
       &__slide {
@@ -4844,6 +4861,20 @@ input {
 // after 1301px
 // search parameters start to break, so changing it to the tablet view + slider-weather's main slider is too big
 @media (max-width: 1301px) {
+  .banner {
+    &__card {
+      &__pic {
+        &-area {
+          &__icon {
+            &-wrapper {
+              margin-right: 10px;
+            }
+          }
+        }
+      }
+    }
+  }
+
   .search {
     &__params {
       &__part {
@@ -4996,15 +5027,6 @@ input {
         }
       }
     }
-
-    &__ynt {
-      &__card {
-        &__info-area {
-          min-width: 340px;
-          width: 340px;
-        }
-      }
-    }
   }
 
   .slider {
@@ -5035,22 +5057,6 @@ input {
 // after 1200px
 // BeachEntranceFree gets broken, so making it just like in the TABLET version
 @media (max-width: 1200px) {
-  .main-page {
-    &__bef {
-      &__card {
-        &__pic {
-          &-area {
-            &__icon {
-              &-wrapper {
-                margin-right: 10px;
-              }
-            }
-          }
-        }
-      }
-    }
-  }
-
   .search-page {
     &__map-area {
       &__card {
@@ -5400,6 +5406,52 @@ input {
   }
 }
 
+@media (max-width: 1100px) {
+  .banner {
+    &__card {
+      height: 340px;
+
+      &__pic {
+        &-area {
+          &__title {
+            font-size: 36px;
+
+            &-area {
+              top: 30px;
+              right: 20px;
+            }
+          }
+
+          &__icon {
+            width: 30px;
+            height: 30px;
+
+            &-wrapper {
+              span {
+                font-size: 10px;
+              }
+            }
+          }
+        }
+      }
+
+      &__info-area {
+        padding: 25px;
+        min-width: 240px;
+
+        &__title {
+          font-size: 24px;
+          max-width: 200px;
+        }
+
+        &__text {
+          max-width: 200px;
+        }
+      }
+    }
+  }
+}
+
 // after 1050px
 // SLIDER-WEATHER again starts to break, this time its main slider part, so change it to the TABLET version
 @media (max-width: 1050px) {
@@ -5631,6 +5683,35 @@ input {
 // change welcome title size
 // change the footer
 @media (max-width: 900px) {
+  .banner {
+    &__pic-area {
+      &__title {
+        font-size: 36px;
+
+        &-area {
+          top: 28px;
+          right: 20px;
+        }
+      }
+
+      &__icon {
+        width: 30px;
+        height: 30px;
+        object-fit: contain;
+
+        &-wrapper {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+
+          span {
+            font-size: 10px;
+          }
+        }
+      }
+    }
+  }
+
   .search {
     &__params {
       max-height: calc(100vh - 124px);
@@ -5670,44 +5751,6 @@ input {
 
     &__card {
       height: 340px;
-    }
-
-    &__bef {
-      padding-top: 60px;
-      padding-bottom: 60px;
-
-      &__card {
-        &__pic-area {
-          &__title {
-            font-size: 36px;
-
-            &-area {
-              top: 28px;
-              right: 20px;
-            }
-          }
-
-          &__icon {
-            width: 30px;
-            height: 30px;
-            object-fit: contain;
-
-            &-wrapper {
-              display: flex;
-              flex-direction: column;
-              align-items: center;
-
-              span {
-                font-size: 10px;
-              }
-            }
-          }
-        }
-
-        &__info-area {
-          padding: 30px;
-        }
-      }
     }
   }
 
@@ -5790,16 +5833,6 @@ input {
   }
 }
 
-@media (max-width: 820px) {
-  .main-page {
-    &__ynt {
-      &__card__info-area {
-        padding: 30px 20px;
-      }
-    }
-  }
-}
-
 @media (min-width: 801px) {
   .beach-event {
     &__about {
@@ -5817,6 +5850,23 @@ input {
 @media (max-width: 800px) {
   .header {
     height: 62px;
+  }
+
+  .banner {
+    &-1 {
+      padding-top: 60px;
+      padding-bottom: 60px;
+    }
+
+    &-2 {
+      padding-top: 50px;
+      padding-bottom: 40px;
+    }
+
+    &-3 {
+      padding-top: 0;
+      padding-bottom: 40px;
+    }
   }
 
   .overlay-map {
@@ -5991,21 +6041,6 @@ input {
       }
     }
 
-    &__ocnp {
-      padding-top: 50px;
-      padding-bottom: 40px;
-
-      &__card {
-        &__info-area {
-          min-width: 40%;
-        }
-
-        &__pic-area {
-          min-width: 60%;
-        }
-      }
-    }
-
     &__beach-type {
       margin-bottom: 50px;
 
@@ -6045,15 +6080,6 @@ input {
       margin-bottom: 15px;
     }
 
-    &__ynt {
-      &__card {
-        &__info-area {
-          min-width: unset;
-          width: auto;
-        }
-      }
-    }
-
     &__map {
       .map {
         min-height: 400px;
@@ -6068,6 +6094,14 @@ input {
 
       &-inner {
         flex-direction: column;
+      }
+    }
+
+    &__family-rest {
+      .custom-card {
+        &__pic {
+          height: 280px;
+        }
       }
     }
   }
@@ -6155,6 +6189,16 @@ input {
       &__modal {
         &__left {
           max-width: 500px;
+        }
+      }
+    }
+
+    &-cities {
+      &__slide {
+        &__pic {
+          &-area {
+            height: 70px;
+          }
         }
       }
     }
@@ -6500,7 +6544,7 @@ input {
       }
 
       &__tag-area {
-        a {
+        span {
           font-size: 12px;
           line-height: 14px;
         }
@@ -6570,18 +6614,6 @@ input {
       .main-page__section-title {
         margin-bottom: 30px !important;
       }
-    }
-
-    &__ocnp {
-      &__card {
-        &__info-area {
-          padding: 30px 20px;
-        }
-      }
-    }
-
-    &__ynt {
-      margin-bottom: 5px;
     }
   }
 }
@@ -6746,6 +6778,58 @@ input {
 }
 
 @media (max-width: 700px) {
+  .banner {
+    &__card {
+      &__pic {
+        &-area {
+          &__title {
+            &-area {
+              right: 15px;
+              top: 20px;
+            }
+          }
+
+          &__icon {
+            &-area {
+              padding: 0;
+              width: 110px;
+              height: 70px;
+              left: auto;
+              right: 15px;
+              bottom: 15px;
+              flex-wrap: wrap;
+              justify-content: flex-start;
+            }
+
+            &-wrapper {
+              &:nth-child(3n) {
+                margin-right: 0;
+              }
+
+              span {
+                display: none;
+              }
+            }
+          }
+        }
+      }
+
+      &__info-area {
+        &__title {
+          font-size: 18px;
+          line-height: 22px;
+          margin-bottom: 10px;
+        }
+
+        &__text {
+          line-height: 130%;
+          margin-bottom: 15px;
+          font-size: 14px;
+        }
+      }
+    }
+  }
+
   .beach-page {
     &__quick-data {
       &__item {
@@ -6924,120 +7008,6 @@ input {
 
         &__left {
           max-width: 400px;
-        }
-      }
-    }
-  }
-}
-
-// at 680px
-// change bef icons to the mobile view
-// and cards
-@media (max-width: 680px) {
-  .main-page {
-    &__card {
-      flex-direction: column;
-      height: unset;
-
-      &__info-area {
-        &__title {
-          font-size: 18px;
-          line-height: 22px;
-          margin-bottom: 10px;
-        }
-
-        &__text {
-          line-height: 130%;
-          margin-bottom: 15px;
-        }
-      }
-    }
-
-    &__bef {
-      padding-top: 40px;
-      padding-bottom: 40px;
-
-      &__card {
-        &__pic {
-          border-radius: 12px 12px 0 0;
-
-          &-area {
-            height: 200px;
-            border-radius: 12px 12px 0 0;
-            max-width: unset;
-
-            &__title {
-              &-area {
-                right: 15px;
-                top: 20px;
-              }
-            }
-
-            &__icon {
-              &-area {
-                padding: 0;
-                width: 110px;
-                height: 70px;
-                left: auto;
-                right: 15px;
-                bottom: 15px;
-                flex-wrap: wrap;
-                justify-content: flex-start;
-              }
-
-              &-wrapper {
-                height: 30px;
-                margin-right: 10px;
-
-                &:nth-child(3n) {
-                  margin-right: 0;
-                }
-
-                span {
-                  display: none;
-                }
-              }
-            }
-          }
-        }
-
-        &__info-area {
-          max-width: unset;
-          max-height: unset;
-          border-radius: 0 0 12px 12px;
-        }
-      }
-    }
-
-    &__ocnp {
-      .main-page__card {
-        flex-direction: column-reverse;
-      }
-
-      &__card {
-        &__info-area {
-          border-radius: 0 0 12px 12px;
-        }
-
-        &__pic {
-          border-radius: 12px 12px 0 0;
-        }
-      }
-    }
-
-    &__ynt {
-      &__card {
-        &__pic-area,
-        &__info-area {
-          max-width: unset;
-        }
-
-        &__pic {
-          border-radius: 12px 12px 0 0;
-        }
-
-        &__info-area {
-          border-radius: 0 0 12px 12px;
         }
       }
     }
@@ -7636,6 +7606,35 @@ input {
       }
     }
   }
+
+  .banner {
+    &__card {
+      flex-direction: column;
+      height: unset;
+
+      &__pic {
+        &-area {
+          height: 200px;
+          border-radius: 12px 12px 0 0;
+
+          &__title {
+            font-size: 18px;
+          }
+
+          &__pretitle {
+            top: -10px;
+            right: -4px;
+          }
+        }
+      }
+
+      &__info-area {
+        &__text {
+          max-width: 260px;
+        }
+      }
+    }
+  }
 }
 
 @media (max-width: 550px) {
@@ -7688,6 +7687,23 @@ input {
   .custom-container {
     padding-left: 20px;
     padding-right: 20px;
+  }
+
+  .banner {
+    &-1 {
+      padding-top: 40px;
+      padding-bottom: 40px;
+    }
+
+    &-2 {
+      padding-top: 40px;
+      padding-bottom: 35px;
+    }
+
+    &-3 {
+      padding-top: 0;
+      padding-bottom: 30px;
+    }
   }
 
   .btn-ymaps {
@@ -7844,6 +7860,14 @@ input {
       }
     }
 
+    &__family-rest {
+      .custom-card {
+        &__pic {
+          height: 240px;
+        }
+      }
+    }
+
     &__card {
       a {
         width: 100%;
@@ -7868,27 +7892,8 @@ input {
       margin-bottom: 40px;
     }
 
-    &__ynt {
-      margin-bottom: 0;
-
-      &__card__pic {
-        min-height: 200px;
-      }
-    }
-
     &__hotels {
       margin-bottom: 0;
-    }
-
-    &__ocnp,
-    &__bef,
-    &__ynt {
-      &__card {
-        &__info-area {
-          padding: 10px;
-          padding-top: 15px;
-        }
-      }
     }
 
     &__map {
@@ -8023,6 +8028,16 @@ input {
         &__right {
           .swiper-container {
             overflow: visible;
+          }
+        }
+      }
+    }
+
+    &-cities {
+      &__slide {
+        &__pic {
+          &-area {
+            height: 70px;
           }
         }
       }
@@ -8478,6 +8493,10 @@ input {
   }
 
   .custom-card {
+    &__pic {
+      height: 90px;
+    }
+
     &__title {
       font-size: 15px !important;
     }
@@ -8622,6 +8641,16 @@ input {
               display: block;
             }
           }
+        }
+      }
+    }
+  }
+
+  a.banner {
+    &__card {
+      &__info-area {
+        &__button {
+          width: 100%;
         }
       }
     }

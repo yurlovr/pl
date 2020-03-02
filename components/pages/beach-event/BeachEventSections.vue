@@ -6,15 +6,14 @@
                     <div
                         class="swiper-slide"
                         v-for="(section, i) in sections"
-                        :key="i"
-                        :class="{ active : i == activeSection }"
+                        :class="{ active : section.hash == activeSectionHash }"
                     >
                         <nuxt-link
-                            :to="{path: '#id-'+i, hash: '#id-'+i}"
+                            :to="{path: '#'+section.hash, hash: '#'+section.hash}"
                             class="slider-weather__month beach-page-sections__section"
-                            :class="{ active : i == activeSection }"
+                            :class="{ active : section.hash == activeSectionHash }"
                         >
-                            <span>{{ section }}</span>
+                            <span>{{ section.title }}</span>
                         </nuxt-link>
                     </div>
                 </div>
@@ -39,7 +38,7 @@ export default {
 
     data () {
         return {
-            activeSection: 0,
+            activeSectionHash: '#',
             swiperOption: {
                 freeMode: true,
                 spaceBetween: 0,
@@ -66,10 +65,10 @@ export default {
         onScroll() {
             let bounding;
             for (let i = 0; i < this.sections.length; i++) {
-                if (document.querySelector(`#id-${i}`)) {
-                    bounding = document.querySelector(`#id-${i}`).getBoundingClientRect();
+                if (document.querySelector(`#${this.sections[i].hash}`)) {
+                    bounding = document.querySelector(`#${this.sections[i].hash}`).getBoundingClientRect();
                     if (bounding.top <= this.margin && bounding.bottom >= this.margin)
-                            this.activeSection = i;
+                            this.activeSectionHash = this.sections[i].hash;
                 }
             }
         },

@@ -22,10 +22,10 @@
 				<button @click="mySwiper.slideTo(i)" class="custom-pagination-bullet" v-for="(b,i) in data.length - 1" :class="{ 'custom-pagination-bullet-active' : i == activeIndex }"></button>
 			</div>
 		</div>
-		<button class="slider__arrow-left" :style="{ transform: 'translate(-50%, -50%)', top: arrowY + 'px', display: showLeft && showArrows ? '' : 'none' }" @click="mySwiper.slidePrev()">
+		<button class="slider__arrow-left" :style="{ transform: 'translate(-50%, -50%)', display: showLeft && showArrows ? '' : 'none' }" @click="mySwiper.slidePrev()">
 			<img src="~/static/pics/global/svg/slider_arrow_left.svg" alt="Налево">
 		</button>
-		<button class="slider__arrow-right" :style="{ transform: 'translate(50%, -50%)', top: arrowY + 'px', display: showRight && showArrows ? '' : 'none' }" @click="mySwiper.slideNext();">
+		<button class="slider__arrow-right" :style="{ transform: 'translate(50%, -50%)', display: showRight && showArrows ? '' : 'none' }" @click="mySwiper.slideNext();">
 			<img src="~/static/pics/global/svg/slider_arrow_right.svg" alt="Направо">
 		</button>
 	</div>
@@ -72,7 +72,6 @@
 						}
 					}
 				},
-				arrowY: 0,
 				showLeft: false,
 				showRight: true,
 				showArrows: true,
@@ -96,8 +95,6 @@
 
 		methods: {
 			onResize() {
-				this.arrowY = this.$el.querySelector('.slider-cities__slide__pic').offsetHeight / 2; // this.$el means we're query selecting in this component
-
 				if (window.innerWidth < 1150) {
 					this.showArrows = false;
 				} else {

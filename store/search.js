@@ -75,9 +75,10 @@ export const mutations = {
 
     updateSearchFilter: (state, payload) => {
         // getting the tags
+        // PAYLOAD is the GETTER of searchValues, NOT STATE
         state.tags = [];
         state.query = '?';
-        if (state.searchParams.searchCity && state.searchParams.searchCity != 'Любой город') {
+        if (state.searchParams.searchCity && state.searchParams.searchCity != 'Любой город' && state.searchValues.cityValues) {
             state.tags.push({
                 tag: state.searchParams.searchCity,
                 default: 'Любой город',
@@ -85,7 +86,7 @@ export const mutations = {
             });
             state.query += `city=${parseInt(payload.cityValues.find(city => city.title == state.searchParams.searchCity).id)}&`;
         }
-        if (state.searchParams.searchBeachType && state.searchParams.searchBeachType != 'Тип пляжа') {
+        if (state.searchParams.searchBeachType && state.searchParams.searchBeachType != 'Тип пляжа' && payload.beachTypeValues) {
             state.tags.push({
                 tag: state.searchParams.searchBeachType,
                 default: 'Тип пляжа',
@@ -93,7 +94,7 @@ export const mutations = {
             });
             state.query += `typeBeach=${parseInt(payload.beachTypeValues.find(beachType => beachType.title == state.searchParams.searchBeachType).id)}&`;
         }
-        if (state.searchParams.searchWorkSchedule && state.searchParams.searchWorkSchedule != 'Режим работы') {
+        if (state.searchParams.searchWorkSchedule && state.searchParams.searchWorkSchedule != 'Режим работы' && payload.workScheduleValues) {
             state.tags.push({
                 tag: state.searchParams.searchWorkSchedule,
                 default: 'Режим работы',
@@ -212,7 +213,7 @@ export const mutations = {
                 default: false,
                 param: 'cbInventoryActive'
             })
-            // state.query += `infrastructures[]=1768&`;
+            state.query += `services[]=1792&`;
         }
         if (state.searchParams.cbMedic == true) {
             state.tags.push({
@@ -228,7 +229,7 @@ export const mutations = {
                 default: false,
                 param: 'cbBarsRestos'
             })
-            // state.query += `tempTo=${parseInt(state.searchParams.searchWaterTempTo.match(/\d+/)[0])}&`;
+            state.query += `addTags[]=35&`;
         }
         if (state.searchParams.cbShowers == true) {
             state.tags.push({
@@ -236,7 +237,7 @@ export const mutations = {
                 default: false,
                 param: 'cbShowers'
             })
-            // state.query += `tempTo=${parseInt(state.searchParams.searchWaterTempTo.match(/\d+/)[0])}&`;
+            state.query += `addTags[]=40&`;
         }
         if (state.searchParams.cbRescuer == true) {
             state.tags.push({
@@ -244,7 +245,7 @@ export const mutations = {
                 default: false,
                 param: 'cbRescuer'
             })
-            // state.query += `tempTo=${parseInt(state.searchParams.searchWaterTempTo.match(/\d+/)[0])}&`;
+            state.query += `addTags[]=42&`;
         }
         if (state.searchParams.cbParking == true) {
             state.tags.push({
@@ -252,7 +253,7 @@ export const mutations = {
                 default: false,
                 param: 'cbParking'
             })
-            // state.query += `tempTo=${parseInt(state.searchParams.searchWaterTempTo.match(/\d+/)[0])}&`;
+            state.query += `addTags[]=36&`;
         }
         if (state.searchParams.cbInventorySwimming == true) {
             state.tags.push({
@@ -260,7 +261,7 @@ export const mutations = {
                 default: false,
                 param: 'cbInventorySwimming'
             })
-            // state.query += `tempTo=${parseInt(state.searchParams.searchWaterTempTo.match(/\d+/)[0])}&`;
+            state.query += `addTags[]=41&`;
         }
         if (state.searchParams.cbCleanWater == true) {
             state.tags.push({
@@ -268,7 +269,7 @@ export const mutations = {
                 default: false,
                 param: 'cbCleanWater'
             })
-            // state.query += `tempTo=${parseInt(state.searchParams.searchWaterTempTo.match(/\d+/)[0])}&`;
+            state.query += `addTags[]=43&`;
         }
         if (state.searchParams.cbSecurity == true) {
             state.tags.push({
@@ -276,7 +277,7 @@ export const mutations = {
                 default: false,
                 param: 'cbSecurity'
             })
-            // state.query += `tempTo=${parseInt(state.searchParams.searchWaterTempTo.match(/\d+/)[0])}&`;
+            state.query += `addTags[]=37&`;
         }
 
         // cleaning up the last &
@@ -333,26 +334,26 @@ export const getters = {
     	}
 
         // adding formatted city values
-        for (let i = 0; i < state.searchValues.data.cities.list.length; i++) {
+        for (let i = 0; i < state.searchValues.data.cities.length; i++) {
             ret.cityValues.push({
-                title: state.searchValues.data.cities.list[i].NAME,
-                id: state.searchValues.data.cities.list[i].ID
+                title: state.searchValues.data.cities[i].NAME,
+                id: state.searchValues.data.cities[i].ID
             });
         }
 
         // adding formatted beach type values
-        for (let i = 0; i < state.searchValues.data.beachTypes.list.length; i++) {
+        for (let i = 0; i < state.searchValues.data.beachTypes.length; i++) {
             ret.beachTypeValues.push({
-                title: state.searchValues.data.beachTypes.list[i].NAME,
-                id: state.searchValues.data.beachTypes.list[i].ID
+                title: state.searchValues.data.beachTypes[i].NAME,
+                id: state.searchValues.data.beachTypes[i].ID
             });
         }
 
         // adding formatted beach type values
-        for (let i = 0; i < state.searchValues.data.modes.list.length; i++) {
+        for (let i = 0; i < state.searchValues.data.modes.length; i++) {
             ret.workScheduleValues.push({
-                title: state.searchValues.data.modes.list[i].NAME,
-                id: state.searchValues.data.modes.list[i].ID
+                title: state.searchValues.data.modes[i].NAME,
+                id: state.searchValues.data.modes[i].ID
             });
         }
 

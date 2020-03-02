@@ -15,7 +15,7 @@
                 <button v-if="data && data.cardData"
                     @click="mySwiper.slideTo(i)"
                     class="custom-pagination-bullet"
-                    v-for="(b,i) in data.cardData.length - 1"
+                    v-for="(b,i) in Math.max(0, data.cardData.length - 1)"
                     :key="i+0.1"
                     :class="{ 'custom-pagination-bullet-active' : i == activeIndex }"
                 ></button>
