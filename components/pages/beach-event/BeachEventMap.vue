@@ -3,7 +3,7 @@
     <div class="beach-event__map-weather__map-card">
       <div class="map"></div>
       <div class="beach-event__map-weather__map-card__button-area" v-if="data.pos">
-        <a :href="`https://yandex.ru/maps/?ll=${data.pos[0]},${data.pos[1]}&z=14&l=map`" class="banner__card__info-area__button">
+        <a target="_blank" :href="`https://yandex.ru/maps/?ll=${data.pos[1]}%2C${data.pos[0]}&z=12`" class="banner__card__info-area__button">
           <span>Перейти на карту</span>
         </a>
       </div>

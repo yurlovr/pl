@@ -4,6 +4,9 @@
 			<div class="slider-beach-event__left__inner">
 				<div class="slider-beach-event__medal-gold" v-if="data.goldMedal">
 					<img src="~/static/pics/global/svg/goldMedal.svg">
+					<div class="slider-beach-event__medal-gold__tooltip">
+						<span>Пляж сертифицирован</span>
+					</div>
 				</div>
 				<div class="slider-beach-event__medal-blue" v-if="data.blueMedal">
 					<img src="~/static/pics/global/svg/blueMedal.svg">

@@ -89,7 +89,7 @@
 					}
 				},
 				showLeft: false,
-				showRight: true,
+				showRight: false,
 				activeIndex: 0,
 				plus: 4
 			}
@@ -124,6 +124,7 @@
 
 			this.mySwiperMain.init(this.swiperOptionMain);
 			this.mySwiperOpinion.init(this.swiperOptionOpinion);
+			this.updateArrowsNopinion();
 		},
 
 		methods: {

@@ -4,7 +4,7 @@
 			<BeachEventSections :sections="beachData.sections" class="beach-page-sections--w-100" />
 			<SliderHugeBeachEventPage :data="beachData.hugeSliderData" id="gallery" />
 			<div class="custom-container-inner">
-				<BeachEventSideButtons :share="true" :crossBlue="true" :ymaps="true" :yandex="true" />
+				<BeachEventSideButtons :data="beachData.sideMapData" />
 			</div>
 			<div class="two-part-layout">
 				<main class="two-part-layout__left">
@@ -12,7 +12,7 @@
 					<BeachAvgRating :data="beachData.avgRating" class="beach-page__avg-rating__mobile" />
 					<BeachQuickData id="infra" :title="'Инфраструктура пляжа'" :data="beachData.infraData" v-if="beachData.infraData.length > 0" />
 					<BeachEventMap :data="beachData.sideMapData" class="beach-event__map-weather__tablet" />
-					<BeachEventAbout id="about" :data="beachData.about" />
+					<BeachEventAbout id="about" :data="beachData.about" v-if="beachData.about.length > 0" />
 					<BeachEventMap :data="beachData.sideMapData" class="beach-event__map-weather__mobile" />
 					<BeachQuickData id="services" :title="'Услуги и аренда'" :data="beachData.servicesData" v-if="beachData.servicesData.length > 0" />
 					<BeachEventParkingsTransport id="pt" :data="beachData.ptData" />
@@ -20,7 +20,7 @@
 					<BeachEvents id="events" :temp="false" :data="beachData.events" class="beach-page__cardless-area" v-if="beachData.events.cardData.length > 0" />
 					<BeachBarsNRestos id="barsNRestos" :data="beachData.barsNRestos" v-if="beachData.barsNRestos.length > 0" class="beach-page__cardless-area" />
 					<BeachOpinions :data="beachData.opinions" v-if="beachData.opinions.length > 0" />
-					<BeachEventReviews id="reviews" :data="$store.state.guestReviewsData" class="beach-page__cardless-area" />
+					<BeachEventReviews id="reviews" :data="beachData.reviews" class="beach-page__cardless-area" />
 				</main>
 				<aside class="two-part-layout__right">
 					<BeachAvgRating :data="beachData.avgRating" class="beach-page__avg-rating__desktop" />
@@ -31,7 +31,7 @@
 		</div>
 		<div class="main-page__white-wrapper beach-event__visitor-pics-wrapper"><BeachEventVisitorPics id="visitorPics" :data="$store.state.visitorPicsData" /></div>
 		<BeachSliderArea class="beach-event__similar-beaches" :data="$store.state.similarNearData" />
-		<BeachSliderArea class="main-page__hotels" :data="$store.state.hotelData" :areaData="$store.state.hotelAreaData" v-if="false" />
+		<!-- <BeachSliderArea class="main-page__hotels" :data="$store.state.hotelData" :areaData="$store.state.hotelAreaData" /> -->
 	</div>
 </template>
 

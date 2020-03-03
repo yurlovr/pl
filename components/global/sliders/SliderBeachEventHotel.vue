@@ -113,8 +113,7 @@ export default {
             if (window.innerWidth < 1150) {
                 this.showArrows = false;
             } else {
-                if (this.data.showArrows)
-                    this.showArrows = true;
+                this.showArrows = true;
             }
         },
 

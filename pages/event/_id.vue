@@ -4,7 +4,7 @@
 			<BeachEventSections :sections="$store.state.eventPageSections" class="beach-page-sections event-page-sections" />
 			<SliderHugeBeachEventPage :data="eventData.hugeSliderData" />
 			<div class="custom-container-inner">
-				<BeachEventSideButtons :share="true" :crossBlue="true" :ymaps="true" :yandex="true" class="event-page__side-buttons" />
+				<!-- <BeachEventSideButtons class="event-page__side-buttons" /> -->
 			</div>
 			<div class="two-part-layout">
 				<main class="two-part-layout__left">

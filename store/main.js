@@ -127,7 +127,7 @@ export const getters = {
         // adding formatted beaches
         for (let i = 0; i < state.popularBeaches.data.list.length; i++) {
             ret.beachSliderData.cardData.push({
-                temperature: state.popularBeaches.data.list[i].TEMP.WATER,
+                tempWater: state.popularBeaches.data.list[i].TEMP.WATER,
                 favorite: false,
                 paid: state.popularBeaches.data.list[i].PAID,
                 rating: parseFloat(state.popularBeaches.data.list[i].AVERAGE_RATING),
@@ -148,11 +148,12 @@ export const getters = {
         let ret = [];
 
         for (let i = 0; i < state.cities.data.list.length; i++) {
-            ret.push({
-                city: state.cities.data.list[i].NAME,
-                beachNumber: state.cities.data.list[i].COUNT_BEACHES,
-                pic: state.cities.data.list[i].PREVIEW_PICTURE ? state.api + state.cities.data.list[i].PREVIEW_PICTURE : null
-            });
+            if (state.cities.data.list[i].COUNT_BEACHES > 0)
+                ret.push({
+                    city: state.cities.data.list[i].NAME,
+                    beachNumber: state.cities.data.list[i].COUNT_BEACHES,
+                    pic: state.cities.data.list[i].PREVIEW_PICTURE ? state.api + state.cities.data.list[i].PREVIEW_PICTURE : null
+                });
         }
 
         return ret;

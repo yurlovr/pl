@@ -3,7 +3,7 @@
 		<div class="main-page__section-subtitle-area beach-page__events__title-area">
 			<h3 class="two-part-layout__card__title beach-page__events__title">Ближайшие мероприятия на пляже</h3>
 			<nuxt-link to="/" class="main-page__section__subtitle-area__see-all beach-page__events__see-all">
-	          <span>Смотреть все (45)</span>
+	          <span>Смотреть все ({{ data.count }})</span>
 	        </nuxt-link>
 		</div>
 		<div v-swiper:mySwiper="swiperOption">
@@ -18,7 +18,7 @@
 		</div>
 		<div class="main-page__beach-events__see-all-bottom">
 			<nuxt-link to="/" class="main-page__see-all">
-	          <span>Смотреть все (45)</span>
+	          <span>Смотреть все ({{ data.count }})</span>
 	        </nuxt-link>
 		</div>
 	</section>
@@ -73,6 +73,8 @@
 			});
 
 			this.mySwiper.init(this.swiperOption);
+
+			console.log(this.data)
 		},
 	}
 </script>

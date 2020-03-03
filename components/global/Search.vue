@@ -19,44 +19,80 @@
           <form class="search__params__form" v-on:submit.prevent>
             <h3 class="search__params__title search__params__title--first">Параметры поиска</h3>
             <div class="search__params__part__dropdowns-area">
-              <div class="search__params__part__dropdowns-row" v-if="searchValues">
+              <div class="search__params__part__dropdowns-row" v-if="searchParams">
                 <div class="search__params__part__dropdowns">
                   <div class="search__params__part--dropdown search__params__part--dropdown--wider">
-                    <c-select v-if="searchParams.selects.cities" :value="searchParams.selects.cities.value" :var="searchParams.selects.cities.default" :class="{ default :searchParams.selects.cities.value == searchParams.selects.cities.default }" :options="searchParams.selects.cities.options.map(v => v.value)">
+                    <c-select
+                    :value="searchParams.selects.cities.value"
+                    :param="searchParams.selects.cities.param"
+                    :class="{ default : searchParams.selects.cities.value == searchParams.selects.cities.default }"
+                    :options="searchParams.selects.cities.options">
                     </c-select>
                   </div>
                   <div class="search__params__part--dropdown">
-                    <c-select v-if="searchValues" :value="searchParams.searchBeachType" :var="'searchBeachType'" :class="{ default : searchParams.searchBeachType == 'Тип пляжа' }" :options="searchValues.beachTypeValues.map(v => v.title)">
+                    <c-select
+                    :value="searchParams.selects.beachTypes.value"
+                    :param="searchParams.selects.beachTypes.param"
+                    :class="{ default : searchParams.selects.beachTypes.value == searchParams.selects.beachTypes.default }"
+                    :options="searchParams.selects.beachTypes.options">
                     </c-select>
                   </div>
                 </div>
                 <div class="search__params__part__dropdowns">
                   <div class="search__params__part--dropdown search__params__part--dropdown--wider">
-                    <c-select v-if="searchValues" :value="searchParams.searchWorkSchedule" :var="'searchWorkSchedule'" :class="{ default : searchParams.searchWorkSchedule == 'Режим работы' }" :options="searchValues.workScheduleValues.map(v => v.title)"></c-select>
+                    <c-select
+                    :value="searchParams.selects.modes.value"
+                    :param="searchParams.selects.modes.param"
+                    :class="{ default: searchParams.selects.modes.value == searchParams.selects.modes.default }"
+                    :options="searchParams.selects.modes.options"></c-select>
                   </div>
                   <div class="search__params__part--dropdown">
-                    <c-select v-if="searchValues" :value="searchParams.searchPrice" :var="'searchPrice'" :class="{ default : searchParams.searchPrice == 'Стоимость' }" :options="searchValues.priceValues"></c-select>
+                    <c-select
+                    :value="searchParams.selects.price.value"
+                    :param="searchParams.selects.price.param"
+                    :class="{ default : searchParams.selects.price.value == searchParams.selects.price.default }"
+                    :options="searchParams.selects.price.options"></c-select>
                   </div>
                 </div>
               </div>
-              <div class="search__params__part__dropdowns-row">
+              <!-- <div class="search__params__part__dropdowns-row">
                 <div class="search__params__part__dropdowns" :class="{ equal : searchMobileText && !labelId || showCorrectSelectText }">
                   <span class="search__params__part__label" v-show="searchMobileText && !labelId || showCorrectSelectText">Протяженность линии, метров</span>
                   <div class="search__params__part--dropdown search__params__part--dropdown--merged">
-                    <c-select :value="searchParams.searchBeachLengthFrom" :var="'searchBeachLengthFrom'" :class="{ default : searchParams.searchBeachLengthFrom == 'От' || searchParams.searchBeachLengthFrom == 'Протяженность линии от, м' }" :options="beachLengthFromValues"></c-select>
-                    <c-select :value="searchParams.searchBeachLengthTo" :var="'searchBeachLengthTo'" :class="{ default : searchParams.searchBeachLengthTo == 'До' }" :options="beachLengthToValues"></c-select>
+                    <c-select
+                      :value="searchParams.selects.searchBeachLengthFrom.value"
+                      :param="searchParams.selects.searchBeachLengthFrom.param" 
+                      :class="{ default : searchParams.selects.searchBeachLengthFrom.value == 'От' || searchParams.selects.searchBeachLengthFrom.value == 'Протяженность линии от, м' }"
+                      :options="searchParams.selects.searchBeachLengthFrom.options">
+                    </c-select>
+                    <c-select
+                      :value="searchParams.selects.searchBeachLengthTo.value"
+                      :param="searchParams.selects.searchBeachLengthTo.param" 
+                      :class="{ default : searchParams.selects.searchBeachLengthTo.value == 'До' }"
+                      :options="searchParams.selects.searchBeachLengthTo.options">
+                    </c-select>
                   </div>
                 </div>
                 <div class="search__params__part__dropdowns" :class="{ equal : searchMobileText && !labelId || showCorrectSelectText }">
                   <span class="search__params__part__label" v-show="searchMobileText && !labelId || showCorrectSelectText">Температура воды от, &deg;C</span>
                   <div class="search__params__part--dropdown search__params__part--dropdown--merged">
-                    <c-select :value="searchParams.searchWaterTempFrom" :var="'searchWaterTempFrom'" :class="{ default : searchParams.searchWaterTempFrom == 'От' || searchParams.searchWaterTempFrom == 'Температура воды от, °C' }" :options="waterTemperatureFromValues"></c-select>
-                    <c-select :value="searchParams.searchWaterTempTo" :var="'searchWaterTempTo'" :class="{ default : searchParams.searchWaterTempTo == 'До' }" :options="waterTemperatureToValues"></c-select>
+                    <c-select
+                      :value="searchParams.selects.searchWaterTempFrom.value"
+                      :param="searchParams.selects.searchWaterTempFrom.param"
+                      :class="{ default : searchParams.selects.searchWaterTempFrom.value == 'От' || searchParams.selects.searchWaterTempFrom.value == 'Температура воды от, °C' }"
+                      :options="searchParams.selects.searchWaterTempFrom.options">
+                    </c-select>
+                    <c-select
+                      :value="searchParams.selects.searchWaterTempTo.value"
+                      :param="searchParams.selects.searchWaterTempTo.param"
+                      :class="{ default : searchParams.selects.searchWaterTempTo.value == 'До' }"
+                      :options="searchParams.selects.searchWaterTempTo.options">
+                    </c-select>
                   </div>
                 </div>
-              </div>
+              </div> -->
             </div>
-            <div class="search__params__part__checkboxes search__params__part__checkboxes--first">
+            <!-- <div class="search__params__part__checkboxes search__params__part__checkboxes--first">
               <CustomCheckbox class="search__params__part--checkbox" :label="'Городские'" :value="searchParams.cbCity" :var="'cbCity'" />
               <CustomCheckbox class="search__params__part--checkbox" :label="'Популярные пляжи'" :value="searchParams.cbPopularBeaches" :var="'cbPopularBeaches'" />
               <CustomCheckbox class="search__params__part--checkbox" :label="'Активный отдых'" :value="searchParams.cbActiveRest" :var="'cbActiveRest'" />
@@ -79,7 +115,7 @@
               <CustomCheckbox class="search__params__part--checkbox" :label="'Инвентарь для плавания'" :value="searchParams.cbInventorySwimming" :var="'cbInventorySwimming'" />
               <CustomCheckbox class="search__params__part--checkbox" :label="'Чистота воды'" :value="searchParams.cbCleanWater" :var="'cbCleanWater'" />
               <CustomCheckbox class="search__params__part--checkbox" :label="'Безопасность'" :value="searchParams.cbSecurity" :var="'cbSecurity'" />
-            </div>
+            </div> -->
             <div class="search__params__apply-area">
               <a href="/search" @click.prevent="searchFilter()" class="search__params__apply"><span>Применить</span></a>
               <div class="search__params__apply-area__blank"></div>
@@ -118,14 +154,13 @@ export default {
   props: ['labelId'],
 
   created() {
-    this.getSearch();
+    this.$store.dispatch('search/getSearch');
   },
 
   computed: {
-    ...mapGetters('search', ['searchValues']),
     ...mapState('search', ['searchInput']),
-    ...mapState('search', ['searchParams']),
-    ...mapState('search', ['autocompleteResults'])
+    ...mapState('search', ['autocompleteResults']),
+    ...mapState('search', ['searchParams'])
   },
 
   components: {
@@ -239,7 +274,6 @@ export default {
   },
 
   methods: {
-    ...mapActions('search', ['getSearch']),
     ...mapActions('search', ['search']),
     ...mapActions('search', ['searchAutocomplete']),
     ...mapMutations('search', ['updateSearchFilter']),
@@ -282,7 +316,7 @@ export default {
 
     searchFilter() {
       this.hideParams();
-      this.updateSearchFilter(this.searchValues);
+      this.updateSearchFilter();
       if (this.$nuxt.$route.name != 'search')
         this.$bus.goTo('/search', this.$router);
       else this.search();
@@ -328,24 +362,26 @@ export default {
       }
 
       // correcting the params values if they area set to default for different screen width
-      if (this.searchMobileText && !this.labelId || this.showCorrectSelectText) {
-        if (this.searchParams.searchBeachLengthFrom == 'Протяженность линии от, м') {
-          this.updateSearchBeachLengthFrom('От');
+      if (this.searchParams) {
+        if (this.searchMobileText && !this.labelId || this.showCorrectSelectText) {
+          if (this.searchParams.searchBeachLengthFrom == 'Протяженность линии от, м') {
+            this.updateSearchBeachLengthFrom('От');
+          }
+          if (this.searchParams.searchWaterTempFrom == 'Температура воды от, °C') {
+            this.updateSearchWaterTempFrom('От');
+          }
+        } else {
+          if (this.searchParams.searchBeachLengthFrom == 'От') {
+            this.updateSearchBeachLengthFrom('Протяженность линии от, м');
+          }
+          if (this.searchParams.searchWaterTempFrom == 'От') {
+            this.updateSearchWaterTempFrom('Температура воды от, °C');
+          }
         }
-        if (this.searchParams.searchWaterTempFrom == 'Температура воды от, °C') {
-          this.updateSearchWaterTempFrom('От');
-        }
-      } else {
-        if (this.searchParams.searchBeachLengthFrom == 'От') {
-          this.updateSearchBeachLengthFrom('Протяженность линии от, м');
-        }
-        if (this.searchParams.searchWaterTempFrom == 'От') {
-          this.updateSearchWaterTempFrom('Температура воды от, °C');
-        }
-      }
 
-      this.beachLengthFromValues[0] = this.searchParams.searchBeachLengthFrom;
-      this.waterTemperatureFromValues[0] = this.searchParams.searchWaterTempFrom;
+        this.beachLengthFromValues[0] = this.searchParams.searchBeachLengthFrom;
+        this.waterTemperatureFromValues[0] = this.searchParams.searchWaterTempFrom;
+      }
     },
 
     autocomplete: debounce(async function() {

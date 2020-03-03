@@ -7,7 +7,7 @@
 					<h4 class="beach-page__avg-rating__title">Средняя оценка</h4>
 					<div class="beach-page__avg-rating__title-area__info">
 						<img src="~/static/pics/global/svg/star.svg">
-						<span>{{ data.rating }} ({{ data.peopleCount }})</span>
+						<span>{{ data.rating.toFixed(1) }} ({{ data.peopleCount }})</span>
 					</div>
 				</div>
 				<div class="beach-page__avg-rating__title-area__right">

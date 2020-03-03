@@ -5,46 +5,70 @@ export const state = () => ({
             cities: {
                 default: 'Любой город',
                 value: 'Любой город',
-                options: []
+                param: 'cities',
+                id: -1,
+                options: [
+                    'Любой город'
+                ]
             },
             beachTypes: {
                 default: 'Тип пляжа',
                 value: 'Тип пляжа',
-                options: []
+                param: 'beachTypes',
+                id: -1,
+                options: [
+                    'Тип пляжа'
+                ]
             },
             modes: {
                 default: 'Режим работы',
                 value: 'Режим работы',
-                options: []
+                param: 'modes',
+                id: -1,
+                options: [
+                    'Режим работы'
+                ]
             },
             price: {
                 default: 'Стоимость',
                 value: 'Стоимость',
-                options: []
+                param: 'price',
+                id: -1,
+                options: [
+                    'Стоимость',
+                    'Платно',
+                    'Бесплатно'
+                ]
             },
             searchBeachLengthFrom: {
-                default: 'Протяженность линии от, м',
                 value: 'Протяженность линии от, м',
+                param: 'searchBeachLengthFrom',
+                id: -1,
                 options: []
             },
             searchBeachLengthTo: {
                 default: 'До',
                 value: 'До',
+                param: 'searchBeachLengthTo',
+                id: -1,
                 options: []
             },
             searchWaterTempFrom: {
-                default: 'Температура воды от, °C',
                 value: 'Температура воды от, °C',
+                param: 'searchWaterTempFrom',
+                id: -1,
                 options: []
             },
             searchWaterTempTo: {
                 default: 'До',
                 value: 'До',
+                param: 'searchWaterTempTo',
+                id: -1,
                 options: []
             }
         },
 
-        checkboxes: {}
+        checkboxes: []
     },
     searchPageResult: [],
     autocompleteResults: [],
@@ -55,7 +79,43 @@ export const state = () => ({
 
 export const mutations = {
     SET_SEARCH: (state, payload) => {
-        state.searchValues = payload;
+        for (let i = 0; i < payload.data.cities.length; i++) {
+            state.searchParams.selects.cities.options.push(payload.data.cities[i].NAME);
+        }
+        for (let i = 0; i < payload.data.beachTypes.length; i++) {
+            state.searchParams.selects.beachTypes.options.push(payload.data.beachTypes[i].NAME);
+        }
+        for (let i = 0; i < payload.data.modes.length; i++) {
+            state.searchParams.selects.modes.options.push(payload.data.modes[i].NAME);
+        }
+        // for (let i = 0; i < payload.data.tags.length; i++) {
+        //     state.searchParams.checkboxes.push({
+        //         title: payload.data.tags[i].NAME,
+        //         id: parseInt(payload.data.tags[i].ID),
+        //         cheched: false
+        //     })
+        // }
+        // for (let i = 0; i < payload.data.addTags.length; i++) {
+        //     state.searchParams.checkboxes.push({
+        //         title: payload.data.addTags[i].NAME,
+        //         id: parseInt(payload.data.addTags[i].ID),
+        //         cheched: false
+        //     })
+        // }
+        // for (let i = 0; i < payload.data.services.length; i++) {
+        //     state.searchParams.checkboxes.push({
+        //         title: payload.data.services[i].NAME,
+        //         id: parseInt(payload.data.services[i].ID),
+        //         cheched: false
+        //     })
+        // }
+        // for (let i = 0; i < payload.data.infrastructures.length; i++) {
+        //     state.searchParams.checkboxes.push({
+        //         title: payload.data.infrastructures[i].NAME,
+        //         id: parseInt(payload.data.infrastructures[i].ID),
+        //         cheched: false
+        //     })
+        // }
     },
 
     SET_SEARCH_RESULT: (state, payload) => {
@@ -67,11 +127,11 @@ export const mutations = {
     },
 
     updateSearchBeachLengthFrom(state, payload) {
-        state.searchParams.searchBeachLengthFrom = payload;
+        state.searchParams.searchBeachLengthFrom.value = payload;
     },
 
     updateSearchWaterTempFrom(state, payload) {
-        state.searchParams.searchWaterTempFrom = payload;
+        state.searchParams.searchWaterTempFrom.value = payload;
     },
 
     updateSearchSelect(state, payload) { // s is for select, v is for value
@@ -101,7 +161,8 @@ export const mutations = {
         // PAYLOAD is the GETTER of searchValues, NOT STATE
         state.tags = [];
         state.query = '?';
-        
+
+                
 
         // cleaning up the last &
         state.query = state.query.slice(0, -1);
@@ -119,6 +180,7 @@ export const actions = {
 
     async search({commit, state}) {
         if (state.tags.length > 0) {
+            commit('updateSearchFilter');
             commit('SET_SEARCH_RESULT', await this.$axios.$get(`search/filter${state.query}`));
         } else commit('EMPTY_RESULTS');
     },
@@ -132,55 +194,6 @@ export const actions = {
 }
 
 export const getters = {
-    searchValues: (state) => {
-        if (!state.searchValues.data) return null;
-
-        let ret = {
-        	cityValues: [{
-                title: 'Любой город',
-                id: -1
-            }],
-
-            beachTypeValues: [{
-                title: 'Тип пляжа',
-                id: -1
-            }],
-
-            workScheduleValues: [{
-                title: 'Режим работы',
-                id: -1
-            }],
-
-            priceValues: ['Стоимость', 'Платно', 'Бесплатно']
-    	}
-
-        // adding formatted city values
-        for (let i = 0; i < state.searchValues.data.cities.length; i++) {
-            ret.cityValues.push({
-                title: state.searchValues.data.cities[i].NAME,
-                id: state.searchValues.data.cities[i].ID
-            });
-        }
-
-        // adding formatted beach type values
-        for (let i = 0; i < state.searchValues.data.beachTypes.length; i++) {
-            ret.beachTypeValues.push({
-                title: state.searchValues.data.beachTypes[i].NAME,
-                id: state.searchValues.data.beachTypes[i].ID
-            });
-        }
-
-        // adding formatted beach type values
-        for (let i = 0; i < state.searchValues.data.modes.length; i++) {
-            ret.workScheduleValues.push({
-                title: state.searchValues.data.modes[i].NAME,
-                id: state.searchValues.data.modes[i].ID
-            });
-        }
-
-    	return ret;
-    },
-
     getSearchResult: (state) => {
         if (!state.searchPageResult.data) return null;
 

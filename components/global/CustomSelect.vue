@@ -16,7 +16,7 @@
 import { directive as onClickaway } from 'vue-clickaway';
 
 export default {
-	props: ['options', 'value', 'var'],
+	props: ['options', 'value', 'id'],
 
 	directives: {
 		onClickaway: onClickaway,
@@ -33,7 +33,7 @@ export default {
 		choose(i) {
 			this.chosenIndex = i;
 			this.dropdownOpen = false;
-			this.$bus.$emit('updateSearchParams', { p: this.var, v: this.options[i] }); // p -> param, v -> value
+			this.$bus.$emit('updateSearchParams', { p: this.id, v: this.options[i] }); // p -> param, v -> value
 		},
 
 		onBlur() {

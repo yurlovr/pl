@@ -28,7 +28,7 @@
 			</div>
 		</section>
 		<BeachEventPtMap :data="data" />
-		<nuxt-link to="/" class="main-page__card__info-area__button bottom">
+		<nuxt-link to="/" class="beach-event__pt__right__button banner__card__info-area__button bottom">
 			<span>Проложить маршрут</span>
 		</nuxt-link>
 	</div>

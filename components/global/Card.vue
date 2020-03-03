@@ -5,10 +5,10 @@
         <img :src="data.pic" v-show="this.picLoaded" alt="Фото" class="custom-card__pic" @load="picLoaded = true">
         <img v-show="!this.picLoaded" class="custom-card__pic" src="~/static/pics/global/pics/slider_beh_placeholder.png">
       </a>
-      <div class="custom-card__temp-area" v-if="data.temperature && temp != false">
+      <div class="custom-card__temp-area" v-if="data.tempWater != undefined && temp != false">
         <img src="~/static/pics/global/svg/temper_big.svg" alt="Температура" class="big">
         <img src="~/static/pics/global/svg/temper_small.svg" alt="Температура" class="small">
-        <span class="custom-card__temp">{{ (data.temperature > 0 ? '+ ' : '') + (data.temperature < 0 ? '- ' : '' ) + data.temperature }}</span> <span class="custom-card__temp-o"><span>o</span></span>
+        <span class="custom-card__temp">{{ (data.tempWater > 0 ? '+ ' : '') + (data.tempWater < 0 ? '- ' : '' ) + data.tempWater }}</span> <span class="custom-card__temp-o"><span>o</span></span>
         <span class="custom-card__temp-C">C</span>
       </div>
       <AddToFavorites :fav="data.favorite" />

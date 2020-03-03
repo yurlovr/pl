@@ -4,6 +4,7 @@ export const state = () => ({
     events: [],
     barsNRestos: [],
     opinions: [],
+    reviews: [],
     api: 'https://crimea.air-dev.agency'
 })
 
@@ -26,6 +27,10 @@ export const mutations = {
 
     SET_OPINIONS: (state, payload) => {
         state.opinions = payload;
+    },
+
+    SET_REVIEWS: (state, payload) => {
+        state.reviews = payload;
     }
 }
 
@@ -36,6 +41,7 @@ export const actions = {
         commit('SET_BARS_N_RESTOS', await this.$axios.$get(`/restaurant/list?beachId=${id}`));
         commit('SET_OPINIONS', await this.$axios.$get(`/opinion/list?entityId=${id}`));
         commit('SET_TEMPERATURES', await this.$axios.$get(`/weather/list`));
+        commit('SET_REVIEWS', await this.$axios.$get(`/review/list?entityId=${id}`))
     }
 }
 
@@ -45,32 +51,32 @@ export const getters = {
 
         let ret = {
             avgRating: {
-                rating: state.beach.data.item.AVERAGE_RATING,
-                peopleCount: 0,
+                rating: parseFloat(state.beach.data.item.RATING.RATING),
+                peopleCount: state.beach.data.item.RATING.COUNT_REVIEWS,
                 ratings: [
                     {
                         title: 'Природа',
-                        rating: state.beach.data.item.AVERAGE_RATING_NATURE
+                        rating: state.beach.data.item.RATING.NATURE
                     },
                     {
                         title: 'Чистота воды',
-                        rating: state.beach.data.item.AVERAGE_RATING_WATER_PURITY
+                        rating: state.beach.data.item.RATING.WATER_PURITY
                     },
                     {
                         title: 'Чистота берега',
-                        rating: state.beach.data.item.AVERAGE_RATING_SHORE_CLEANLINESS
+                        rating: state.beach.data.item.RATING.SHORE_CLEANLINESS
                     },
                     {
                         title: 'Инфраструктура',
-                        rating: state.beach.data.item.AVERAGE_RATING_INFRASTRUCTURE
+                        rating: state.beach.data.item.RATING.INFRASTRUCTURE
                     },
                     {
                         title: 'Безопасность',
-                        rating: state.beach.data.item.AVERAGE_RATING_SECURITY
+                        rating: state.beach.data.item.RATING.SECURITY
                     },
                     {
                         title: 'Доступность',
-                        rating: state.beach.data.item.AVERAGE_RATING_AVAILABILITY
+                        rating: state.beach.data.item.RATING.AVAILABILITY
                     }
                 ]
             },
@@ -117,6 +123,7 @@ export const getters = {
             },
 
             events: {
+                count: state.events.data.list.length,
                 cardData: []
             },
 
@@ -129,7 +136,9 @@ export const getters = {
                     title: 'Галерея',
                     hash: 'gallery'
                 }
-            ]
+            ],
+
+            reviews: []
         };
 
         // adding formatted infrastructures
@@ -157,54 +166,45 @@ export const getters = {
         }
 
         // adding formatted about
-        let about = state.beach.data.item.DESCRIPTION.split('<br>\r\n <br>\r\n ');
+        // get rid of div and separate everything with <br>
+        let about = state.beach.data.item.DESCRIPTION.replace('<div>', '').replace('</div>', '').replace('<br>', '').split('<h3>'),
+            curSection;
         for (let i = 0; i < about.length; i++) {
-            about[i] = about[i].split('<br>\r\n ');
-            // clean up from junk <br>
-            for (let j = 0; j < about[i].length; j++) {
-                about[i][j] = about[i][j].replace('<br>', '');
-            }            
-            if (about[i].length == 1) // only paragraph
+            curSection = about[i].split('</h3>');
+            if (curSection.length == 1) { // only paragraph
                 ret.about.push({
-                    paragraph: about[i][0]
+                    paragraph: curSection[0].replace('<br>', '')
                 })
-            else if (about[i].length == 2) // title and paragraph
+            } else if (curSection.length == 2) { // title and paragraph
                 ret.about.push({
-                    title: about[i][0],
-                    paragraph: about[i][1]
+                    title: curSection[0],
+                    paragraph: curSection[1].replace('<br>', '')
                 })
+            }
         }
 
         // adding formatted services
-        if (state.beach.data.item.SERVICES.S_SUN_LOUNGERS) {
+        for (let i = 0; i < state.beach.data.item.SERVICES.length; i++) {
             ret.servicesData.push({
-                title: 'Шезлонги',
-                pic: '/pics/beach/lounger.svg'
-            });
-        }
-        if (state.beach.data.item.SERVICES.S_BEACH_UMBRELLAS) {
-            ret.servicesData.push({
-                title: 'Пляжные зонтики',
-                pic: '/pics/beach/umbrella.svg'
-            });
-        }
-        if (state.beach.data.item.SERVICES.S_SWIMMING_EQUIPMENT) {
-            ret.servicesData.push({
-                title: 'Инвентарь для плавания',
-                pic: '/pics/beach/equipment.svg'
-            });
-        }
-        if (state.beach.data.item.SERVICES.S_BEACH_TOWELS) {
-            ret.servicesData.push({
-                title: 'Пляжные полотенца',
-                pic: '/pics/beach/towel.svg'
-            });
-        }
-        if (state.beach.data.item.SERVICES.S_FOR_OUTDOOR_ACTIVITIES) {
-            ret.servicesData.push({
-                title: 'Инвентарь для активного отдыха',
-                pic: '/pics/beach/sports.svg'
-            });
+                title: state.beach.data.item.SERVICES[i].NAME
+            })
+            switch (state.beach.data.item.SERVICES[i].NAME) {
+                case 'Шезлонги':
+                    ret.servicesData[i].pic = '/pics/beach/lounger.svg';
+                    break;
+                case 'Пляжные зонтики':
+                    ret.servicesData[i].pic = '/pics/beach/umbrella.svg';
+                    break;
+                case 'Инвентарь для плавания':
+                    ret.servicesData[i].pic = '/pics/beach/equipment.svg';
+                    break;
+                case 'Пляжные полотенца':
+                    ret.servicesData[i].pic = '/pics/beach/towel.svg';
+                    break;
+                case 'Инвентарь для активного отдыха':
+                    ret.servicesData[i].pic = '/pics/beach/sports.svg';
+                    break;
+            }
         }
 
         // adding formatted temperatures
@@ -221,8 +221,9 @@ export const getters = {
         for (let i = 0; i < state.events.data.list.length; i++) {
             ret.events.cardData.push({
                 title: state.events.data.list[i].NAME,
-                date: `${state.events.data.list[i].ACTIVE_FROM} - ${state.events.data.list[i].ACTIVE_TO}`,
+                date: `${state.events.data.list[i].ACTIVE_FROM} ${state.events.data.list[i].ACTIVE_TO ? '-' : ''} ${state.events.data.list[i].ACTIVE_TO ? state.events.data.list[i].ACTIVE_TO : ''}`,
                 beach: state.events.data.list[i].BEACH.NAME,
+                mainLink: `event/${state.events.data.list[i].ID}`,
                 beachLink: `beach/${state.events.data.list[i].BEACH.ID}`,
                 location: state.events.data.list[i].BEACH.CITY.NAME,
                 pic: state.api + state.events.data.list[i].PHOTOS[0]         
@@ -244,6 +245,17 @@ export const getters = {
                 pic: state.api + state.opinions.data.list[i].PICTURE,
                 name: state.opinions.data.list[i].NAME,
                 opinion: state.opinions.data.list[i].DESCRIPTION
+            });
+        }
+
+        // adding formatted reviews
+        for (let i = 0; i < state.reviews.data.list.length; i++) {
+            ret.reviews.push({
+                pic: state.api + state.reviews.data.list[i].PICTURE,
+                name: state.reviews.data.list[i].FIO,
+                date: state.reviews.data.list[i].CREATED_DATE,
+                rating: state.reviews.data.list[i].AVERAGE_RATING,
+                comment: state.reviews.data.list[i].DESCRIPTION
             });
         }
 
@@ -283,11 +295,13 @@ export const getters = {
                 title: 'Бары и рестораны',
                 hash: 'barsNRestos'
             });
-        // TODO: once apis are connected, add these to the sections
+        if (ret.reviews.length > 0)
+            ret.sections.push({
+                title: 'Отзывы',
+                hash: 'reviews'
+            });
+        // TODO: once apis are connected, add this to the sections
         ret.sections.push({
-            title: 'Отзывы',
-            hash: 'reviews'
-        }, {
             title: 'Фото посетителей',
             hash: 'visitorPics'
         });

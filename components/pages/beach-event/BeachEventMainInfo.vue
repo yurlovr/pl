@@ -4,7 +4,7 @@
 			<div class="search-page__map-area__card__title-area beach-event__main-info__title-area">
 				<div class="beach-event__main-info__title-area__left">
 					<h1 class="search-page__map-area__card__title beach-event__main-info__title ">{{ data.title }}</h1>
-					<h5 class="search-page__map-area__card__subtitle beach-event__main-info__subtitle">{{ data.location }}</h5>
+					<a href="/search" @click.prevent="goToBeach()" class="search-page__map-area__card__subtitle beach-event__main-info__subtitle">{{ data.location }}</a>
 				</div>
 				<button class="beach-event__main-info__hearts" @click="updateHeart()">
 					<img src="~/static/pics/global/svg/heart_button_unclicked.svg" v-show="!liked">
@@ -71,6 +71,11 @@
 				this.$bus.$emit('pToggleFavorites');
 
 				this.liked = !this.liked;
+			},
+
+			goToBeach() {
+				// TODO
+				this.$bus.goTo('/search', $router);
 			}
 		}
 	}

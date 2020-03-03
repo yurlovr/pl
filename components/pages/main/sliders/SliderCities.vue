@@ -73,7 +73,7 @@
 					}
 				},
 				showLeft: false,
-				showRight: true,
+				showRight: false,
 				showArrows: true,
 				activeIndex: 0
 			}
@@ -91,6 +91,7 @@
 			});
 
 			this.mySwiper.init(this.swiperOption);
+			this.updateArrows();
 		},
 
 		methods: {
