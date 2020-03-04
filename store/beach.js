@@ -5,6 +5,8 @@ export const state = () => ({
     barsNRestos: [],
     opinions: [],
     reviews: [],
+    similarBeaches: [],
+    visitorPics: [],
     api: 'https://crimea.air-dev.agency'
 })
 
@@ -31,17 +33,27 @@ export const mutations = {
 
     SET_REVIEWS: (state, payload) => {
         state.reviews = payload;
+    },
+
+    SET_SIMILAR_BEACHES: (state, payload) => {
+        state.similarBeaches = payload;
+    },
+
+    SET_VISITOR_PICS: (state, payload) => {
+        state.visitorPics = payload;
     }
 }
 
 export const actions = {
-    async getBeach({commit}, id) {
+    async getBeach({commit, state}, id) {
         commit('SET_BEACH', await this.$axios.$get(`/beach/item?id=${id}`));
         commit('SET_EVENTS', await this.$axios.$get(`/event/list?beachId=${id}`));
         commit('SET_BARS_N_RESTOS', await this.$axios.$get(`/restaurant/list?beachId=${id}`));
         commit('SET_OPINIONS', await this.$axios.$get(`/opinion/list?entityId=${id}`));
         commit('SET_TEMPERATURES', await this.$axios.$get(`/weather/list`));
         commit('SET_REVIEWS', await this.$axios.$get(`/review/list?entityId=${id}`))
+        commit('SET_SIMILAR_BEACHES', await this.$axios.$get(`/beach/list?clusterId=${state.beach.data.item.CLUSTER}`))
+        commit('SET_VISITOR_PICS', await this.$axios.$get(`/socialPhoto/list?entityId=${id}&count=10`))
     }
 }
 
@@ -85,6 +97,7 @@ export const getters = {
                 title: state.beach.data.item.NAME,
                 likes: state.beach.data.item.COUNT_FAVORITES,
                 location: state.beach.data.item.CITY.NAME,
+                locationId: state.beach.data.item.CITY.ID,
                 beachLength: state.beach.data.item.PARAMETERS.P_LINE_LENGTH,
                 price: state.beach.data.item.PARAMETERS.P_PRICE,
                 beachType: state.beach.data.item.PARAMETERS.P_BEACH_TYPE.NAME,
@@ -97,7 +110,10 @@ export const getters = {
                 isBeachClosed: true,
                 goldMedal: state.beach.data.item.CERTIFICATION,
                 blueMedal: state.beach.data.item.WEBCAMERA,
-                pics: state.beach.data.item.PHOTOS.map((s) => { return state.api + s })
+                pics: state.beach.data.item.PHOTOS.map((s) => { return state.api + s }),
+                beachClosedText: state.beach.data.item.LABEL.TEXT,
+                beachClosedColor: state.beach.data.item.LABEL.COLOR,
+                beachClosedTooltip: state.beach.data.item.LABEL.DESCRIPTION
             },
 
             infraData: [],
@@ -138,7 +154,19 @@ export const getters = {
                 }
             ],
 
-            reviews: []
+            reviews: [],
+
+            similarBeaches: {
+                title: 'Похожие пляжи рядом',
+                subtitle: 'Пологий берег, плавный вход в воду, безопасность и современная инфраструктура',
+                beachNumber: state.similarBeaches.data.list.length,
+                beachSliderData: {
+                    slideNumber: 4,
+                    cardData: []
+                }
+            },
+
+            visitorPics: []
         };
 
         // adding formatted infrastructures
@@ -256,6 +284,31 @@ export const getters = {
                 date: state.reviews.data.list[i].CREATED_DATE,
                 rating: state.reviews.data.list[i].AVERAGE_RATING,
                 comment: state.reviews.data.list[i].DESCRIPTION
+            });
+        }
+
+        // adding formatted similar beaches
+        for (let i = 0; i < state.similarBeaches.data.list.length; i++) {
+            ret.similarBeaches.beachSliderData.cardData.push({
+                tempWater: state.similarBeaches.data.list[i].TEMP ? state.similarBeaches.data.list[i].TEMP.WATER : 0,
+                favorite: false,
+                paid: state.similarBeaches.data.list[i].PAID,
+                rating: parseFloat(state.similarBeaches.data.list[i].AVERAGE_RATING),
+                title: state.similarBeaches.data.list[i].NAME,
+                location: state.similarBeaches.data.list[i].CITY ? state.similarBeaches.data.list[i].CITY.NAME : 'Не указан',
+                pic: state.similarBeaches.data.list[i].PHOTOS ? state.api + state.similarBeaches.data.list[i].PHOTOS[0] : null,
+                mainLink: `beach/${state.similarBeaches.data.list[i].ID}`,
+                beachLink: `beach/${state.similarBeaches.data.list[i].ID}`
+            });
+        }
+
+        for (let i = 0; i < state.visitorPics.data.list.length; i++) {
+            ret.visitorPics.push({
+                avatar: state.visitorPics.data.list[i].USER.PICTURE,
+                pic: state.visitorPics.data.list[i].PICTURE,
+                name: state.visitorPics.data.list[i].USER.FIO,
+                comment: state.visitorPics.data.list[i].DESCRIPTION,
+                tags: ['#класс']
             });
         }
 

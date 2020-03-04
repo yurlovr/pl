@@ -13,21 +13,17 @@
 							<img :src="review.pic">
 						</div>
 						<div class="beach-event__visitor-pics__comment-area">
-							<span>
-								<v-clamp autoresize :max-lines="max">
-									{{ review.comment }}
-								</v-clamp>
-							</span>
+							<span v-html="review.comment"></span>
 						</div>
 						<div class="beach-event__visitor-pics__tag-area" v-if="review.tags">
-							<span href="#" v-for="tag in review.tags">{{ tag }}</span>
+							<span v-for="tag in review.tags">{{ tag }}</span>
 						</div>
 					</div>
 				</div>
 			</div>
 			<div class="pagination-wrapper">
 				<div class="custom-pagination">
-					<button class="custom-pagination-bullet" v-for="(b,i) in data.length - 1" :class="{ 'custom-pagination-bullet-active' : i == activeIndex }"></button>
+					<button class="custom-pagination-bullet" v-for="(b,i) in Math.max(data.length - 1, 0)" :class="{ 'custom-pagination-bullet-active' : i == activeIndex }"></button>
 				</div>
 			</div>
 			<button class="slider__arrow-left" :style="{ transform: 'translate(-50%, -50%)', display: showLeft ? '' : 'none' }" @click="mySwiper.slidePrev()">
@@ -82,7 +78,7 @@
 					}
 				},
 				showLeft: false,
-				showRight: true,
+				showRight: false,
 				activeIndex: 0,
 				max: 2
 			}
@@ -92,6 +88,7 @@
 			this.mySwiper.on('imagesReady', () => {
 				window.addEventListener('resize', this.onResize, false);
 				this.onResize();
+				this.updateArrows();
 			});
 
 			this.mySwiper.on('slideChange', () => {

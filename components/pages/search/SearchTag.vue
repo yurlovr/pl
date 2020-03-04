@@ -1,6 +1,6 @@
 <template>
 	<div class="search-page__tag">
-		<span>{{ tag.tag }}</span>
+		<span>{{ tag.value.title }}</span>
 		<button class="search-page__tag__remove" @click="removeTag()">
 			<img src="~/static/pics/global/svg/close.svg" alt="Убрать">
 		</button>
@@ -8,24 +8,15 @@
 </template>
 
 <script>
-	import { mapGetters, mapMutations, mapActions } from 'vuex';
-
 	export default {
 		props: ['tag'],
 
-		computed: {
-			...mapGetters('search', ['searchValues']),
-		},
-
 		methods: {
-			...mapMutations('search', ['updateSearchFilter']),
-			...mapMutations('search', ['updateSearchParams']),
-			...mapActions('search', ['search']),
-
 			removeTag() {
-				this.updateSearchParams({p: this.tag.param, v: this.tag.default});
-				this.updateSearchFilter(this.searchValues);
-				this.search();
+				if (this.tag.type == 'select')
+					this.$bus.$emit('updateSearchParam', {param: this.tag.param, value: this.tag.default });
+				else this.$bus.$emit('updateSearchParam', {id: this.tag.id, value: false, type: this.tag.type });
+				this.$bus.$emit('search');
 			}
 		}
 	}

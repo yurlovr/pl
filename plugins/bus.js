@@ -5,12 +5,13 @@ const eventBus = {};
 eventBus.install = function (Vue) {
 	Vue.prototype.$bus = new Vue();
 	Vue.prototype.$bus.isMobile = false;
-	Vue.prototype.$bus.goTo = (link, router) => {
+	Vue.prototype.$bus.goTo = (link, router, transition) => {
 		if (link != '/') {
 			Vue.prototype.$bus.$emit('showHeaderBgAndBar');
 			Vue.prototype.$bus.$emit('tempHideHeaderBgAndBar');
 		}
-		Vue.prototype.$bus.$emit('transition');
+		if (transition != false)
+			Vue.prototype.$bus.$emit('transition');
 		Vue.prototype.$bus.$emit('hideParams');
 		setTimeout(() => { router.push(link) }, 600);
 	};

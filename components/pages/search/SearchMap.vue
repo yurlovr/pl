@@ -20,7 +20,7 @@
 
         data() {
             return {
-                zoom: 9,
+                zoom: 8,
                 chosen: -1,
                 map: null
             }
@@ -29,7 +29,7 @@
         methods: {
             initMap() {
                 setTimeout(() => {
-                    let filteredBeaches = this.beaches.filter(v => !isNaN(v.pos[0]) && v.pos != undefined);
+                    let filteredBeaches = this.beaches.slice(0, -1).filter(v => !isNaN(v.pos != undefined && v.pos[0]));
                     if (!filteredBeaches || filteredBeaches.length == 0)
                         return;
 
@@ -122,8 +122,9 @@
                             unchoose();
                         });
 
-                        let placeMarks = () => {
-                            filteredBeaches = this.beaches.filter(v => !isNaN(v.pos[0]) && v.pos != undefined);
+                        let placeMarks = (n) => {
+                            if (n != undefined) filteredBeaches = n.slice(0, -1).filter(v => !isNaN(v.pos[0]) && v.pos != undefined);
+                            else filteredBeaches = this.beaches.filter(v => !isNaN(v.pos[0]) && v.pos != undefined);
                             if (!filteredBeaches || filteredBeaches.length == 0)
                                 return;
 
@@ -194,7 +195,10 @@
                             }
                         }
 
-                        this.$bus.$on('updateMap', () => { placeMarks() });
+                        this.$bus.$on('updateMap', (n) => {
+                            unchoose();
+                            placeMarks(n);
+                        });
                         placeMarks();
 
                         // on map click

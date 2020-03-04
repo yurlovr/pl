@@ -1,12 +1,12 @@
 <template>
 	<div class="custom-new-select" :class="{ open: dropdownOpen }" v-on-clickaway="onBlur" v-if="options">
 		<div class="custom-new-select__top" @click="dropdownOpen = !dropdownOpen">
-			<span>{{ value }}</span>
+			<span>{{ title }}</span>
 			<img src="~/static/pics/global/svg/dropdown.svg">
 		</div>
 		<div class="custom-new-select__bottom" v-show="dropdownOpen">
 			<div class="custom-new-select__bottom__item" v-for="(option, i) in options" @click="choose(i)">
-				<span>{{ option }}</span>
+				<span>{{ option.title }}</span>
 			</div>
 		</div>
 	</div>
@@ -16,7 +16,7 @@
 import { directive as onClickaway } from 'vue-clickaway';
 
 export default {
-	props: ['options', 'value', 'id'],
+	props: ['options', 'value', 'param'],
 
 	directives: {
 		onClickaway: onClickaway,
@@ -29,11 +29,25 @@ export default {
 		}
 	},
 
+	computed: {
+		title() {
+			if (this.param == 'searchBeachLengthFrom' && this.value.id != -1) {
+				if (this.value.title > 3)
+					return `Протяженность линии от, ${this.value.title} м`;
+				else return `От ${this.value.title} м`;
+			} else if (this.param == 'searchWaterTempFrom' && this.value.id != -1) {
+				if (this.value.title > 3)
+					return `Температура воды от, ${this.value.title} °C`;
+				else return `От ${this.value.title} м`;
+			} else return this.value.title;
+		}
+	},
+
 	methods: {
 		choose(i) {
 			this.chosenIndex = i;
 			this.dropdownOpen = false;
-			this.$bus.$emit('updateSearchParams', { p: this.id, v: this.options[i] }); // p -> param, v -> value
+			this.$bus.$emit('updateSearchParam', { param: this.param, value: { title: this.options[i].title, id: this.options[i].id } });
 		},
 
 		onBlur() {

@@ -12,7 +12,7 @@
       <BeachSliderArea :data="familyData" class="main-page__family-rest" v-if="familyData" />
     </div>
     <BeachEvents :data="eventsData" v-if="eventsData" />
-    <ChooseBeach />
+    <ChooseBeach :data="beachChoiceData" />
     <DynamicSliderArea :data="activeRestData" />
     <div class="main-page__white-wrapper">
       <WeatherSliderArea :data="weatherData" />
@@ -74,6 +74,7 @@ export default {
     await store.dispatch('main/getCollectionList');
     await store.dispatch('main/getBanners');
     await store.dispatch('main/getMap');
+    await store.dispatch('main/getSearchData');
   },
 
   methods: {
@@ -109,7 +110,8 @@ export default {
     ...mapGetters('main', ['activeRestData']),
     ...mapGetters('main', ['beachTypeData']),
     ...mapGetters('main', ['bannersData']),
-    ...mapGetters('main', ['mapData'])
+    ...mapGetters('main', ['mapData']),
+    ...mapGetters('main', ['beachChoiceData'])
   },
 
   beforeRouteLeave(to, from, next) {

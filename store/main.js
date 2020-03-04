@@ -10,6 +10,7 @@ export const state = () => ({
     collectionList: {},
     banners: {},
     map: {},
+    searchData: {},
     api: 'https://crimea.air-dev.agency'
 })
 
@@ -56,6 +57,10 @@ export const mutations = {
 
     SET_MAP: (state, payload) => {
         state.map = payload;
+    },
+
+    SET_SEARCH_DATA: (state, payload) => {
+        state.searchData = payload;
     },
 
     SET_BANNERS: (state, payload) => {
@@ -107,6 +112,10 @@ export const actions = {
 
     async getMap({commit}) {
         commit('SET_MAP', await this.$axios.$get('/beach/clusters/'));
+    },
+
+    async getSearchData({commit}) {
+        commit('SET_SEARCH_DATA', await this.$axios.$get('/search/config/'));
     }
 }
 
@@ -135,7 +144,8 @@ export const getters = {
                 location: state.popularBeaches.data.list[i].CITY.NAME,
                 pic: state.api + state.popularBeaches.data.list[i].PHOTOS[0],
                 mainLink: `beach/${state.popularBeaches.data.list[i].ID}`,
-                beachLink: `beach/${state.popularBeaches.data.list[i].ID}`
+                beachLink: `beach/${state.popularBeaches.data.list[i].ID}`,
+                locationId: state.popularBeaches.data.list[i].CITY.ID
             });
         }
 
@@ -151,6 +161,7 @@ export const getters = {
             if (state.cities.data.list[i].COUNT_BEACHES > 0)
                 ret.push({
                     city: state.cities.data.list[i].NAME,
+                    cityId: state.cities.data.list[i].ID,
                     beachNumber: state.cities.data.list[i].COUNT_BEACHES,
                     pic: state.cities.data.list[i].PREVIEW_PICTURE ? state.api + state.cities.data.list[i].PREVIEW_PICTURE : null
                 });
@@ -177,10 +188,11 @@ export const getters = {
                 temperature: state.events.data.list[i].BEACH.TEMP.WATER,
                 favorite: false,
                 paid: state.events.data.list[i].PAID,
-                date: `${state.events.data.list[i].ACTIVE_FROM} - ${state.events.data.list[i].ACTIVE_TO}`,
+                date: `${state.events.data.list[i].ACTIVE_FROM} ${state.events.data.list[i].ACTIVE_TO ? '-' : ''} ${state.events.data.list[i].ACTIVE_TO ? state.events.data.list[i].ACTIVE_TO : ''}`,
                 title: state.events.data.list[i].NAME,
                 beach: state.events.data.list[i].BEACH.NAME,
                 location: state.events.data.list[i].BEACH.CITY.NAME,
+                locationId: state.events.data.list[i].BEACH.CITY.ID,
                 pic: state.api + state.events.data.list[i].PHOTOS[0],
                 mainLink: `event/${state.events.data.list[i].ID}`,
                 beachLink: `beach/${state.events.data.list[i].BEACH.ID}`
@@ -241,6 +253,7 @@ export const getters = {
                 rating: parseFloat(family.BEACHES[i].AVERAGE_RATING),
                 title: family.BEACHES[i].NAME,
                 location: family.BEACHES[i].CITY.NAME,
+                locationId: family.BEACHES[i].CITY.ID,
                 pic: state.api + family.BEACHES[i].PHOTOS[0],
                 mainLink: `beach/${family.BEACHES[i].ID}`,
                 beachLink: `beach/${family.BEACHES[i].ID}`
@@ -285,7 +298,7 @@ export const getters = {
                 pic: beachType.COLLECTIONS[i].PREVIEW_PICTURE ? (state.api + beachType.COLLECTIONS[i].PREVIEW_PICTURE) : null,
                 beachNumber: beachType.COLLECTIONS[i].BEACHES.length,
                 description: beachType.COLLECTIONS[i].DESCRIPTION,
-                code: beachType.COLLECTIONS[i].CODE
+                id: beachType.COLLECTIONS[i].ID
             });
         }
 
@@ -388,5 +401,24 @@ export const getters = {
         }
 
         return ret;
+    },
+
+    beachChoiceData: (state) => {
+        if (!state.searchData.data) return null;
+
+        return [
+            {
+                title: state.searchData.data.beachTypes[0].NAME,
+                id: state.searchData.data.beachTypes[0].ID
+            },
+            {
+                title: state.searchData.data.beachTypes[1].NAME,
+                id: state.searchData.data.beachTypes[1].ID
+            },
+            {
+                title: state.searchData.data.beachTypes[2].NAME,
+                id: state.searchData.data.beachTypes[2].ID
+            }
+        ]
     }
 }

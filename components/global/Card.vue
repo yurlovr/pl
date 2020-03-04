@@ -103,10 +103,10 @@ export default {
       else this.max = 2;
     },
 
-
-    // TODO
     searchCity() {
-
+      this.$bus.$emit('emptySearchParams');
+      this.$bus.$emit('updateSearchParam', { param: 'cities', value: { title: this.data.location, id: this.data.locationId }});
+      setTimeout(() => {this.$bus.$emit('search')}, 1);
     }
   }
 }

@@ -3,7 +3,7 @@
 		<div v-swiper:mySwiper="swiperOption">
 			<div class="swiper-wrapper slider-cities__wrapper">
 				<div class="swiper-slide slider-cities__slide" v-for="slide in data">
-					<a href="/" @click.prevent="$bus.goTo('/', $router)" class="slider__slide__link">
+					<a href="/search" @click.prevent="searchCity(slide)" class="slider__slide__link">
 						<div class="slider-cities__slide__pic-area">
 							<img v-if="slide.pic" :src="slide.pic" class="slider-cities__slide__pic">
 							<img v-if="!slide.pic" src="~/static/pics/global/pics/slider_cities_placeholder.png">
@@ -106,7 +106,13 @@
 			updateArrows() {
 				this.showLeft = !this.mySwiper.isBeginning;
 				this.showRight = !this.mySwiper.isEnd;
-			}
+			},
+
+		    searchCity(data) {
+		      this.$bus.$emit('emptySearchParams');
+		      this.$bus.$emit('updateSearchParam', { param: 'cities', value: { title: data.city, id: data.cityId }});
+		      setTimeout(() => {this.$bus.$emit('search')}, 1);
+		    }
 		}
 	}
 </script>

@@ -193,8 +193,10 @@ input {
     @include flex-center;
     border: 1px solid #c4c4c4;
     border-radius: 3px;
-    width: 13px;
-    height: 13px;
+    min-width: 13px;
+    min-height: 13px;
+    max-width: 13px;
+    max-height: 13px;
     margin-right: 10px;
 
     &.checked {
@@ -215,7 +217,7 @@ input {
   color: #000000;
   border: none;
   width: 100%;
-  min-width: 100px;
+  min-width: 90px;
   height: fit-content;
   position: relative;
 
@@ -680,6 +682,7 @@ input {
     transition: height 1s ease;
     max-height: calc(100vh - 25px);
     overflow: hidden;
+    overflow-y: auto;
 
     &__inner {
       width: 100%;
@@ -772,8 +775,7 @@ input {
         width: 100%;
 
         &.equal {
-          .search__params__part--dropdown .c-new-select {
-            min-width: unset;
+          .search__params__part--dropdown .custom-new-select {
             width: 50%;
           }
         }
@@ -860,7 +862,7 @@ input {
 
                 &__bottom {
                   width: 100%;
-                  min-width: 101px;
+                  min-width: 91px;
                   margin-left: -1px;
                 }
               }
@@ -3162,6 +3164,10 @@ input {
       font-size: 14px;
       line-height: 17px;
       color: #73767d;
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;  
+      overflow: hidden;
 
       span {
         height: 34px;
@@ -3624,6 +3630,7 @@ input {
       box-shadow: 10px 10px 16px rgba(0, 0, 0, 0.06);
       margin-bottom: 20px;
       border-radius: 12px;
+      min-width: 180px;
       min-height: 80px;
 
       a {
@@ -4141,9 +4148,46 @@ input {
       font-weight: 700;
       color: #ffffff;
       width: 400px;
-      height: 70px;
       z-index: 5;
-      @include flex-center;
+      text-transform: uppercase;
+      padding: 20px;
+
+      &:hover {
+        .slider-beach-event__beach-closed__tooltip {
+          display: block;
+        }
+      }
+
+      &__inner {
+        position: relative;
+      }
+
+      &__tooltip {
+        display: none;
+        position: absolute;
+        top: -40px;
+        left: 50%;
+        transform: translateX(-50%);
+        white-space: nowrap;
+        padding: 10px 20px;
+        font-size: 16px;
+        line-height: 100%;
+        background: white;
+        color: black;
+        border-radius: 12px;
+
+        &:after {
+          content: "";
+          position: absolute;
+          display: block;
+          left: 50%;
+          transform: translateX(-50%);
+          width: 10px;
+          height: 7px;
+          bottom: -7px;
+          background: url("../../static/pics/global/svg/popup_bottom.svg");
+        }
+      }
     }
 
     &__modal {
@@ -5981,7 +6025,6 @@ input {
           font-size: 14px;
           line-height: 120%;
           color: #73767d;
-          padding-left: 20px;
           margin-bottom: 5px;
         }
       }
@@ -6049,7 +6092,7 @@ input {
         width: 70%;
         min-height: 56px;
         top: -10px;
-        z-index: 3;
+        z-index: 10;
 
         .search {
           &__bar {
@@ -6072,22 +6115,9 @@ input {
             }
 
             &__part {
-              &__dropdowns {
-                flex-direction: row;
-                margin-bottom: 20px;
-              }
-
-              &--dropdown {
-                margin-bottom: 0;
-              }
-
               &--checkbox {
                 width: 50%;
                 padding-right: 15px;
-              }
-
-              &__label {
-                display: none;
               }
             }
           }

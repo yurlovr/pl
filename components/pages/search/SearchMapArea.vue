@@ -3,14 +3,14 @@
 		<div class="search-page__map-area__info-area scroller">
 			<client-only>
 				<perfect-scrollbar class="scroll-area" ref="scroll" :options="options">
-					<SearchMapCard :data="card" v-for="(card, i) in data" :key="i" :id="'smc-' + i" :class="{ active : activeCard == i }" />
+					<SearchMapCard :data="card" v-for="(card, i) in data.filter(v => !isNaN(v.pos[0]) && v.pos != undefined)" :key="i" :id="'smc-' + i" :class="{ active : activeCard == i }" />
 				</perfect-scrollbar>
 			</client-only>
 		</div>
 		<div class="search-page__map-area__info-area slider">
 			<div v-swiper:mySwiper="swiperOption">
 				<div class="swiper-wrapper">
-					<SearchMapCard  v-if="data" :data="card" v-for="(card, i) in data" :key="i" class="swiper-slide" :class="{ active : activeCard == i }" />
+					<SearchMapCard  v-if="data" :data="card" v-for="(card, i) in data.filter(v => !isNaN(v.pos[0]) && v.pos != undefined)" :key="i" class="swiper-slide" :class="{ active : activeCard == i }" />
 				</div>
 			</div>
 			<div class="pagination-wrapper">

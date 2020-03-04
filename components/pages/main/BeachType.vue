@@ -3,7 +3,7 @@
 		<h3 class="main-page__section-title">{{ data.title }}</h3>
 		<div class="main-page__beach-type__card-area">
 			<div class="main-page__beach-type__card" v-for="(card, i) in data.cards">
-				<a href="/search" @click.prevent="search(card.code)">
+				<a href="/search" @click.prevent="search(card)">
 					<img :src="card.pic" class="main-page__beach-type__card__bg">
 					<div class="main-page__beach-type__card__text-area">
 						<h4 class="main-page__beach-type__card__title">{{ card.title }}</h4>
@@ -26,10 +26,10 @@
 		props: ['data'],
 
 		methods: {
-			// TODO
-			search(code) {
-				
-				this.$bus.goTo('/seach', this.$router);
+			search(card) {
+		      this.$bus.$emit('emptySearchParams');
+		      this.$bus.$emit('updateSearchParam', { id: card.id, value: true, type: 'tags' });
+		      setTimeout(() => {this.$bus.$emit('search')}, 1);
 			},
 
 			getBeachText(i) {

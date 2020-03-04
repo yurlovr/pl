@@ -73,8 +73,6 @@
 			});
 
 			this.mySwiper.init(this.swiperOption);
-
-			console.log(this.data)
 		},
 	}
 </script>

@@ -11,7 +11,16 @@
 				<div class="slider-beach-event__medal-blue" v-if="data.blueMedal">
 					<img src="~/static/pics/global/svg/blueMedal.svg">
 				</div>
-				<div class="slider-beach-event__beach-closed" v-if="data.isBeachClosed"><span>ПЛЯЖ ЗАКРЫТ</span></div>
+				<div class="slider-beach-event__beach-closed" v-if="data.isBeachClosed">
+					<div class="slider-beach-event__beach-closed__inner">
+						<div class="slider-beach-event__beach-closed__tooltip">
+							<span>{{ data.beachClosedTooltip }}</span>
+						</div>
+					</div>
+					<span :style="{ color: data.beachClosedColor }">
+						{{ data.beachClosedText }}
+					</span>
+				</div>
 				<button class="slider-beach-event__zoom-button" @click="modalOpen = !modalOpen">
 					<img src="~/static/pics/global/svg/zoom.svg">
 				</button>

@@ -2,7 +2,7 @@
     <div class="beach-page-sections slider-weather__months">
         <div class="custom-container">
             <div v-swiper:mySwiper="swiperOption">
-                <div class="swiper-wrapper">
+                <div class="swiper-wrapper" :style="{ 'justify-content': this.sections.length <= 5 ? 'flex-start' : 'space-between' }">
                     <div
                         class="swiper-slide"
                         v-for="(section, i) in sections"
