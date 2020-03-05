@@ -145,7 +145,8 @@ export const getters = {
                 pic: state.api + state.popularBeaches.data.list[i].PHOTOS[0],
                 mainLink: `beach/${state.popularBeaches.data.list[i].ID}`,
                 beachLink: `beach/${state.popularBeaches.data.list[i].ID}`,
-                locationId: state.popularBeaches.data.list[i].CITY.ID
+                locationId: state.popularBeaches.data.list[i].CITY.ID,
+                beachId: state.popularBeaches.data.list[i].ID
             });
         }
 
@@ -195,7 +196,8 @@ export const getters = {
                 locationId: state.events.data.list[i].BEACH.CITY.ID,
                 pic: state.api + state.events.data.list[i].PHOTOS[0],
                 mainLink: `event/${state.events.data.list[i].ID}`,
-                beachLink: `beach/${state.events.data.list[i].BEACH.ID}`
+                beachLink: `beach/${state.events.data.list[i].BEACH.ID}`,
+                eventId: state.events.data.list[i].ID
             });
         }
 
@@ -256,7 +258,8 @@ export const getters = {
                 locationId: family.BEACHES[i].CITY.ID,
                 pic: state.api + family.BEACHES[i].PHOTOS[0],
                 mainLink: `beach/${family.BEACHES[i].ID}`,
-                beachLink: `beach/${family.BEACHES[i].ID}`
+                beachLink: `beach/${family.BEACHES[i].ID}`,
+                beachId: family.BEACHES[i].ID
             });
         }
 

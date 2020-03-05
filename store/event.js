@@ -31,6 +31,7 @@ export const getters = {
                 title: state.event.data.item.NAME,
                 likes: state.event.data.item.COUNT_FAVORITES,
                 location: state.event.data.item.BEACH.CITY.NAME,
+                eventId: state.event.data.item.ID,
                 beachLength: state.event.data.item.BEACH.PARAMETERS.P_LINE_LENGTH,
                 price: state.event.data.item.BEACH.PARAMETERS.P_PRICE,
                 beachType: state.event.data.item.BEACH.PARAMETERS.P_BEACH_TYPE.NAME,

@@ -91,7 +91,8 @@ export default {
    */
   modules: [
     "bootstrap-vue/nuxt",
-    "@nuxtjs/axios"
+    "@nuxtjs/axios",
+    'cookie-universal-nuxt'
   ],
   axios: {
     baseURL: "https://crimea.air-dev.agency/api/app"

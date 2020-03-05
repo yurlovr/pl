@@ -96,6 +96,7 @@ export const getters = {
             mainData: {
                 title: state.beach.data.item.NAME,
                 likes: state.beach.data.item.COUNT_FAVORITES,
+                beachId: state.beach.data.item.ID,
                 location: state.beach.data.item.CITY.NAME,
                 locationId: state.beach.data.item.CITY.ID,
                 beachLength: state.beach.data.item.PARAMETERS.P_LINE_LENGTH,
@@ -254,7 +255,8 @@ export const getters = {
                 mainLink: `event/${state.events.data.list[i].ID}`,
                 beachLink: `beach/${state.events.data.list[i].BEACH.ID}`,
                 location: state.events.data.list[i].BEACH.CITY.NAME,
-                pic: state.api + state.events.data.list[i].PHOTOS[0]         
+                pic: state.api + state.events.data.list[i].PHOTOS[0],
+                eventId: state.events.data.list[i].ID
             });
         }
 
@@ -291,14 +293,14 @@ export const getters = {
         for (let i = 0; i < state.similarBeaches.data.list.length; i++) {
             ret.similarBeaches.beachSliderData.cardData.push({
                 tempWater: state.similarBeaches.data.list[i].TEMP ? state.similarBeaches.data.list[i].TEMP.WATER : 0,
-                favorite: false,
                 paid: state.similarBeaches.data.list[i].PAID,
                 rating: parseFloat(state.similarBeaches.data.list[i].AVERAGE_RATING),
                 title: state.similarBeaches.data.list[i].NAME,
                 location: state.similarBeaches.data.list[i].CITY ? state.similarBeaches.data.list[i].CITY.NAME : 'Не указан',
                 pic: state.similarBeaches.data.list[i].PHOTOS ? state.api + state.similarBeaches.data.list[i].PHOTOS[0] : null,
                 mainLink: `beach/${state.similarBeaches.data.list[i].ID}`,
-                beachLink: `beach/${state.similarBeaches.data.list[i].ID}`
+                beachLink: `beach/${state.similarBeaches.data.list[i].ID}`,
+                beachId: state.similarBeaches.data.list[i].ID
             });
         }
 

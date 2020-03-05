@@ -11,7 +11,7 @@
 
 		data() {
 			return {
-				favorite: this.fav,
+				favorite: false,
 				favoriteHover: false
 			}
 		},
