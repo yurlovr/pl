@@ -1,12 +1,13 @@
 <template>
     <div class="beach-page-sections slider-weather__months">
-        <div class="custom-container">
+        <div class="custom-container" v-if="sections">
             <div v-swiper:mySwiper="swiperOption">
-                <div class="swiper-wrapper" :style="{ 'justify-content': this.sections.length <= 5 ? 'flex-start' : 'space-between' }">
+                <div class="swiper-wrapper" :style="{ 'justify-content': sections.length <= 5 ? 'flex-start' : 'space-between' }">
                     <div
                         class="swiper-slide"
                         v-for="(section, i) in sections"
                         :class="{ active : section.hash == activeSectionHash }"
+                        :style="{ 'margin-left': sections.length <= 5 ? '10px' : '' }"
                     >
                         <nuxt-link
                             :to="{path: '#'+section.hash, hash: '#'+section.hash}"
@@ -50,7 +51,8 @@ export default {
     },
 
     mounted () {
-        this.mySwiper.init(this.swiperOption);
+        if (this.sections && this.sections.length > 0)
+            this.mySwiper.init(this.swiperOption);
 
         window.addEventListener('scroll', this.onScroll, false);
         window.addEventListener('scroll', this.onResize, false);
@@ -64,13 +66,15 @@ export default {
     methods: {
         onScroll() {
             let bounding;
-            for (let i = 0; i < this.sections.length; i++) {
-                if (document.querySelector(`#${this.sections[i].hash}`)) {
-                    bounding = document.querySelector(`#${this.sections[i].hash}`).getBoundingClientRect();
-                    if (bounding.top <= this.margin && bounding.bottom >= this.margin)
-                            this.activeSectionHash = this.sections[i].hash;
+            if (this.sections) {
+                for (let i = 0; i < this.sections.length; i++) {
+                    if (document.querySelector(`#${this.sections[i].hash}`)) {
+                        bounding = document.querySelector(`#${this.sections[i].hash}`).getBoundingClientRect();
+                        if (bounding.top <= this.margin && bounding.bottom >= this.margin)
+                                this.activeSectionHash = this.sections[i].hash;
+                    }
                 }
-            }
+            } else console.error("Couldn't fetch sections (BeachEventSections)");
         },
 
         onResize() {

@@ -1,13 +1,15 @@
 <template>
-	<div class="beach-event__visitor-pics custom-container">
-		<h3 class="beach-event__visitor-pics__title">Фото посетителей</h3>
-		<div class="beach-event__visitor-pics__slider">
+	<div class="beach-event__visitor-pics custom-container" :style="{ 'display': this.data.length > 0 ? '' : 'flex' }">
+		<h3 class="beach-event__visitor-pics__title" :style="{ 'margin-bottom': this.data.length > 0 ? '' : '0'}">Фото посетителей</h3>
+		<div class="beach-event__visitor-pics__slider" v-if="data.length > 0">
 			<div v-swiper:mySwiper="swiperOption">
 				<div class="swiper-wrapper">
 					<div class="swiper-slide" v-for="(review, i) in data" :key="i">
 						<div class="beach-event__visitor-pics__user-area">
 							<img :src="review.avatar">
-							<span>{{ review.name }}</span>
+							<div class="beach-event__visitor-pics__user-area__nickname-wrapper">
+								<span>{{ review.name }}</span>
+							</div>
 						</div>
 						<div class="beach-event__visitor-pics__pic-area">
 							<img :src="review.pic">
@@ -33,24 +35,31 @@
 				<img src="~/static/pics/global/svg/slider_arrow_right.svg" alt="Направо">
 			</button>
 		</div>
-		<div class="beach-event__visitor-pics__add-button-area">
-			<button class="banner__card__info-area__button">
+		<div class="beach-event__visitor-pics__add-button-area" :style="{ 'margin-top': this.data.length > 0 ? '' : '0'}">
+			<button class="banner__card__info-area__button" @click="modalOpen = true">
 				<span>Добавить фотографию</span>
 			</button>
+		</div>
+		<div class="beach-event__visitor-pics__modal" v-show="modalOpen" v-body-scroll-lock="modalOpen">
+			<div class="beach-event__visitor-pics__modal__bg" @click="modalOpen = false"></div>
+			<div class="beach-event__visitor-pics__modal__card">
+				<h3 class="beach-event__visitor-pics__modal__title">Добавить фотографию</h3>
+				<span class="beach-event__visitor-pics__modal__info">Пожалуйста вставьте ссылку на пост Instagram</span>
+				<input class="beach-event__visitor-pics__modal__link-area" placeholder="Вставьте ссылку" v-model="link">
+				<button class="banner__card__info-area__button" @click="sendPic()" :disabled="error == false">
+					<span v-show="error == null">Добавить фотографию</span>
+					<span v-show="error == true">Попробовать снова</span>
+				</button>
+				<span class="beach-event__visitor-pics__modal__error" v-show="errorMsg.length > 0">{{ errorMsg }}</span>
+			</div>
 		</div>
 	</div>
 </template>
 
 <script>
 	import Vue from 'vue';
-	import VClamp from 'vue-clamp';
-
 	export default {
-		props: ['data'],
-
-		components: {
-			VClamp
-		},
+		props: ['data', 'type', 'typeId'],
 
 		beforeMount () {
 			if (process.browser) {
@@ -80,23 +89,28 @@
 				showLeft: false,
 				showRight: false,
 				activeIndex: 0,
-				max: 2
+				link: '',
+				modalOpen: false,
+				error: null,
+				errorMsg: ''
 			}
 		},
 
 		mounted() {
-			this.mySwiper.on('imagesReady', () => {
-				window.addEventListener('resize', this.onResize, false);
-				this.onResize();
-				this.updateArrows();
-			});
+			if (this.data && this.data.length > 0) {
+				this.mySwiper.on('imagesReady', () => {
+					window.addEventListener('resize', this.onResize, false);
+					this.onResize();
+					this.updateArrows();
+				});
 
-			this.mySwiper.on('slideChange', () => {
-				this.updateArrows();
-				this.activeIndex = this.mySwiper.activeIndex;
-			});
+				this.mySwiper.on('slideChange', () => {
+					this.updateArrows();
+					this.activeIndex = this.mySwiper.activeIndex;
+				});
 
-			this.mySwiper.init(this.swiperOption);
+				this.mySwiper.init(this.swiperOption);
+			}
 		},
 
 		methods: {
@@ -111,10 +125,28 @@
 
 				if (this.mySwiper)
 					this.mySwiper.update();
+			},
 
-				if (window.innerWidth < 500)
-					this.max = 3;
-				else this.max = 2;
+			async sendPic() {
+				if (this.link.replace(/\s/g,"") == "") {
+					this.errorMsg = "Пожалуйста введите ссылку";
+					this.error = true;
+				} else {
+					this.errorMsg = '';
+					this.error = null;
+				}
+
+				let data = new FormData();
+				data.append(`${this.type}Id`, this.typeId);
+				data.append('link', this.link);
+				await this.$axios.$post(`/socialPhoto/${this.type}Add`, {
+					data
+				}).then(res => {
+					this.error = !res.status;
+					if (this.error)
+						this.errorMsg = res.error;
+					else this.errorMsg = '';
+				})
 			}
 		}
 	}

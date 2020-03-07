@@ -20,7 +20,6 @@
     <Banner :data="bannersData[0]" v-if="bannersData" class="banner-2" />
     <BeachType :data="beachTypeData" v-if="beachTypeData" />
     <Banner :data="bannersData[1]" :lastWordYellow="true" v-if="bannersData" class="banner-3" />
-    <!-- <BeachSliderArea class="main-page__hotels" :data="$store.state.hotelData" v-if="false" /> -->
   </div>
 </template>
 
@@ -79,6 +78,11 @@ export default {
 
   methods: {
     onScroll() {
+      if (document.querySelector('main-page')) {
+        window.removeEventListener('scroll', this.onScroll, false);
+        return;
+      }
+
       let scrollTop = window.scrollY || document.body.scrollTop || document.documentElement.scrollTop;
 
       // show or hide the search background and the bar depending on the scroll

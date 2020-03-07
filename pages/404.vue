@@ -3,10 +3,11 @@
 		<div class="two-part-layout">
 			<main class="two-part-layout__left">
 				<section class="two-part-layout__card">
-					<div class="about-page__title custom-page__title">404</div>
+					<div class="about-page__title custom-page__title">404 — Данная страница не найдена</div>
 					<p class="about-page__text">
-						Страница, которую вы запрашиваете не существует<br>
-						Попробуйте начать <a href="/" @click.prevent="$bus.goTo('/', $router)">сначала</a>
+						Данная страница не найдена!<br>
+						Почему? Возможно, Вы неправильно ввели адрес в адресной строке браузера.<br>
+						Что можно сделать? Вы можете посетить другие разделы
 					</p>
 				</section>
 			</main>

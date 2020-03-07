@@ -29,8 +29,6 @@
         window.history.scrollRestoration = 'auto';
       }
 
-      // console.log(this.$router)
-
       function watchForHover() {
         let hasHoverClass = false;
         let container = document.body;

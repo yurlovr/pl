@@ -7,9 +7,9 @@
 					<a href="/search" @click.prevent="goToBeach()" class="search-page__map-area__card__subtitle beach-event__main-info__subtitle">{{ data.location }}</a>
 				</div>
 				<button class="beach-event__main-info__hearts" @click="updateHeart()">
-					<img src="~/static/pics/global/svg/heart_button_unclicked.svg" v-show="!liked">
-					<img src="~/static/pics/global/svg/heart_button_clicked.svg" v-show="liked">
-					<span>{{ data.likes + (liked ? 1 : 0) }}</span>
+					<img src="~/static/pics/global/svg/heart_button_unclicked.svg" v-show="!favorite">
+					<img src="~/static/pics/global/svg/heart_button_clicked.svg" v-show="favorite">
+					<span>{{ data.likes + (favorite ? 1 : 0) }}</span>
 				</button>
 			</div>
 			<div class="h-line mobile"></div>
@@ -52,25 +52,46 @@
 
 		data() {
 			return {
-				liked: false
+				favorite: false
 			}
 		},
 
 		mounted() {
 			this.$bus.$on('cToggleFavorites', () => {
-				this.liked = !this.liked;
+				this.favorite = !this.favorite;
 			});
+
+			if (this.data.beachId && this.$cookies.get(`favorites.beaches.${this.data.beachId}`) || this.data.eventId && this.$cookies.get(`favorites.events.${this.data.eventId}`))
+				this.favorite = true;
 		},
 
 		methods: {
 			updateHeart() {
-				if (this.liked)
+				if (this.favorite)
 					this.$bus.$emit('decreaseFavorites');
 				else this.$bus.$emit('increaseFavorites');
 
 				this.$bus.$emit('pToggleFavorites');
 
-				this.liked = !this.liked;
+				this.favorite = !this.favorite;
+
+				if (this.data.beachId) {
+					if (this.$cookies.get(`favorites.beaches.${this.data.beachId}`))
+						this.$cookies.remove(`favorites.beaches.${this.data.beachId}`)
+					else {
+						this.$cookies.set(`favorites.beaches.${this.data.beachId}`, true, {
+							maxAge: 30 * 24 * 60 * 60 // one month
+						})
+					}
+				} else if (this.data.eventId) {
+					if (this.$cookies.get(`favorites.events.${this.data.eventId}`))
+						this.$cookies.remove(`favorites.events.${this.data.eventId}`)
+					else {
+						this.$cookies.set(`favorites.events.${this.data.eventId}`, true, {
+							maxAge: 30 * 24 * 60 * 60 // one month
+						})
+					}
+				}
 			},
 
 			goToBeach() {

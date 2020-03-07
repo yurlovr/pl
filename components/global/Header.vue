@@ -27,6 +27,8 @@
 <script>
 	import Search from '~/components/global/Search';
 
+	import { mapGetters, mapActions } from 'vuex';
+
 	export default {
 		components: {
 			Search
@@ -39,6 +41,10 @@
 				tempBgAndBarShown: false,
 				favoritesNumber: 0
 			}
+		},
+
+		computed: {
+			...mapGetters(['beachIds', 'eventIds'])
 		},
 
 		mounted() {
@@ -65,15 +71,27 @@
 			this.$bus.$on('decreaseFavorites', () => {
 				this.favoritesNumber--;
 			});
+
+			if (this.beachIds) {
+				for (let i = 0; i < this.beachIds.length; i++) {
+					if (this.$cookies.get(`favorites.beaches.${this.beachIds[i]}`))
+						this.favoritesNumber++;
+				}
+			} else console.error('Could not fetch beach ids (Header)');
+
+			if (this.eventIds) {
+				for (let i = 0; i < this.eventIds.length; i++) {
+					if (this.$cookies.get(`favorites.events.${this.eventIds[i]}`))
+						this.favoritesNumber++;
+				}
+			} else console.error('Could not fetch event ids (Header)');
 		},
 
 		methods: {
+			// ...mapActions('favorites', ['getAllBeachesNEvents']),
+
 			toggleSearch() {
 				this.$bus.$emit('toggleMobileSearchBar');
-
-				// if (window.innerWidth <= 650) {
-				// 	this.mobileSearchHeight = this.mobileSearchHeight == 0 ? 42 : 0;
-				// }
 			}
 		}
 	}

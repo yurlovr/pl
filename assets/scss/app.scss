@@ -1322,7 +1322,7 @@ input {
       width: 100%;
       height: 482px;
       background: linear-gradient(180deg, rgba(250, 250, 250, 0) 0%, #fafafa 100%);
-      z-index: 1;
+      z-index: 0;
     }
 
     &__pretitle {
@@ -1549,7 +1549,7 @@ input {
   }
 
   &__beach-type {
-    margin-bottom: 125px;
+    margin-bottom: 65px;
 
     &__card {
       position: relative;
@@ -1916,13 +1916,19 @@ input {
     margin-bottom: 20px;
   }
 
-  &__visited-empty {
+  &__empty {
     font-size: 18px;
     line-height: 18px;
     color: #393e48;
     opacity: 0.6;
     font-weight: 700;
     margin-bottom: 30px;
+
+    &--card-grid {
+      padding-left: 10px;
+      padding-right: 10px;
+      margin-bottom: 40px;
+    }
   }
 
   &__favorites-type {
@@ -2866,11 +2872,10 @@ input {
     border-radius: 12px;
     margin-bottom: 20px;
 
-    &:last-child {
-      margin-bottom: 0;
-    }
-
     &s {
+      align-items: center;
+      justify-content: space-between;
+
       &__title {
         margin-bottom: 35px;
       }
@@ -3066,6 +3071,13 @@ input {
         span {
           margin-right: 12px;
         }
+
+        img {
+          width: 60px;
+          height: 60px;
+          border-radius: 50%;
+          object-fit: cover;
+        }
       }
 
       &__send-button-area {
@@ -3098,6 +3110,76 @@ input {
   &__visitor-pics {
     padding-top: 40px;
     padding-bottom: 65px;
+    justify-content: space-between;
+    align-items: center;
+
+    &__modal {
+      position: fixed;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      @include flex-center;
+      z-index: 150;
+
+      &__bg {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0,0,0,0.5);
+      }
+
+      &__card {
+        position: relative;
+        z-index: 1;
+        min-width: 300px;
+        max-width: 300px;
+        min-height: 100px;
+        background: white;
+        padding: 30px;
+        border-radius: 12px;
+
+        button {
+          width: 100%;
+        }
+      }
+
+      &__title {
+        font-size: 24px;
+        line-height: 29px;
+        font-weight: 700;
+        color: #393E48;
+        margin-bottom: 15px;
+      }
+
+      &__info {
+        display: block;
+      }
+
+      &__info, &__link-area {
+        font-size: 14px;
+        line-height: 17px;
+        color: #73767D;
+        margin-bottom: 10px;
+      }
+
+      &__link-area {
+        border: 1px solid rgba(0, 0, 0, 0.5);
+        outline: none;
+        width: 100%;
+        padding: 15px;
+      }
+
+      &__error {
+        display: block;
+        font-size: 12px;
+        line-height: 14px;
+        color: #F94A50;
+        margin-top: 5px;
+      }
+    }
 
     &__slider {
       position: relative;
@@ -3133,12 +3215,21 @@ input {
 
     &__user-area {
       padding: 10px 0;
+      display: flex;
+      align-items: center;
 
       img {
         margin-right: 10px;
         border-radius: 50%;
         width: 32px;
         height: 32px;
+      }
+
+      &__nickname-wrapper {
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;  
+        overflow: hidden;
       }
 
       span {
@@ -3160,7 +3251,8 @@ input {
     }
 
     &__comment-area {
-      padding: 15px 0 8px 0;
+      padding: 15px 0 0 0;
+      margin-bottom: 8px;
       font-size: 14px;
       line-height: 17px;
       color: #73767d;
@@ -3168,10 +3260,6 @@ input {
       -webkit-line-clamp: 3;
       -webkit-box-orient: vertical;  
       overflow: hidden;
-
-      span {
-        height: 34px;
-      }
     }
 
     &__tag-area {
@@ -6620,10 +6708,6 @@ input {
       &__comment-area {
         font-size: 12px;
         line-height: 14px;
-
-        span {
-          height: 28px;
-        }
       }
 
       &__tag-area {
@@ -7672,7 +7756,6 @@ input {
     &-beach-event {
       &__beach-closed {
         width: 300px;
-        height: 50px;
         font-size: 30px;
         line-height: 100%;
       }
@@ -8383,12 +8466,6 @@ input {
         height: 160px;
       }
 
-      &__comment-area {
-        span {
-          height: 42px;
-        }
-      }
-
       &__user-area {
         a {
           display: flex;
@@ -8449,7 +8526,6 @@ input {
   .slider {
     &-beach-event {
       &__beach-closed {
-        height: 30px;
         width: 200px;
         font-size: 20px;
       }
@@ -8748,6 +8824,11 @@ input {
   .slider {
     &-beach-event {
       height: 150px;
+
+      &__beach-closed {
+        width: auto;
+        padding: 10px;
+      }
 
       &__medal-gold,
       &__medal-blue,

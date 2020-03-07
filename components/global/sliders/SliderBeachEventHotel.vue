@@ -121,6 +121,11 @@ export default {
             this.showLeft = !this.mySwiper.isBeginning;
             this.showRight = !this.mySwiper.isEnd;
         }
+    },
+
+    beforeRouteLeave(to, from, next) {
+        this.mySwiper.destroy();
+        next();
     }
 }
 </script>

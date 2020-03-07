@@ -108,7 +108,7 @@ export const getters = {
 
             hugeSliderData: {
                 title: state.beach.data.item.NAME,
-                isBeachClosed: true,
+                isBeachClosed: state.beach.data.item.LABEL.TEXT == '',
                 goldMedal: state.beach.data.item.CERTIFICATION,
                 blueMedal: state.beach.data.item.WEBCAMERA,
                 pics: state.beach.data.item.PHOTOS.map((s) => { return state.api + s }),
@@ -256,7 +256,8 @@ export const getters = {
                 beachLink: `beach/${state.events.data.list[i].BEACH.ID}`,
                 location: state.events.data.list[i].BEACH.CITY.NAME,
                 pic: state.api + state.events.data.list[i].PHOTOS[0],
-                eventId: state.events.data.list[i].ID
+                eventId: state.events.data.list[i].ID,
+                showFavorite: true
             });
         }
 
@@ -291,17 +292,20 @@ export const getters = {
 
         // adding formatted similar beaches
         for (let i = 0; i < state.similarBeaches.data.list.length; i++) {
-            ret.similarBeaches.beachSliderData.cardData.push({
-                tempWater: state.similarBeaches.data.list[i].TEMP ? state.similarBeaches.data.list[i].TEMP.WATER : 0,
-                paid: state.similarBeaches.data.list[i].PAID,
-                rating: parseFloat(state.similarBeaches.data.list[i].AVERAGE_RATING),
-                title: state.similarBeaches.data.list[i].NAME,
-                location: state.similarBeaches.data.list[i].CITY ? state.similarBeaches.data.list[i].CITY.NAME : 'Не указан',
-                pic: state.similarBeaches.data.list[i].PHOTOS ? state.api + state.similarBeaches.data.list[i].PHOTOS[0] : null,
-                mainLink: `beach/${state.similarBeaches.data.list[i].ID}`,
-                beachLink: `beach/${state.similarBeaches.data.list[i].ID}`,
-                beachId: state.similarBeaches.data.list[i].ID
-            });
+            if (state.beach.data.item.ID != state.similarBeaches.data.list[i].ID)
+                ret.similarBeaches.beachSliderData.cardData.push({
+                    tempWater: state.similarBeaches.data.list[i].TEMP ? state.similarBeaches.data.list[i].TEMP.WATER : 0,
+                    paid: state.similarBeaches.data.list[i].PAID,
+                    rating: parseFloat(state.similarBeaches.data.list[i].AVERAGE_RATING),
+                    title: state.similarBeaches.data.list[i].NAME,
+                    location: state.similarBeaches.data.list[i].CITY ? state.similarBeaches.data.list[i].CITY.NAME : 'Не указан',
+                    locationId: state.similarBeaches.data.list[i].CITY ? state.similarBeaches.data.list[i].CITY.ID : null,
+                    pic: state.similarBeaches.data.list[i].PHOTOS ? state.api + state.similarBeaches.data.list[i].PHOTOS[0] : null,
+                    mainLink: `beach/${state.similarBeaches.data.list[i].ID}`,
+                    beachLink: `beach/${state.similarBeaches.data.list[i].ID}`,
+                    beachId: state.similarBeaches.data.list[i].ID,
+                    showFavorite: true
+                });
         }
 
         for (let i = 0; i < state.visitorPics.data.list.length; i++) {
@@ -355,11 +359,11 @@ export const getters = {
                 title: 'Отзывы',
                 hash: 'reviews'
             });
-        // TODO: once apis are connected, add this to the sections
-        ret.sections.push({
-            title: 'Фото посетителей',
-            hash: 'visitorPics'
-        });
+        if (ret.visitorPics.length > 0)
+            ret.sections.push({
+                title: 'Фото посетителей',
+                hash: 'visitorPics'
+            });
 
         return ret;
     }

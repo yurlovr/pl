@@ -29,6 +29,15 @@ export default {
               controls: []
             });
 
+            maps.geolocation.get({
+                // Setting the option for detecting location by IP provider: 'yandex',
+                // Automatically geocoding the result.
+                autoReverseGeocode: true
+            }).then(function (result) {
+                // Taking the data resulting from geocoding the object and outputting it to the console.
+                console.log(result.geoObjects.get(0).properties.get('metaDataProperty'));
+            });
+
             let beachIcon = maps.templateLayoutFactory.createClass(
               `<div class="map__beach-icon">
                 <div class="map__beach-caption">${this.data.title}</div>

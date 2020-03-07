@@ -372,7 +372,8 @@ export const getters = {
         for (let i = 0; i < state.searchPageResult.data.list.length; i++) {
             ret.push({
                 temperature: state.searchPageResult.data.list[i].TEMP.WATER,
-                favorite: false,
+                showFavorite: true,
+                beachId: state.searchPageResult.data.list[i].ID,
                 paid: state.searchPageResult.data.list[i].PAID,
                 rating: parseFloat(state.searchPageResult.data.list[i].AVERAGE_RATING),
                 title: state.searchPageResult.data.list[i].NAME,

@@ -13,7 +13,11 @@ eventBus.install = function (Vue) {
 		if (transition != false)
 			Vue.prototype.$bus.$emit('transition');
 		Vue.prototype.$bus.$emit('hideParams');
-		setTimeout(() => { router.push(link) }, 600);
+		setTimeout(() => {
+			if (link.split('/')[0] != '')
+				link = `/${link}`;
+			router.push(link)
+		}, 400);
 	};
 	// Vue.prototype._router.afterEach((to, from) => {
 	// 	Vue.prototype.$bus.$emit('transitionEnd');

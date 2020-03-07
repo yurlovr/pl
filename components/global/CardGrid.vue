@@ -1,6 +1,7 @@
 <template>
 	<section class="card-grid custom-grid-container">
-		<Card :data="card" :showIfVisited="showIfVisited" :visited="visited" v-for="(card, i) in data" :key="i" class="card-grid__card" />
+		<Card :data="card" :showIfVisited="showIfVisited" v-for="(card, i) in data" :key="i" class="card-grid__card" />
+		<h4 v-show="data.length == 0" class="favorites-page__empty favorites-page__empty--card-grid">Пусто</h4>
 		<div class="pagination-num-wrapper custom-container" v-if="data && data.length > 20">
 			<RouterPagination :page="1" :size="20" :totalElements="data.length" />
 		</div>
@@ -12,7 +13,7 @@
 	import RouterPagination from '~/components/global/RouterPagination';
 
 	export default {
-		props: ['data', 'showIfVisited', 'visited'],
+		props: ['data', 'showIfVisited'],
 
 		components: {
 			Card,

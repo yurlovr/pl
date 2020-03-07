@@ -137,7 +137,7 @@ export const getters = {
         for (let i = 0; i < state.popularBeaches.data.list.length; i++) {
             ret.beachSliderData.cardData.push({
                 tempWater: state.popularBeaches.data.list[i].TEMP.WATER,
-                favorite: false,
+                showFavorite: true,
                 paid: state.popularBeaches.data.list[i].PAID,
                 rating: parseFloat(state.popularBeaches.data.list[i].AVERAGE_RATING),
                 title: state.popularBeaches.data.list[i].NAME,
@@ -187,7 +187,7 @@ export const getters = {
         for (let i = 0; i < state.events.data.list.length; i++) {
             ret.beachSliderData.cardData.push({
                 temperature: state.events.data.list[i].BEACH.TEMP.WATER,
-                favorite: false,
+                showFavorite: true,
                 paid: state.events.data.list[i].PAID,
                 date: `${state.events.data.list[i].ACTIVE_FROM} ${state.events.data.list[i].ACTIVE_TO ? '-' : ''} ${state.events.data.list[i].ACTIVE_TO ? state.events.data.list[i].ACTIVE_TO : ''}`,
                 title: state.events.data.list[i].NAME,
@@ -250,7 +250,7 @@ export const getters = {
         for (let i = 0; i < Math.min(8, family.BEACHES.length); i++) {
             ret.beachSliderData.cardData.push({
                 temperature: family.BEACHES[i].TEMP.WATER,
-                favorite: false,
+                showFavorite: true,
                 paid: family.BEACHES[i].PAID,
                 rating: parseFloat(family.BEACHES[i].AVERAGE_RATING),
                 title: family.BEACHES[i].NAME,
@@ -394,7 +394,11 @@ export const getters = {
                     rating: parseFloat(clusters[i][j].AVERAGE_RATING),
                     title: clusters[i][j].NAME,
                     location: clusters[i][j].CITY.NAME,
-                    pics: [ ...clusters[i][j].PHOTOS.map(v => state.api + v) ]
+                    locationId: clusters[i][j].CITY.ID,
+                    id: clusters[i][j].ID,
+                    pics: [ ...clusters[i][j].PHOTOS.map(v => state.api + v) ],
+                    showFavorite: true,
+                    paid: clusters[i][j].PAID
                 });
             }
             ret.addressBeaches.push({

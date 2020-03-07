@@ -1,21 +1,21 @@
 <template>
-  <div class="custom-card">
+  <div class="custom-card" v-if="data">
     <div class="custom-card__pic-area">
       <a :href="data.mainLink ? data.mainLink : '#'" class="custom-card__link" @click.prevent="$bus.goTo(data.mainLink ? data.mainLink : '#', $router)">
         <img :src="data.pic" v-show="this.picLoaded" alt="Фото" class="custom-card__pic" @load="picLoaded = true">
         <img v-show="!this.picLoaded" class="custom-card__pic" src="~/static/pics/global/pics/slider_beh_placeholder.png">
       </a>
-      <div class="custom-card__temp-area" v-if="data.tempWater != undefined && temp != false">
+      <div class="custom-card__temp-area" v-if="data.tempWater != undefined && showTemp != false">
         <img src="~/static/pics/global/svg/temper_big.svg" alt="Температура" class="big">
         <img src="~/static/pics/global/svg/temper_small.svg" alt="Температура" class="small">
         <span class="custom-card__temp">{{ (data.tempWater > 0 ? '+ ' : '') + (data.tempWater < 0 ? '- ' : '' ) + data.tempWater }}</span> <span class="custom-card__temp-o"><span>o</span></span>
         <span class="custom-card__temp-C">C</span>
       </div>
-      <AddToFavorites :fav="data.favorite" />
+      <AddToFavorites :data="data" />
       <img class="custom-card__paid" v-if="data.paid" src="~/static/pics/global/svg/paid.svg" alt="Платный">
-      <button class="custom-card__visited" @click="visitedToggle()" v-if="showIfVisited == true">
+      <button class="custom-card__visited" @click="updateVisited()" v-if="showIfVisited == true">
         <div class="custom-card__visited__round">
-          <img src="~/static/pics/global/svg/tick.svg" v-show="isVisited">
+          <img src="~/static/pics/global/svg/tick.svg" v-show="visited">
         </div>
         <span class="custom-card__visited__text">посетил</span>
       </button>
@@ -34,7 +34,7 @@
         </a></div>
       <div class="custom-card__subtitle-area">
         <a :href="data.beachLink ? data.beachLink : '#'" @click.prevent="$bus.goTo(data.beachLink ? data.beachLink : '#', $router)" class="custom-card__beach" v-if="data.beach">{{ data.beach }}</a>
-        <a href="/search" class="custom-card__location" :style="{ 'font-size': data.beach ? '10px' : '12px' }" @click.prevent="searchCity()">{{ data.location }}</a>
+        <a :href="`/search?city=${data.locationId}`" @click.prevent="searchCity()" class="custom-card__location" :style="{ 'font-size': data.beach ? '10px' : '12px' }">{{ data.location }}</a>
         <a :href="data.beachLink ? data.beachLink : '#'" @click.prevent="$bus.goTo(data.beachLink ? data.beachLink : '#', $router)" class="custom-card__price" :style="{ 'font-size': data.beach ? '10px' : '12px' }" v-if="data.price">от {{ data.price }}
           <span>
             <img :style="{ 'height': data.beach ? '9px' : '11px', 'margin-bottom': '3px' }" src="~/static/pics/global/svg/ruble.svg" alt="руб">
@@ -51,7 +51,7 @@ import VClamp from 'vue-clamp';
 import AddToFavorites from '~/components/global/AddToFavorites';
 
 export default {
-  props: ['data', 'showIfVisited', 'temp', 'visited'],
+  props: ['data', 'showIfVisited', 'showTemp'],
 
   components: {
     VClamp,
@@ -60,7 +60,7 @@ export default {
 
   data() {
     return {
-      isVisited: this.visited || false,
+      visited: this.data && this.data.eventId && this.$cookies.get(`visited.events.${this.data.eventId}`),
       max: 2,
       picLoaded: false
     };
@@ -70,32 +70,36 @@ export default {
     window.addEventListener('resize', this.onResize, false);
     this.onResize();
 
+    this.$bus.$on('visitedAdd', id => {
+      if (this.data && this.data.eventId == id)
+        this.visited = true;
+    });
+    this.$bus.$on('visitedRemove', id => {
+      if (this.data && this.data.eventId == id)
+        this.visited = false;
+    });
     this.$bus.$on('updateVisited', () => {
-      this.isVisited = this.visited == true ? true : false;
+      this.visited = this.data && this.data.eventId && this.$cookies.get(`visited.events.${this.data.eventId}`);
     });
   },
 
   methods: {
-    visitedAdd() {
-      this.isVisited = true;
-
-      this.$bus.$emit('visitedAdd', this.data.beachLink);
-    },
-
-    visitedRemove() {
-      this.isVisited = false;
-
-      this.$bus.$emit('visitedRemove', this.data.beachLink);
-    },
-
-    visitedToggle() {
-      if (this.isVisited)
-        this.visitedRemove();
-      else this.visitedAdd();
+    updateVisited() {
+      if (this.data.eventId) {
+        if (this.$cookies.get(`visited.events.${this.data.eventId}`)) {
+          this.$cookies.remove(`visited.events.${this.data.eventId}`);
+          this.$bus.$emit('visitedRemove', this.data.eventId);
+        } else {
+          this.$cookies.set(`visited.events.${this.data.eventId}`, true, {
+            maxAge: 30 * 24 * 60 * 60 // one month
+          });
+          this.$bus.$emit('visitedAdd', this.data.eventId);
+        }
+      }
     },
 
     onResize() {
-      if (!this.$el.querySelector('.custom-card'))
+      if (!this.$el || !this.$el.querySelector || !this.$el.querySelector('.custom-card'))
         window.removeEventListener('resize', this.onResize, false);
 
       if (window.innerWidth <= 500)
@@ -104,7 +108,6 @@ export default {
     },
 
     searchCity() {
-      console.log(this.data)
       this.$bus.$emit('emptySearchParams');
       this.$bus.$emit('updateSearchParam', { param: 'cities', value: { title: this.data.location, id: this.data.locationId }});
       setTimeout(() => {this.$bus.$emit('search')}, 1);

@@ -4,21 +4,23 @@
 			<perfect-scrollbar class="scroll-area" :options="options">
 				<div class="map-beaches-main__card" v-for="(beach, i) in getBeaches" :id="`smc-${i}`" :class="{ active : activeCard == i}">
 					<div class="map-beaches-main__card__pic-area">
-						<a href="/" @click.prevent="$bus.goTo('/', $router)">
+						<a :href="`/beach/${beach.id}`" @click.prevent="$bus.goTo(`/beach/${beach.id}`, $router)">
 							<img :src="beach.pics[0]">
 						</a>
-						<AddToFavorites :fav="beach.favorite" />
+						<AddToFavorites :data="beach" />
 					</div>
-					<a href="/" @click.prevent="$bus.goTo('/', $router)">
-						<div class="map-beaches-main__card__info-area">
-							<div class="map-beaches-main__card__rating-area">
-								<img src="~/static/pics/global/svg/star.svg" alt="Рейтинг">
-								<span>{{ beach.rating.toFixed(1) }}</span>
-							</div>
-							<h3 class="map-beaches-main__card__title">{{ beach.title }}</h3>
-							<h5 class="map-beaches-main__card__location">{{ beach.location }}</h5>
+					<div class="map-beaches-main__card__info-area">
+						<div class="map-beaches-main__card__rating-area">
+							<img src="~/static/pics/global/svg/star.svg" alt="Рейтинг">
+							<span>{{ beach.rating.toFixed(1) }}</span>
 						</div>
-					</a>
+						<a :href="`/beach/${beach.id}`" @click.prevent="$bus.goTo(`/beach/${beach.id}`, $router)">
+							<h3 class="map-beaches-main__card__title">{{ beach.title }}</h3>
+						</a>
+						<a :href="`/search?city=${beach.locationId}`" @click.prevent="searchCity(beach)">
+							<h5 class="map-beaches-main__card__location">{{ beach.location }}</h5>
+						</a>
+					</div>
 				</div>
 			</perfect-scrollbar>
 		</client-only>
@@ -30,18 +32,20 @@
 							<a href="/" @click.prevent="$bus.goTo('/', $router)">
 								<img class="map-beaches-main__card__pic" :src="beach.pics[0]">
 							</a>
-							<AddToFavorites :fav="beach.favorite" />
+							<AddToFavorites :data="beach" />
 						</div>
-						<a href="/" @click.prevent="$bus.goTo('/', $router)">
-							<div class="map-beaches-main__card__info-area">
-								<div class="map-beaches-main__card__rating-area">
-									<img src="~/static/pics/global/svg/star.svg" alt="Рейтинг">
-									<span>{{ beach.rating.toFixed(1) }}</span>
-								</div>
-								<h3 class="map-beaches-main__card__title">{{ beach.title }}</h3>
-								<h5 class="map-beaches-main__card__location">{{ beach.location }}</h5>
+						<div class="map-beaches-main__card__info-area">
+							<div class="map-beaches-main__card__rating-area">
+								<img src="~/static/pics/global/svg/star.svg" alt="Рейтинг">
+								<span>{{ beach.rating.toFixed(1) }}</span>
 							</div>
-						</a>
+							<a href="/" @click.prevent="$bus.goTo('/', $router)">
+								<h3 class="map-beaches-main__card__title">{{ beach.title }}</h3>
+							</a>
+							<a :href="`/search?city=${beach.locationId}`" @click.prevent="searchCity(beach)">
+								<h5 class="map-beaches-main__card__location">{{ beach.location }}</h5>
+							</a>
+						</div>
 					</div>
 				</div>
 			</div>
@@ -164,7 +168,13 @@
 			slideToCard(i) {
 				if (this.mySwiper)
 					this.mySwiper.slideTo(i);
-			}
+			},
+
+			searchCity(data) {
+		      this.$bus.$emit('emptySearchParams');
+		      this.$bus.$emit('updateSearchParam', { param: 'cities', value: { title: data.location, id: data.locationId }});
+		      setTimeout(() => {this.$bus.$emit('search')}, 1);
+		    }
 		}
 	}
 </script>

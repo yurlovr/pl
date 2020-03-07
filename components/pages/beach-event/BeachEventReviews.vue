@@ -1,13 +1,13 @@
 <template>
-	<section class="beach-event__reviews">
-		<h2 class="two-part-layout__card__title beach-event__reviews__title">Отзывы гостей ({{ data.length }})</h2>
+	<section class="beach-event__reviews" :style="{ 'display' : data.length > 0 ? '' : 'flex' }">
+		<h2 class="two-part-layout__card__title beach-event__reviews__title" :style="{ 'margin-bottom' : data.length > 0 ? '' : '0' }">Отзывы гостей ({{ data.length }})</h2>
 		<div class="beach-event__reviews__desktop">
-			<BeachEventReview :data="review" v-for="(review, i) in data" :key="i" v-show="i < 6" />
+			<BeachEventReview :data="review" v-for="(review, i) in data" :key="i" v-show="i < 6" v-if="data" />
 			<div class="pagination-num-wrapper beach-event__reviews__pagination custom-container" v-if="data.length > 6">
 				<RouterPagination :page="1" :size="6" :totalElements="data.length" />
 			</div>
 		</div>
-		<div class="beach-event__reviews__mobile">
+		<div class="beach-event__reviews__mobile" v-if="data">
 			<div v-swiper:mySwiper="swiperOption">
 				<div class="swiper-wrapper">
 					<div class="swiper-slide" v-for="(review, i) in data" :key="i">
@@ -21,7 +21,7 @@
 				</div>
 			</div>
 		</div>
-		<BeachEventLeaveReview />
+		<BeachEventLeaveReview :typeId="typeId" :type="type" />
 	</section>
 </template>
 
@@ -32,7 +32,7 @@
 	import RouterPagination from '~/components/global/RouterPagination';
 
 	export default {
-		props: ['data'],
+		props: ['data', 'typeId', 'type'],
 
 		beforeMount () {
 			if (process.browser) {
@@ -62,25 +62,27 @@
 		},
 
 		mounted() {
-			this.mySwiper.on('slideNextTransitionEnd', () => {
-				if (this.activeIndex < 8)
-					this.activeIndex++;
-			});
+			if (this.data) {
+				this.mySwiper.on('slideNextTransitionEnd', () => {
+					if (this.activeIndex < 8)
+						this.activeIndex++;
+				});
 
-			this.mySwiper.on('slidePrevTransitionEnd', () => {
-				if (this.activeIndex > 1)
-					this.activeIndex--;
-			});
+				this.mySwiper.on('slidePrevTransitionEnd', () => {
+					if (this.activeIndex > 1)
+						this.activeIndex--;
+				});
 
-			this.mySwiper.on('reachEnd', () => {
-				this.activeIndex = this.max - 1;
-			});
+				this.mySwiper.on('reachEnd', () => {
+					this.activeIndex = this.max - 1;
+				});
 
-			this.mySwiper.on('reachBeginning', () => {
-				this.activeIndex = 0;
-			});
+				this.mySwiper.on('reachBeginning', () => {
+					this.activeIndex = 0;
+				});
 
-			setTimeout(()=> { this.mySwiper.init(this.swiperOption) }, 1);
+				setTimeout(()=> { this.mySwiper.init(this.swiperOption) }, 1);
+			}
 		}
 	}
 </script>

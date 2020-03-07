@@ -4,8 +4,8 @@
             <h3 class="main-page__section-title">Карта пляжей Крыма</h3>
         </div>
         <div class="main-page__map-inner">
-            <MapBeaches :data="data.addressBeaches" v-show="step == 2"/>
-            <Map :data="data" />
+            <MapBeaches v-if="data" :data="data.addressBeaches" v-show="step == 2"/>
+            <Map v-if="data" :data="data" />
         </div>
     </section>
 </template>

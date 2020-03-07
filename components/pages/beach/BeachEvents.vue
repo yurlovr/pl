@@ -8,7 +8,7 @@
 		</div>
 		<div v-swiper:mySwiper="swiperOption">
 			<div class="swiper-wrapper">
-				<Card v-for="(slide, i) in data.cardData" :data="slide" :temp="temp" :key="i" class="swiper-slide" />
+				<Card v-for="(slide, i) in data.cardData" :data="slide" :showTemp="showTemp" :key="i" class="swiper-slide" />
 			</div>
 		</div>
 		<div class="pagination-wrapper">
@@ -29,7 +29,7 @@
 	import Card from '~/components/global/Card';
 
 	export default {
-		props: ['data', 'temp'],
+		props: ['data', 'showTemp'],
 
 		beforeMount () {
 			if (process.browser) {
