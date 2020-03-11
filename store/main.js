@@ -1,7 +1,7 @@
 export const state = () => ({
     allBeaches: [],
-    popularBeaches: [],
-    cities: [],
+    beachesTop: [],
+    citiesTop: [],
     events: [],
     dynamicSlider: [],
     weather: [],
@@ -16,7 +16,7 @@ export const state = () => ({
 
 export const mutations = {
     SET_POPULAR_BEACH: (state, payload) => {
-       state.popularBeaches = payload;
+       state.beachesTop = payload;
     },
 
     SET_ALL_BEACHES: (state, payload) => {
@@ -77,8 +77,8 @@ export const actions = {
         commit('SET_POPULAR_BEACH', await this.$axios.$get('/beach/top?count=10'));
     },
 
-    async getCities({commit}) {
-        commit('SET_CITIES', await this.$axios.$get('/city/list'));
+    async getCitiesTop({commit}) {
+        commit('SET_CITIES', await this.$axios.$get('/city/top'));
     },
 
     async getEvents({commit}) {
@@ -120,13 +120,18 @@ export const actions = {
 }
 
 export const getters = {
-    popularBeachesData: (state) => {
-        if (!state.popularBeaches.data || !state.allBeaches.data) return null;
+    beachesTopData: (state) => {
+        if (!state.beachesTop.data || !state.allBeaches.data) return null;
 
         let ret = {
         	title: 'Самые популярные пляжи',
             subtitle: 'Пологий берег, плавный вход в воду, безопасность и современная инфраструктура',
-            beachNumber: state.allBeaches.data.list.length,
+            beachNumber: Math.min(state.allBeaches.data.list.length, 45),
+            showMore: {
+                id: state.searchData.data.tags.find(v => v.NAME == 'Популярные').ID,
+                value: true,
+                type: 'tags'
+            },
             beachSliderData: {
                 slideNumber: 4,
                 cardData: []
@@ -134,31 +139,31 @@ export const getters = {
     	}
 
         // adding formatted beaches
-        for (let i = 0; i < state.popularBeaches.data.list.length; i++) {
+        for (let i = 0; i < Math.min(state.beachesTop.data.list.length, 10); i++) {
             ret.beachSliderData.cardData.push({
-                tempWater: state.popularBeaches.data.list[i].TEMP.WATER,
+                tempWater: state.beachesTop.data.list[i].TEMP.WATER,
                 showFavorite: true,
-                paid: state.popularBeaches.data.list[i].PAID,
-                rating: parseFloat(state.popularBeaches.data.list[i].AVERAGE_RATING),
-                title: state.popularBeaches.data.list[i].NAME,
-                location: state.popularBeaches.data.list[i].CITY.NAME,
-                pic: state.api + state.popularBeaches.data.list[i].PHOTOS[0],
-                mainLink: `beach/${state.popularBeaches.data.list[i].ID}`,
-                beachLink: `beach/${state.popularBeaches.data.list[i].ID}`,
-                locationId: state.popularBeaches.data.list[i].CITY.ID,
-                beachId: state.popularBeaches.data.list[i].ID
+                paid: state.beachesTop.data.list[i].PAID,
+                rating: parseFloat(state.beachesTop.data.list[i].AVERAGE_RATING),
+                title: state.beachesTop.data.list[i].NAME,
+                location: state.beachesTop.data.list[i].CITY.NAME,
+                pic: state.api + state.beachesTop.data.list[i].PHOTOS[0],
+                mainLink: `beach/${state.beachesTop.data.list[i].ID}`,
+                beachLink: `beach/${state.beachesTop.data.list[i].ID}`,
+                locationId: state.beachesTop.data.list[i].CITY.ID,
+                beachId: state.beachesTop.data.list[i].ID
             });
         }
 
     	return ret;
     },
 
-    citiesData: (state) => {
+    citiesTopData: (state) => {
         if (!state.cities.data) return null;
 
         let ret = [];
 
-        for (let i = 0; i < state.cities.data.list.length; i++) {
+        for (let i = 0; i < Math.min(state.cities.data.list.length, 10); i++) {
             if (state.cities.data.list[i].COUNT_BEACHES > 0)
                 ret.push({
                     city: state.cities.data.list[i].NAME,
@@ -176,7 +181,12 @@ export const getters = {
 
         let ret = {
             title: 'Ближайшие мероприятия на пляжах',
-            beachNumber: state.events.data.list.length,
+            beachNumber: Math.min(state.events.data.list.length, 45),
+            showMore: {
+                id: state.searchData.data.tags.find(v => v.NAME == 'Мероприятия').ID,
+                value: true,
+                type: 'tags'
+            },
             beachSliderData: {
                 slideNumber: 4,
                 cardData: []
@@ -184,7 +194,7 @@ export const getters = {
         }
 
         // adding formatted events
-        for (let i = 0; i < state.events.data.list.length; i++) {
+        for (let i = 0; i < Math.min(state.events.data.list.length, 10); i++) {
             ret.beachSliderData.cardData.push({
                 temperature: state.events.data.list[i].BEACH.TEMP.WATER,
                 showFavorite: true,
@@ -239,7 +249,12 @@ export const getters = {
         let ret = {
             title: 'Отдых для всей семьи',
             subtitle: 'Пологий берег, плавный вход в воду, безопасность и современная инфраструктура',
-            beachNumber: family.BEACHES.length,
+            beachNumber: Math.min(family.BEACHES.length, 45),
+            showMore: {
+                id: state.searchData.data.tags.find(v => v.NAME == 'Отдых для всей семьи').ID,
+                value: true,
+                type: 'tags'
+            },
             beachSliderData: {
                 slideNumber: 6,
                 cardData: []
@@ -247,7 +262,7 @@ export const getters = {
         }
 
         // adding formatted beaches
-        for (let i = 0; i < Math.min(8, family.BEACHES.length); i++) {
+        for (let i = 0; i < Math.min(10, family.BEACHES.length); i++) {
             ret.beachSliderData.cardData.push({
                 temperature: family.BEACHES[i].TEMP.WATER,
                 showFavorite: true,

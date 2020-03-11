@@ -5,7 +5,12 @@
 				<div class="swiper-slide slider-weather__slide" v-for="(slide, key) in slideData" :key="key">
 					<div class="slider-weather__slide__pic-area">
 						<img :src="slide.pic" alt="Фото" class="slider-weather__slide__pic">
-						<h4 class="slider-weather__slide__title">{{ slide.city }}</h4>
+						<div class="slider-weather__slide__title-area">
+							<h4 class="slider-weather__slide__title">{{ slide.city.slice(0, maxCharsInCityName) + (slide.city.length > maxCharsInCityName ? '...' : '') }}</h4>
+							<div class="slider-weather__slide__title__tooltip" v-if="slide.city.length > maxCharsInCityName">
+								<span>{{ slide.city }}</span>
+							</div>
+						</div>
 					</div>
 					<div class="slider-weather__slide__info-area">
 						<div class="slider-weather__slide__temp slider-weather__part__info">
@@ -54,14 +59,11 @@
 			return {
 				swiperOption: {
 					spaceBetween: 50,
-					slidesPerView: 7,
+					slidesPerView: 6,
 					observer: true,
 					observeParents: true,
 					init: false,
 					breakpoints: {
-						1200: {
-							slidesPerView: 6
-						},
 						900: {
 							slidesPerView: 5,
 						},
@@ -96,7 +98,8 @@
 				showLeft: false,
 				showRight: true,
 				activeIndex: 0,
-				minus: 2
+				minus: 2,
+				maxCharsInCityName: 12
 			}
 		},
 

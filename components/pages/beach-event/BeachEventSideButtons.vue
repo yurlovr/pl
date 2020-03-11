@@ -19,12 +19,12 @@
       <img src="~/static/pics/global/svg/pave_way.svg" v-show="!showPave">
     </button>
     <transition name="bounce" v-if="data.pos">
-      <a target="_blank" :href="`https://yandex.ru/maps/?ll=${data.pos[1]}%2C${data.pos[0]}&z=12`" v-show="showPave" class="btn-ymaps">
+      <a target="_blank" :href="`https://yandex.ru/maps/?ll=${data.pos[1]}%2C${data.pos[0]}&z=12&l=map`" v-show="showPave" class="btn-ymaps">
         <img src="~/static/pics/global/svg/ymaps.svg">
       </a>
     </transition>
     <transition name="bounce" v-if="data.pos">
-      <a target="_blank" :href="`https://yandex.ru/maps/?ll=${data.pos[1]}%2C${data.pos[0]}&z=12`" v-show="showPave" class="btn-display">
+      <a target="_blank" :href="`yandexmaps://maps.yandex.ru/?ll=${data.pos[1]}%2C${data.pos[0]}&z=12&l=map`" v-show="showPave" class="btn-display">
         <img src="~/static/pics/global/svg/yandex.svg">
       </a>
     </transition>

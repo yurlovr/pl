@@ -108,7 +108,7 @@ export const getters = {
 
             hugeSliderData: {
                 title: state.beach.data.item.NAME,
-                isBeachClosed: state.beach.data.item.LABEL.TEXT == '',
+                isBeachClosed: state.beach.data.item.LABEL.TEXT != '',
                 goldMedal: state.beach.data.item.CERTIFICATION,
                 blueMedal: state.beach.data.item.WEBCAMERA,
                 pics: state.beach.data.item.PHOTOS.map((s) => { return state.api + s }),
@@ -129,18 +129,24 @@ export const getters = {
 
             waterHistogramData: [],
 
-            sideMapData: {
+            sideMapWeatherData: {
                 title: state.beach.data.item.NAME,
-                pos: (state.beach.data.item.COORDINATES != '') ? state.beach.data.item.COORDINATES.split(',').map(v => parseFloat(v)) : null
+                pos: (state.beach.data.item.COORDINATES != '') ? state.beach.data.item.COORDINATES.split(',').map(v => parseFloat(v)) : [],
+                waterTemp: state.beach.data.item.TEMP.WATER,
+                airTemp: state.beach.data.item.TEMP.AIR
             },
 
             ptData: {
                 title: state.beach.data.item.NAME,
-                parkings: state.beach.data.item.PARKINGS || []
+                pos: (state.beach.data.item.COORDINATES != '') ? state.beach.data.item.COORDINATES.split(',').map(v => parseFloat(v)) : null,
+                parkings: {
+                    auto: [],
+                    bus: []
+                }
             },
 
             events: {
-                count: state.events.data.list.length,
+                count: Math.min(state.events.data.list.length, 45),
                 cardData: []
             },
 
@@ -152,6 +158,10 @@ export const getters = {
                 {
                     title: 'Галерея',
                     hash: 'gallery'
+                },
+                {
+                    title: 'Основные характеристики',
+                    hash: 'main-info'
                 }
             ],
 
@@ -160,7 +170,8 @@ export const getters = {
             similarBeaches: {
                 title: 'Похожие пляжи рядом',
                 subtitle: 'Пологий берег, плавный вход в воду, безопасность и современная инфраструктура',
-                beachNumber: state.similarBeaches.data.list.length,
+                showMore: true,
+                beachNumber: Math.min(state.similarBeaches.data.list.length, 45),
                 beachSliderData: {
                     slideNumber: 4,
                     cardData: []
@@ -170,28 +181,35 @@ export const getters = {
             visitorPics: []
         };
 
-        // adding formatted infrastructures
-        for (let i = 0; i < state.beach.data.item.INFRASTRUCTURES.length; i++) {
-            ret.infraData.push({
-                title: state.beach.data.item.INFRASTRUCTURES[i].NAME
+        // adding formatted parkings and stops
+        let parkings = state.beach.data.item.INFRASTRUCTURES.filter(v => v.CODE == 'parkovka'),
+            stops = state.beach.data.item.INFRASTRUCTURES.filter(v => v.CODE == 'ostanovki-obshchestvennogo-transporta')
+        for (let i = 0; i < parkings.length; i++) {
+            ret.ptData.parkings.auto.push({
+                pos: parkings[i].COORDINATES.split(',').map(Number),
+                title: parkings[i].DESCRIPTION,
+                type: 'Автомобильная парковка',
+                mode: '',
+                address: '',
+                price: ''
             })
-            switch (state.beach.data.item.INFRASTRUCTURES[i].NAME) {
-                case 'Пункт медицинской помощи':
-                    ret.infraData[i].pic = '/pics/beach/medic.svg';
-                    break;
-                case 'Душевые кабины':
-                    ret.infraData[i].pic = '/pics/beach/shower.svg';
-                    break;
-                case 'Спательная вышка':
-                    ret.infraData[i].pic = '/pics/beach/rescuer.svg';
-                    break;
-                case 'Переодевалки':
-                    ret.infraData[i].pic = '/pics/beach/closet.svg';
-                    break;
-                case 'Остановка общественного транспорта':
-                    ret.infraData[i].pic = '/pics/beach/transportation.svg';
-                    break;
-            }
+        }
+        for (let i = 0; i < stops.length; i++) {
+            ret.ptData.parkings.bus.push({
+                pos: stops[i].COORDINATES.split(',').map(Number),
+                title: stops[i].DESCRIPTION,
+                buses: '',
+                taxi: ''
+            })
+        }
+
+        // adding formatted infrastructures
+        let filteredInfra = state.beach.data.item.INFRASTRUCTURES.filter(v => v.CODE != 'parkovka' && v.CODE != 'ostanovki-obshchestvennogo-transporta');
+        for (let i = 0; i < filteredInfra.length; i++) {
+            ret.infraData.push({
+                title: filteredInfra[i].NAME,
+                pic: filteredInfra[i].ICON ? state.api + filteredInfra[i].ICON : filteredInfra[i].ICON
+            })
         }
 
         // adding formatted about
@@ -215,35 +233,15 @@ export const getters = {
         // adding formatted services
         for (let i = 0; i < state.beach.data.item.SERVICES.length; i++) {
             ret.servicesData.push({
-                title: state.beach.data.item.SERVICES[i].NAME
+                title: state.beach.data.item.SERVICES[i].NAME,
+                pic: state.beach.data.item.SERVICES[i].ICON ? state.api + state.beach.data.item.SERVICES[i].ICON : state.beach.data.item.SERVICES[i].ICON
             })
-            switch (state.beach.data.item.SERVICES[i].NAME) {
-                case 'Шезлонги':
-                    ret.servicesData[i].pic = '/pics/beach/lounger.svg';
-                    break;
-                case 'Пляжные зонтики':
-                    ret.servicesData[i].pic = '/pics/beach/umbrella.svg';
-                    break;
-                case 'Инвентарь для плавания':
-                    ret.servicesData[i].pic = '/pics/beach/equipment.svg';
-                    break;
-                case 'Пляжные полотенца':
-                    ret.servicesData[i].pic = '/pics/beach/towel.svg';
-                    break;
-                case 'Инвентарь для активного отдыха':
-                    ret.servicesData[i].pic = '/pics/beach/sports.svg';
-                    break;
-            }
         }
 
         // adding formatted temperatures
-        for (let i = 0; i < state.temperatures.data.list.length; i++) {
-            if (state.temperatures.data.list[i].CITY.ID == state.beach.data.item.CITY.ID) {
-                for (let j in state.temperatures.data.list[i].TEMP.WATER) {
-                    ret.waterHistogramData.push(parseFloat(state.temperatures.data.list[i].TEMP.WATER[j]));
-                }
-                break;
-            }
+        let temps = Object.values(state.temperatures.data.list);
+        for (let i = 0; i < temps.length; i++) { // going through months
+            ret.waterHistogramData.push(parseFloat(temps[i].find(v => v.CITY.ID == state.beach.data.item.CITY.ID).TEMP.WATER));
         }
 
         // adding formatted events
@@ -266,7 +264,7 @@ export const getters = {
             ret.barsNRestos.push({
                 title: state.barsNRestos.data.list[i].NAME,
                 description: state.barsNRestos.data.list[i].DESCRIPTION,
-                pics: state.barsNRestos.data.list[i].PHOTOS.map(v => state.api + v)
+                pics: state.barsNRestos.data.list[i].PHOTOS.map(v => v ? state.api + v : null)
             });
         }
 
@@ -308,6 +306,7 @@ export const getters = {
                 });
         }
 
+        // adding formatted visitor pics
         for (let i = 0; i < state.visitorPics.data.list.length; i++) {
             ret.visitorPics.push({
                 avatar: state.visitorPics.data.list[i].USER.PICTURE,
@@ -324,29 +323,29 @@ export const getters = {
                 title: 'Инфраструктура',
                 hash: 'infra'
             });
-        if (ret.about.length > 1)
+        if (ret.about.length > 1 && ret.about[1].length > 0)
             ret.sections.push({
                 title: 'О пляже',
                 hash: 'about'
-            });
-        if (ret.waterHistogramData.length > 0)
-            ret.sections.push({
-                title: 'Температура воды',
-                hash: 'waterTemp'
             });
         if (ret.servicesData.length > 0)
             ret.sections.push({
                 title: 'Услуги и аренда',
                 hash: 'services'
             });
-        if (ret.ptData.parkings.length > 0)
+        if (ret.ptData.parkings.auto.length > 0 || ret.ptData.parkings.bus.length > 0)
             ret.sections.push({
-                title: 'Парковки и транспорт',
+                title: 'Парковки и общественный транспорт',
                 hash: 'pt'
+            });
+        if (ret.waterHistogramData.length > 0)
+            ret.sections.push({
+                title: 'График температуры воды',
+                hash: 'water-temp'
             });
         if (ret.events.cardData.length > 0)
             ret.sections.push({
-                title: 'Мероприятия',
+                title: 'Ближайшие мероприятия',
                 hash: 'events'
             });
         if (ret.barsNRestos.length > 0)
@@ -354,15 +353,24 @@ export const getters = {
                 title: 'Бары и рестораны',
                 hash: 'barsNRestos'
             });
-        if (ret.reviews.length > 0)
+        if (ret.opinions.length > 0)
             ret.sections.push({
-                title: 'Отзывы',
-                hash: 'reviews'
+                title: 'Мнения местных',
+                hash: 'opinions'
             });
-        if (ret.visitorPics.length > 0)
+        // gonna have these anyway
+        ret.sections.push({
+            title: 'Отзывы гостей',
+            hash: 'reviews'
+        });
+        ret.sections.push({
+            title: 'Фото посетителей',
+            hash: 'visitorPics'
+        });
+        if (ret.similarBeaches.beachSliderData.cardData.length > 0)
             ret.sections.push({
-                title: 'Фото посетителей',
-                hash: 'visitorPics'
+                title: 'Похожие пляжи',
+                hash: 'similar-beaches'
             });
 
         return ret;

@@ -221,6 +221,20 @@ input {
   height: fit-content;
   position: relative;
 
+  input {
+    padding: 0;
+    border: none;
+    width: 100%;
+    min-width: unset;
+    white-space: normal;
+
+    &.not-default {
+      &::placeholder {
+        color: black;
+      }
+    }
+  }
+
   &.default {
     color: #73767d;
 
@@ -282,6 +296,32 @@ input {
         background: #228596;
         color: white;
       }
+    }
+  }
+}
+
+.pagination {
+  button {
+    padding: 0;
+    background: none;
+    border: none;
+    display: flex;
+    align-items: center;
+    font-size: 16px;
+    line-height: 130%;
+    margin: 0 15px;
+    color: #151B20;
+
+    &:focus {
+      outline: none;
+    }
+  }
+
+  &__button {
+    opacity: .7;
+
+    &.current {
+      opacity: 1;
     }
   }
 }
@@ -2092,7 +2132,7 @@ input {
       &s {
         display: flex;
         justify-content: flex-start;
-        flex-wrap: nowrap;
+        flex-wrap: wrap;
       }
     }
   }
@@ -2101,11 +2141,15 @@ input {
     position: fixed;
     top: 90px;
     left: 0;
-    background: white;
     max-width: 100vw;
     margin: 0 !important;
     z-index: 99;
-    padding: 8px 0;
+    padding: 16px 0;
+    transition: background .2s ease;
+
+    &.scroll {
+      background: white;
+    }
 
     &--w-100 {
       .custom-container {
@@ -2149,20 +2193,20 @@ input {
             .swiper-slide {
               &:first-of-type {
                 .slider-weather__month.active:before {
-                  min-width: 10px;
+                  min-width: 15px;
                 }
               }
 
               &:last-of-type {
                 .slider-weather__month.active:after {
-                  min-width: 10px;
+                  min-width: 15px;
                 }
               }
 
               .slider-weather__month {
                 &:after,
                 &:before {
-                  min-width: 10px;
+                  min-width: 15px;
                 }
               }
             }
@@ -2873,8 +2917,19 @@ input {
     margin-bottom: 20px;
 
     &s {
-      align-items: center;
-      justify-content: space-between;
+      &.empty {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        .beach-event__review {
+          &s {
+            &__title {
+              margin-bottom: 0;
+            }
+          }
+        }
+      }
 
       &__title {
         margin-bottom: 35px;
@@ -3112,6 +3167,21 @@ input {
     padding-bottom: 65px;
     justify-content: space-between;
     align-items: center;
+
+    &.empty {
+      padding-bottom: 40px;
+      display: flex;
+
+      .beach-event__visitor-pics {
+        &__title {
+          margin-bottom: 0;
+        }
+
+        &__add-button-area {
+          margin-top: 0;
+        }
+      }
+    }
 
     &__modal {
       position: fixed;
@@ -3884,6 +3954,50 @@ input {
         color: #000000;
         opacity: 0.9;
         white-space: nowrap;
+
+        &-area {
+          position: relative;
+
+          &:hover {
+            .slider-weather {
+              &__slide {
+                &__title {
+                  &__tooltip {
+                    display: block;
+                  }
+                }
+              }
+            }
+          }
+        }
+
+        &__tooltip {
+          position: absolute;
+          display: none;
+          top: 25px;
+          left: 50%;
+          transform: translateX(-50%);
+          background: white;
+          font-size: 16px;
+          line-height: 18px;
+          border-radius: 12px;
+          max-width: 320px;
+          z-index: 1;
+          padding: 10px;
+          box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+
+          &:after {
+            content: "";
+            position: absolute;
+            display: block;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 10px;
+            height: 7px;
+            top: -7px;
+            background: url("../../static/pics/global/svg/popup_top.svg");
+          }
+        }
       }
 
       &__temp {
@@ -4048,7 +4162,7 @@ input {
   &-beach-event {
     display: flex;
     height: 460px;
-    margin-top: 18px;
+    margin-top: 19px;
     margin-bottom: -9px;
 
     &__left {
@@ -4983,6 +5097,20 @@ input {
   }
 }
 
+@media (min-width: 1450px) {
+  .search-page {
+    &__map-area {
+      position: relative;
+      max-width: 1440px;
+      margin: 0 auto;
+    }
+
+    .main-page__map {
+      min-width: calc((100vw - 1440px)*.5 + 656px + 74px - 29px);
+    }
+  }
+}
+
 // fixing
 // main page"s map
 @media (max-width: 1400px) {
@@ -5090,14 +5218,6 @@ input {
         &-right {
           width: 80%;
         }
-      }
-    }
-  }
-
-  .search-page {
-    &__map {
-      &-area {
-        padding-left: 32px;
       }
     }
   }
@@ -5261,8 +5381,6 @@ input {
       }
 
       &__info-area {
-        padding-right: 20px;
-        padding-left: 20px;
         min-width: 400px;
       }
     }
@@ -6162,6 +6280,82 @@ input {
           padding-left: 32px;
         }
       }
+      
+      &__card {
+        &:hover,
+        &.active {
+          box-shadow: none;
+          border-color: transparent;
+        }
+
+        &__info-area {
+          padding: 20px;
+        }
+      }
+
+      &__info-area {
+        margin-bottom: 0;
+
+        &.slider {
+          display: none;
+        }
+
+        &__modal {
+          display: block;
+          background: white;
+          max-width: 320px;
+          width: 100%;
+          position: fixed;
+          left: 50%;
+          transform: translate(-50%, 102%);
+          bottom: 0;
+          transition: transform .2s ease;
+          z-index: 100;
+          border-radius: 12px;
+          padding: 0;
+          max-height: unset;
+
+          .search-page {
+            &__map-area {
+              &__card {
+                margin-right: 0;
+                margin-bottom: 0;
+              }
+            }
+          }
+
+          &.active {
+            transform: translate(-50%, 50%);
+            bottom: 50%;
+          }
+
+          &__close-button {
+            position: absolute;
+            border: none;
+            top: 14px;
+            right: 14px;
+            max-width: 26px;
+            min-width: 26px;
+            max-height: 26px;
+            min-height: 26px;
+            padding: 0;
+            z-index: 1;
+            background: white;
+            border-radius: 50%;
+            @include flex-center;
+
+            &:focus {
+              outline: none;
+            }
+
+            &-wrapper {
+              padding-left: 20px;
+              padding-right: 20px;
+              padding-bottom: 20px;
+            }
+          }
+        }
+      }
     }
   }
 
@@ -6469,11 +6663,8 @@ input {
       top: 62px;
     }
 
-    &__sections {
-      &__section {
-        font-size: 14px;
-        line-height: 120%;
-      }
+    &-sections {
+      padding: 12px 0;
     }
 
     &__events {
@@ -6855,86 +7046,6 @@ input {
 }
 
 @media (max-width: 720px) {
-  .search-page {
-    &__map-area {
-      &__card {
-        &:hover,
-        &.active {
-          box-shadow: none;
-          border-color: transparent;
-        }
-
-        &__info-area {
-          padding: 20px;
-        }
-      }
-
-      &__info-area {
-        margin-bottom: 0;
-
-        &.slider {
-          display: none;
-        }
-
-        &__modal {
-          display: block;
-          background: white;
-          max-width: 320px;
-          width: 100%;
-          position: fixed;
-          left: 50%;
-          transform: translate(-50%, 102%);
-          bottom: 0;
-          transition: transform .2s ease;
-          z-index: 100;
-          border-radius: 12px;
-          padding: 0;
-          max-height: unset;
-
-          .search-page {
-            &__map-area {
-              &__card {
-                margin-right: 0;
-                margin-bottom: 0;
-              }
-            }
-          }
-
-          &.active {
-            transform: translate(-50%, 50%);
-            bottom: 50%;
-          }
-
-          &__close-button {
-            position: absolute;
-            border: none;
-            top: 14px;
-            right: 14px;
-            max-width: 26px;
-            min-width: 26px;
-            max-height: 26px;
-            min-height: 26px;
-            padding: 0;
-            z-index: 1;
-            background: white;
-            border-radius: 50%;
-            @include flex-center;
-
-            &:focus {
-              outline: none;
-            }
-
-            &-wrapper {
-              padding-left: 20px;
-              padding-right: 20px;
-              padding-bottom: 20px;
-            }
-          }
-        }
-      }
-    }
-  }
-
   .beach-event {
     &__pt {
       &__type {

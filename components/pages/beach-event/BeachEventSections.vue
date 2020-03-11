@@ -1,18 +1,18 @@
 <template>
-    <div class="beach-page-sections slider-weather__months">
+    <div class="beach-page-sections slider-weather__months" :class="{ scroll: !atTop }">
         <div class="custom-container" v-if="sections">
             <div v-swiper:mySwiper="swiperOption">
-                <div class="swiper-wrapper" :style="{ 'justify-content': sections.length <= 5 ? 'flex-start' : 'space-between' }">
+                <div class="swiper-wrapper" :style="{ 'justify-content': sections.length <= 8 ? 'flex-start' : 'space-between' }">
                     <div
                         class="swiper-slide"
                         v-for="(section, i) in sections"
                         :class="{ active : section.hash == activeSectionHash }"
-                        :style="{ 'margin-left': sections.length <= 5 ? '10px' : '' }"
                     >
                         <nuxt-link
                             :to="{path: '#'+section.hash, hash: '#'+section.hash}"
                             class="slider-weather__month beach-page-sections__section"
                             :class="{ active : section.hash == activeSectionHash }"
+                            :style="{ 'margin-right': sections.length <= 8 ? '15px' : '' }"
                         >
                             <span>{{ section.title }}</span>
                         </nuxt-link>
@@ -46,7 +46,8 @@ export default {
                 slidesPerView: 'auto',
                 init: false
             },
-            margin: 300
+            margin: 300,
+            atTop: true
         };
     },
 
@@ -57,6 +58,7 @@ export default {
         window.addEventListener('scroll', this.onScroll, false);
         window.addEventListener('scroll', this.onResize, false);
         this.onResize();
+        this.onScroll();
     },
 
     beforeDestroy() {
@@ -75,12 +77,18 @@ export default {
                     }
                 }
             } else console.error("Couldn't fetch sections (BeachEventSections)");
+
+            if (window.scrollY > 10) {
+                this.atTop = false;
+            } else this.atTop = true;
         },
 
         onResize() {
             if (window.innerWidth > 500)
                 this.margin = 300;
             else this.margin = 200;
+
+            this.onScroll();
         }
     }
 }

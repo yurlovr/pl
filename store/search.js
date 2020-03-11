@@ -263,8 +263,13 @@ export const mutations = {
         }
     },
 
-    updateSearchQuery(state) {
+    updateSearchQuery(state, isQuery) {
         state.query = '?';
+
+        if (isQuery) {
+            state.query += `q=${state.searchInput}`;
+            return;
+        }
 
         if (state.searchParams.selects.cities.value.id != -1) {
             state.query += `city=${state.searchParams.selects.cities.value.id}&`;
@@ -345,6 +350,25 @@ export const actions = {
         } else commit('EMPTY_RESULTS');
     },
 
+    async searchQuery({commit, state, rootState}) {
+        commit('updateSearchQuery', true);
+        if (state.query.length > 0) {
+            let autocompleteRes = await this.$axios.$get(`search/autocomplete${state.query}`),
+                beaches = {
+                    data: {
+                        list: []
+                    }
+                };
+            if (!autocompleteRes.data)
+                return;
+            for (let i = 0; i < autocompleteRes.data.list.length; i++) {
+                if (rootState.beaches.data.list.find(v => v.ID == autocompleteRes.data.list[i].ID))
+                    beaches.data.list.push(rootState.beaches.data.list.find(v => v.ID == autocompleteRes.data.list[i].ID));
+            }
+            commit('SET_SEARCH_RESULT', beaches);
+        } else commit('EMPTY_RESULTS');
+    },
+
     async searchAutocomplete({commit, state}) {
         let res = await this.$axios.$get(`https://crimea.air-dev.agency/api/app/search/autocomplete?q=${state.searchInput}`);
         if (res.data) {
@@ -395,6 +419,8 @@ export const getters = {
         ret.push({
             updateTime: `${rn.getHours()}:${rn.getMinutes()}:${rn.getSeconds()}`
         })
+
+        console.log(ret)
 
         return ret;
     }

@@ -17,7 +17,7 @@
 		<div class="custom-container search-page__empty" v-if="!getSearchResult || getSearchResult.length <= 1">
 			<div class="favorites-page__visited-empty">К сожалению по Вашему запросу ничего не найдено.<br>Попробуйте изменить запрос, или начните <a href="/" @click.prevent="$bus.goTo('/', $router)">сначала</a></div>
 		</div>
-		<CardGrid :data="getSearchResult.slice(0, -1)" v-show="!showCardsOrMap" v-if="getSearchResult && getSearchResult.length > 1" />
+		<CardGrid :perPage="20" :data="getSearchResult.slice(0, -1)" v-show="!showCardsOrMap" v-if="getSearchResult && getSearchResult.length > 1" />
 		<SearchMapArea :data="getSearchResult.slice(0, -1)" v-show="showCardsOrMap" v-if="getSearchResult && getSearchResult.length > 1" />
 	</div>
 </template>
@@ -26,7 +26,6 @@
 	import SearchTags from '~/components/pages/search/SearchTags';
 	import SearchMapArea from '~/components/pages/search/SearchMapArea';
 	import CardGrid from '~/components/global/CardGrid';
-	import RouterPagination from '~/components/global/RouterPagination';
 
 	import { mapGetters, mapMutations, mapState, mapActions } from 'vuex';
 
@@ -34,15 +33,13 @@
 		components: {
 			SearchTags,
 			CardGrid,
-			SearchMapArea,
-			RouterPagination
+			SearchMapArea
 		},
 
 		computed: {
 			...mapGetters('search', ['getSearchResult']),
 			...mapState('search', ['searchParams']),
-			...mapState('search', ['query']),
-			// ...mapState('search', ['tags'])
+			...mapState('search', ['query'])
 		},
 
 		watch: {
@@ -68,18 +65,20 @@
 
 		async fetch({ store }) {
 			await store.dispatch('search/getSearch');
-			// await store.dispatch('search/updateTags', store.$router.currentRoute.fullPath);
-			// await store.dispatch('search/search');
 		},
 
 		mounted() {
+			this.updateQuery();
+			if (this.query.length > 1) return;
+
 			this.updateTags();
-			this.search();
+			if (this.tags.length > 0)
+				this.search();
 		},
 
 		methods: {
-			...mapMutations('search', ['updateSearchParam']),
-			...mapActions('search', ['search']),
+			...mapMutations('search', ['updateSearchParam', 'updateInput']),
+			...mapActions('search', ['search', 'searchQuery']),
 
 			showMap() {
 				this.showCardsOrMap = true;
@@ -89,10 +88,19 @@
 				}
 			},
 
+			updateQuery() {
+				let p = this.$nuxt.$route.fullPath,
+		        	query = decodeURIComponent( p.replace('/search', '').replace('/', '').replace('?', '').replace('q=', '')).split('&');
+		        if (query[0].length > 0) {
+		        	this.updateInput(query[0]);
+					this.searchQuery();
+		        }
+			},
+
 			updateTags(path) {
 		        this.tags = [];
 		        let p = path == undefined ? this.$nuxt.$route.fullPath : path,
-		        	query = p.replace('/search', '').replace('?', '').split('&'), curQuery, curValue;
+		        	query = p.replace('/search', '').replace('/', '').replace('?', '').split('&'), curQuery, curValue;
 		        for (let i = 0; i < query.length; i++) {
 		            curQuery = query[i].replace('[]', '').replace('%5B%5D', '').split('=');
 		            if (curQuery[0] == 'city') {

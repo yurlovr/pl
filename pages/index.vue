@@ -4,8 +4,8 @@
     <div class="main-page__welcome__gradient"></div>
     <Welcome />
     <Search class="main-page__welcome__search" labelId="1" />
-    <BeachSliderArea class="main-page__popular-beaches" :data="popularBeachesData" v-if="popularBeachesData" />
-    <Cities :data="citiesData" />
+    <BeachSliderArea class="main-page__popular-beaches" :data="beachesTopData" v-if="beachesTopData" />
+    <Cities :data="citiesTopData" />
     <MapArea :data="mapData" />
     <Banner :data="bannersData[2]" :showInfoOnPic="true" v-if="bannersData" class="banner-1" />
     <div class="main-page__white-wrapper">
@@ -64,7 +64,7 @@ export default {
 
   async fetch({ store }) {
     await store.dispatch('main/getPopularBeaches');
-    await store.dispatch('main/getCities');
+    await store.dispatch('main/getCitiesTop');
     await store.dispatch('main/getEvents');
     await store.dispatch('main/getDynamicSlider');
     await store.dispatch('main/getWeather');
@@ -104,8 +104,8 @@ export default {
   },
 
   computed: {
-    ...mapGetters('main', ['popularBeachesData']),
-    ...mapGetters('main', ['citiesData']),
+    ...mapGetters('main', ['beachesTopData']),
+    ...mapGetters('main', ['citiesTopData']),
     ...mapGetters('main', ['eventsData']),
     ...mapGetters('main', ['dynamicSliderData']),
     ...mapGetters('main', ['weatherData']),

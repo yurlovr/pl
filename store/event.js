@@ -17,11 +17,18 @@ export const actions = {
 
 export const getters = {
     eventData: (state) => {
-        if (!state.event.data) return null;
+        if (!state.event.data) return {
+            hugeSliderData: {},
+            mainData: {},
+            about: [],
+            sideMapData: {},
+            ptData: {}
+        };
 
         let ret = {
         	hugeSliderData: {
         		title: state.event.data.item.NAME,
+                isBeachClosed: false,
                 pics: state.event.data.item.PHOTOS.map((s) => { return state.api + s }),
                 goldMedal: null,
                 blueMedal: null
@@ -49,12 +56,17 @@ export const getters = {
             ],
 
             sideMapData: {
-                title: state.event.data.item.BEACH.NAME
+                title: state.event.data.item.BEACH.NAME,
+                pos: (state.event.data.item.BEACH.COORDINATES != '') ? state.event.data.item.BEACH.COORDINATES.split(',').map(v => parseFloat(v)) : null
             },
 
             ptData: {
                 title: state.event.data.item.BEACH.NAME,
-                parkings: state.event.data.item.BEACH.PARKINGS
+                pos: (state.event.data.item.BEACH.COORDINATES != '') ? state.event.data.item.BEACH.COORDINATES.split(',').map(v => parseFloat(v)) : null,
+                parkings: {
+                    auto: [],
+                    bus: []
+                }
             }
     	}
 

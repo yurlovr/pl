@@ -8,7 +8,7 @@
         </a>
       </div>
     </div>
-    <!-- <div class="beach-event__map-weather__weather-card">
+    <div class="beach-event__map-weather__weather-card">
       <div class="beach-event__map-weather__weather-card__date">
         <img src="~/static/pics/global/svg/calendar_big.svg">
         <span>{{ data.date }}</span>
@@ -38,17 +38,8 @@
             <span class="slider-weather__slide__temp-C beach-event__map-weather__weather-card__temp-area__temp-C">C</span>
           </div>
         </div>
-        <div class="beach-event__map-weather__weather-card__temp-area__item">
-          <div class="beach-event__map-weather__weather-card__temp-area__item__left">
-            <img src="~/static/pics/global/svg/cloudy.svg">
-            <span>Пасмурные<br>дни</span>
-          </div>
-          <div class="beach-event__map-weather__weather-card__temp-area__item__right">
-            <span><span class="orange">{{ data.cloudyDays }}</span> {{ (data.cloudyDays % 10 == 1 && data.cloudyDays % 100 != 11) ? 'день' : 'дня' }}</span>
-          </div>
-        </div>
       </div>
-    </div> -->
+    </div>
   </div>
 </template>
 

@@ -36,7 +36,7 @@
 				<div class="beach-event__leave-review__modal__send-button-area">
 					<button class="banner__card__info-area__button" @click="sendReview()" :disabled="error == false">
 						<span v-show="error == null && !addPic && !ratingsNotFilled && !noName && !noDescription">Отправить</span>
-						<span v-show="noName == true && error == null">Пожалуйста напишите ваше имя</span>
+						<span v-show="noName == true && error == null">Пожалуйста представьтесь</span>
 						<span v-show="addPic == true && !noName && error == null">Пожалуйста добавьте фото</span>
 						<span v-show="ratingsNotFilled == true && !addPic && !noName && error == null">Пожалуйста дайте полную оценку</span>
 						<span v-show="noDescription == true && !ratingsNotFilled && !addPic && !noName && error == null">Пожалуйста напишите отзыв</span>

@@ -1,10 +1,11 @@
 <template>
-	<div class="beach-event__visitor-pics custom-container" :style="{ 'display': this.data.length > 0 ? '' : 'flex' }">
-		<h3 class="beach-event__visitor-pics__title" :style="{ 'margin-bottom': this.data.length > 0 ? '' : '0'}">Фото посетителей</h3>
-		<div class="beach-event__visitor-pics__slider" v-if="data.length > 0">
+	<div class="beach-event__visitor-pics custom-container" :class="{ empty: data && data.length == 0 }">
+		<h3 class="beach-event__visitor-pics__title">Фото посетителей</h3>
+		<div class="beach-event__visitor-pics__slider">
 			<div v-swiper:mySwiper="swiperOption">
 				<div class="swiper-wrapper">
-					<div class="swiper-slide" v-for="(review, i) in data" :key="i">
+					<div class="swiper-slide" v-if="data && data.length == 0"></div>
+					<div class="swiper-slide" v-for="(review, i) in data">
 						<div class="beach-event__visitor-pics__user-area">
 							<img :src="review.avatar">
 							<div class="beach-event__visitor-pics__user-area__nickname-wrapper">
@@ -35,7 +36,7 @@
 				<img src="~/static/pics/global/svg/slider_arrow_right.svg" alt="Направо">
 			</button>
 		</div>
-		<div class="beach-event__visitor-pics__add-button-area" :style="{ 'margin-top': this.data.length > 0 ? '' : '0'}">
+		<div class="beach-event__visitor-pics__add-button-area">
 			<button class="banner__card__info-area__button" @click="modalOpen = true">
 				<span>Добавить фотографию</span>
 			</button>
@@ -58,6 +59,7 @@
 
 <script>
 	import Vue from 'vue';
+
 	export default {
 		props: ['data', 'type', 'typeId'],
 
@@ -97,20 +99,18 @@
 		},
 
 		mounted() {
-			if (this.data && this.data.length > 0) {
-				this.mySwiper.on('imagesReady', () => {
-					window.addEventListener('resize', this.onResize, false);
-					this.onResize();
-					this.updateArrows();
-				});
+			this.mySwiper.on('imagesReady', () => {
+				window.addEventListener('resize', this.onResize, false);
+				this.onResize();
+				this.updateArrows();
+			});
 
-				this.mySwiper.on('slideChange', () => {
-					this.updateArrows();
-					this.activeIndex = this.mySwiper.activeIndex;
-				});
+			this.mySwiper.on('slideChange', () => {
+				this.updateArrows();
+				this.activeIndex = this.mySwiper.activeIndex;
+			});
 
-				this.mySwiper.init(this.swiperOption);
-			}
+			this.mySwiper.init(this.swiperOption);
 		},
 
 		methods: {
@@ -148,6 +148,11 @@
 					else this.errorMsg = '';
 				})
 			}
-		}
+		},
+
+	    beforeRouteLeave(to, from, next) {
+    		this.mySwiper.destroy();
+	        next();
+	    }
 	}
 </script>

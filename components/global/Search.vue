@@ -1,10 +1,10 @@
 <template>
   <div class="search" :class="{ hidden: (mobileView && !mobileSearchBarShown && !tempMobileSearchBarShown), 'dark-bg': paramsShown && !labelId }">
     <div class="search__bar">
-      <button class="search__bar__left-search" v-show="searchInput && searchInput.length > 0">
+      <button class="search__bar__left-search" v-show="searchInput && searchInput.length > 0" @click="searchCurQuery()">
         <img src="~/static/pics/global/svg/search.svg" alt="Поиск">
       </button>
-      <input class="search__bar__input" type="text" placeholder="Искать пляж" :value="searchInput" @input="onInput" @blur="showAutocomplete = false" @focus="showAutocomplete = true">
+      <input class="search__bar__input" type="text" placeholder="Искать пляж" :value="searchInput" @input="onInput" @blur="showAutocomplete = false" @focus="showAutocomplete = true" @keyup.enter="searchCurQuery()">
       <a href="/search" class="search__bar__right-search" @click.prevent="searchFilter()">
         <img src="~/static/pics/global/svg/search.svg" alt="Поиск" v-show="searchInput.length == 0">
       </a>
@@ -22,20 +22,20 @@
               <div class="search__params__part__dropdowns-row" v-if="searchParams">
                 <div class="search__params__part__dropdowns">
                   <div class="search__params__part--dropdown search__params__part--dropdown--wider">
-                    <c-select
+                    <c-select-input
                     :value="searchParams.selects.cities.value"
                     :param="searchParams.selects.cities.param"
                     :class="{ default : searchParams.selects.cities.value.id == searchParams.selects.cities.options[0].id }"
                     :options="searchParams.selects.cities.options">
-                    </c-select>
+                    </c-select-input>
                   </div>
                   <div class="search__params__part--dropdown">
-                    <c-select
+                    <c-select-input
                     :value="searchParams.selects.beachTypes.value"
                     :param="searchParams.selects.beachTypes.param"
                     :class="{ default : searchParams.selects.beachTypes.value.id == searchParams.selects.beachTypes.options[0].id }"
                     :options="searchParams.selects.beachTypes.options">
-                    </c-select>
+                    </c-select-input>
                   </div>
                 </div>
                 <div class="search__params__part__dropdowns">
@@ -132,6 +132,7 @@
 <script>
 import CustomCheckbox from '~/components/global/CustomCheckbox';
 import CustomSelect from '~/components/global/CustomSelect';
+import CustomSelectInput from '~/components/global/CustomSelectInput';
 
 import { mapGetters, mapActions, mapState, mapMutations } from 'vuex';
 import { debounce } from '~/helpers/index';
@@ -143,7 +144,8 @@ export default {
 
   components: {
     CustomCheckbox,
-    'c-select': CustomSelect
+    'c-select': CustomSelect,
+    'c-select-input': CustomSelectInput
   },
 
   data() {
@@ -257,6 +259,7 @@ export default {
 
   methods: {
     ...mapActions('search', ['search']),
+    ...mapActions('search', ['searchQuery']),
     ...mapActions('search', ['getSearch']),
     ...mapActions('search', ['searchAutocomplete']),
     ...mapMutations('search', ['updateSearchQuery']),
@@ -299,20 +302,37 @@ export default {
     },
 
     searchFilter() {
-      // this.hideParams();
       if (this.$nuxt.$route.path == '/search') { // already in the search page
-          this.search(); // update results and tags
-          this.$bus.goTo(`/search${this.query}`, this.$router, false); // updateQuery
+        this.search(); // update results and tags
+        this.$bus.goTo(`/search${this.query}`, this.$router, false); // updateQuery
         setTimeout(() => {
-          setTimeout(() => {
-            this.$bus.goTo(`/search${this.query}`, this.$router, false)
-          }, 1);
+          this.$bus.goTo(`/search${this.query}`, this.$router, false)
         }, 1); // updateQuery
       } else {
         this.search();
         setTimeout(() => {
           this.$bus.goTo(`/search${this.query}`, this.$router);
         }, 1);
+      }
+    },
+
+    searchCurQuery() {
+      document.querySelector('.search__bar__input').blur(); // hide autocomlete
+      if (this.autocompleteResults.length == 1) {
+        this.$bus.goTo(this.autocompleteResults[0].link, this.$router);
+      } else if (this.searchInput != '') {
+        if (this.$nuxt.$route.path == '/search') { // already in the search page
+          this.searchQuery(); // update results and tags
+          this.$bus.goTo(`/search${this.query}`, this.$router, false); // updateQuery
+          setTimeout(() => {
+            this.$bus.goTo(`/search${this.query}`, this.$router, false)
+          }, 1); // updateQuery
+        } else {
+          this.searchQuery();
+          setTimeout(() => {
+            this.$bus.goTo(`/search${this.query}`, this.$router);
+          }, 1);
+        }
       }
     },
 

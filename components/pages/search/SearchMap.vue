@@ -20,7 +20,7 @@
 
         data() {
             return {
-                zoom: 8,
+                zoom: 7,
                 chosen: -1,
                 map: null
             }
@@ -82,6 +82,7 @@
                                 iconImageHref: '/pics/global/svg/map_beach_blue.svg'
                             });
                             this.chosen = -1;
+                            this.map.balloon.close();
                         }
 
                         const objectEvent = (e) => {
@@ -90,33 +91,56 @@
                                 objectManager.objects.setObjectOptions(objectId, {
                                     iconImageHref: '/pics/global/svg/map_beach_gold.svg'
                                 });
-                            } else if (e.get('type') == 'mouseleave') {
+                            }
+                            if (e.get('type') == 'mouseleave') {
                                 if (objectId != this.chosen) {
                                     objectManager.objects.setObjectOptions(objectId, {
                                         iconImageHref: '/pics/global/svg/map_beach_blue.svg'
                                     });
                                 }
-                            } else if (e.get('type') == 'click') {
-                                if (this.chosen == objectId) {
-                                    this.$bus.$emit('closeModalAndUnscrollToCard');
-                                    this.map.balloon.close();
-                                    return;
+                            }
+                            if (window.innerWidth > 800) {
+                                if (e.get('type') == 'mousedown') {
+                                    objectManager.objects.setObjectOptions(objectId, {
+                                        iconImageHref: '/pics/global/svg/map_beach_gold.svg'
+                                    });
+                                    this.$bus.$emit('scrollToCard', objectId);
+                                    this.$bus.$emit('openModal', objectId);
+                                    this.chosen = objectId;
                                 }
-
-                                if (this.chosen != -1) {
-                                    objectManager.objects.setObjectOptions(this.chosen, {
+                                if (e.get('type') == 'mouseup') {
+                                    this.$bus.$emit('closeModalAndUnscrollToCard');
+                                    objectManager.objects.setObjectOptions(objectId, {
                                         iconImageHref: '/pics/global/svg/map_beach_blue.svg'
                                     });
+                                    setTimeout(() => {this.map.balloon.close();}, 1);
+                                    this.chosen = -1;
+                                    return;
                                 }
-                                this.chosen = objectId;
-                                objectManager.objects.setObjectOptions(this.chosen, {
-                                    iconImageHref: '/pics/global/svg/map_beach_gold.svg'
-                                });
-                                this.$bus.$emit('scrollToCard', this.chosen);
-                                this.$bus.$emit('openModal', this.chosen);
+                            }
+                            if (e.get('type') == 'click') {
+                                if (window.innerWidth <= 800) {
+                                    if (this.chosen == objectId) {
+                                        this.$bus.$emit('closeModalAndUnscrollToCard');
+                                        setTimeout(() => {this.map.balloon.close();}, 1);
+                                        return;
+                                    }
+
+                                    if (this.chosen != -1) {
+                                        objectManager.objects.setObjectOptions(this.chosen, {
+                                            iconImageHref: '/pics/global/svg/map_beach_blue.svg'
+                                        });
+                                    }
+                                    this.chosen = objectId;
+                                    objectManager.objects.setObjectOptions(this.chosen, {
+                                        iconImageHref: '/pics/global/svg/map_beach_gold.svg'
+                                    });
+                                    this.$bus.$emit('scrollToCard', this.chosen);
+                                    this.$bus.$emit('openModal', this.chosen);
+                                }
                             }
                         }
-                        objectManager.objects.events.add(['mouseenter', 'mouseleave', 'click'], objectEvent);
+                        objectManager.objects.events.add(['mouseenter', 'mouseleave', 'mouseup', 'mousedown', 'click'], objectEvent);
 
                         this.$bus.$on('modalClosed', () => {
                             unchoose();

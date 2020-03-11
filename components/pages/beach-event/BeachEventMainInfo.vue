@@ -4,7 +4,7 @@
 			<div class="search-page__map-area__card__title-area beach-event__main-info__title-area">
 				<div class="beach-event__main-info__title-area__left">
 					<h1 class="search-page__map-area__card__title beach-event__main-info__title ">{{ data.title }}</h1>
-					<a href="/search" @click.prevent="goToBeach()" class="search-page__map-area__card__subtitle beach-event__main-info__subtitle">{{ data.location }}</a>
+					<a :href="`/search?city=${data.locationId}`" @click.prevent="goToBeach()" class="search-page__map-area__card__subtitle beach-event__main-info__subtitle">{{ data.location }}</a>
 				</div>
 				<button class="beach-event__main-info__hearts" @click="updateHeart()">
 					<img src="~/static/pics/global/svg/heart_button_unclicked.svg" v-show="!favorite">
@@ -35,7 +35,7 @@
 				</div>
 				<div class="search-page__map-area__card__infos__item beach-event__main-info__infos__item" v-if="data.time">
 					<img src="~/static/pics/search/beach_worktime.svg">
-					<span class="wrapper"><span class="gray">{{ data.timeComment }}</span><span>{{ data.time }}</span></span>
+					<span class="wrapper"><span class="gray">Режим работы:</span><span>{{ data.time }}</span></span>
 				</div>
 				<div class="search-page__map-area__card__infos__item beach-event__main-info__infos__item" v-if="data.beachSeabedType">
 					<img src="~/static/pics/search/beach_seabedtype.svg">
