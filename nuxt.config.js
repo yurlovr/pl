@@ -37,9 +37,7 @@ export default {
   /*
    ** Customize the progress-bar color
    */
-  loading: {
-    color: '#FCAB2D'
-  },
+  loading: false,
   /*
    ** Global CSS
    */

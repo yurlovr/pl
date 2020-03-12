@@ -17,13 +17,8 @@ eventBus.install = function (Vue) {
 			if (link.split('/')[0] != '')
 				link = `/${link}`;
 			router.push(link)
-		}, 400);
+		}, 500);
 	};
-	// Vue.prototype._router.afterEach((to, from) => {
-	// 	Vue.prototype.$bus.$emit('transitionEnd');
-	// });
-
-	// console.log(Vue.prototype.$routes)
 }
 
 Vue.use(eventBus);

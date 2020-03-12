@@ -2,13 +2,13 @@
 	<section class="main-page__beach-events custom-container" v-if="data">
 		<div class="main-page__beach-events__title-area">
 			<h3 class="main-page__section-title" style="margin-bottom: 0;">{{ data.title }}</h3>
-			<a v-if="this.data.showMore" :href="`/search?${this.data.showMore.type}[]=${this.data.showMore.id}`" @click.prevent="showMore()" class="main-page__see-all main-page__beach-events__see-all-top">
+			<a v-if="data.showMore" :href="`/search?${data.more ? `${data.query}=${data.more.value.id}&` : ''}${data.showMore.type}[]=${data.showMore.id}`" @click.prevent="showMore()" class="main-page__see-all main-page__beach-events__see-all-top">
 	          <span>Смотреть все ({{ data.beachNumber }})</span>
 	        </a>
 		</div>
 		<SliderBeachEventHotel :data="data.beachSliderData" />
 		<div class="main-page__beach-events__see-all-bottom" v-if="data.beachNumber">
-			<a v-if="this.data.showMore" :href="`/search?${this.data.showMore.type}[]=${this.data.showMore.id}`" @click.prevent="showMore()" class="main-page__see-all">
+			<a v-if="data.showMore" :href="`/search?${data.more ? `${data.query}=${data.more.value.id}&` : ''}${data.showMore.type}[]=${data.showMore.id}`" @click.prevent="showMore()" class="main-page__see-all">
 	          <span>Смотреть все ({{ data.beachNumber }})</span>
 	        </a>
 		</div>
@@ -29,6 +29,8 @@
       showMore() {
         this.$bus.$emit('emptySearchParams');
         this.$bus.$emit('updateSearchParam', this.data.showMore);
+        if (this.data.more)
+        	this.$bus.$emit('updateSearchParam', this.data.more);
         setTimeout(() => {this.$bus.$emit('search')}, 1);
       }
     }

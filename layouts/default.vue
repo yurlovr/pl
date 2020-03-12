@@ -3,7 +3,11 @@
     <PageTransitioner />
     <Preloader />
     <Header />
-    <nuxt />
+    <transition
+      @afterEnter="$bus.$emit('hidePageTransitioner')"
+      >
+      <nuxt />
+    </transition>
     <div class="main-page__white-wrapper"><Footer /></div>
   </div>
 </template>
@@ -14,6 +18,8 @@
   import Header from '~/components/global/Header';
   import Footer from '~/components/global/Footer';
 
+  import { mapState } from 'vuex';
+
   export default {
     middleware: 'error',
 
@@ -22,6 +28,10 @@
       Preloader,
       Header,
       Footer
+    },
+
+    computed: {
+      ...mapState(['beaches', 'events'])
     },
 
     mounted() {

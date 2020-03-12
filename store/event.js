@@ -96,15 +96,37 @@ export const getters = {
 
             otherEvents: {
                 title: 'Другие мероприятия на этом пляже',
-                showMore: true,
+                showMore: {
+                    id: 19,
+                    type: 'tags',
+                    value: true
+                },
+                more: {
+                    param: 'cities',
+                    value: {
+                        id: state.event.data.item.BEACH.CITY.ID,
+                        title: state.event.data.item.BEACH.CITY.NAME
+                    }
+                },
+                query: 'city',
                 beachSliderData: {
                     slideNumber: 4,
                     cardData: []
                 }
             },
 
-            visitorPics: []
+            visitorPics: [],
+            infraData: []
     	}
+
+        // adding formatted infrastructures
+        let filteredInfra = state.event.data.item.BEACH.INFRASTRUCTURES.filter(v => v.CODE != 'parkovka' && v.CODE != 'ostanovki-obshchestvennogo-transporta');
+        for (let i = 0; i < filteredInfra.length; i++) {
+            ret.infraData.push({
+                title: filteredInfra[i].NAME,
+                pic: filteredInfra[i].ICON ? state.api + filteredInfra[i].ICON : filteredInfra[i].ICON
+            })
+        }
 
         // adding formatted about
         // get rid of div and separate everything with <br>
@@ -186,6 +208,11 @@ export const getters = {
         }
 
         // adding formatted sections
+        if (ret.infraData.length > 0)
+            ret.sections.push({
+                title: 'Инфраструктура',
+                hash: 'infra'
+            });
         if (ret.about.length > 1 && ret.about[1].paragraph && ret.about[1].paragraph.length > 0)
             ret.sections.push({
                 title: 'О мероприятии',

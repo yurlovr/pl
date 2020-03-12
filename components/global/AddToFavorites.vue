@@ -46,7 +46,9 @@
 
 				if (this.data.beachId) {
 					if (this.$cookies.get(`favorites.beaches.${this.data.beachId}`)) {
-						this.$cookies.remove(`favorites.beaches.${this.data.beachId}`);
+						this.$cookies.set(`favorites.beaches.${this.data.beachId}`, true, {
+							maxAge: -1 // remove
+						});
 						this.$bus.$emit('favoriteBeachRemoved', this.data.beachId);
 					} else {
 						this.$cookies.set(`favorites.beaches.${this.data.beachId}`, true, {
@@ -54,9 +56,12 @@
 						});
 						this.$bus.$emit('favoriteBeachAdded', this.data.beachId);
 					}
+					console.log(this.config)
 				} else if (this.data.eventId) {
 					if (this.$cookies.get(`favorites.events.${this.data.eventId}`)) {
-						this.$cookies.remove(`favorites.events.${this.data.eventId}`);
+						this.$cookies.set(`favorites.events.${this.data.eventId}`, true, {
+							maxAge: -1 // remove
+						});
 						this.$bus.$emit('favoriteEventRemoved', this.data.eventId);
 					} else {
 						this.$cookies.set(`favorites.events.${this.data.eventId}`, true, {

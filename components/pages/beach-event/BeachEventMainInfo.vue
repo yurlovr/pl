@@ -58,7 +58,7 @@
 
 		mounted() {
 			this.$bus.$on('cToggleFavorites', () => {
-				this.favorite = !this.favorite;
+				this.updateHeart();
 			});
 
 			if (this.data.beachId && this.$cookies.get(`favorites.beaches.${this.data.beachId}`) || this.data.eventId && this.$cookies.get(`favorites.events.${this.data.eventId}`))
@@ -77,19 +77,23 @@
 
 				if (this.data.beachId) {
 					if (this.$cookies.get(`favorites.beaches.${this.data.beachId}`))
-						this.$cookies.remove(`favorites.beaches.${this.data.beachId}`)
+						this.$cookies.set(`favorites.beaches.${this.data.beachId}`, true, {
+							maxAge: -1 // remove
+						});
 					else {
 						this.$cookies.set(`favorites.beaches.${this.data.beachId}`, true, {
 							maxAge: 30 * 24 * 60 * 60 // one month
-						})
+						});
 					}
 				} else if (this.data.eventId) {
 					if (this.$cookies.get(`favorites.events.${this.data.eventId}`))
-						this.$cookies.remove(`favorites.events.${this.data.eventId}`)
+						this.$cookies.set(`favorites.events.${this.data.eventId}`, true, {
+							maxAge: -1 // one month
+						});
 					else {
 						this.$cookies.set(`favorites.events.${this.data.eventId}`, true, {
 							maxAge: 30 * 24 * 60 * 60 // one month
-						})
+						});
 					}
 				}
 			},

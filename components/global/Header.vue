@@ -88,8 +88,6 @@
 		},
 
 		methods: {
-			// ...mapActions('favorites', ['getAllBeachesNEvents']),
-
 			toggleSearch() {
 				this.$bus.$emit('toggleMobileSearchBar');
 			}

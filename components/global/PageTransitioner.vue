@@ -20,9 +20,18 @@
 				logo = document.getElementById('page-transitioner__logo'),
 				transitioner = document.getElementById('transitioner');
 			this.$bus.$on('transition', () => { this.transition(left, right, logo, transitioner); });
-			this.$bus.$on('transitionEnd', () => {
-				console.log('lol')
-			})
+			this.$bus.$on('hidePageTransitioner', () => {
+				logo.style.opacity = 0;
+
+				setTimeout(() => {
+					left.style.transform = `translateY(${window.innerHeight + 100}px)`;
+					right.style.transform = `translateY(-${window.innerHeight + 100}px)`;
+					setTimeout(() => {
+						this.active = false;
+						document.documentElement.style.overflow = '';
+					}, 500);
+				}, 500);
+			});
 		},
 
 		methods: {
@@ -38,22 +47,8 @@
 					setTimeout(() => {
 						window.scrollTo(0,0);
 						logo.style.opacity = 1;
-
-						setTimeout(() => {
-							logo.style.opacity = 0;
-
-							setTimeout(() => {
-								left.style.transform = `translateY(${window.innerHeight + 100}px)`;
-								right.style.transform = `translateY(-${window.innerHeight + 100}px)`;
-								setTimeout(() => {
-									this.active = false;
-									document.documentElement.style.overflow = '';
-								}, 500);
-							}, 500);
-						}, 500);
 					}, 500);
 				}, 1);
-
 			}
 		}
 	}

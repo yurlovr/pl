@@ -268,7 +268,6 @@
 
                         if (this.data.geo) {
                             goToStep2(this.data.geo.id);
-                            console.log('xa')
                         }
 
                         document.getElementById('go-to-step-1-button').addEventListener('click', () => {
