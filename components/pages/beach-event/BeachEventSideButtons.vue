@@ -14,7 +14,7 @@
       <img src="~/static/pics/global/svg/cross.svg" v-show="showShare">
       <img src="~/static/pics/global/svg/share.svg" v-show="!showShare">
     </button>
-    <button class="bg-blue" @click="showPave = !showPave" v-if="data.pos">
+    <button class="bg-blue" @click="showPave = !showPave" v-if="data.pos && !dontShowPave">
       <img src="~/static/pics/global/svg/cross.svg" v-show="showPave">
       <img src="~/static/pics/global/svg/pave_way.svg" v-show="!showPave">
     </button>
@@ -33,7 +33,7 @@
 
 <script>
 export default {
-  props: ['data'],
+  props: ['data', 'dontShowPave'],
 
   data() {
     return {

@@ -1,5 +1,4 @@
 export const state = () => ({
-    allBeaches: [],
     beachesTop: [],
     citiesTop: [],
     events: [],
@@ -11,16 +10,13 @@ export const state = () => ({
     banners: {},
     map: {},
     searchData: {},
+    geo: {},
     api: 'https://crimea.air-dev.agency'
 })
 
 export const mutations = {
     SET_POPULAR_BEACH: (state, payload) => {
        state.beachesTop = payload;
-    },
-
-    SET_ALL_BEACHES: (state, payload) => {
-       state.allBeaches = payload;
     },
 
     SET_CITIES: (state, payload) => {
@@ -68,13 +64,23 @@ export const mutations = {
 
         if (state.banners.data)
             state.banners.data.list.sort((a,b) => (parseInt(a.POSITION)-parseInt(b.POSITION)));
+    },
+
+    SET_GEO: (state, payload) => {
+        state.geo = payload;
     }
 }
 
 export const actions = {
-    async getPopularBeaches({commit}) {
-        commit('SET_ALL_BEACHES', await this.$axios.$get('/beach/list'));
-        commit('SET_POPULAR_BEACH', await this.$axios.$get('/beach/top?count=10'));
+    async getPopularBeaches({commit, state}) {
+        if (state.geo.data)
+            commit('SET_POPULAR_BEACH', await this.$axios.$get(`/beach/list?city=${state.geo.data.city.ID}&count=10`));
+        else
+            commit('SET_POPULAR_BEACH', await this.$axios.$get('/beach/top?count=10'));
+    },
+
+    async getGeo({commit}) {
+        commit('SET_GEO', await this.$axios.$get('/geo/item'));
     },
 
     async getCitiesTop({commit}) {
@@ -121,12 +127,12 @@ export const actions = {
 
 export const getters = {
     beachesTopData: (state) => {
-        if (!state.beachesTop.data || !state.allBeaches.data) return null;
+        if (!state.beachesTop.data) return null;
 
         let ret = {
-        	title: 'Самые популярные пляжи',
+        	title: 'Самые популярные пляжи' + (state.geo.data ? ' ' + state.geo.data.city.NAME : ''),
             subtitle: 'Пологий берег, плавный вход в воду, безопасность и современная инфраструктура',
-            beachNumber: Math.min(state.allBeaches.data.list.length, 45),
+            beachNumber: Math.min(state.beachesTop.data.list.length, 45),
             showMore: {
                 id: state.searchData.data.tags.find(v => v.NAME == 'Популярные').ID,
                 value: true,
@@ -141,7 +147,7 @@ export const getters = {
         // adding formatted beaches
         for (let i = 0; i < Math.min(state.beachesTop.data.list.length, 10); i++) {
             ret.beachSliderData.cardData.push({
-                tempWater: state.beachesTop.data.list[i].TEMP.WATER,
+                tempWater: state.beachesTop.data.list[i].WEATHER.TEMP.WATER,
                 showFavorite: true,
                 paid: state.beachesTop.data.list[i].PAID,
                 rating: parseFloat(state.beachesTop.data.list[i].AVERAGE_RATING),
@@ -196,7 +202,7 @@ export const getters = {
         // adding formatted events
         for (let i = 0; i < Math.min(state.events.data.list.length, 10); i++) {
             ret.beachSliderData.cardData.push({
-                temperature: state.events.data.list[i].BEACH.TEMP.WATER,
+                temperature: state.events.data.list[i].BEACH.WEATHER.TEMP.WATER,
                 showFavorite: true,
                 paid: state.events.data.list[i].PAID,
                 date: `${state.events.data.list[i].ACTIVE_FROM} ${state.events.data.list[i].ACTIVE_TO ? '-' : ''} ${state.events.data.list[i].ACTIVE_TO ? state.events.data.list[i].ACTIVE_TO : ''}`,
@@ -264,7 +270,7 @@ export const getters = {
         // adding formatted beaches
         for (let i = 0; i < Math.min(10, family.BEACHES.length); i++) {
             ret.beachSliderData.cardData.push({
-                temperature: family.BEACHES[i].TEMP.WATER,
+                temperature: family.BEACHES[i].WEATHER.TEMP.WATER,
                 showFavorite: true,
                 paid: family.BEACHES[i].PAID,
                 rating: parseFloat(family.BEACHES[i].AVERAGE_RATING),
@@ -418,8 +424,15 @@ export const getters = {
             }
             ret.addressBeaches.push({
                 clusterCenter: clusterCenters[i],
-                beaches: curCluster
+                beaches: curCluster,
+                name: clusters[i][0].CITY.NAME
             });
+        }
+
+        if (state.geo.data) {
+            ret.geo = {
+                id: ret.addressBeaches.findIndex(v => v.name == state.geo.data.city.NAME)
+            };
         }
 
         return ret;

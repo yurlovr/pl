@@ -1,33 +1,33 @@
 <template>
 	<div class="beach-page custom-page">
 		<div class="beach-page__container custom-container">
-			<BeachEventSections :sections="$store.state.eventPageSections" class="beach-page-sections event-page-sections" />
-			<SliderHugeBeachEventPage :data="eventData.hugeSliderData" />
+			<BeachEventSections :sections="eventData.sections" class="beach-page-sections event-page-sections" />
+			<SliderHugeBeachEventPage :data="eventData.hugeSliderData" id="gallery" />
 			<div class="custom-container-inner">
-				<!-- <BeachEventSideButtons class="event-page__side-buttons" /> -->
+				<BeachEventSideButtons class="event-page__side-buttons" :data="eventData.sideMapWeatherData" :dontShowPave="true" />
 			</div>
 			<div class="two-part-layout">
 				<main class="two-part-layout__left">
 					<button class="event-page__hearts" @click="updateHeart()">
-						<img src="~/static/pics/global/svg/heart_button_unclicked.svg" v-show="!liked">
-						<img src="~/static/pics/global/svg/heart_button_clicked.svg" v-show="liked">
-						<span>({{ eventData.mainData.likes + (liked ? 1 : 0) }}) Добавить в избранное</span>
+						<img src="~/static/pics/global/svg/heart_button_unclicked.svg" v-show="!favorite">
+						<img src="~/static/pics/global/svg/heart_button_clicked.svg" v-show="favorite">
+						<span>({{ eventData.mainData.likes + (favorite ? 1 : 0) }}) Добавить в избранное</span>
 					</button>
-					<BeachEventMainInfo :data="eventData.mainData" class="event-page__main-info" />
-					<!-- <BeachEventMapWeather :data="eventData.sideMapData" class="beach-event__map-weather__event-page" /> -->
-					<BeachEventAbout id="id-0" :data="eventData.about" />
-					<BeachEventParkingsTransport id="id-1" :data="eventData.ptData" />
-					<BeachEventReviews id="id-2" :data="$store.state.guestReviewsData" class="beach-page__cardless-area" />
+					<BeachEventMainInfo id="main-info" :data="eventData.mainData" class="event-page__main-info" />
+					<BeachEventAbout id="about" :data="eventData.about" v-if="eventData.about.length > 1 && eventData.about[1].paragraph && eventData.about[1].paragraph.length > 0" />
+					<BeachEventParkingsTransport id="pt" :data="eventData.ptData" v-if="eventData.ptData.parkings.auto.length > 0 || eventData.ptData.parkings.bus.length > 0" />
+					<BeachEventReviews id="reviews" :typeId="eventData.mainData.beachId" :data="eventData.reviews" :type="'event'" class="beach-page__cardless-area" />
 				</main>
 				<aside class="two-part-layout__right">
-					<BeachEventMapWeather :data="eventData.sideMapData" class="beach-event__map-weather__desktop" />
+					<BeachEventMapWeather :data="eventData.sideMapWeatherData" v-if="eventData.sideMapWeatherData.pos.length > 0" class="beach-event__map-weather__desktop" />
 					<AnnouncementCard :data="$store.state.announcementData" />
 				</aside>
 			</div>
 		</div>
-		<!-- <BeachEventVisitorPics :data="$store.state.visitorPicsData" class="main-page__white-wrapper beach-event__visitor-pics-wrapper" /> -->
-		<BeachEvents class="beach-event__similar-beaches" :data="$store.state.otherEventsData" />
-		<BeachSliderArea class="main-page__hotels" :data="$store.state.hotelData" :areaData="$store.state.hotelAreaData" v-if="false" />
+		<div class="main-page__white-wrapper beach-event__visitor-pics-wrapper">
+			<BeachEventVisitorPics id="visitor-pics" :data="eventData.visitorPics" :type="'beach'" :typeId="eventData.mainData.beachId" />
+		</div>
+		<BeachEvents id="other-events" class="beach-event__similar-beaches" :data="eventData.otherEvents" v-if="eventData.otherEvents.beachNumber > 0" />
 	</div>
 </template>
 
@@ -65,25 +65,25 @@
 
 		data() {
 			return {
-				liked: false
+				favorite: false
 			}
 		},
 
 		mounted() {
 			this.$bus.$on('pToggleFavorites', () => {
-				this.liked = !this.liked;
+				this.favorite = !this.favorite;
 			})
 		},
 
 		methods: {
 			updateHeart() {
-				if (this.liked)
+				if (this.favorite)
 					this.$bus.$emit('decreaseFavorites');
 				else this.$bus.$emit('increaseFavorites');
 
 				this.$bus.$emit('cToggleFavorites');
 
-				this.liked = !this.liked;
+				this.favorite = !this.favorite;
 			}
 		},
 

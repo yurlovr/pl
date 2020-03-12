@@ -1,6 +1,6 @@
 <template>
 	<div class="search-page custom-page">
-		<SearchTags :tags="tags" />
+		<SearchTags :tags="tags" v-if="tags.length > 0" />
 		<div class="search-page__title-area custom-container">
 			<h3 class="main-page__section-title">Результаты поиска</h3>
 			<div class="search-page__title-area__buttons" v-if="getSearchResult && getSearchResult.length > 1">
@@ -13,6 +13,14 @@
 					<img src="~/static/pics/search/map_gray.svg" alt="Вид: Карта" v-show="!showCardsOrMap">
 				</button>
 			</div>
+		</div>
+		<div class="favorites-page__favorites-types custom-container" v-show="searchPageResultEventBackup.data && searchPageResultEventBackup.data.list.length > 0">
+			<button class="favorites-page__favorites-type" @click="showOnlyBeaches()" :class="{ active: !showBeachesOrEvents }">
+				Пляжи
+			</button>
+			<button class="favorites-page__favorites-type" @click="showOnlyEvents()" :class="{ active: showBeachesOrEvents }">
+				Мероприятия
+			</button>
 		</div>
 		<div class="custom-container search-page__empty" v-if="!getSearchResult || getSearchResult.length <= 1">
 			<div class="favorites-page__visited-empty">К сожалению по Вашему запросу ничего не найдено.<br>Попробуйте изменить запрос, или начните <a href="/" @click.prevent="$bus.goTo('/', $router)">сначала</a></div>
@@ -39,6 +47,7 @@
 		computed: {
 			...mapGetters('search', ['getSearchResult']),
 			...mapState('search', ['searchParams']),
+			...mapState('search', ['searchPageResultEventBackup']),
 			...mapState('search', ['query'])
 		},
 
@@ -59,7 +68,8 @@
 			return {
 				showCardsOrMap: false, // cards: false, map: true
 				mapShownForTheFirstTime: false,
-				tags: []
+				tags: [],
+				showBeachesOrEvents: false // beaches: false, events: true
 			}
 		},
 
@@ -77,7 +87,7 @@
 		},
 
 		methods: {
-			...mapMutations('search', ['updateSearchParam', 'updateInput']),
+			...mapMutations('search', ['updateSearchParam', 'updateInput', 'showBeaches', 'showEvents']),
 			...mapActions('search', ['search', 'searchQuery']),
 
 			showMap() {
@@ -88,9 +98,23 @@
 				}
 			},
 
+			showOnlyBeaches() {
+				this.showBeachesOrEvents = false;
+				this.showBeaches();
+			},
+
+			showOnlyEvents() {
+				this.showBeachesOrEvents = true;
+				this.showEvents();
+			},
+
 			updateQuery() {
 				let p = this.$nuxt.$route.fullPath,
-		        	query = decodeURIComponent( p.replace('/search', '').replace('/', '').replace('?', '').replace('q=', '')).split('&');
+		        	query = decodeURIComponent(p.replace('/search', '').replace('/', '').replace('?', '').replace('q=', '')).split('&');
+
+		        if (!p.includes('?q='))
+		        	return;
+
 		        if (query[0].length > 0) {
 		        	this.updateInput(query[0]);
 					this.searchQuery();

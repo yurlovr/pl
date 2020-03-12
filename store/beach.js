@@ -131,9 +131,10 @@ export const getters = {
 
             sideMapWeatherData: {
                 title: state.beach.data.item.NAME,
+                date: state.beach.data.item.WEATHER.DATE,
                 pos: (state.beach.data.item.COORDINATES != '') ? state.beach.data.item.COORDINATES.split(',').map(v => parseFloat(v)) : [],
-                waterTemp: state.beach.data.item.TEMP.WATER,
-                airTemp: state.beach.data.item.TEMP.AIR
+                waterTemp: state.beach.data.item.WEATHER.TEMP.WATER,
+                airTemp: state.beach.data.item.WEATHER.TEMP.AIR
             },
 
             ptData: {
@@ -292,7 +293,7 @@ export const getters = {
         for (let i = 0; i < state.similarBeaches.data.list.length; i++) {
             if (state.beach.data.item.ID != state.similarBeaches.data.list[i].ID)
                 ret.similarBeaches.beachSliderData.cardData.push({
-                    tempWater: state.similarBeaches.data.list[i].TEMP ? state.similarBeaches.data.list[i].TEMP.WATER : 0,
+                    tempWater: state.similarBeaches.data.list[i].WEATHER.TEMP ? state.similarBeaches.data.list[i].WEATHER.TEMP.WATER : 0,
                     paid: state.similarBeaches.data.list[i].PAID,
                     rating: parseFloat(state.similarBeaches.data.list[i].AVERAGE_RATING),
                     title: state.similarBeaches.data.list[i].NAME,
@@ -323,7 +324,7 @@ export const getters = {
                 title: 'Инфраструктура',
                 hash: 'infra'
             });
-        if (ret.about.length > 1 && ret.about[1].length > 0)
+        if (ret.about.length > 1 && ret.about[1].paragraph && ret.about[1].paragraph.length > 0)
             ret.sections.push({
                 title: 'О пляже',
                 hash: 'about'
@@ -365,7 +366,7 @@ export const getters = {
         });
         ret.sections.push({
             title: 'Фото посетителей',
-            hash: 'visitorPics'
+            hash: 'visitor-pics'
         });
         if (ret.similarBeaches.beachSliderData.cardData.length > 0)
             ret.sections.push({

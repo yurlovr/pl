@@ -6561,9 +6561,11 @@ input {
 
     &-cities {
       &__slide {
+        min-width: 160px;
+
         &__pic {
           &-area {
-            height: 70px;
+            height: 80px;
           }
         }
       }
@@ -8312,9 +8314,11 @@ input {
 
     &-cities {
       &__slide {
+        min-width: 135px;
+
         &__pic {
           &-area {
-            height: 70px;
+            height: 100px;
           }
         }
       }
@@ -8915,6 +8919,20 @@ input {
       &__info-area {
         &__button {
           width: 100%;
+        }
+      }
+    }
+  }
+
+  .slider {
+    &-cities {
+      &__slide {
+        min-width: 135px;
+
+        &__pic {
+          &-area {
+            height: 70px;
+          }
         }
       }
     }

@@ -76,18 +76,22 @@
                         this.map.geoObjects.add(step1ObjectManager);
                         this.map.geoObjects.add(step2ObjectManager);
 
+                        let goToStep2 = id => {
+                            this.$bus.$emit("changeStep", 2);
+                            step1ObjectManager.setFilter('id < 0'); // hide step-1 markers
+                            step2ObjectManager.setFilter(''); // show step-2 markers
+                            setTimeout(this.onResize, 100);
+                            this.zoom = 12;
+                            this.map.setCenter(this.data.addressBeaches[id].clusterCenter,
+                            this.zoom);
+                            this.step = 2;
+                        }
+
                         // going to step 2
                         let onStep1ObjectEvent = (e) => {
                             const objectId = e.get('objectId');
                             if (e.get('type') == 'click') {
-                                this.$bus.$emit("changeStep", 2);
-                                step1ObjectManager.setFilter('id < 0'); // hide step-1 markers
-                                step2ObjectManager.setFilter(''); // show step-2 markers
-                                setTimeout(this.onResize, 100);
-                                this.zoom = 12;
-                                this.map.setCenter(this.data.addressBeaches[objectId].clusterCenter,
-                                this.zoom);
-                                this.step = 2;
+                                goToStep2(objectId);
                             }
                         }
 
@@ -260,6 +264,11 @@
 
                                 step2CounterForChosen++;
                             }
+                        }
+
+                        if (this.data.geo) {
+                            goToStep2(this.data.geo.id);
+                            console.log('xa')
                         }
 
                         document.getElementById('go-to-step-1-button').addEventListener('click', () => {

@@ -63,6 +63,7 @@ export default {
   },
 
   async fetch({ store }) {
+    await store.dispatch('main/getGeo');
     await store.dispatch('main/getPopularBeaches');
     await store.dispatch('main/getCitiesTop');
     await store.dispatch('main/getEvents');

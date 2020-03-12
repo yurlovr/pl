@@ -12,7 +12,7 @@
 					<BeachAvgRating :data="beachData.avgRating" v-if="beachData.avgRating.ratings.length > 0" class="beach-page__avg-rating__mobile" />
 					<BeachQuickData id="infra" :title="'Инфраструктура пляжа'" :data="beachData.infraData" v-if="beachData.infraData.length > 0" />
 					<BeachEventMapWeather :data="beachData.sideMapWeatherData" class="beach-event__map-weather__tablet" />
-					<BeachEventAbout id="about" :data="beachData.about" v-if="beachData.about.length > 1 && beachData.about[1].length > 0" />
+					<BeachEventAbout id="about" :data="beachData.about" v-if="beachData.about.length > 1 && beachData.about[1].paragraph && beachData.about[1].paragraph.length > 0" />
 					<BeachEventMapWeather :data="beachData.sideMapWeatherData" v-if="beachData.sideMapWeatherData.pos.length > 0" class="beach-event__map-weather__mobile" />
 					<BeachQuickData id="services" :title="'Услуги и аренда'" :data="beachData.servicesData" v-if="beachData.servicesData.length > 0" />
 					<BeachEventParkingsTransport id="pt" :data="beachData.ptData" v-if="beachData.ptData.parkings.auto.length > 0 || beachData.ptData.parkings.bus.length > 0" />
@@ -30,7 +30,7 @@
 			</div>
 		</div>
 		<div class="main-page__white-wrapper beach-event__visitor-pics-wrapper">
-			<BeachEventVisitorPics id="visitorPics" :data="beachData.visitorPics" :type="'beach'" :typeId="beachData.mainData.beachId" />
+			<BeachEventVisitorPics id="visitor-pics" :data="beachData.visitorPics" :type="'beach'" :typeId="beachData.mainData.beachId" />
 		</div>
 		<BeachSliderArea id="similar-beaches" class="beach-event__similar-beaches" :data="beachData.similarBeaches" v-if="beachData.similarBeaches.beachNumber > 0" />
 	</div>
