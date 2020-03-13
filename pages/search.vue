@@ -78,8 +78,7 @@
 		},
 
 		mounted() {
-			this.updateQuery();
-			if (this.query.length > 1) return;
+			if (this.updateQuery()) return;
 
 			this.updateTags();
 			if (this.tags.length > 0)
@@ -113,7 +112,7 @@
 		        	query = decodeURIComponent(p.replace('/search', '').replace('/', '').replace('?', '').replace('q=', '')).split('&');
 
 		        if (!p.includes('?q='))
-		        	return;
+		        	return false;
 
 		        if (query[0].length > 0) {
 		        	this.updateInput(query[0]);

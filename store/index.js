@@ -62,7 +62,7 @@ export const getters = {
 
         for (let i = 0; i < state.beaches.data.list.length; i++) {
             ret.push({
-                tempWater: state.beaches.data.list[i].TEMP.WATER,
+                tempWater: state.beaches.data.list[i].WEATHER.TEMP.WATER,
                 showFavorite: true,
                 paid: state.beaches.data.list[i].PAID,
                 rating: parseFloat(state.beaches.data.list[i].AVERAGE_RATING),
@@ -86,7 +86,7 @@ export const getters = {
 
         for (let i = 0; i < state.events.data.list.length; i++) {
             ret.push({
-                tempWater: state.events.data.list[i].BEACH.TEMP.WATER,
+                tempWater: state.events.data.list[i].BEACH.WEATHER.TEMP.WATER,
                 showFavorite: true,
                 paid: state.events.data.list[i].PAID,
                 rating: parseFloat(state.events.data.list[i].AVERAGE_RATING),

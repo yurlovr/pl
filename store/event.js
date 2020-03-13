@@ -162,7 +162,7 @@ export const getters = {
             stops = state.event.data.item.BEACH.INFRASTRUCTURES.filter(v => v.CODE == 'ostanovki-obshchestvennogo-transporta')
         for (let i = 0; i < parkings.length; i++) {
             ret.ptData.parkings.auto.push({
-                pos: parkings[i].COORDINATES.split(',').map(Number),
+                pos: parkings[i].COORDINATES ? parkings[i].COORDINATES.split(',').map(Number) : [],
                 title: parkings[i].DESCRIPTION,
                 type: 'Автомобильная парковка',
                 mode: '',
@@ -172,7 +172,7 @@ export const getters = {
         }
         for (let i = 0; i < stops.length; i++) {
             ret.ptData.parkings.bus.push({
-                pos: stops[i].COORDINATES.split(',').map(Number),
+                pos: stops[i].COORDINATES ? stops[i].COORDINATES.split(',').map(Number) : [],
                 title: stops[i].DESCRIPTION,
                 buses: '',
                 taxi: ''

@@ -10,12 +10,13 @@ eventBus.install = function (Vue) {
 			Vue.prototype.$bus.$emit('showHeaderBgAndBar');
 			Vue.prototype.$bus.$emit('tempHideHeaderBgAndBar');
 		}
-		if (transition != false)
+		if (transition != false && link != router.currentRoute.fullPath)
 			Vue.prototype.$bus.$emit('transition');
 		Vue.prototype.$bus.$emit('hideParams');
 		setTimeout(() => {
 			if (link.split('/')[0] != '')
 				link = `/${link}`;
+		console.log(link, router)
 			router.push(link)
 		}, 500);
 	};
