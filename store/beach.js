@@ -46,7 +46,13 @@ export const mutations = {
 
 export const actions = {
     async getBeach({commit, state}, id) {
-        commit('SET_BEACH', await this.$axios.$get(`/beach/item?id=${id}`));
+        let error;
+        commit('SET_BEACH', await this.$axios.$get(`/beach/item?id=${id}`).catch((e) => {
+            console.log(e)
+            error = 404;
+            return {};
+        }));
+        if (error) return error;
         commit('SET_EVENTS', await this.$axios.$get(`/event/list?beachId=${id}`));
         commit('SET_BARS_N_RESTOS', await this.$axios.$get(`/restaurant/list?beachId=${id}`));
         commit('SET_OPINIONS', await this.$axios.$get(`/opinion/list?entityId=${id}`));

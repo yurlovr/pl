@@ -78,13 +78,10 @@
 			BeachEventSideButtons
 		},
 
-		validate({ params }) {
-		    // Must be a number
-		    return /^\d+$/.test(params.id);
-		},
-
 		async fetch({ store, params, redirect }) {
-			await store.dispatch('beach/getBeach', params.id);
+			let res = await store.dispatch('beach/getBeach', params.id);
+			if (res == 404)
+				redirect('/404');
 		},
 
 		computed: {

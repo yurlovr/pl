@@ -87,13 +87,10 @@
 			}
 		},
 
-		validate({ params }) {
-		    // Must be a number
-		    return /^\d+$/.test(params.id);
-		},
-
-		async fetch({ store, params }) {
-			await store.dispatch('event/getEvent', params.id);
+		async fetch({ store, params, redirect }) {
+			let res = await store.dispatch('event/getEvent', params.id);
+			if (res == 404)
+				redirect('/404');
 		},
 
 		computed: {
