@@ -13,7 +13,7 @@
 				</div>
 				<div class="slider-beach-event__beach-closed" v-if="data.isBeachClosed">
 					<div class="slider-beach-event__beach-closed__inner">
-						<div class="slider-beach-event__beach-closed__tooltip">
+						<div class="slider-beach-event__beach-closed__tooltip" v-if="data.beachClosedTooltip">
 							<span>{{ data.beachClosedTooltip }}</span>
 						</div>
 					</div>

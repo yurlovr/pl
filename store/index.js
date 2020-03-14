@@ -11,8 +11,6 @@ export const state = () => ({
     api: 'https://crimea.air-dev.agency'
 })
 
-// TODO format beaches
-
 export const mutations = {
     SET_ALL_BEACHES: (state, payload) => {
         state.beaches = payload;

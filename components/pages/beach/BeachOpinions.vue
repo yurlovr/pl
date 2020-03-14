@@ -7,7 +7,7 @@
 					<div v-for="(person, i) in data" :key="i" class="swiper-slide beach-page__opinions__people__slide" :class="{ active: activeIndex == i }" @click="changeSlide(i)">
 						<div class="beach-page__opinions__people__pic-area">
 							<img :src="person.pic" class="beach-page__opinions__people__pic">
-							<a href="#" class="beach-page__opinions__people__vk"><img src="~/static/pics/beach/vk.svg"></a>
+							<a :href="person.social" class="beach-page__opinions__people__vk" v-if="person.social"><img src="~/static/pics/beach/vk.svg"></a>
 						</div>
 						<span v-html="person.name.replace(' ', '<br>')"></span>
 					</div>

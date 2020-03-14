@@ -83,7 +83,7 @@
 		    return /^\d+$/.test(params.id);
 		},
 
-		async fetch({ store, params }) {
+		async fetch({ store, params, redirect }) {
 			await store.dispatch('beach/getBeach', params.id);
 		},
 

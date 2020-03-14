@@ -2,6 +2,7 @@ export const state = () => ({
     event: [],
     reviews: [],
     visitorPics: [],
+    searchConfig: {},
     api: 'https://crimea.air-dev.agency'
 })
 
@@ -16,11 +17,16 @@ export const mutations = {
 
     SET_VISITOR_PICS: (state, payload) => {
         state.visitorPics = payload;
+    },
+
+    SET_SEARCH_CONFIG: (state, payload) => {
+        state.searchConfig = payload;
     }
 }
 
 export const actions = {
     async getEvent({commit}, id) {
+        commit('SET_SEARCH_CONFIG', await this.$axios.$get(`/search/config`));
         commit('SET_EVENT', await this.$axios.$get(`/event/item?id=${id}`));
         commit('SET_REVIEWS', await this.$axios.$get(`/review/list?entityId=${id}`));
         commit('SET_VISITOR_PICS', await this.$axios.$get(`/socialPhoto/list?entityId=${id}&count=10`))
@@ -97,7 +103,7 @@ export const getters = {
             otherEvents: {
                 title: 'Другие мероприятия на этом пляже',
                 showMore: {
-                    id: 19,
+                    id: Object.values(state.searchConfig.data.tags).find(v => v.NAME == 'Мероприятия') ? Object.values(state.searchConfig.data.tags).find(v => v.NAME == 'Мероприятия').ID : -1,
                     type: 'tags',
                     value: true
                 },
@@ -201,6 +207,7 @@ export const getters = {
                 mainLink: `event/${otherEvents[i].ID}`,
                 beachLink: `beach/${otherEvents[i].BEACH.ID}`,
                 location: otherEvents[i].BEACH.CITY.NAME,
+                locationId: otherEvents[i].BEACH.CITY.ID,
                 pic: state.api + otherEvents[i].PHOTOS[0],
                 eventId: otherEvents[i].ID,
                 showFavorite: true

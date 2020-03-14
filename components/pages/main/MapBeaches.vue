@@ -4,7 +4,7 @@
 			<perfect-scrollbar class="scroll-area" :options="options">
 				<div class="map-beaches-main__card" v-for="(beach, i) in getBeaches" :id="`smc-${i}`" :class="{ active : activeCard == i}">
 					<div class="map-beaches-main__card__pic-area">
-						<a :href="`/beach/${beach.id}`" @click.prevent="$bus.goTo(`/beach/${beach.id}`, $router)">
+						<a :href="`/beach/${beach.beachId}`" @click.prevent="$bus.goTo(`/beach/${beach.beachId}`, $router)">
 							<img :src="beach.pics[0]">
 						</a>
 						<AddToFavorites :data="beach" />
@@ -14,7 +14,7 @@
 							<img src="~/static/pics/global/svg/star.svg" alt="Рейтинг">
 							<span>{{ beach.rating.toFixed(1) }}</span>
 						</div>
-						<a :href="`/beach/${beach.id}`" @click.prevent="$bus.goTo(`/beach/${beach.id}`, $router)">
+						<a :href="`/beach/${beach.beachId}`" @click.prevent="$bus.goTo(`/beach/${beach.beachId}`, $router)">
 							<h3 class="map-beaches-main__card__title">{{ beach.title }}</h3>
 						</a>
 						<a :href="`/search?city=${beach.locationId}`" @click.prevent="searchCity(beach)">

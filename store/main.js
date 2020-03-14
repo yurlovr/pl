@@ -63,7 +63,7 @@ export const mutations = {
         state.banners = payload;
 
         if (state.banners.data)
-            state.banners.data.list.sort((a,b) => (parseInt(a.POSITION)-parseInt(b.POSITION)));
+            state.banners.data.list.sort((a,b) => (parseInt(a.POSITION) - parseInt(b.POSITION)));
     },
 
     SET_GEO: (state, payload) => {
@@ -133,16 +133,28 @@ export const getters = {
         	title: 'Самые популярные пляжи' + (state.geo.data ? ' ' + state.geo.data.city.NAME : ''),
             subtitle: 'Пологий берег, плавный вход в воду, безопасность и современная инфраструктура',
             beachNumber: Math.min(state.beachesTop.data.list.length, 45),
-            showMore: {
+            showMore: [{
                 id: state.searchData.data.tags.find(v => v.NAME == 'Популярные').ID,
                 value: true,
                 type: 'tags'
-            },
+            }],
             beachSliderData: {
                 slideNumber: 4,
                 cardData: []
             }
     	}
+
+        // adding geotargeting beachTop link to showMore
+        if (state.geo.data) {
+            ret.showMore.push({
+                param: 'cities',
+                value: {
+                    id: state.beachesTop.data.list[0].CITY.ID,
+                    title: state.beachesTop.data.list[0].CITY.NAME
+                },
+                query: 'city'
+            })
+        }
 
         // adding formatted beaches
         for (let i = 0; i < Math.min(state.beachesTop.data.list.length, 10); i++) {
@@ -162,6 +174,46 @@ export const getters = {
         }
 
     	return ret;
+    },
+
+    familyData: (state) => {
+        if (!state.collection.data) return null;
+        
+        let family = state.collection.data.list.find(v => v.CODE == 'for_all_family');
+
+        let ret = {
+            title: 'Отдых для всей семьи',
+            subtitle: 'Пологий берег, плавный вход в воду, безопасность и современная инфраструктура',
+            beachNumber: Math.min(family.BEACHES.length, 45),
+            showMore: [{
+                id: state.searchData.data.tags.find(v => v.NAME == 'Отдых для всей семьи').ID,
+                value: true,
+                type: 'tags'
+            }],
+            beachSliderData: {
+                slideNumber: 6,
+                cardData: []
+            }
+        }
+
+        // adding formatted beaches
+        for (let i = 0; i < Math.min(10, family.BEACHES.length); i++) {
+            ret.beachSliderData.cardData.push({
+                temperature: family.BEACHES[i].WEATHER.TEMP.WATER,
+                showFavorite: true,
+                paid: family.BEACHES[i].PAID,
+                rating: parseFloat(family.BEACHES[i].AVERAGE_RATING),
+                title: family.BEACHES[i].NAME,
+                location: family.BEACHES[i].CITY.NAME,
+                locationId: family.BEACHES[i].CITY.ID,
+                pic: state.api + family.BEACHES[i].PHOTOS[0],
+                mainLink: `beach/${family.BEACHES[i].ID}`,
+                beachLink: `beach/${family.BEACHES[i].ID}`,
+                beachId: family.BEACHES[i].ID
+            });
+        }
+
+        return ret;
     },
 
     citiesTopData: (state) => {
@@ -247,60 +299,35 @@ export const getters = {
         return ret;
     },
 
-    familyData: (state) => {
-        if (!state.collection.data) return null;
-        
-        let family = state.collection.data.list.find(v => v.CODE == 'for_all_family');
-
-        let ret = {
-            title: 'Отдых для всей семьи',
-            subtitle: 'Пологий берег, плавный вход в воду, безопасность и современная инфраструктура',
-            beachNumber: Math.min(family.BEACHES.length, 45),
-            showMore: {
-                id: state.searchData.data.tags.find(v => v.NAME == 'Отдых для всей семьи').ID,
-                value: true,
-                type: 'tags'
-            },
-            beachSliderData: {
-                slideNumber: 6,
-                cardData: []
-            }
-        }
-
-        // adding formatted beaches
-        for (let i = 0; i < Math.min(10, family.BEACHES.length); i++) {
-            ret.beachSliderData.cardData.push({
-                temperature: family.BEACHES[i].WEATHER.TEMP.WATER,
-                showFavorite: true,
-                paid: family.BEACHES[i].PAID,
-                rating: parseFloat(family.BEACHES[i].AVERAGE_RATING),
-                title: family.BEACHES[i].NAME,
-                location: family.BEACHES[i].CITY.NAME,
-                locationId: family.BEACHES[i].CITY.ID,
-                pic: state.api + family.BEACHES[i].PHOTOS[0],
-                mainLink: `beach/${family.BEACHES[i].ID}`,
-                beachLink: `beach/${family.BEACHES[i].ID}`,
-                beachId: family.BEACHES[i].ID
-            });
-        }
-
-        return ret;
-    },
-
     activeRestData: (state) => {
         if (!state.collectionList.data) return null;
 
         let activeRest = state.collectionList.data.list.find(v => v.CODE == 'active-leisure');
 
-        let ret = [];
+        let ret = [], curFilters, curFilter;
 
         for (let i = 0; i < activeRest.COLLECTIONS.length; i++) {
             ret.push({
-                link: '#',
                 title: activeRest.COLLECTIONS[i].NAME,
                 pic: activeRest.COLLECTIONS[i].PREVIEW_PICTURE ? (state.api + activeRest.COLLECTIONS[i].PREVIEW_PICTURE) : null,
-                beachNumber: activeRest.COLLECTIONS[i].BEACHES.length
+                beachNumber: activeRest.COLLECTIONS[i].BEACHES.length,
+                filter: []
             });
+
+            curFilters = Object.entries(activeRest.COLLECTIONS[i].SEARCH_FILTER)[0]
+            if(curFilters[1]) {
+                for (let j = 0; j < curFilters[1].length; j++) {
+                    curFilter = curFilters[0].toLowerCase().split('_');
+                    for (let k = 1; k < curFilter.length; k++) { // don't touch the first value
+                        curFilter[k] = curFilter[k].charAt(0).toUpperCase() + curFilter[k].slice(1);
+                    }
+                    ret[i].filter.push({
+                        type: curFilter.join(''),
+                        id: curFilters[1][j],
+                        value: true
+                    });
+                }
+            }
         }
 
         return ret;
@@ -314,7 +341,7 @@ export const getters = {
         let ret = {
             title: beachType.NAME,
             cards: []
-        };
+        }, curFilters, curFilter;
 
         for (let i = 0; i < beachType.COLLECTIONS.length; i++) {
             ret.cards.push({
@@ -322,8 +349,23 @@ export const getters = {
                 pic: beachType.COLLECTIONS[i].PREVIEW_PICTURE ? (state.api + beachType.COLLECTIONS[i].PREVIEW_PICTURE) : null,
                 beachNumber: beachType.COLLECTIONS[i].BEACHES.length,
                 description: beachType.COLLECTIONS[i].DESCRIPTION,
-                id: beachType.COLLECTIONS[i].ID
+                filter: []
             });
+
+            curFilters = Object.entries(beachType.COLLECTIONS[i].SEARCH_FILTER)[0]
+            if(curFilters[1]) {
+                for (let j = 0; j < curFilters[1].length; j++) {
+                    curFilter = curFilters[0].toLowerCase().split('_');
+                    for (let k = 1; k < curFilter.length; k++) { // don't touch the first value
+                        curFilter[k] = curFilter[k].charAt(0).toUpperCase() + curFilter[k].slice(1);
+                    }
+                    ret.cards[i].filter.push({
+                        type: curFilter.join(''),
+                        id: curFilters[1][j],
+                        value: true
+                    });
+                }
+            }
         }
 
         return ret;
@@ -416,7 +458,7 @@ export const getters = {
                     title: clusters[i][j].NAME,
                     location: clusters[i][j].CITY.NAME,
                     locationId: clusters[i][j].CITY.ID,
-                    id: clusters[i][j].ID,
+                    beachId: clusters[i][j].ID,
                     pics: [ ...clusters[i][j].PHOTOS.map(v => state.api + v) ],
                     showFavorite: true,
                     paid: clusters[i][j].PAID

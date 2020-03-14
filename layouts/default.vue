@@ -72,6 +72,11 @@
       }
 
       watchForHover();
+    },
+
+    beforeRouteLeave(to, from, next) {
+      this.$bus.$emit('transition');
+      setTimeout(() => { next() }, 500);
     }
   }
 </script>

@@ -4743,8 +4743,9 @@ input {
       font-size: 20px;
       font-weight: 700;
       line-height: 120%;
-      color: #393e48;
+      color: #393e48 !important;
       margin-bottom: 7px;
+      display: block;
     }
 
     &__location {
@@ -5439,8 +5440,8 @@ input {
           width: 50%;
           margin-bottom: 30px;
 
-          &:nth-last-child(-n+2) {
-            margin-bottom: 0;
+          &:last-of-type {
+            margin-bottom: 30px;
           }
         }
       }
@@ -6984,6 +6985,10 @@ input {
       &__infos {
         &__item {
           margin-bottom: 20px;
+
+          &:last-of-type {
+            margin-bottom: 0;
+          }
 
           &:nth-child(odd) {
             width: 100%;

@@ -59,7 +59,7 @@
 				activeIndex: 0,
 				max: 10,
 				page: 1,
-				perPage: 2
+				perPage: 5
 			}
 		},
 

@@ -43,7 +43,6 @@ export const state = () => ({
                 ]
             },
             price: {
-                // no need for id because it is controlled by boolean (true for paid, false for free, and nothing for nothing)
                 value: {
                     title: 'Стоимость',
                     id: -1
@@ -125,6 +124,7 @@ export const state = () => ({
             infrastructures: []
         }
     },
+    searchConfig: {},
     searchPageResultEventBackup: [],
     searchPageResultBeachBackup: [],
     searchPageResult: [],
@@ -140,6 +140,8 @@ export const mutations = {
         if (state.init)
             return;
         state.init = true;
+
+        state.searchConfig = payload;
 
         // initializing the first row
         for (let i = 0; i < payload.data.cities.length; i++) {
@@ -321,15 +323,15 @@ export const mutations = {
         })
         state.searchParams.checkboxes.addTags.forEach((e) => {
             if (e.value)
-                state.query += `tags[]=${e.id}&`;
+                state.query += `addTags[]=${e.id}&`;
         })
         state.searchParams.checkboxes.services.forEach((e) => {
             if (e.value)
-                state.query += `tags[]=${e.id}&`;
+                state.query += `services[]=${e.id}&`;
         })
         state.searchParams.checkboxes.infrastructures.forEach((e) => {
             if (e.value)
-                state.query += `tags[]=${e.id}&`;
+                state.query += `infrastructures[]=${e.id}&`;
         })
 
         // cleaning up the last & or ? if it's empty

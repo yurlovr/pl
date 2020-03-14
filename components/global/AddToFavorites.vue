@@ -56,7 +56,6 @@
 						});
 						this.$bus.$emit('favoriteBeachAdded', this.data.beachId);
 					}
-					console.log(this.config)
 				} else if (this.data.eventId) {
 					if (this.$cookies.get(`favorites.events.${this.data.eventId}`)) {
 						this.$cookies.set(`favorites.events.${this.data.eventId}`, true, {

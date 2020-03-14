@@ -194,7 +194,7 @@
                                                 <img src="/pics/global/svg/star.svg" alt="Рейтинг">
                                                 <span>${this.data.addressBeaches[i].beaches[j].rating.toFixed(1)}</span>
                                             </span>
-                                            <h3 class="map-popup__title">${this.data.addressBeaches[i].beaches[j].title}</h3>
+                                            <a href="/beach/${this.data.addressBeaches[i].beaches[j].beachId}" class="map-popup__title">${this.data.addressBeaches[i].beaches[j].title}</a>
                                             <h5 class="map-popup__location">${this.data.addressBeaches[i].beaches[j].location}</h5>
                                         </div>
                                     </div>
@@ -303,7 +303,7 @@
                             this.$bus.$emit('releaseSelection');
                         }
                       })
-                      .catch(error => console.log('Failed to load Yandex Maps, ', error))
+                      .catch(error => console.error('Failed to load Yandex Maps, ', error))
                 }, 1);
             },
 

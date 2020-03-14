@@ -98,7 +98,7 @@ export default {
               });
             }
           })
-          .catch(error => console.log('Failed to load Yandex Maps, ', error))
+          .catch(error => console.error('Failed to load Yandex Maps, ', error))
       }, 1);
     },
 
