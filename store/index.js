@@ -85,13 +85,14 @@ export const getters = {
         for (let i = 0; i < state.events.data.list.length; i++) {
             ret.push({
                 tempWater: state.events.data.list[i].BEACH.WEATHER.TEMP.WATER,
+                date: `${state.events.data.list[i].ACTIVE_FROM} ${state.events.data.list[i].ACTIVE_TO ? '-' : ''} ${state.events.data.list[i].ACTIVE_TO ? state.events.data.list[i].ACTIVE_TO : ''}`,
                 showFavorite: true,
+                beach: state.events.data.list[i].BEACH.NAME,
                 paid: state.events.data.list[i].PAID,
-                rating: parseFloat(state.events.data.list[i].AVERAGE_RATING),
                 title: state.events.data.list[i].NAME,
                 location: state.events.data.list[i].BEACH.CITY.NAME,
                 pic: state.api + state.events.data.list[i].PHOTOS[0],
-                mainLink: `beach/${state.events.data.list[i].ID}`,
+                mainLink: `event/${state.events.data.list[i].ID}`,
                 beachLink: `beach/${state.events.data.list[i].ID}`,
                 locationId: state.events.data.list[i].BEACH.CITY.ID,
                 eventId: state.events.data.list[i].ID

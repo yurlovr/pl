@@ -210,6 +210,8 @@ export const getters = {
                 title: otherEvents[i].NAME,
                 date: `${otherEvents[i].ACTIVE_FROM} ${otherEvents[i].ACTIVE_TO ? '-' : ''} ${otherEvents[i].ACTIVE_TO ? otherEvents[i].ACTIVE_TO : ''}`,
                 beach: otherEvents[i].BEACH.NAME,
+                paid: otherEvents[i].PAID,
+                tempWater: otherEvents[i].BEACH.WEATHER.TEMP.WATER,
                 mainLink: `event/${otherEvents[i].ID}`,
                 beachLink: `beach/${otherEvents[i].BEACH.ID}`,
                 location: otherEvents[i].BEACH.CITY.NAME,
