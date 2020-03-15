@@ -63,8 +63,7 @@ export default {
   },
 
   async fetch({ store }) {
-    await store.dispatch('main/getGeo');
-    await store.dispatch('main/getPopularBeaches');
+    await store.dispatch('main/getPopularBeachesAndSearchAndGeo');
     await store.dispatch('main/getCitiesTop');
     await store.dispatch('main/getEvents');
     await store.dispatch('main/getDynamicSlider');
@@ -74,7 +73,6 @@ export default {
     await store.dispatch('main/getCollectionList');
     await store.dispatch('main/getBanners');
     await store.dispatch('main/getMap');
-    await store.dispatch('main/getSearchData');
   },
 
   methods: {

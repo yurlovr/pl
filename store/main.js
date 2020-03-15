@@ -72,15 +72,13 @@ export const mutations = {
 }
 
 export const actions = {
-    async getPopularBeaches({commit, state}) {
-        if (state.geo.data)
-            commit('SET_POPULAR_BEACH', await this.$axios.$get(`/beach/list?city=${state.geo.data.city.ID}&count=10`));
-        else
-            commit('SET_POPULAR_BEACH', await this.$axios.$get('/beach/top?count=10'));
-    },
-
-    async getGeo({commit}) {
+    async getPopularBeachesAndSearchAndGeo({commit, state}) {
         commit('SET_GEO', await this.$axios.$get('/geo/item'));
+        commit('SET_SEARCH_DATA', await this.$axios.$get('/search/config/'));
+        if (state.geo && state.geo.data && state.geo.data.city)
+            commit('SET_POPULAR_BEACH', await this.$axios.$get(`/beach/list?city=${state.geo.data.city.ID}&count=10`));
+        if (!state.beachesTop.data)
+            commit('SET_POPULAR_BEACH', await this.$axios.$get('/beach/top?count=10'));
     },
 
     async getCitiesTop({commit}) {
@@ -118,10 +116,6 @@ export const actions = {
 
     async getMap({commit}) {
         commit('SET_MAP', await this.$axios.$get('/beach/clusters/'));
-    },
-
-    async getSearchData({commit}) {
-        commit('SET_SEARCH_DATA', await this.$axios.$get('/search/config/'));
     }
 }
 
@@ -130,11 +124,11 @@ export const getters = {
         if (!state.beachesTop.data) return null;
 
         let ret = {
-        	title: 'Самые популярные пляжи' + (state.geo.data ? ' ' + state.geo.data.city.NAME : ''),
+        	title: 'Самые популярные пляжи' + (state.geo.data && state.geo.data.city ? ' ' + state.geo.data.city.NAME : ''),
             subtitle: 'Пологий берег, плавный вход в воду, безопасность и современная инфраструктура',
             beachNumber: Math.min(state.beachesTop.data.list.length, 45),
             showMore: [{
-                id: state.searchData.data.tags.find(v => v.NAME == 'Популярные').ID,
+                id: state.searchData.data.tags.find(v => v.NAME == 'Популярные') ? state.searchData.data.tags.find(v => v.NAME == 'Популярные').ID : -1,
                 value: true,
                 type: 'tags'
             }],
@@ -149,7 +143,7 @@ export const getters = {
             ret.showMore.push({
                 param: 'cities',
                 value: {
-                    id: state.beachesTop.data.list[0].CITY.ID,
+                    id: state.beachesTop.data.list[0].CITY ? state.beachesTop.data.list[0].CITY.ID : -1,
                     title: state.beachesTop.data.list[0].CITY.NAME
                 },
                 query: 'city'
@@ -166,10 +160,10 @@ export const getters = {
                 title: state.beachesTop.data.list[i].NAME,
                 location: state.beachesTop.data.list[i].CITY.NAME,
                 pic: state.api + state.beachesTop.data.list[i].PHOTOS[0],
-                mainLink: `beach/${state.beachesTop.data.list[i].ID}`,
-                beachLink: `beach/${state.beachesTop.data.list[i].ID}`,
-                locationId: state.beachesTop.data.list[i].CITY.ID,
-                beachId: state.beachesTop.data.list[i].ID
+                mainLink: state.beachesTop.data.list[i] ? `beach/${state.beachesTop.data.list[i].ID}` : '',
+                beachLink: state.beachesTop.data.list[i] ? `beach/${state.beachesTop.data.list[i].ID}` : '',
+                locationId: state.beachesTop.data.list[i].CITY ? state.beachesTop.data.list[i].CITY.ID : -1,
+                beachId: state.beachesTop.data.list[i] ? state.beachesTop.data.list[i].ID : -1
             });
         }
 
@@ -186,7 +180,7 @@ export const getters = {
             subtitle: 'Пологий берег, плавный вход в воду, безопасность и современная инфраструктура',
             beachNumber: Math.min(family.BEACHES.length, 45),
             showMore: [{
-                id: state.searchData.data.tags.find(v => v.NAME == 'Отдых для всей семьи').ID,
+                id: state.searchData.data.tags.find(v => v.NAME == 'Отдых для всей семьи') ? state.searchData.data.tags.find(v => v.NAME == 'Отдых для всей семьи').ID : -1,
                 value: true,
                 type: 'tags'
             }],
@@ -205,11 +199,11 @@ export const getters = {
                 rating: parseFloat(family.BEACHES[i].AVERAGE_RATING),
                 title: family.BEACHES[i].NAME,
                 location: family.BEACHES[i].CITY.NAME,
-                locationId: family.BEACHES[i].CITY.ID,
+                locationId: family.BEACHES[i].CITY ? family.BEACHES[i].CITY.ID : -1,
                 pic: state.api + family.BEACHES[i].PHOTOS[0],
-                mainLink: `beach/${family.BEACHES[i].ID}`,
-                beachLink: `beach/${family.BEACHES[i].ID}`,
-                beachId: family.BEACHES[i].ID
+                mainLink: family.BEACHES[i] ? `beach/${family.BEACHES[i].ID}` : '',
+                beachLink: family.BEACHES[i] ? `beach/${family.BEACHES[i].ID}` : '',
+                beachId: family.BEACHES[i] ? family.BEACHES[i].ID : -1
             });
         }
 
@@ -225,7 +219,7 @@ export const getters = {
             if (state.cities.data.list[i].COUNT_BEACHES > 0)
                 ret.push({
                     city: state.cities.data.list[i].NAME,
-                    cityId: state.cities.data.list[i].ID,
+                    cityId: state.cities.data.list[i] ? state.cities.data.list[i].ID : -1,
                     beachNumber: state.cities.data.list[i].COUNT_BEACHES,
                     pic: state.cities.data.list[i].PREVIEW_PICTURE ? state.api + state.cities.data.list[i].PREVIEW_PICTURE : null
                 });
@@ -241,7 +235,7 @@ export const getters = {
             title: 'Ближайшие мероприятия на пляжах',
             beachNumber: Math.min(state.events.data.list.length, 45),
             showMore: {
-                id: state.searchData.data.tags.find(v => v.NAME == 'Мероприятия').ID,
+                id: state.searchData.data.tags.find(v => v.NAME == 'Мероприятия') ? state.searchData.data.tags.find(v => v.NAME == 'Мероприятия').ID : -1,
                 value: true,
                 type: 'tags'
             },
@@ -261,11 +255,11 @@ export const getters = {
                 title: state.events.data.list[i].NAME,
                 beach: state.events.data.list[i].BEACH.NAME,
                 location: state.events.data.list[i].BEACH.CITY.NAME,
-                locationId: state.events.data.list[i].BEACH.CITY.ID,
+                locationId: state.events.data.list[i].BEACH.CITY ? state.events.data.list[i].BEACH.CITY.ID : -1,
                 pic: state.api + state.events.data.list[i].PHOTOS[0],
-                mainLink: `event/${state.events.data.list[i].ID}`,
-                beachLink: `beach/${state.events.data.list[i].BEACH.ID}`,
-                eventId: state.events.data.list[i].ID
+                mainLink: state.events.data.list[i] ? `event/${state.events.data.list[i].ID}` : -1,
+                beachLink: state.events.data.list[i].BEACH ? `beach/${state.events.data.list[i].BEACH.ID}` : -1,
+                eventId: state.events.data.list[i] ? state.events.data.list[i].ID : -1
             });
         }
 
@@ -457,8 +451,8 @@ export const getters = {
                     rating: parseFloat(clusters[i][j].AVERAGE_RATING),
                     title: clusters[i][j].NAME,
                     location: clusters[i][j].CITY.NAME,
-                    locationId: clusters[i][j].CITY.ID,
-                    beachId: clusters[i][j].ID,
+                    locationId: clusters[i][j].CITY ? clusters[i][j].CITY.ID : -1,
+                    beachId: clusters[i][j] ? clusters[i][j].ID : -1,
                     pics: [ ...clusters[i][j].PHOTOS.map(v => state.api + v) ],
                     showFavorite: true,
                     paid: clusters[i][j].PAID
@@ -486,15 +480,15 @@ export const getters = {
         return [
             {
                 title: state.searchData.data.beachTypes[0].NAME,
-                id: state.searchData.data.beachTypes[0].ID
+                id: state.searchData.data.beachTypes[0] ? state.searchData.data.beachTypes[0].ID : -1
             },
             {
                 title: state.searchData.data.beachTypes[1].NAME,
-                id: state.searchData.data.beachTypes[1].ID
+                id: state.searchData.data.beachTypes[1] ? state.searchData.data.beachTypes[1].ID : -1
             },
             {
                 title: state.searchData.data.beachTypes[2].NAME,
-                id: state.searchData.data.beachTypes[2].ID
+                id: state.searchData.data.beachTypes[2] ? state.searchData.data.beachTypes[2].ID : -1
             }
         ]
     }

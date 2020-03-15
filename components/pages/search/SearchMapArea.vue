@@ -8,7 +8,7 @@
 			</client-only>
 		</div>
 		<div class="search-page__map-area__info-area__modal-bg" :class="{ active: indexToShow != -1 }" @click="closeModal()"></div>
-		<div class="search-page__map-area__info-area search-page__map-area__info-area__modal" :class="{ active: indexToShow != -1 }">
+		<div class="search-page__map-area__info-area search-page__map-area__info-area__modal" :class="{ active: indexToShow != -1 }" v-body-scroll-lock="indexToShow != -1">
 			<SearchMapCard v-if="data" :data="data[indexToShow == -1 ? 0 : indexToShow]" />
 			<div class="search-page__map-area__info-area__modal__close-button-wrapper">
 				<button class="search-page__map-area__info-area__modal__close-button" @click="closeModal()">

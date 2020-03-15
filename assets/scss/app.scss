@@ -2932,6 +2932,10 @@ input {
             }
           }
         }
+
+        .beach-event__leave-review {
+          margin-top: 0;
+        }
       }
 
       &__title {
@@ -5968,6 +5972,12 @@ input {
       }
     }
   }
+
+  .search-page {
+    &__map-area {
+      padding-left: 32px;
+    }
+  }
 }
 
 @media (max-width: 950px) {
@@ -7974,6 +7984,22 @@ input {
       }
     }
   }
+
+  .beach-event {
+    &__visitor-pics {
+      &.empty {
+        flex-direction: column;
+
+        .beach-event__visitor-pics__title {
+          margin-bottom: 15px;
+        }
+
+        .pagination-wrapper {
+          display: none !important;
+        }
+      }
+    }
+  }
 }
 
 // at 500px (MOBILE DEFAULT)
@@ -8409,6 +8435,10 @@ input {
       margin-bottom: 15px;
     }
 
+    &__container {
+      margin-bottom: 0;
+    }
+
     .pagination-wrapper {
       margin-top: 20px;
     }
@@ -8619,6 +8649,14 @@ input {
         padding: 20px 10px;
       }
     }
+
+    &__reviews {
+      &.empty {
+        .pagination-wrapper {
+          display: none !important;
+        }
+      }
+    }
   }
 
   .two-part-layout {
@@ -8655,6 +8693,18 @@ input {
       &__beach-closed {
         width: 200px;
         font-size: 20px;
+      }
+    }
+  }
+
+  .beach-event {
+    &__reviews {
+      &.empty {
+        flex-direction: column;
+
+        .beach-event__reviews__title {
+          margin-bottom: 15px;
+        }
       }
     }
   }
