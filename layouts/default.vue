@@ -6,7 +6,7 @@
     <transition
       @afterEnter="$bus.$emit('hidePageTransitioner')"
       >
-      <nuxt />
+      <nuxt class="full-screen" />
     </transition>
     <div class="main-page__white-wrapper"><Footer /></div>
   </div>

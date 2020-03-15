@@ -1,13 +1,10 @@
 <template>
 	<section class="two-part-layout__card">
-		<h2 class="two-part-layout__card__title beach-event__about__title">{{ data[0].title }}</h2>
+		<h2 class="two-part-layout__card__title beach-event__about__title">{{ title }}</h2>
 		<div class="beach-event__about__text-area">
-			<template v-for="(text, i) in data" v-if="i != 0">
-				<h3 v-if="text.title">{{ text.title }}</h3>
-				<p>{{ text.paragraph }}</p>
-			</template>
+			<span v-html="data"></span>
 		</div>
-		<div class="beach-event__about__accordion">
+		<div class="beach-event__about__accordion" v-if="data && data.length > 300">
 			<div class="beach-event__about__accordion__gradient" :class="{ hidden: accordionOpen }"></div>
 			<button class="beach-event__about__accordion__button" @click="toggleAccordion()">
 				<span v-show="!accordionOpen">Развернуть</span>
@@ -20,7 +17,7 @@
 
 <script>
 	export default {
-		props: ['data'],
+		props: ['data', 'title'],
 
 		data() {
 			return {
@@ -53,7 +50,9 @@
 
 			closeAccordion() {
 				this.accordionOpen = false;
-				this.$el.querySelector('.beach-event__about__text-area').style.height = 190 + 'px';
+				if (this.data && this.data.length > 300)
+					this.$el.querySelector('.beach-event__about__text-area').style.height = 190 + 'px';
+				else this.$el.querySelector('.beach-event__about__text-area').style.height = '';
 			},
 
 			openAccordion() {

@@ -51,7 +51,7 @@
 					<span v-show="error == null">Добавить фотографию</span>
 					<span v-show="error == true">Попробовать снова</span>
 				</button>
-				<span class="beach-event__visitor-pics__modal__error" v-show="errorMsg.length > 0">{{ errorMsg }}</span>
+				<span class="beach-event__visitor-pics__modal__error" v-show="errorMsg && errorMsg.length > 0">{{ errorMsg }}</span>
 			</div>
 		</div>
 	</div>
@@ -131,6 +131,7 @@
 				if (this.link.replace(/\s/g,"") == "") {
 					this.errorMsg = "Пожалуйста введите ссылку";
 					this.error = true;
+					return;
 				} else {
 					this.errorMsg = '';
 					this.error = null;
@@ -145,6 +146,12 @@
 					this.error = !res.status;
 					if (this.error)
 						this.errorMsg = res.error;
+					else this.errorMsg = '';
+				}).catch(e => {
+					console.error(e)
+					this.error = !e.status;
+					if (this.error)
+						this.errorMsg = "Не получилось отправить пост";
 					else this.errorMsg = '';
 				})
 			}

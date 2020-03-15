@@ -114,7 +114,7 @@ export const getters = {
                 beachLength: state.beach.data.item.PARAMETERS.P_LINE_LENGTH,
                 price: state.beach.data.item.PARAMETERS.P_PRICE,
                 beachType: state.beach.data.item.PARAMETERS.P_BEACH_TYPE.NAME,
-                beachSeabedType: state.beach.data.item.PARAMETERS.P_BOTTOM,
+                beachSeabedType: state.beach.data.item.PARAMETERS.P_BOTTOM.NAME,
                 time: state.beach.data.item.PARAMETERS.P_MODE ? state.beach.data.item.PARAMETERS.P_MODE.NAME : null
             },
 
@@ -131,11 +131,7 @@ export const getters = {
 
             infraData: [],
 
-            about: [
-                {
-                    title: 'О пляже'
-                }
-            ],
+            about: state.beach.data.item.DESCRIPTION,
 
             servicesData: [],
 
@@ -223,24 +219,6 @@ export const getters = {
                 title: filteredInfra[i].NAME,
                 pic: filteredInfra[i].ICON ? state.api + filteredInfra[i].ICON : filteredInfra[i].ICON
             })
-        }
-
-        // adding formatted about
-        // get rid of div and separate everything with <br>
-        let about = state.beach.data.item.DESCRIPTION.replace('<div>', '').replace('</div>', '').replace('<br>', '').split('<h3>'),
-            curSection;
-        for (let i = 0; i < about.length; i++) {
-            curSection = about[i].split('</h3>');
-            if (curSection.length == 1) { // only paragraph
-                ret.about.push({
-                    paragraph: curSection[0].replace('<br>', '')
-                })
-            } else if (curSection.length == 2) { // title and paragraph
-                ret.about.push({
-                    title: curSection[0],
-                    paragraph: curSection[1].replace('<br>', '')
-                })
-            }
         }
 
         // adding formatted services
