@@ -63,16 +63,7 @@ export default {
   },
 
   async fetch({ store }) {
-    await store.dispatch('main/getPopularBeachesAndSearchAndGeo');
-    await store.dispatch('main/getCitiesTop');
-    await store.dispatch('main/getEvents');
-    await store.dispatch('main/getDynamicSlider');
-    await store.dispatch('main/getWeather');
-    await store.dispatch('main/getBeachTypes');
-    await store.dispatch('main/getCollection');
-    await store.dispatch('main/getCollectionList');
-    await store.dispatch('main/getBanners');
-    await store.dispatch('main/getMap');
+    await store.dispatch('main/getMainPageData');
   },
 
   methods: {

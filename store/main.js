@@ -72,51 +72,24 @@ export const mutations = {
 }
 
 export const actions = {
-    async getPopularBeachesAndSearchAndGeo({commit, state}) {
+    async getMainPageData({commit, state}) {
         commit('SET_GEO', await this.$axios.$get('/geo/item'));
         commit('SET_SEARCH_DATA', await this.$axios.$get('/search/config/'));
         if (state.geo && state.geo.data && state.geo.data.city)
             commit('SET_POPULAR_BEACH', await this.$axios.$get(`/beach/list?city=${state.geo.data.city.ID}&count=10`));
-        if (!state.beachesTop.data)
+        if (!state.beachesTop.data || !state.geo.data || !state.geo.data.city)
             commit('SET_POPULAR_BEACH', await this.$axios.$get('/beach/top?count=10'));
-    },
-
-    async getCitiesTop({commit}) {
         commit('SET_CITIES', await this.$axios.$get('/city/top'));
-    },
-
-    async getEvents({commit}) {
         commit('SET_EVENTS', await this.$axios.$get('/event/list'));
-    },
-
-    async getDynamicSlider({commit}) {
         commit('SET_DYNAMIC_SLIDER', await this.$axios.$get('/collection/list'));
-    },
-
-    async getWeather({commit}) {
         commit('SET_WEATHER', await this.$axios.$get('/weather/list'));
-    },
-
-    async getBeachTypes({commit}) {
         commit('SET_CITY_BEACH_TYPE', await this.$axios.$get('/search/filter?tags%5B%5D=14'));
         commit('SET_WILD_BEACH_TYPE', await this.$axios.$get('/search/filter?tags%5B%5D=15'));
-    },
-
-    async getCollection({commit}) {
         commit('SET_COLLECTION', await this.$axios.$get('/collection/list/'));
-    },
-
-    async getCollectionList({commit}) {
         commit('SET_COLLECTION_LIST', await this.$axios.$get('/collectionList/list/'));
-    },
-
-    async getBanners({commit}) {
         commit('SET_BANNERS', await this.$axios.$get('/banner/list/'));
-    },
-
-    async getMap({commit}) {
         commit('SET_MAP', await this.$axios.$get('/beach/clusters/'));
-    }
+    },
 }
 
 export const getters = {
@@ -465,7 +438,7 @@ export const getters = {
             });
         }
 
-        if (state.geo.data) {
+        if (state.geo.data && state.geo.data.city) {
             ret.geo = {
                 id: ret.addressBeaches.findIndex(v => v.name == state.geo.data.city.NAME)
             };
