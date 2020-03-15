@@ -1,6 +1,6 @@
 <template>
 	<div class="beach-event__review" v-if="data">
-		<div class="beach-event__review__pic">
+		<div class="beach-event__review__pic" v-if="data.pic">
 			<img :src="data.pic">
 		</div>
 		<div class="beach-event__review__title-area">

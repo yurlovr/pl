@@ -161,7 +161,7 @@ export const getters = {
         // adding formatted reviews
         for (let i = 0; i < state.reviews.data.list.length; i++) {
             ret.reviews.push({
-                pic: state.api + state.reviews.data.list[i].PICTURE,
+                pic: state.reviews.data.list[i].PICTURE ? state.api + state.reviews.data.list[i].PICTURE : null,
                 name: state.reviews.data.list[i].FIO,
                 date: state.reviews.data.list[i].CREATED_DATE,
                 rating: state.reviews.data.list[i].AVERAGE_RATING,
