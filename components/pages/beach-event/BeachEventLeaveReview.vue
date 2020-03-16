@@ -144,19 +144,22 @@
 					this.noDescription = false;
 
 				const data = new FormData();
-				data.append('id', this.typeId);
-				data.append('fio', this.name);
-				data.append('rating[nature]', this.ratings[0].rating);
-				data.append('rating[water_purity]', this.ratings[1].rating);
-				data.append('rating[shore_cleanliness]', this.ratings[2].rating);
-				data.append('rating[infrastructure]', this.ratings[3].rating);
-				data.append('rating[security]', this.ratings[4].rating);
-				data.append('rating[availability]', this.ratings[5].rating);
-				data.append('description', this.review);
+				data.set('id', this.typeId);
+				data.set('fio', this.name);
+				data.set('rating[nature]', this.ratings[0].rating);
+				data.set('rating[water_purity]', this.ratings[1].rating);
+				data.set('rating[shore_cleanliness]', this.ratings[2].rating);
+				data.set('rating[infrastructure]', this.ratings[3].rating);
+				data.set('rating[security]', this.ratings[4].rating);
+				data.set('rating[availability]', this.ratings[5].rating);
+				data.set('description', this.review);
 				data.append('photo', this.file);
 
-				await this.$axios.$post(`/review/${this.type}Add`, {
-					data
+				await this.$axios({
+					method: 'post',
+					url: `/review/${this.type}Add`,
+					data: data,
+					headers: {'Content-Type': 'multipart/form-data' }
 				}).then(res => {
 					if (res.status) this.error = false;
 					else this.error = true;

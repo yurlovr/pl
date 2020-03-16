@@ -48,10 +48,10 @@
 				<span class="beach-event__visitor-pics__modal__info">Пожалуйста вставьте ссылку на пост Instagram</span>
 				<input class="beach-event__visitor-pics__modal__link-area" placeholder="Вставьте ссылку" v-model="link">
 				<button class="banner__card__info-area__button" @click="sendPic()" :disabled="error == false">
-					<span v-show="error == null">Добавить фотографию</span>
+					<span v-show="!error">Добавить фотографию</span>
 					<span v-show="error == true">Попробовать снова</span>
 				</button>
-				<span class="beach-event__visitor-pics__modal__error" v-show="errorMsg && errorMsg.length > 0">{{ errorMsg }}</span>
+				<span class="beach-event__visitor-pics__modal__error" v-show="errorMsg && errorMsg.length > 0" :style="{color: sent ? 'green' : ''}">{{ errorMsg }}</span>
 			</div>
 		</div>
 	</div>
@@ -94,7 +94,8 @@
 				link: '',
 				modalOpen: false,
 				error: null,
-				errorMsg: ''
+				errorMsg: '',
+				sent: false
 			}
 		},
 
@@ -138,15 +139,21 @@
 				}
 
 				let data = new FormData();
-				data.append(`${this.type}Id`, this.typeId);
-				data.append('link', this.link);
-				await this.$axios.$post(`/socialPhoto/${this.type}Add`, {
-					data
+				data.set(`${this.type}Id`, this.typeId);
+				data.set('link', this.link);
+				await this.$axios({
+					method: 'post',
+					url: `/socialPhoto/${this.type}Add`,
+					data: data,
+					headers: {'Content-Type': 'multipart/form-data' }
 				}).then(res => {
 					this.error = !res.status;
 					if (this.error)
 						this.errorMsg = res.error;
-					else this.errorMsg = '';
+					else {
+						this.errorMsg = 'Пост успешно отправлен';
+						this.sent = true;
+					}
 				}).catch(e => {
 					console.error(e)
 					this.error = !e.status;

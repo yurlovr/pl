@@ -68,6 +68,10 @@ export const mutations = {
 
     SET_GEO: (state, payload) => {
         state.geo = payload;
+    },
+
+    SET_GEO_COUNT: (state, payload) => {
+        state.geo.count = payload;
     }
 }
 
@@ -77,7 +81,8 @@ export const actions = {
         commit('SET_SEARCH_DATA', await this.$axios.$get('/search/config/'));
         if (state.geo && state.geo.data && state.geo.data.city)
             commit('SET_POPULAR_BEACH', await this.$axios.$get(`/beach/list?city=${state.geo.data.city.ID}&count=10`));
-        if (!state.beachesTop.data || !state.geo.data || !state.geo.data.city)
+        commit('SET_GEO_COUNT', state.beachesTop.data ? state.beachesTop.data.list.length : 0)
+        if (!state.beachesTop.data || state.beachesTop.data.list.length == 0 || !state.geo.data || !state.geo.data.city || !state.geo.status)
             commit('SET_POPULAR_BEACH', await this.$axios.$get('/beach/top?count=10'));
         commit('SET_CITIES', await this.$axios.$get('/city/top'));
         commit('SET_EVENTS', await this.$axios.$get('/event/list'));
@@ -94,10 +99,10 @@ export const actions = {
 
 export const getters = {
     beachesTopData: (state) => {
-        if (!state.beachesTop.data) return null;
+        if (!state.beachesTop.data || state.beachesTop.data.list.length == 0) return null;
 
         let ret = {
-        	title: 'Самые популярные пляжи' + (state.geo.data && state.geo.data.city ? ' ' + state.geo.data.city.NAME : ''),
+        	title: 'Самые популярные пляжи' + (state.geo.count != 0 ? ' ' + state.geo.data.city.NAME : ''),
             subtitle: 'Пологий берег, плавный вход в воду, безопасность и современная инфраструктура',
             beachNumber: Math.min(state.beachesTop.data.list.length, 45),
             showMore: [{
@@ -112,7 +117,7 @@ export const getters = {
     	}
 
         // adding geotargeting beachTop link to showMore
-        if (state.geo.data) {
+        if (state.geo.count != 0) {
             ret.showMore.push({
                 param: 'cities',
                 value: {
@@ -438,7 +443,7 @@ export const getters = {
             });
         }
 
-        if (state.geo.data && state.geo.data.city) {
+        if (state.geo.count != 0) {
             ret.geo = {
                 id: ret.addressBeaches.findIndex(v => v.name == state.geo.data.city.NAME)
             };
