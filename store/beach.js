@@ -265,7 +265,7 @@ export const getters = {
                 pic: state.api + state.opinions.data.list[i].PICTURE,
                 name: state.opinions.data.list[i].NAME,
                 opinion: state.opinions.data.list[i].DESCRIPTION,
-                social: state.opinions.data.list[i].SOCIAL
+                social: state.opinions.data.list[i].SOCIAL_LINK
             });
         }
 
