@@ -48,7 +48,7 @@ export const actions = {
     async getBeach({commit, state}, id) {
         let error;
         commit('SET_BEACH', await this.$axios.$get(`/beach/item?id=${id}`).catch((e) => {
-            console.log(e)
+            console.error(e)
             error = 404;
             return {};
         }));

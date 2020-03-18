@@ -15,7 +15,7 @@
 					</button>
 					<BeachEventMainInfo id="main-info" :data="eventData.mainData" class="event-page__main-info" />
 					<BeachQuickData id="infra" :title="'Инфраструктура'" :data="eventData.infraData" v-if="eventData.infraData.length > 0" />
-					<BeachEventAbout id="about" :data="eventData.about" v-if="eventData.about.length > 1 && eventData.about[1].paragraph && eventData.about[1].paragraph.length > 0" />
+					<BeachEventAbout id="about" :data="eventData.about" v-if="eventData.about.length > 0" />
 					<BeachEventParkingsTransport id="pt" :data="eventData.ptData" v-if="eventData.ptData.parkings.auto.length > 0 || eventData.ptData.parkings.bus.length > 0" />
 					<BeachEventReviews id="reviews" :typeId="eventData.mainData.beachId" :data="eventData.reviews" :type="'event'" class="beach-page__cardless-area" />
 				</main>

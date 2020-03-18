@@ -441,8 +441,12 @@ export const getters = {
                 beachPrice: state.searchPageResult.data.list[i].PARAMETERS ? (state.searchPageResult.data.list[i].PARAMETERS.P_PRICE == '' ? null : state.searchPageResult.data.list[i].PARAMETERS.P_PRICE) : (state.searchPageResult.data.list[i].BEACH.PARAMETERS.P_PRICE == '' ? null : state.searchPageResult.data.list[i].BEACH.PARAMETERS.P_PRICE),
                 beachType: state.searchPageResult.data.list[i].PARAMETERS ? (state.searchPageResult.data.list[i].PARAMETERS.P_BEACH_TYPE ? state.searchPageResult.data.list[i].PARAMETERS.P_BEACH_TYPE.NAME : null) : (state.searchPageResult.data.list[i].BEACH.PARAMETERS.P_BEACH_TYPE ? state.searchPageResult.data.list[i].BEACH.PARAMETERS.P_BEACH_TYPE.NAME : null),
                 beachWorktime: state.searchPageResult.data.list[i].PARAMETERS ? (state.searchPageResult.data.list[i].PARAMETERS.P_MODE ? state.searchPageResult.data.list[i].PARAMETERS.P_MODE.NAME : null) : (state.searchPageResult.data.list[i].BEACH.PARAMETERS.P_MODE ? state.searchPageResult.data.list[i].BEACH.PARAMETERS.P_MODE.NAME : null),
-                beachSeabedType: state.searchPageResult.data.list[i].PARAMETERS ? (state.searchPageResult.data.list[i].PARAMETERS.P_BOTTOM == '' ? null : state.searchPageResult.data.list[i].PARAMETERS.P_BOTTOM.NAME) : (state.searchPageResult.data.list[i].BEACH.PARAMETERS.P_BOTTOM == '' ? null : state.searchPageResult.data.list[i].BEACH.PARAMETERS.P_BOTTOM.NAME),
+                beachSeabedType: null
             });
+
+            if (state.searchPageResult.data.list[i].PARAMETERS && state.searchPageResult.data.list[i].PARAMETERS.P_BOTTOM) {
+                ret[i].beachSeabedType = state.searchPageResult.data.list[i].PARAMETERS.P_BOTTOM.NAME;
+            }
 
             if (state.searchPageResult.data.list[i].COORDINATES != undefined) { // beach
                 ret[i].pos = state.searchPageResult.data.list[i].COORDINATES.length > 0 ? [parseFloat(state.searchPageResult.data.list[i].COORDINATES.split(',')[0]), parseFloat(state.searchPageResult.data.list[i].COORDINATES.split(',')[1])] : []

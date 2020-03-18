@@ -70,11 +70,7 @@ export const getters = {
                 time: (state.event.data.item.BEACH.PARAMETERS.P_MODE ? state.event.data.item.BEACH.PARAMETERS.P_MODE.NAME : '')
             },
 
-            about: [
-                {
-                    title: 'О мероприятии'
-                }
-            ],
+            about: state.event.data.item.DESCRIPTION,
 
             reviews: [],
 
@@ -138,24 +134,6 @@ export const getters = {
                 title: filteredInfra[i].NAME,
                 pic: filteredInfra[i].ICON ? state.api + filteredInfra[i].ICON : filteredInfra[i].ICON
             })
-        }
-
-        // adding formatted about
-        // get rid of div and separate everything with <br>
-        let about = state.event.data.item.DESCRIPTION.replace('<div>', '').replace('</div>', '').replace('<br>', '').split('<h3>'),
-            curSection;
-        for (let i = 0; i < about.length; i++) {
-            curSection = about[i].split('</h3>');
-            if (curSection.length == 1) { // only paragraph
-                ret.about.push({
-                    paragraph: curSection[0].replace('<br>', '')
-                })
-            } else if (curSection.length == 2) { // title and paragraph
-                ret.about.push({
-                    title: curSection[0],
-                    paragraph: curSection[1].replace('<br>', '')
-                })
-            }
         }
 
         // adding formatted reviews
