@@ -1,11 +1,13 @@
 <template>
 	<section class="main-page__beach-slider-area custom-container">
-      <h3 class="main-page__section-title" style="margin-bottom: 10px;">{{ data.title }}</h3>
-      <div class="main-page__section-subtitle-area">
-        <span class="main-page__section-subtitle">{{ data.subtitle }}</span>
-        <a v-if="this.data.showMore.length > 0" :href="getLink" @click.prevent="showMore()" class="main-page__section__subtitle-area__see-all">
-          <span>Смотреть все ({{ data.beachNumber }})</span>
-        </a>
+      <div class="main-page__beach-slider-area-wrapper" :class="{ 'no-subtitle' : !data.subtitle }">
+        <h3 class="main-page__section-title" style="margin-bottom: 10px;">{{ data.title }}</h3>
+        <div class="main-page__section-subtitle-area">
+          <span class="main-page__section-subtitle">{{ data.subtitle }}</span>
+          <a v-if="this.data.showMore.length > 0" :href="getLink" @click.prevent="showMore()" class="main-page__section__subtitle-area__see-all">
+            <span>Смотреть все ({{ data.beachNumber }})</span>
+          </a>
+        </div>
       </div>
       <SliderBeachEventHotel :data="data.beachSliderData" />
       <div class="main-page__beach-slider-area__see-all-bottom">

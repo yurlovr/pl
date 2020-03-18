@@ -66,7 +66,7 @@ export const getters = {
                 beachLength: state.event.data.item.BEACH.PARAMETERS.P_LINE_LENGTH,
                 price: state.event.data.item.BEACH.PARAMETERS.P_PRICE,
                 beachType: state.event.data.item.BEACH.PARAMETERS.P_BEACH_TYPE.NAME,
-                beachSeabedType: state.event.data.item.BEACH.PARAMETERS.P_BOTTOM,
+                beachSeabedType: state.event.data.item.BEACH.PARAMETERS.P_BOTTOM ? state.event.data.item.BEACH.PARAMETERS.P_BOTTOM.NAME : null,
                 time: (state.event.data.item.BEACH.PARAMETERS.P_MODE ? state.event.data.item.BEACH.PARAMETERS.P_MODE.NAME : '')
             },
 

@@ -114,7 +114,7 @@ export const getters = {
                 beachLength: state.beach.data.item.PARAMETERS.P_LINE_LENGTH,
                 price: state.beach.data.item.PARAMETERS.P_PRICE,
                 beachType: state.beach.data.item.PARAMETERS.P_BEACH_TYPE.NAME,
-                beachSeabedType: state.beach.data.item.PARAMETERS.P_BOTTOM.NAME,
+                beachSeabedType:  state.beach.data.item.PARAMETERS.P_BOTTOM ? state.beach.data.item.PARAMETERS.P_BOTTOM.NAME : null,
                 time: state.beach.data.item.PARAMETERS.P_MODE ? state.beach.data.item.PARAMETERS.P_MODE.NAME : null
             },
 
@@ -178,7 +178,7 @@ export const getters = {
 
             similarBeaches: {
                 title: 'Похожие пляжи рядом',
-                subtitle: 'Пологий берег, плавный вход в воду, безопасность и современная инфраструктура',
+                subtitle: '',
                 showMore: [],
                 beachNumber: state.similarBeaches.data ? Math.min(state.similarBeaches.data.list.length-1, 45) : 0, // -1 cuz 1 of them is definitely the same beach
                 beachSliderData: {
@@ -232,7 +232,8 @@ export const getters = {
         // adding formatted temperatures
         let temps = Object.values(state.temperatures.data.list);
         for (let i = 0; i < temps.length; i++) { // going through months
-            ret.waterHistogramData.push(parseFloat(temps[i].find(v => v.CITY.ID == state.beach.data.item.CITY.ID).TEMP.WATER));
+            if (temps[i].find(v => v.CITY.ID == state.beach.data.item.CITY.ID))
+                ret.waterHistogramData.push(parseFloat(temps[i].find(v => v.CITY.ID == state.beach.data.item.CITY.ID).TEMP.WATER));
         }
 
         // adding formatted events

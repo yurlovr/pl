@@ -1405,6 +1405,14 @@ input {
         font-weight: 500;
       }
     }
+
+    &-wrapper {
+      &.no-subtitle {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 10px;
+      }
+    }
   }
 
   &__family-rest {
