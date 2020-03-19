@@ -7,7 +7,7 @@
     <BeachSliderArea class="main-page__popular-beaches" :data="beachesTopData" v-if="beachesTopData" />
     <Cities :data="citiesTopData" />
     <MapArea :data="mapData" />
-    <Banner :data="bannersData[2]" :showInfoOnPic="true" v-if="bannersData" class="banner-1" />
+    <Banner :data="bannersData[2]" v-if="bannersData" class="banner-1" />
     <div class="main-page__white-wrapper">
       <BeachSliderArea :data="familyData" class="main-page__family-rest" v-if="familyData" />
     </div>

@@ -26,7 +26,7 @@
 			</div>
 		</div>
 		<div class="main-page__white-wrapper beach-event__visitor-pics-wrapper">
-			<BeachEventVisitorPics id="visitor-pics" :data="eventData.visitorPics" :type="'beach'" :typeId="eventData.mainData.beachId" />
+			<BeachEventVisitorPics id="visitor-pics" :data="eventData.visitorPics" :type="'event'" :typeId="eventData.mainData.eventId" />
 		</div>
 		<BeachSliderArea id="other-events" class="beach-event__similar-beaches" :data="eventData.otherEvents" v-if="eventData.otherEvents.beachNumber > 0" />
 	</div>
