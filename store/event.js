@@ -104,19 +104,19 @@ export const getters = {
 
             otherEvents: {
                 title: 'Другие мероприятия на этом пляже',
-                showMore: {
+                showMore: [{
                     id: Object.values(state.searchConfig.data.tags).find(v => v.NAME == 'Мероприятия') ? Object.values(state.searchConfig.data.tags).find(v => v.NAME == 'Мероприятия').ID : -1,
                     type: 'tags',
                     value: true
                 },
-                more: {
+                {
                     param: 'cities',
                     value: {
                         id: state.event.data.item.BEACH.CITY.ID,
                         title: state.event.data.item.BEACH.CITY.NAME
-                    }
-                },
-                query: 'city',
+                    },
+                    query: 'city'
+                }],
                 beachSliderData: {
                     slideNumber: 4,
                     cardData: []

@@ -25,6 +25,7 @@ export const actions = {
 	async nuxtServerInit({commit}) {
 		commit('SET_ALL_BEACHES', await this.$axios.$get('/beach/list'));
         commit('SET_ALL_EVENTS', await this.$axios.$get('/event/list'));
+        commit('search/SET_SEARCH', await this.$axios.$get('search/config'));
 	}
 }
 

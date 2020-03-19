@@ -53,7 +53,7 @@
 
 		watch: {
 			query: function (n, o) {
-				if (n != o) {
+				if (n != o && !this.wait) {
 					this.updateTags(n);
 					this.$bus.$emit('updateMap');
 				}
@@ -69,20 +69,19 @@
 				showCardsOrMap: false, // cards: false, map: true
 				mapShownForTheFirstTime: false,
 				tags: [],
+				wait: false,
 				showBeachesOrEvents: false // beaches: false, events: true
 			}
-		},
-
-		async fetch({ store }) {
-			await store.dispatch('search/getSearch');
 		},
 
 		mounted() {
 			if (this.updateQuery()) return;
 
+			this.wait = true;
 			this.updateTags();
 			if (this.tags.length > 0)
 				this.search();
+			setTimeout(() => { this.wait = false }, 10);
 		},
 
 		methods: {
@@ -167,41 +166,41 @@
 		                });
 		                if (path == undefined) this.updateSearchParam({ param: 'price', value: curValue })
 		            } else if (curQuery[0] == 'lengthFrom') {
-		                curValue = this.searchParams.selects.searchBeachLengthFrom.options.find(v => v.id === curQuery[1])
+		                curValue = this.searchParams.selects.searchBeachLengthFrom.options.find(v => v.id == curQuery[1])
 		                if (!curValue) continue;
 		                this.tags.push({
 		                    param: 'searchBeachLengthFrom',
-		                    value: curValue,
+		                    value: { title: `Протяженность линии от: ${curValue.title} м`, id: curValue.id },
 		                    default: this.searchParams.selects.searchBeachLengthFrom.options[0],
 		                    type: 'select'
 		                });
 		                if (path == undefined) this.updateSearchParam({ param: 'searchBeachLengthFrom', value: curValue })
 		            } else if (curQuery[0] == 'lengthTo') {
-		                curValue = this.searchParams.selects.searchBeachLengthTo.options.find(v => v.id === curQuery[1])
+		                curValue = this.searchParams.selects.searchBeachLengthTo.options.find(v => v.id == curQuery[1])
 		                if (!curValue) continue;
 		                this.tags.push({
 		                    param: 'searchBeachLengthTo',
-		                    value: curValue,
+		                    value: { title: `Протяженность линии до: ${curValue.title} м`, id: curValue.id },
 		                    default: this.searchParams.selects.searchBeachLengthTo.options[0],
 		                    type: 'select'
 		                });
 		                if (path == undefined) this.updateSearchParam({ param: 'searchBeachLengthTo', value: curValue })
 		            } else if (curQuery[0] == 'tempFrom') {
-		                curValue = this.searchParams.selects.searchWaterTempFrom.options.find(v => v.id === curQuery[1])
+		                curValue = this.searchParams.selects.searchWaterTempFrom.options.find(v => v.id == curQuery[1])
 		                if (!curValue) continue;
 		                this.tags.push({
 		                    param: 'searchWaterTempFrom',
-		                    value: curValue,
+		                    value: { title: `Температура воды от: ${curValue.title} °C`, id: curValue.id },
 		                    default: this.searchParams.selects.searchWaterTempFrom.options[0],
 		                    type: 'select'
 		                });
 		                if (path == undefined) this.updateSearchParam({ param: 'searchWaterTempFrom', value: curValue })
 		            } else if (curQuery[0] == 'tempTo') {
-		                curValue = this.searchParams.selects.searchWaterTempTo.options.find(v => v.id === curQuery[1])
+		                curValue = this.searchParams.selects.searchWaterTempTo.options.find(v => v.id == curQuery[1])
 		                if (!curValue) continue;
 		                this.tags.push({
 		                    param: 'searchWaterTempTo',
-		                    value: curValue,
+		                    value: { title: `Температура воды до: ${curValue.title} °C`, id: curValue.id },
 		                    default: this.searchParams.selects.searchWaterTempTo.options[0],
 		                    type: 'select'
 		                });

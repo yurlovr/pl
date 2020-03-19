@@ -55,11 +55,11 @@ export const state = () => ({
                     },
                     {
                         title: 'Платно',
-                        id: 0
+                        id: 'paid'
                     },
                     {
                         title: 'Бесплатно',
-                        id: 1
+                        id: 'free'
                     }
                 ]
             },
@@ -167,25 +167,25 @@ export const mutations = {
         for (let i = 0; i < payload.data.lineLengthList.length; i++) {
             state.searchParams.selects.searchBeachLengthFrom.options.push({
                 title: payload.data.lineLengthList[i],
-                id: 1
+                id: payload.data.lineLengthList[i]
             })
         }
         for (let i = 0; i < payload.data.lineLengthList.length; i++) {
             state.searchParams.selects.searchBeachLengthTo.options.push({
                 title: payload.data.lineLengthList[i],
-                id: 1
+                id: payload.data.lineLengthList[i]
             })
         }
         for (let i = 0; i < payload.data.waterTempList.length; i++) {
             state.searchParams.selects.searchWaterTempFrom.options.push({
                 title: payload.data.waterTempList[i],
-                id: 1
+                id: payload.data.waterTempList[i]
             })
         }
         for (let i = 0; i < payload.data.waterTempList.length; i++) {
             state.searchParams.selects.searchWaterTempTo.options.push({
                 title: payload.data.waterTempList[i],
-                id: 1
+                id: payload.data.waterTempList[i]
             })
         }
         // initializing the checkboxes
@@ -303,7 +303,7 @@ export const mutations = {
             state.query += `mode=${state.searchParams.selects.modes.value.id}&`;
         }
         if (state.searchParams.selects.price.value.id != -1) {
-            state.query += `paid=${state.searchParams.selects.price.value.id == 0 ? 'paid' : 'free'}&`;
+            state.query += `paid=${state.searchParams.selects.price.value.id}&`;
         }
         if (state.searchParams.selects.searchBeachLengthFrom.value.id != -1) {
             state.query += `lengthFrom=${state.searchParams.selects.searchBeachLengthFrom.value.id}&`;
@@ -361,10 +361,6 @@ export const mutations = {
 }
 
 export const actions = {
-    async getSearch({commit}) {
-        commit('SET_SEARCH', await this.$axios.$get('search/config'));
-    },
-
     async search({commit, state}) {
         commit('updateSearchQuery');
         if (state.query.length > 0) {
@@ -450,8 +446,10 @@ export const getters = {
 
             if (state.searchPageResult.data.list[i].COORDINATES != undefined) { // beach
                 ret[i].pos = state.searchPageResult.data.list[i].COORDINATES.length > 0 ? [parseFloat(state.searchPageResult.data.list[i].COORDINATES.split(',')[0]), parseFloat(state.searchPageResult.data.list[i].COORDINATES.split(',')[1])] : []
-            } else { // event
+            } else if (state.searchPageResult.data.list[i].BEACH.COORDINATES != undefined) { // event
                 ret[i].pos = state.searchPageResult.data.list[i].BEACH.COORDINATES.length > 0 ? [parseFloat(state.searchPageResult.data.list[i].BEACH.COORDINATES.split(',')[0]), parseFloat(state.searchPageResult.data.list[i].BEACH.COORDINATES.split(',')[1])] : []
+            } else {
+                console.error(`Beach #${ret[i].beachId} doesn't have coordinates`)
             }
         }
 

@@ -99,14 +99,14 @@ export const actions = {
 
 export const getters = {
     beachesTopData: (state) => {
-        if (!state.beachesTop.data || state.beachesTop.data.list.length == 0) return null;
+        if (!state.beachesTop.data || !state.beachesTop.data.list || state.beachesTop.data.list.length == 0) return null;
 
         let ret = {
         	title: 'Самые популярные пляжи' + (state.geo.count != 0 ? ' ' + state.geo.data.city.NAME : ''),
             subtitle: 'Пологий берег, плавный вход в воду, безопасность и современная инфраструктура',
             beachNumber: Math.min(state.beachesTop.data.list.length, 45),
             showMore: [{
-                id: state.searchData.data.tags.find(v => v.NAME == 'Популярные') ? state.searchData.data.tags.find(v => v.NAME == 'Популярные').ID : -1,
+                id: state.searchData.data && state.searchData.data.tags && state.searchData.data.tags.find(v => v.NAME == 'Популярные') ? state.searchData.data.tags.find(v => v.NAME == 'Популярные').ID : -1,
                 value: true,
                 type: 'tags'
             }],
@@ -121,8 +121,8 @@ export const getters = {
             ret.showMore.push({
                 param: 'cities',
                 value: {
-                    id: state.beachesTop.data.list[0].CITY ? state.beachesTop.data.list[0].CITY.ID : -1,
-                    title: state.beachesTop.data.list[0].CITY.NAME
+                    id: state.beachesTop.data.list[0] && state.beachesTop.data.list[0].CITY ? state.beachesTop.data.list[0].CITY.ID : -1,
+                    title: state.beachesTop.data.list[0] && state.beachesTop.data.list[0].CITY && state.beachesTop.data.list[0].CITY.NAME
                 },
                 query: 'city'
             })
@@ -212,11 +212,11 @@ export const getters = {
         let ret = {
             title: 'Ближайшие мероприятия на пляжах',
             beachNumber: Math.min(state.events.data.list.length, 45),
-            showMore: {
+            showMore: [{
                 id: state.searchData.data.tags.find(v => v.NAME == 'Мероприятия') ? state.searchData.data.tags.find(v => v.NAME == 'Мероприятия').ID : -1,
                 value: true,
                 type: 'tags'
-            },
+            }],
             beachSliderData: {
                 slideNumber: 4,
                 cardData: []

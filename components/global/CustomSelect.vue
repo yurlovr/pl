@@ -32,11 +32,11 @@ export default {
 	computed: {
 		title() {
 			if (this.param == 'searchBeachLengthFrom' && this.value.id != -1) {
-				if (this.value.title > 3)
+				if (!isNaN(this.value.title))
 					return `Протяженность линии от, ${this.value.title} м`;
 				else return `От ${this.value.title} м`;
 			} else if (this.param == 'searchWaterTempFrom' && this.value.id != -1) {
-				if (this.value.title > 3)
+				if (!isNaN(this.value.title))
 					return `Температура воды от, ${this.value.title} °C`;
 				else return `От ${this.value.title} м`;
 			} else return this.value.title;

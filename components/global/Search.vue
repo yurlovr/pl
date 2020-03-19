@@ -245,10 +245,6 @@ export default {
     });
   },
 
-  created() {
-    this.getSearch();
-  },
-
   computed: {
     ...mapState('search', ['searchInput']),
     ...mapState('search', ['autocompleteResults']),
@@ -260,7 +256,6 @@ export default {
   methods: {
     ...mapActions('search', ['search']),
     ...mapActions('search', ['searchQuery']),
-    ...mapActions('search', ['getSearch']),
     ...mapActions('search', ['searchAutocomplete']),
     ...mapMutations('search', ['updateSearchQuery']),
     ...mapMutations('search', ['updateSearchSecondRowParam']),

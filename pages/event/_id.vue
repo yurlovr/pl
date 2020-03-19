@@ -28,7 +28,7 @@
 		<div class="main-page__white-wrapper beach-event__visitor-pics-wrapper">
 			<BeachEventVisitorPics id="visitor-pics" :data="eventData.visitorPics" :type="'beach'" :typeId="eventData.mainData.beachId" />
 		</div>
-		<BeachEvents id="other-events" class="beach-event__similar-beaches" :data="eventData.otherEvents" v-if="eventData.otherEvents.beachNumber > 0" />
+		<BeachSliderArea id="other-events" class="beach-event__similar-beaches" :data="eventData.otherEvents" v-if="eventData.otherEvents.beachNumber > 0" />
 	</div>
 </template>
 
@@ -42,7 +42,6 @@
 	import BeachEventVisitorPics from '~/components/pages/beach-event/BeachEventVisitorPics';
 	import BeachEventParkingsTransport from '~/components/pages/beach-event/BeachEventParkingsTransport';
 	import BeachEventAbout from '~/components/pages/beach-event/BeachEventAbout';
-	import BeachEvents from '~/components/global/BeachEvents';
 	import BeachEventReviews from '~/components/pages/beach-event/BeachEventReviews';
 	import AnnouncementCard from '~/components/global/AnnouncementCard';
 	import BeachSliderArea from '~/components/global/BeachSliderArea';
@@ -62,7 +61,6 @@
 			BeachEventVisitorPics,
 			BeachEventMapWeather,
 			BeachEventSideButtons,
-			BeachEvents,
 			BeachQuickData
 		},
 

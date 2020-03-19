@@ -1,6 +1,6 @@
 <template>
 	<div class="custom-new-select" :class="{ open: dropdownOpen }" v-on-clickaway="onBlur" v-if="options">
-		<div class="custom-new-select__top" @click="dropdownOpen = !dropdownOpen">
+		<div class="custom-new-select__top" @click="openDropdown()">
 			<input type="text" :placeholder="value.title" v-model="input" @input="dropdownOpen = true" @click.stop :class="{ 'not-default': value.id != -1 }">
 			<img src="~/static/pics/global/svg/dropdown.svg">
 		</div>
@@ -66,15 +66,22 @@ export default {
 
 	methods: {
 		choose(i) {
-			if (this.filteredOptions.length > 1) {
-				this.chosenIndex = i;
-				this.dropdownOpen = false;
-				this.$bus.$emit('updateSearchParam', { param: this.param, value: { title: this.filteredOptions[i].title, id: this.filteredOptions[i].id } });
-			}
+			if (this.filteredOptions.length == 1 && this.filteredOptions[0].id == -1) return;
+
+			this.chosenIndex = i;
+			this.dropdownOpen = false;
+			this.$bus.$emit('updateSearchParam', { param: this.param, value: { title: this.filteredOptions[i].title, id: this.filteredOptions[i].id } });
 		},
 
 		onBlur() {
 			this.dropdownOpen = false;
+		},
+
+		openDropdown() {
+			this.dropdownOpen = !this.dropdownOpen;
+			if (this.dropdownOpen || !this.dropdownOpen && this.filteredOptions[this.chosenIndex].id == -1)
+				this.input = '';
+			else this.input = this.filteredOptions[this.chosenIndex].title;
 		}
 	}
 }

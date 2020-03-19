@@ -11,7 +11,7 @@
     <div class="main-page__white-wrapper">
       <BeachSliderArea :data="familyData" class="main-page__family-rest" v-if="familyData" />
     </div>
-    <BeachEvents :data="eventsData" v-if="eventsData" />
+    <BeachSliderArea class="main-page__beach-events" :data="eventsData" v-if="eventsData" />
     <ChooseBeach :data="beachChoiceData" />
     <DynamicSliderArea :data="activeRestData" />
     <div class="main-page__white-wrapper">
@@ -29,7 +29,6 @@ import Welcome from '~/components/pages/main/Welcome';
 import BeachSliderArea from '~/components/global/BeachSliderArea';
 import Cities from '~/components/pages/main/Cities';
 import Banner from '~/components/global/Banner';
-import BeachEvents from '~/components/global/BeachEvents';
 import ChooseBeach from '~/components/pages/main/ChooseBeach';
 import BeachType from '~/components/pages/main/BeachType';
 import WeatherSliderArea from '~/components/pages/main/WeatherSliderArea';
@@ -45,7 +44,6 @@ export default {
     BeachSliderArea,
     Cities,
     MapArea,
-    BeachEvents,
     ChooseBeach,
     BeachType,
     WeatherSliderArea,

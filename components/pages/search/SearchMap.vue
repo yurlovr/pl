@@ -29,7 +29,7 @@
         methods: {
             initMap() {
                 setTimeout(() => {
-                    let filteredBeaches = this.beaches.slice(0, -1).filter(v => !isNaN(v.pos != undefined && v.pos[0]));
+                    let filteredBeaches = this.beaches.filter(v => !isNaN(v.pos != undefined && v.pos[0]));
                     if (!filteredBeaches || filteredBeaches.length == 0)
                         return;
 

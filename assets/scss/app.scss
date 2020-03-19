@@ -849,6 +849,12 @@ input {
           margin-right: 0 !important;
 
           .custom-new-select {
+            height: 100%;
+
+            &__top {
+              height: 100%;
+            }
+
             &.open {
               &.default {
                 .custom-new-select {
@@ -1437,28 +1443,6 @@ input {
   &__beach-events {
     margin-top: 60px;
     margin-bottom: 40px;
-
-    &__title {
-      &-area {
-        display: flex;
-        justify-content: space-between;
-        align-items: flex-end;
-        margin-bottom: 20px;
-
-        a {
-          @include see-all;
-        }
-      }
-    }
-
-    &__see-all-bottom {
-      display: none;
-
-      a {
-        @include see-all;
-        font-weight: 500;
-      }
-    }
   }
 
   &__choose-beach {
@@ -2112,7 +2096,6 @@ input {
       padding-right: 20px;
       width: 20%;
       position: relative;
-      cursor: pointer;
 
       &:hover {
         .beach-page {
