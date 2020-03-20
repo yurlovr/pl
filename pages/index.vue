@@ -4,22 +4,22 @@
     <div class="main-page__welcome__gradient"></div>
     <Welcome />
     <Search class="main-page__welcome__search" labelId="1" />
-    <BeachSliderArea class="main-page__popular-beaches" :data="beachesTopData" v-if="beachesTopData" />
-    <Cities :data="citiesTopData" />
-    <MapArea :data="mapData" />
-    <Banner :data="bannersData[2]" v-if="bannersData" class="banner-1" />
-    <div class="main-page__white-wrapper">
-      <BeachSliderArea :data="familyData" class="main-page__family-rest" v-if="familyData" />
+    <BeachSliderArea class="main-page__popular-beaches" :data="mainData.beachesTop" v-if="mainData.beachesTop" />
+    <Cities :data="mainData.citiesTop" v-if="mainData.citiesTop" />
+    <MapArea :data="mainData.map" v-if="mainData.map" />
+    <Banner :data="mainData.banners[2]" v-if="mainData.banners && mainData.banners[2]" class="banner-1" />
+    <div class="main-page__white-wrapper" v-if="mainData.familyRest">
+      <BeachSliderArea :data="mainData.familyRest" class="main-page__family-rest" />
     </div>
-    <BeachSliderArea class="main-page__beach-events" :data="eventsData" v-if="eventsData" />
-    <ChooseBeach :data="beachChoiceData" />
-    <DynamicSliderArea :data="activeRestData" />
+    <BeachSliderArea class="main-page__beach-events" :data="mainData.events" v-if="mainData.events" />
+    <ChooseBeach :data="mainData.chooseYourBeach" v-if="mainData.chooseYourBeach" />
+    <DynamicSliderArea :data="mainData.activeRest" v-if="mainData.activeRest" />
     <div class="main-page__white-wrapper">
-      <WeatherSliderArea :data="weatherData" />
+      <WeatherSliderArea :data="mainData.weather" v-if="mainData.weather" />
     </div>
-    <Banner :data="bannersData[0]" v-if="bannersData" class="banner-2" />
-    <BeachType :data="beachTypeData" v-if="beachTypeData" />
-    <Banner :data="bannersData[1]" :lastWordYellow="true" v-if="bannersData" class="banner-3" />
+    <Banner :data="mainData.banners[0]" v-if="mainData.banners && mainData.banners[0]" class="banner-2" />
+    <BeachType :data="mainData.chooseToYourWishes" v-if="mainData.chooseToYourWishes" />
+    <Banner :data="mainData.banners[1]" :lastWordYellow="true" v-if="mainData.banners && mainData.banners[1]" class="banner-3" />
   </div>
 </template>
 
@@ -28,7 +28,7 @@ import Search from '~/components/global/Search';
 import Welcome from '~/components/pages/main/Welcome';
 import BeachSliderArea from '~/components/global/BeachSliderArea';
 import Cities from '~/components/pages/main/Cities';
-import Banner from '~/components/global/Banner';
+import Banner from '~/components/pages/main/Banner';
 import ChooseBeach from '~/components/pages/main/ChooseBeach';
 import BeachType from '~/components/pages/main/BeachType';
 import WeatherSliderArea from '~/components/pages/main/WeatherSliderArea';
@@ -64,6 +64,10 @@ export default {
     await store.dispatch('main/getMainPageData');
   },
 
+  computed: {
+    ...mapGetters('main', ['mainData'])
+  },
+
   methods: {
     onScroll() {
       if (document.querySelector('main-page')) {
@@ -89,21 +93,6 @@ export default {
         this.$bus.$emit('dontShowCorrectSelectText');
       }
     }
-  },
-
-  computed: {
-    ...mapGetters('main', ['beachesTopData']),
-    ...mapGetters('main', ['citiesTopData']),
-    ...mapGetters('main', ['eventsData']),
-    ...mapGetters('main', ['dynamicSliderData']),
-    ...mapGetters('main', ['weatherData']),
-    ...mapGetters('main', ['beachTypeData']),
-    ...mapGetters('main', ['familyData']),
-    ...mapGetters('main', ['activeRestData']),
-    ...mapGetters('main', ['beachTypeData']),
-    ...mapGetters('main', ['bannersData']),
-    ...mapGetters('main', ['mapData']),
-    ...mapGetters('main', ['beachChoiceData'])
   },
 
   beforeRouteLeave(to, from, next) {

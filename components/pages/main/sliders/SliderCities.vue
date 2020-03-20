@@ -1,5 +1,5 @@
 <template>
-	<div class="slider-cities" v-if="data">
+	<div class="slider-cities">
 		<div v-swiper:mySwiper="swiperOption">
 			<div class="swiper-wrapper slider-cities__wrapper">
 				<div class="swiper-slide slider-cities__slide" v-for="slide in data">

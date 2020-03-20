@@ -3,7 +3,7 @@
 		<div class="search-page__map-area__info-area scroller">
 			<client-only>
 				<perfect-scrollbar class="scroll-area" ref="scroll" :options="options">
-					<SearchMapCard :data="card" v-for="(card, i) in data.filter(v => !isNaN(v.pos[0]) && v.pos != undefined)" :key="i" :id="'smc-' + i" :class="{ active : activeCard == i }" />
+					<SearchMapCard :data="card" v-for="(card, i) in data.filter(v => v.pos && !isNaN(v.pos[0]))" :key="i" :id="'smc-' + i" :class="{ active : activeCard == i }" />
 				</perfect-scrollbar>
 			</client-only>
 		</div>
@@ -96,7 +96,7 @@
 
 			scrollToCard(i) {
 				if (this.$el.querySelector('.scroll-area') && this.$el.querySelector(`#smc-${i}`) && this.$el.querySelector('.search-page__map-area__info-area.scroller'))
-					this.$el.querySelector('.scroll-area').scrollTop = this.$el.querySelector(`#smc-${i}`).offsetTop - this.$el.querySelector('.search-page__map-area__info-area.scroller').offsetTop + 100;
+					this.$el.querySelector('.scroll-area').scrollTop = this.$el.querySelector(`#smc-${i}`).offsetTop - this.$el.querySelector('.search-page__map-area__info-area.scroller').offsetTop;
 				this.activeCard = i;
 			}
 		}

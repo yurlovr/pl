@@ -128,6 +128,7 @@ export const state = () => ({
     searchPageResultEventBackup: [],
     searchPageResultBeachBackup: [],
     searchPageResult: [],
+    beachesOrEventsAreShown: false, // false - beaches, true - events
     autocompleteResults: [],
     query: '',
     tags: [],
@@ -276,10 +277,12 @@ export const mutations = {
     },
 
     showBeaches(state) {
+        state.beachesOrEventsAreShown = false;
         state.searchPageResult = state.searchPageResultBeachBackup;
     },
 
     showEvents(state) {
+        state.beachesOrEventsAreShown = true;
         state.searchPageResult = state.searchPageResultEventBackup;
     },
 
@@ -364,7 +367,7 @@ export const actions = {
     async search({commit, state}) {
         commit('updateSearchQuery');
         if (state.query.length > 0) {
-            commit('SET_SEARCH_RESULT', await this.$axios.$get(`search/filter${state.query}`));
+            commit('SET_SEARCH_RESULT', await this.$axios.$get(`search/filter${state.query}&count=9999`));
         } else commit('EMPTY_RESULTS');
     },
 
@@ -422,21 +425,21 @@ export const getters = {
         // adding formatted beaches
         for (let i = 0; i < state.searchPageResult.data.list.length; i++) {
             ret.push({
-                temperature: state.searchPageResult.data.list[i].WEATHER ? state.searchPageResult.data.list[i].WEATHER.TEMP.WATER : state.searchPageResult.data.list[i].BEACH.WEATHER.TEMP.WATER,
+                temperature: state.searchPageResult.data.list[i].WEATHER ? state.searchPageResult.data.list[i].WEATHER.TEMP.WATER : (state.searchPageResult.data.list[i].BEACH ? state.searchPageResult.data.list[i].BEACH.WEATHER.TEMP.WATER : null),
                 showFavorite: true,
                 beachId: state.searchPageResult.data.list[i].ID,
                 paid: state.searchPageResult.data.list[i].PAID,
-                rating: state.searchPageResult.data.list[i].AVERAGE_RATING ? parseFloat(state.searchPageResult.data.list[i].AVERAGE_RATING) : parseFloat(state.searchPageResult.data.list[i].BEACH.AVERAGE_RATING),
+                rating: state.searchPageResult.data.list[i].AVERAGE_RATING ? parseFloat(state.searchPageResult.data.list[i].AVERAGE_RATING) : (state.searchPageResult.data.list[i].BEACH ? parseFloat(state.searchPageResult.data.list[i].BEACH.AVERAGE_RATING) : null),
                 title: state.searchPageResult.data.list[i].NAME,
-                location: state.searchPageResult.data.list[i].CITY ? state.searchPageResult.data.list[i].CITY.NAME : state.searchPageResult.data.list[i].BEACH.CITY.NAME,
-                locationId: state.searchPageResult.data.list[i].CITY ? state.searchPageResult.data.list[i].CITY.ID : state.searchPageResult.data.list[i].BEACH.CITY.ID,
-                pic: state.searchPageResult.data.list[i].PHOTOS[0] ? (state.api + state.searchPageResult.data.list[i].PHOTOS[0]) : state.searchPageResult.data.list[i].PHOTOS[0],
-                mainLink: `beach/${state.searchPageResult.data.list[i].ID}`,
-                beachLink: `beach/${state.searchPageResult.data.list[i].ID}`,
-                beachLength: state.searchPageResult.data.list[i].PARAMETERS ? (state.searchPageResult.data.list[i].PARAMETERS.P_LINE_LENGTH == '' ? null : state.searchPageResult.data.list[i].PARAMETERS.P_LINE_LENGTH) : (state.searchPageResult.data.list[i].BEACH.PARAMETERS.P_LINE_LENGTH == '' ? null : state.searchPageResult.data.list[i].BEACH.PARAMETERS.P_LINE_LENGTH),
-                beachPrice: state.searchPageResult.data.list[i].PARAMETERS ? (state.searchPageResult.data.list[i].PARAMETERS.P_PRICE == '' ? null : state.searchPageResult.data.list[i].PARAMETERS.P_PRICE) : (state.searchPageResult.data.list[i].BEACH.PARAMETERS.P_PRICE == '' ? null : state.searchPageResult.data.list[i].BEACH.PARAMETERS.P_PRICE),
-                beachType: state.searchPageResult.data.list[i].PARAMETERS ? (state.searchPageResult.data.list[i].PARAMETERS.P_BEACH_TYPE ? state.searchPageResult.data.list[i].PARAMETERS.P_BEACH_TYPE.NAME : null) : (state.searchPageResult.data.list[i].BEACH.PARAMETERS.P_BEACH_TYPE ? state.searchPageResult.data.list[i].BEACH.PARAMETERS.P_BEACH_TYPE.NAME : null),
-                beachWorktime: state.searchPageResult.data.list[i].PARAMETERS ? (state.searchPageResult.data.list[i].PARAMETERS.P_MODE ? state.searchPageResult.data.list[i].PARAMETERS.P_MODE.NAME : null) : (state.searchPageResult.data.list[i].BEACH.PARAMETERS.P_MODE ? state.searchPageResult.data.list[i].BEACH.PARAMETERS.P_MODE.NAME : null),
+                location: state.searchPageResult.data.list[i].CITY ? state.searchPageResult.data.list[i].CITY.NAME : (state.searchPageResult.data.list[i].BEACH && state.searchPageResult.data.list[i].BEACH.CITY ? state.searchPageResult.data.list[i].BEACH.CITY.NAME : null),
+                locationId: state.searchPageResult.data.list[i].CITY ? state.searchPageResult.data.list[i].CITY.ID : (state.searchPageResult.data.list[i].BEACH && state.searchPageResult.data.list[i].BEACH.CITY ? state.searchPageResult.data.list[i].BEACH.CITY.ID : null),
+                pic: state.searchPageResult.data.list[i].PHOTOS && state.searchPageResult.data.list[i].PHOTOS[0] ? (state.api + state.searchPageResult.data.list[i].PHOTOS[0]) : null,
+                mainLink: `${state.beachesOrEventsAreShown ? 'event' : 'beach' }/${state.searchPageResult.data.list[i].ID}`,
+                beachLink: `${state.beachesOrEventsAreShown ? 'event' : 'beach' }/${state.searchPageResult.data.list[i].ID}`,
+                beachLength: state.searchPageResult.data.list[i].PARAMETERS ? (state.searchPageResult.data.list[i].PARAMETERS.P_LINE_LENGTH == '' ? null : state.searchPageResult.data.list[i].PARAMETERS.P_LINE_LENGTH) : (state.searchPageResult.data.list[i].BEACH && state.searchPageResult.data.list[i].BEACH.PARAMETERS ? (state.searchPageResult.data.list[i].BEACH.PARAMETERS.P_LINE_LENGTH == '' ? null : state.searchPageResult.data.list[i].BEACH.PARAMETERS.P_LINE_LENGTH) : null),
+                beachPrice: state.searchPageResult.data.list[i].PARAMETERS ? (state.searchPageResult.data.list[i].PARAMETERS.P_PRICE == '' ? null : state.searchPageResult.data.list[i].PARAMETERS.P_PRICE) : (state.searchPageResult.data.list[i].BEACH && state.searchPageResult.data.list[i].BEACH.PARAMETERS ? (state.searchPageResult.data.list[i].BEACH.PARAMETERS.P_PRICE == '' ? null : state.searchPageResult.data.list[i].BEACH.PARAMETERS.P_PRICE) : null),
+                beachType: state.searchPageResult.data.list[i].PARAMETERS ? (state.searchPageResult.data.list[i].PARAMETERS.P_BEACH_TYPE ? state.searchPageResult.data.list[i].PARAMETERS.P_BEACH_TYPE.NAME : null) : (state.searchPageResult.data.list[i].BEACH && state.searchPageResult.data.list[i].BEACH.PARAMETERS ? (state.searchPageResult.data.list[i].BEACH.PARAMETERS.P_BEACH_TYPE ? state.searchPageResult.data.list[i].BEACH.PARAMETERS.P_BEACH_TYPE.NAME : null) : null),
+                beachWorktime: state.searchPageResult.data.list[i].PARAMETERS ? (state.searchPageResult.data.list[i].PARAMETERS.P_MODE ? state.searchPageResult.data.list[i].PARAMETERS.P_MODE.NAME : null) : (state.searchPageResult.data.list[i].BEACH && state.searchPageResult.data.list[i].BEACH.PARAMETERS ? (state.searchPageResult.data.list[i].BEACH.PARAMETERS.P_MODE ? state.searchPageResult.data.list[i].BEACH.PARAMETERS.P_MODE.NAME : null) : null),
                 beachSeabedType: null
             });
 
@@ -444,12 +447,8 @@ export const getters = {
                 ret[i].beachSeabedType = state.searchPageResult.data.list[i].PARAMETERS.P_BOTTOM.NAME;
             }
 
-            if (state.searchPageResult.data.list[i].COORDINATES != undefined) { // beach
+            if (state.searchPageResult.data.list[i].COORDINATES) { // beach
                 ret[i].pos = state.searchPageResult.data.list[i].COORDINATES.length > 0 ? [parseFloat(state.searchPageResult.data.list[i].COORDINATES.split(',')[0]), parseFloat(state.searchPageResult.data.list[i].COORDINATES.split(',')[1])] : []
-            } else if (state.searchPageResult.data.list[i].BEACH.COORDINATES != undefined) { // event
-                ret[i].pos = state.searchPageResult.data.list[i].BEACH.COORDINATES.length > 0 ? [parseFloat(state.searchPageResult.data.list[i].BEACH.COORDINATES.split(',')[0]), parseFloat(state.searchPageResult.data.list[i].BEACH.COORDINATES.split(',')[1])] : []
-            } else {
-                console.error(`Beach #${ret[i].beachId} doesn't have coordinates`)
             }
         }
 

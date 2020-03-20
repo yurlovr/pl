@@ -105,7 +105,6 @@
                                         iconImageHref: '/pics/global/svg/map_beach_gold.svg'
                                     });
                                     this.$bus.$emit('scrollToCard', objectId);
-                                    this.$bus.$emit('openModal', objectId);
                                     this.chosen = objectId;
                                 }
                                 if (e.get('type') == 'mouseup') {
@@ -147,7 +146,7 @@
                         });
 
                         let placeMarks = (n) => {
-                            if (n != undefined) filteredBeaches = n.slice(0, -1).filter(v => !isNaN(v.pos[0]) && v.pos != undefined);
+                            if (n != undefined) filteredBeaches = n.slice(0, -1).filter(v => v.pos && !isNaN(v.pos[0]));
                             else filteredBeaches = this.beaches.filter(v => !isNaN(v.pos[0]) && v.pos != undefined);
                             if (!filteredBeaches || filteredBeaches.length == 0)
                                 return;

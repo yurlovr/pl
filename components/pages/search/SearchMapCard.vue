@@ -6,7 +6,7 @@
 		<div class="search-page__map-area__card__info-area">
 			<div class="search-page__map-area__card__title-area">
 				<h3 class="search-page__map-area__card__title">{{ data.title }}</h3>
-				<div class="search-page__map-area__card__rating-area">
+				<div class="search-page__map-area__card__rating-area" v-if="data.rating">
 					<img src="~/static/pics/global/svg/star.svg" alt="Рейтинг">
 					<span>{{ data.rating.toFixed(1) }}</span>
 				</div>

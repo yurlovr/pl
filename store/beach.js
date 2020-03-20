@@ -57,10 +57,15 @@ export const actions = {
         commit('SET_BARS_N_RESTOS', await this.$axios.$get(`/restaurant/list?beachId=${id}`));
         commit('SET_OPINIONS', await this.$axios.$get(`/opinion/list?entityId=${id}`));
         commit('SET_TEMPERATURES', await this.$axios.$get(`/weather/list`));
-        commit('SET_REVIEWS', await this.$axios.$get(`/review/list?entityId=${id}`));
+        commit('SET_REVIEWS', await this.$axios.$get(`/review/list?entityId=${id}&count=9999`));
         commit('SET_VISITOR_PICS', await this.$axios.$get(`/socialPhoto/list?entityId=${id}&count=10`));
 
-        if (state.beach.data.item.TAGS.length >= 3) {
+        let tagsCount = 0;
+        if (state.beach.data.item.TAGS)
+            tagsCount += state.beach.data.item.TAGS.length;
+        if (state.beach.data.item.ADD_TAGS)
+            tagsCount += state.beach.data.item.ADD_TAGS.length;
+        if (tagsCount >= 3) {
             let tags = '&';
             for (let i = 0; i < state.beach.data.item.TAGS.length; i++)
                 tags += `tags[]=${state.beach.data.item.TAGS[i]}&`;
@@ -180,7 +185,16 @@ export const getters = {
                 title: 'Похожие пляжи рядом',
                 subtitle: '',
                 showMore: [],
-                beachNumber: state.similarBeaches.data ? Math.min(state.similarBeaches.data.list.length-1, 45) : 0, // -1 cuz 1 of them is definitely the same beach
+                beachNumber: state.similarBeaches.data ? Math.min(state.similarBeaches.data.list.filter(v => {
+                    if (v.TAGS) {
+                        if (v.TAGS.length < 3) return false;
+                    }
+                    if (v.ADD_TAGS) {
+                        if (v.ADD_TAGS.length < 3) return false;
+                    }
+                    if (!v.TAGS && !v.ADD_TAGS) return false;
+                    return true;
+                }).length-1, 45) : 0, // -1 cuz 1 of them is definitely the same beach
                 beachSliderData: {
                     slideNumber: 4,
                     cardData: []
@@ -303,30 +317,47 @@ export const getters = {
                 },
                 query: 'city'
             })
+            let tagsCount;
             for (let i = 0; i < state.similarBeaches.data.list.length; i++) {
                 if (state.beach.data.item.ID != state.similarBeaches.data.list[i].ID) {
-                    ret.similarBeaches.beachSliderData.cardData.push({
-                        tempWater: state.similarBeaches.data.list[i].WEATHER.TEMP ? state.similarBeaches.data.list[i].WEATHER.TEMP.WATER : 0,
-                        paid: state.similarBeaches.data.list[i].PAID,
-                        rating: parseFloat(state.similarBeaches.data.list[i].AVERAGE_RATING),
-                        title: state.similarBeaches.data.list[i].NAME,
-                        location: state.similarBeaches.data.list[i].CITY ? state.similarBeaches.data.list[i].CITY.NAME : 'Не указан',
-                        locationId: state.similarBeaches.data.list[i].CITY ? state.similarBeaches.data.list[i].CITY.ID : null,
-                        pic: state.similarBeaches.data.list[i].PHOTOS ? state.api + state.similarBeaches.data.list[i].PHOTOS[0] : null,
-                        mainLink: `beach/${state.similarBeaches.data.list[i].ID}`,
-                        beachLink: `beach/${state.similarBeaches.data.list[i].ID}`,
-                        beachId: state.similarBeaches.data.list[i].ID,
-                        showFavorite: true,
-                        filter: []
-                    });
-
-                    for (let j = 0; j < state.similarBeaches.data.list[i].TAGS.length; j++) {
-                        ret.similarBeaches.showMore.push({
-                            type: 'tags',
-                            id: state.similarBeaches.data.list[i].TAGS[j].ID,
-                            value: true
+                    tagsCount = 0;
+                    if (state.similarBeaches.data.list[i].TAGS) tagsCount += state.similarBeaches.data.list[i].TAGS.length;
+                    if (state.similarBeaches.data.list[i].ADD_TAGS) tagsCount += state.similarBeaches.data.list[i].ADD_TAGS.length;
+                    if (tagsCount >= 3) {
+                        ret.similarBeaches.beachSliderData.cardData.push({
+                            tempWater: state.similarBeaches.data.list[i].WEATHER.TEMP ? state.similarBeaches.data.list[i].WEATHER.TEMP.WATER : 0,
+                            paid: state.similarBeaches.data.list[i].PAID,
+                            rating: parseFloat(state.similarBeaches.data.list[i].AVERAGE_RATING),
+                            title: state.similarBeaches.data.list[i].NAME,
+                            location: state.similarBeaches.data.list[i].CITY ? state.similarBeaches.data.list[i].CITY.NAME : 'Не указан',
+                            locationId: state.similarBeaches.data.list[i].CITY ? state.similarBeaches.data.list[i].CITY.ID : null,
+                            pic: state.similarBeaches.data.list[i].PHOTOS ? state.api + state.similarBeaches.data.list[i].PHOTOS[0] : null,
+                            mainLink: `beach/${state.similarBeaches.data.list[i].ID}`,
+                            beachLink: `beach/${state.similarBeaches.data.list[i].ID}`,
+                            beachId: state.similarBeaches.data.list[i].ID,
+                            showFavorite: true,
+                            filter: []
                         });
                     }
+                }
+            }
+
+            if (state.beach.data.item.TAGS) {
+                for (let i = 0; i < state.beach.data.item.TAGS.length; i++) {
+                    ret.similarBeaches.showMore.push({
+                        type: 'tags',
+                        id: state.beach.data.item.TAGS[i].ID,
+                        value: true
+                    });
+                }
+            }
+            if (state.beach.data.item.ADD_TAGS) {
+                for (let i = 0; i < state.beach.data.item.ADD_TAGS.length; i++) {
+                    ret.similarBeaches.showMore.push({
+                        type: 'addTags',
+                        id: state.beach.data.item.ADD_TAGS[i].ID,
+                        value: true
+                    });
                 }
             }
         }

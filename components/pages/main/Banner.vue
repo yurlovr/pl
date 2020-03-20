@@ -25,9 +25,8 @@
 			getTitle() {
 				if (this.lastWordYellow) {
 					let words = this.data.title.split(' ');
-					words = words.join(' ').replace(' ', '<br>').replace(' ', '<br>').split('<br>').map(v => v = `<span>${v}</span>`);
 					words[words.length - 1] = `<span class="orange">${words[words.length - 1]}</span>`;
-					return words.join('<br>');
+					return words.join(' ');
 				} else {
 					return this.data.title.replace(' ', '<br>').split('<br>').map(v => v = `<span>${v}</span>`).join('<br>');
 				}

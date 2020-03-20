@@ -23,8 +23,8 @@ export const mutations = {
 
 export const actions = {
 	async nuxtServerInit({commit}) {
-		commit('SET_ALL_BEACHES', await this.$axios.$get('/beach/list'));
-        commit('SET_ALL_EVENTS', await this.$axios.$get('/event/list'));
+		commit('SET_ALL_BEACHES', await this.$axios.$get('/beach/list?count=9999'));
+        commit('SET_ALL_EVENTS', await this.$axios.$get('/event/list?count=9999'));
         commit('search/SET_SEARCH', await this.$axios.$get('search/config'));
 	}
 }
@@ -61,16 +61,16 @@ export const getters = {
 
         for (let i = 0; i < state.beaches.data.list.length; i++) {
             ret.push({
-                tempWater: state.beaches.data.list[i].WEATHER.TEMP.WATER,
+                tempWater: state.beaches.data.list[i].WEATHER && state.beaches.data.list[i].WEATHER.TEMP ? state.beaches.data.list[i].WEATHER.TEMP.WATER : null,
                 showFavorite: true,
                 paid: state.beaches.data.list[i].PAID,
                 rating: parseFloat(state.beaches.data.list[i].AVERAGE_RATING),
                 title: state.beaches.data.list[i].NAME,
-                location: state.beaches.data.list[i].CITY.NAME,
-                pic: state.api + state.beaches.data.list[i].PHOTOS[0],
+                location: state.beaches.data.list[i].CITY ? state.beaches.data.list[i].CITY.NAME : null,
+                pic: state.beaches.data.list[i].PHOTOS ? state.api + state.beaches.data.list[i].PHOTOS[0] : null,
                 mainLink: `beach/${state.beaches.data.list[i].ID}`,
                 beachLink: `beach/${state.beaches.data.list[i].ID}`,
-                locationId: state.beaches.data.list[i].CITY.ID,
+                locationId: state.beaches.data.list[i].CITY ? state.beaches.data.list[i].CITY.ID : null,
                 beachId: state.beaches.data.list[i].ID
             });
         }
@@ -85,17 +85,17 @@ export const getters = {
 
         for (let i = 0; i < state.events.data.list.length; i++) {
             ret.push({
-                tempWater: state.events.data.list[i].BEACH.WEATHER.TEMP.WATER,
+                tempWater: state.events.data.list[i].BEACH && state.events.data.list[i].BEACH.WEATHER && state.events.data.list[i].BEACH.WEATHER.TEMP ? state.events.data.list[i].BEACH.WEATHER.TEMP.WATER : null,
                 date: `${state.events.data.list[i].ACTIVE_FROM} ${state.events.data.list[i].ACTIVE_TO ? '-' : ''} ${state.events.data.list[i].ACTIVE_TO ? state.events.data.list[i].ACTIVE_TO : ''}`,
                 showFavorite: true,
-                beach: state.events.data.list[i].BEACH.NAME,
+                beach: state.events.data.list[i].BEACH ? state.events.data.list[i].BEACH.NAME : null,
                 paid: state.events.data.list[i].PAID,
                 title: state.events.data.list[i].NAME,
-                location: state.events.data.list[i].BEACH.CITY.NAME,
-                pic: state.api + state.events.data.list[i].PHOTOS[0],
+                location: state.events.data.list[i].BEACH && state.events.data.list[i].BEACH.CITY ? state.events.data.list[i].BEACH.CITY.NAME : null,
+                pic: state.events.data.list[i].PHOTOS ? state.api + state.events.data.list[i].PHOTOS[0] : null,
                 mainLink: `event/${state.events.data.list[i].ID}`,
                 beachLink: `beach/${state.events.data.list[i].ID}`,
-                locationId: state.events.data.list[i].BEACH.CITY.ID,
+                locationId: state.events.data.list[i].BEACH && state.events.data.list[i].BEACH.CITY ? state.events.data.list[i].BEACH.CITY.ID : null,
                 eventId: state.events.data.list[i].ID
             });
         }

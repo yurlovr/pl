@@ -1189,6 +1189,7 @@ input {
         line-height: 110%;
         color: #393e48;
         margin-bottom: 24px;
+        max-width: 400px;
       }
 
       &__text {
@@ -1258,11 +1259,11 @@ input {
     padding-bottom: 110px;
   }
 
-  &-2, &-3 {
-    span {
-      white-space: nowrap;
-    }
-  }
+  // &-2, &-3 {
+  //   span {
+  //     white-space: nowrap;
+  //   }
+  // }
 
   &-2 {
     padding-top: 65px;

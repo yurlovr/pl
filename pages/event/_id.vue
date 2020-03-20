@@ -17,7 +17,7 @@
 					<BeachQuickData id="infra" :title="'Инфраструктура'" :data="eventData.infraData" v-if="eventData.infraData.length > 0" />
 					<BeachEventAbout id="about" :data="eventData.about" v-if="eventData.about.length > 0" />
 					<BeachEventParkingsTransport id="pt" :data="eventData.ptData" v-if="eventData.ptData.parkings.auto.length > 0 || eventData.ptData.parkings.bus.length > 0" />
-					<BeachEventReviews id="reviews" :typeId="eventData.mainData.beachId" :data="eventData.reviews" :type="'event'" class="beach-page__cardless-area" />
+					<BeachEventReviews id="reviews" :typeId="eventData.mainData.eventId" :data="eventData.reviews" :type="'event'" class="beach-page__cardless-area" />
 				</main>
 				<aside class="two-part-layout__right">
 					<BeachEventMapWeather :data="eventData.sideMapWeatherData" v-if="eventData.sideMapWeatherData.pos.length > 0" class="beach-event__map-weather__desktop" />
