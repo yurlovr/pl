@@ -58,13 +58,13 @@ export const mutations = {
 }
 
 export const actions = {
-    async getMainPageData({commit, state}) {
+    async getMainPageData({commit, state}, callback) {
         commit('SET_GEO', await this.$axios.$get('/geo/item'));
         if (state.geo && state.geo.data && state.geo.data.city)
-            commit('SET_POPULAR_BEACH', await this.$axios.$get(`/beach/list?city=${state.geo.data.city.ID}&count=10`));
+            commit('SET_POPULAR_BEACH', await this.$axios.$get(`/beach/list?city=${state.geo.data.city.ID}&count=45`));
         commit('SET_GEO_COUNT', state.beachesTop.data ? state.beachesTop.data.list.length : 0)
         if (!state.beachesTop.data || state.beachesTop.data.list.length == 0 || !state.geo.data || !state.geo.data.city || !state.geo.status)
-            commit('SET_POPULAR_BEACH', await this.$axios.$get('/beach/top?count=10'));
+            commit('SET_POPULAR_BEACH', await this.$axios.$get('/beach/top?count=45'));
         commit('SET_CITIES', await this.$axios.$get('/city/top'));
         commit('SET_EVENTS', await this.$axios.$get('/event/list'));
         commit('SET_WEATHER', await this.$axios.$get('/weather/list'));
@@ -72,6 +72,7 @@ export const actions = {
         commit('SET_COLLECTION_LIST', await this.$axios.$get('/collectionList/list/'));
         commit('SET_BANNERS', await this.$axios.$get('/banner/list/'));
         commit('SET_MAP', await this.$axios.$get('/beach/clusters/'));
+        callback();
     },
 }
 
@@ -127,20 +128,20 @@ export const getters = {
 
         // Курортные города
             ret.citiesTop = [];
-            if (state.cities.data) {
-                for (let i = 0; i < Math.min(state.cities.data.list.length, 10); i++) {
-                    if (state.cities.data.list[i].COUNT_BEACHES > 0)
+            if (state.citiesTop.data) {
+                for (let i = 0; i < Math.min(state.citiesTop.data.list.length, 10); i++) {
+                    if (state.citiesTop.data.list[i].COUNT_BEACHES > 0)
                         ret.citiesTop.push({
-                            city: state.cities.data.list[i].NAME,
-                            cityId: state.cities.data.list[i].ID,
-                            beachNumber: state.cities.data.list[i].COUNT_BEACHES,
-                            pic: state.cities.data.list[i].PREVIEW_PICTURE ? state.api + state.cities.data.list[i].PREVIEW_PICTURE : null
+                            city: state.citiesTop.data.list[i].NAME,
+                            cityId: state.citiesTop.data.list[i].ID,
+                            beachNumber: state.citiesTop.data.list[i].COUNT_BEACHES,
+                            pic: state.citiesTop.data.list[i].PREVIEW_PICTURE ? state.api + state.citiesTop.data.list[i].PREVIEW_PICTURE : null
                         });
                 }
             } else {
                 ret.citiesTop = null;
             }
-            if (ret.citiesTop.length == 0)
+            if (ret.citiesTop && ret.citiesTop.length == 0)
                 ret.citiesTop = null;
 
         // Карта пляжей

@@ -35,7 +35,7 @@ import WeatherSliderArea from '~/components/pages/main/WeatherSliderArea';
 import DynamicSliderArea from '~/components/pages/main/DynamicSliderArea';
 import MapArea from '~/components/pages/main/MapArea';
 
-import { mapGetters } from 'vuex';
+import { mapActions, mapGetters } from 'vuex';
 
 export default {
   components: {
@@ -60,8 +60,10 @@ export default {
     this.onResize();
   },
 
-  async fetch({ store }) {
-    await store.dispatch('main/getMainPageData');
+  created() {
+    this.getMainPageData(() => {
+      this.$bus.$emit('mainPageReady');
+    });
   },
 
   computed: {
@@ -69,6 +71,8 @@ export default {
   },
 
   methods: {
+    ...mapActions('main', ['getMainPageData']),
+
     onScroll() {
       if (document.querySelector('main-page')) {
         window.removeEventListener('scroll', this.onScroll, false);
