@@ -13,7 +13,7 @@
       </div>
       <AddToFavorites :data="data" />
       <img class="custom-card__paid" v-if="data.paid" src="~/static/pics/global/svg/paid.svg" alt="Платный">
-      <button class="custom-card__visited" @click="updateVisited()" v-if="showIfVisited == true">
+      <button class="custom-card__visited" @click="updateVisited()" v-if="this.data && this.data.eventId">
         <div class="custom-card__visited__round">
           <img src="~/static/pics/global/svg/tick.svg" v-show="visited">
         </div>
@@ -51,7 +51,7 @@ import VClamp from 'vue-clamp';
 import AddToFavorites from '~/components/global/AddToFavorites';
 
 export default {
-  props: ['data', 'showIfVisited', 'showTemp'],
+  props: ['data', 'showTemp'],
 
   components: {
     VClamp,

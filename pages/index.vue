@@ -63,6 +63,7 @@ export default {
   created() {
     this.getMainPageData(() => {
       this.$bus.$emit('mainPageReady');
+      this.$bus.$emit('hidePageTransitioner');
     });
   },
 

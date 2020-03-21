@@ -2000,6 +2000,12 @@ input {
   }
 }
 
+.catalog-page {
+  &__title {
+    margin-bottom: 30px;
+  }
+}
+
 .beach-page {
   overflow: hidden;
 

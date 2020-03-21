@@ -20,12 +20,6 @@ eventBus.install = function (Vue) {
 			router.push(link)
 		}, 500);
 	};
-	// Vue.prototype.$bus.initRouter = (router) => {
-	// 	router.beforeEach((to, from, next) => {
-	// 		Vue.prototype.$bus.$emit('transition');
-	// 		setTimeout(() => { next() }, 500);
-	// 	})
-	// }
 }
 
 Vue.use(eventBus);

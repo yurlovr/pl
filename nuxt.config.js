@@ -55,8 +55,7 @@ export default {
     }, {
       src: '~/plugins/custom-scroll',
       ssr: false
-    },
-    '~/plugins/transition-end'
+    }
   ],
   /*
    ** Nuxt.js dev-modules
@@ -65,21 +64,30 @@ export default {
 
   generate: {
     async routes () {
-      let beachAsync = await axios.get('https://crimea.air-dev.agency/api/app/beach/list'),
+      let beachAsync = await axios.get('https://crimea.air-dev.agency/api/app/beach/list?count=9999'),
           beachRoutes = beachAsync.data.data.list.map((b) => {
         return {
           route: `/beach/${b.ID}`
         }
       });
 
-      let eventAsync = await axios.get('https://crimea.air-dev.agency/api/app/event/list'),
+      let eventAsync = await axios.get('https://crimea.air-dev.agency/api/app/event/list?count=9999'),
         eventRoutes = eventAsync.data.data.list.map((e) => {
         return {
           route: `/event/${e.ID}`
         }
       });
 
-      return [...beachRoutes, ...eventRoutes];
+      let infoPagesAsync = await axios.get('https://crimea.air-dev.agency/api/app/page/list?count=9999'),
+        infoPages = infoPagesAsync.data.data.list.map((e) => {
+        return {
+          route: `/${e.CODE}`
+        }
+      });
+
+      return [
+        ...beachRoutes, ...eventRoutes, ...infoPages
+      ];
     },
 
     fallback: '/404/index.html'

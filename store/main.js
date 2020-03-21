@@ -18,7 +18,7 @@ export const mutations = {
     },
 
     SET_CITIES: (state, payload) => {
-        state.cities = payload;
+        state.citiesTop = payload;
     },
 
     SET_EVENTS: (state, payload) => {
@@ -65,7 +65,7 @@ export const actions = {
         commit('SET_GEO_COUNT', state.beachesTop.data ? state.beachesTop.data.list.length : 0)
         if (!state.beachesTop.data || state.beachesTop.data.list.length == 0 || !state.geo.data || !state.geo.data.city || !state.geo.status)
             commit('SET_POPULAR_BEACH', await this.$axios.$get('/beach/top?count=45'));
-        commit('SET_CITIES', await this.$axios.$get('/city/top'));
+        commit('SET_CITIES', await this.$axios.$get('/city/top?count=9999'));
         commit('SET_EVENTS', await this.$axios.$get('/event/list'));
         commit('SET_WEATHER', await this.$axios.$get('/weather/list'));
         commit('SET_COLLECTION', await this.$axios.$get('/collection/list/'));
@@ -129,13 +129,15 @@ export const getters = {
         // Курортные города
             ret.citiesTop = [];
             if (state.citiesTop.data) {
-                for (let i = 0; i < Math.min(state.citiesTop.data.list.length, 10); i++) {
-                    if (state.citiesTop.data.list[i].COUNT_BEACHES > 0)
+                let cities = state.citiesTop.data.list.slice();
+                cities.sort((a,b) => (a.COUNT_BEACHES < b.COUNT_BEACHES) ? 1 : -1)
+                for (let i = 0; i < Math.min(10, cities.length); i++) {
+                    if (cities[i].COUNT_BEACHES > 0)
                         ret.citiesTop.push({
-                            city: state.citiesTop.data.list[i].NAME,
-                            cityId: state.citiesTop.data.list[i].ID,
-                            beachNumber: state.citiesTop.data.list[i].COUNT_BEACHES,
-                            pic: state.citiesTop.data.list[i].PREVIEW_PICTURE ? state.api + state.citiesTop.data.list[i].PREVIEW_PICTURE : null
+                            city: cities[i].NAME,
+                            cityId: cities[i].ID,
+                            beachNumber: cities[i].COUNT_BEACHES,
+                            pic: cities[i].PREVIEW_PICTURE ? state.api + cities[i].PREVIEW_PICTURE : null
                         });
                 }
             } else {

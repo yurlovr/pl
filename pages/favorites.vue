@@ -15,7 +15,7 @@
 			<h3 class="main-page__section-title">Посещенные мероприятия</h3>
 			<h4 class="favorites-page__empty" v-show="visited.length == 0">Пусто</h4>
 		</div>
-		<CardGrid :perPage="12" :data="visited" :showIfVisited="true" v-show="showBeachesOrEvents && visited.length > 0" />
+		<CardGrid :perPage="12" :data="visited" v-show="showBeachesOrEvents && visited.length > 0" />
 	</div>
 </template>
 

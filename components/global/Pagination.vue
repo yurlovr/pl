@@ -37,7 +37,7 @@ export default {
   },
 
   mounted() {
-    this.generatePagination(this.page);
+    setTimeout(() => this.generatePagination(this.page), 1);
   },
 
   computed: {
@@ -51,6 +51,7 @@ export default {
       if (p > 0 && p < this.lastPage + 1) {
         this.page = p;
         this.$emit('change', p);
+        this.$bus.$emit('pageChanged', p)
         this.generatePagination(p);
       }
     },

@@ -4,7 +4,7 @@
     <Preloader />
     <Header />
     <transition
-      @afterEnter="$bus.$emit('hidePageTransitioner')"
+      @afterEnter="transitionEnd()"
       >
       <nuxt class="full-screen" />
     </transition>
@@ -32,6 +32,13 @@
 
     computed: {
       ...mapState(['beaches', 'events'])
+    },
+
+    methods: {
+      transitionEnd() {
+        if (this.$router.currentRoute.path != '/')
+          this.$bus.$emit('hidePageTransitioner');
+      }
     },
 
     mounted() {
