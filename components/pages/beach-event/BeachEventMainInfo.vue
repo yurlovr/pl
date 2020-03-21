@@ -4,7 +4,7 @@
 			<div class="search-page__map-area__card__title-area beach-event__main-info__title-area">
 				<div class="beach-event__main-info__title-area__left">
 					<h1 class="search-page__map-area__card__title beach-event__main-info__title ">{{ data.title }}</h1>
-					<a :href="`/search?city=${data.locationId}`" @click.prevent="goToBeach()" class="search-page__map-area__card__subtitle beach-event__main-info__subtitle">{{ data.location }}</a>
+					<a :href="getLink" @click.prevent="$bus.goTo(getLink, $router)" class="search-page__map-area__card__subtitle beach-event__main-info__subtitle">{{ data.location }}</a>
 				</div>
 				<button class="beach-event__main-info__hearts" @click="updateHeart()">
 					<img src="~/static/pics/global/svg/heart_button_unclicked.svg" v-show="!favorite">
@@ -65,6 +65,15 @@
 				this.favorite = true;
 		},
 
+		computed: {
+			getLink() {
+				if (this.data.beachId)
+					return `/beach-catalog?city=${this.data.locationId}`;
+				else (this.data.eventId)
+					return `/event-catalog?city=${this.data.locationId}`;
+			}
+		},
+
 		methods: {
 			updateHeart() {
 				if (this.favorite)
@@ -96,12 +105,6 @@
 						});
 					}
 				}
-			},
-
-			goToBeach() {
-		      this.$bus.$emit('emptySearchParams');
-		      this.$bus.$emit('updateSearchParam', { param: 'cities', value: { title: this.data.location, id: this.data.locationId }});
-		      setTimeout(() => {this.$bus.$emit('search')}, 1);
 			}
 		}
 	}

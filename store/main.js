@@ -86,27 +86,19 @@ export const getters = {
                     title: 'Самые популярные пляжи' + (state.geo.count != 0 ? ' ' + state.geo.data.city.NAME : ''),
                     subtitle: 'Пологий берег, плавный вход в воду, безопасность и современная инфраструктура',
                     beachNumber: Math.min(state.beachesTop.data.list.length, 45),
-                    showMore: [{
-                        id: rootState.search.searchConfig.data && rootState.search.searchConfig.data.tags && rootState.search.searchConfig.data.tags.find(v => v.NAME == 'Популярные')
-                            ? rootState.search.searchConfig.data.tags.find(v => v.NAME == 'Популярные').ID : -1,
-                        value: true,
-                        type: 'tags'
-                    }],
+                    showMore: {
+                        type: 'beach',
+                        query: '?popular&'
+                    },
                     beachSliderData: {
                         slideNumber: 4,
                         cardData: []
                     }
                 }
                 if (state.geo.count != 0) {
-                    ret.beachesTop.showMore.push({
-                        param: 'cities',
-                        value: {
-                            id: state.beachesTop.data.list[0] && state.beachesTop.data.list[0].CITY ? state.beachesTop.data.list[0].CITY.ID : -1,
-                            title: state.beachesTop.data.list[0] && state.beachesTop.data.list[0].CITY ? state.beachesTop.data.list[0].CITY.NAME : null
-                        },
-                        query: 'city'
-                    })
+                    ret.beachesTop.showMore.query += `city=${state.beachesTop.data.list[0] && state.beachesTop.data.list[0].CITY ? state.beachesTop.data.list[0].CITY.ID : null}&`;
                 }
+                ret.beachesTop.showMore.query = ret.beachesTop.showMore.query.slice(0, -1);
                 for (let i = 0; i < Math.min(state.beachesTop.data.list.length, 10); i++) {
                     ret.beachesTop.beachSliderData.cardData.push({
                         tempWater: state.beachesTop.data.list[i].WEATHER ? state.beachesTop.data.list[i].WEATHER.TEMP.WATER : null,
@@ -234,13 +226,10 @@ export const getters = {
                         title: 'Отдых для всей семьи',
                         subtitle: 'Пологий берег, плавный вход в воду, безопасность и современная инфраструктура',
                         beachNumber: Math.min(family.BEACHES.length, 45),
-                        showMore: [{
-                            id: rootState.search.searchConfig.data && rootState.search.searchConfig.data.tags
-                                ? (rootState.search.searchConfig.data.tags.find(v => v.NAME == 'Отдых для всей семьи') ? rootState.search.searchConfig.data.tags.find(v => v.NAME == 'Отдых для всей семьи').ID : -1)
-                                : -1,
-                            value: true,
-                            type: 'tags'
-                        }],
+                        showMore: {
+                            type: 'beach',
+                            query: '?family'
+                        },
                         beachSliderData: {
                             slideNumber: 6,
                             cardData: []
@@ -273,13 +262,10 @@ export const getters = {
                 ret.events = {
                     title: 'Ближайшие мероприятия на пляжах',
                     beachNumber: Math.min(state.events.data.list.length, 45),
-                    showMore: [{
-                        id: rootState.search.searchConfig.data && rootState.search.searchConfig.data.tags
-                            ? (rootState.search.searchConfig.data.tags.find(v => v.NAME == 'Мероприятия') ? rootState.search.searchConfig.data.tags.find(v => v.NAME == 'Мероприятия').ID : -1)
-                            : -1,
-                        value: true,
-                        type: 'tags'
-                    }],
+                    showMore: {
+                        type: 'event',
+                        query: null
+                    },
                     beachSliderData: {
                         slideNumber: 4,
                         cardData: []

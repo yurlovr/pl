@@ -106,6 +106,13 @@ export default {
 
         this.mySwiper.init(this.swiperOption);
         this.updateArrows();
+
+        this.$bus.$on('hidePageTransitioner', () => {
+            setTimeout(() => {this.updateArrows()}, 2000);
+        });
+        this.$bus.$on('mainPageReady', () => {
+            setTimeout(() => {this.updateArrows()}, 2000);
+        });
     },
 
     methods: {
@@ -120,7 +127,12 @@ export default {
         updateArrows () {
             this.showLeft = !this.mySwiper.isBeginning;
             this.showRight = !this.mySwiper.isEnd;
-        }
+        },
+
+        update() {
+            this.mySwiper.slideNext();
+            this.mySwiper.slidePrev();
+        } 
     },
 
     beforeRouteLeave(to, from, next) {

@@ -21,7 +21,7 @@
 				</main>
 				<aside class="two-part-layout__right">
 					<BeachEventMapWeather :data="eventData.sideMapWeatherData" v-if="eventData.sideMapWeatherData.pos.length > 0" class="beach-event__map-weather__desktop" />
-					<AnnouncementCard :data="$store.state.announcementData" />
+					<AnnouncementCard :data="eventData.announcementData" />
 				</aside>
 			</div>
 		</div>

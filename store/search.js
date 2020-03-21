@@ -425,11 +425,10 @@ export const getters = {
         // adding formatted beaches
         for (let i = 0; i < state.searchPageResult.data.list.length; i++) {
             ret.push({
-                temperature: state.searchPageResult.data.list[i].WEATHER ? state.searchPageResult.data.list[i].WEATHER.TEMP.WATER : (state.searchPageResult.data.list[i].BEACH ? state.searchPageResult.data.list[i].BEACH.WEATHER.TEMP.WATER : null),
+                tempWater: state.searchPageResult.data.list[i].WEATHER ? state.searchPageResult.data.list[i].WEATHER.TEMP.WATER : (state.searchPageResult.data.list[i].BEACH ? state.searchPageResult.data.list[i].BEACH.WEATHER.TEMP.WATER : null),
                 showFavorite: true,
                 beachId: state.searchPageResult.data.list[i].ID,
                 paid: state.searchPageResult.data.list[i].PAID,
-                rating: state.searchPageResult.data.list[i].AVERAGE_RATING ? parseFloat(state.searchPageResult.data.list[i].AVERAGE_RATING) : (state.searchPageResult.data.list[i].BEACH ? parseFloat(state.searchPageResult.data.list[i].BEACH.AVERAGE_RATING) : null),
                 title: state.searchPageResult.data.list[i].NAME,
                 location: state.searchPageResult.data.list[i].CITY ? state.searchPageResult.data.list[i].CITY.NAME : (state.searchPageResult.data.list[i].BEACH && state.searchPageResult.data.list[i].BEACH.CITY ? state.searchPageResult.data.list[i].BEACH.CITY.NAME : null),
                 locationId: state.searchPageResult.data.list[i].CITY ? state.searchPageResult.data.list[i].CITY.ID : (state.searchPageResult.data.list[i].BEACH && state.searchPageResult.data.list[i].BEACH.CITY ? state.searchPageResult.data.list[i].BEACH.CITY.ID : null),
@@ -447,8 +446,13 @@ export const getters = {
                 ret[i].beachSeabedType = state.searchPageResult.data.list[i].PARAMETERS.P_BOTTOM.NAME;
             }
 
-            if (state.searchPageResult.data.list[i].COORDINATES) { // beach
-                ret[i].pos = state.searchPageResult.data.list[i].COORDINATES.length > 0 ? [parseFloat(state.searchPageResult.data.list[i].COORDINATES.split(',')[0]), parseFloat(state.searchPageResult.data.list[i].COORDINATES.split(',')[1])] : []
+            if (state.searchPageResult.data.list[i].BEACH) { // if event
+                ret[i].date = `${state.searchPageResult.data.list[i].ACTIVE_FROM} ${state.searchPageResult.data.list[i].ACTIVE_TO ? '-' : ''} ${state.searchPageResult.data.list[i].ACTIVE_TO ? state.searchPageResult.data.list[i].ACTIVE_TO : ''}`;
+                ret[i].beach = state.searchPageResult.data.list[i].BEACH ? state.searchPageResult.data.list[i].BEACH.NAME : null;
+            } else {
+                ret[i].rating = state.searchPageResult.data.list[i].AVERAGE_RATING ? parseFloat(state.searchPageResult.data.list[i].AVERAGE_RATING) : (state.searchPageResult.data.list[i].BEACH ? parseFloat(state.searchPageResult.data.list[i].BEACH.AVERAGE_RATING) : null);
+                if (state.searchPageResult.data.list[i].COORDINATES)
+                    ret[i].pos = state.searchPageResult.data.list[i].COORDINATES.length > 0 ? [parseFloat(state.searchPageResult.data.list[i].COORDINATES.split(',')[0]), parseFloat(state.searchPageResult.data.list[i].COORDINATES.split(',')[1])] : []
             }
         }
 

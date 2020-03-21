@@ -2,6 +2,7 @@ export const state = () => ({
     event: [],
     reviews: [],
     visitorPics: [],
+    announcementData: null,
     api: 'https://crimea.air-dev.agency'
 })
 
@@ -16,6 +17,10 @@ export const mutations = {
 
     SET_VISITOR_PICS: (state, payload) => {
         state.visitorPics = payload;
+    },
+
+    SET_ANNOUNCEMENT_DATA: (state, payload) => {
+        state.announcementData = payload;
     }
 }
 
@@ -23,13 +28,14 @@ export const actions = {
     async getEvent({commit}, id) {
         let error;
         commit('SET_EVENT', await this.$axios.$get(`/event/item?id=${id}`).catch(e => {
-            console.log(e);
+            console.error(e);
             error = 404;
             return {};
         }));
         if (error) return error;
         commit('SET_REVIEWS', await this.$axios.$get(`/review/list?entityId=${id}&count=9999`));
-        commit('SET_VISITOR_PICS', await this.$axios.$get(`/socialPhoto/list?entityId=${id}&count=10`))
+        commit('SET_VISITOR_PICS', await this.$axios.$get(`/socialPhoto/list?entityId=${id}&count=10`));
+        commit('SET_ANNOUNCEMENT_DATA', await this.$axios.$get(`/banner/list?page=/event`));
     }
 }
 
@@ -56,6 +62,7 @@ export const getters = {
                 title: state.event.data.item.NAME,
                 likes: state.event.data.item.COUNT_FAVORITES,
                 location: state.event.data.item.BEACH && state.event.data.item.BEACH.CITY ? state.event.data.item.BEACH.CITY.NAME : null,
+                locationId: state.event.data.item.BEACH && state.event.data.item.BEACH.CITY ? state.event.data.item.BEACH.CITY.ID : null,
                 eventId: state.event.data.item.ID,
                 beachLength: state.event.data.item.BEACH && state.event.data.item.BEACH.PARAMETERS ? state.event.data.item.BEACH.PARAMETERS.P_LINE_LENGTH : null,
                 price: state.event.data.item.BEACH && state.event.data.item.BEACH.PARAMETERS ? state.event.data.item.BEACH.PARAMETERS.P_PRICE: null,
@@ -98,19 +105,10 @@ export const getters = {
 
             otherEvents: {
                 title: 'Другие мероприятия на этом пляже',
-                showMore: [{
-                    id: Object.values(rootState.search.searchConfig.data.tags).find(v => v.NAME == 'Мероприятия') ? Object.values(rootState.search.searchConfig.data.tags).find(v => v.NAME == 'Мероприятия').ID : -1,
-                    type: 'tags',
-                    value: true
+                showMore: {
+                    type: 'event',
+                    query: state.event.data.item.BEACH ? `?beach=${state.event.data.item.BEACH.ID}` : null
                 },
-                {
-                    param: 'cities',
-                    value: {
-                        id: state.event.data.item.BEACH && state.event.data.item.BEACH.CITY ? state.event.data.item.BEACH.CITY.ID : null,
-                        title: state.event.data.item.BEACH && state.event.data.item.BEACH.CITY ? state.event.data.item.BEACH.CITY.NAME : null
-                    },
-                    query: 'city'
-                }],
                 beachSliderData: {
                     slideNumber: 4,
                     cardData: []
@@ -118,8 +116,23 @@ export const getters = {
             },
 
             visitorPics: [],
-            infraData: []
+            infraData: [],
+            announcementData: {}
     	}
+
+        // adding formatted and random announcement
+        if (state.announcementData && state.announcementData.data) {
+            let announcement = state.announcementData.data.list[Math.floor(Math.random() * state.announcementData.data.list.length)]; // getting a random announcement
+            if (announcement)
+                ret.announcementData = {
+                    link: announcement.LINK,
+                    pic: announcement.PREVIEW_PICTURE ? state.api + announcement.PREVIEW_PICTURE : null,
+                    title: announcement.NAME,
+                    date: announcement.DATE,
+                    description: announcement.DESCRIPTION,
+                    color: announcement.COLOR
+                }
+        }
 
         // adding formatted infrastructures
         if (state.event.data.item.BEACH) {

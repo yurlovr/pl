@@ -1,12 +1,13 @@
 export const state = () => ({
-    beach: [],
-    temperatures: [],
-    events: [],
-    barsNRestos: [],
-    opinions: [],
-    reviews: [],
-    similarBeaches: [],
-    visitorPics: [],
+    beach: null,
+    temperatures: null,
+    events: null,
+    barsNRestos: null,
+    opinions: null,
+    reviews: null,
+    similarBeaches: null,
+    visitorPics: null,
+    announcementData: null,
     api: 'https://crimea.air-dev.agency'
 })
 
@@ -41,6 +42,10 @@ export const mutations = {
 
     SET_VISITOR_PICS: (state, payload) => {
         state.visitorPics = payload;
+    },
+
+    SET_ANNOUNCEMENT_DATA: (state, payload) => {
+        state.announcementData = payload;
     }
 }
 
@@ -59,6 +64,7 @@ export const actions = {
         commit('SET_TEMPERATURES', await this.$axios.$get(`/weather/list`));
         commit('SET_REVIEWS', await this.$axios.$get(`/review/list?entityId=${id}&count=9999`));
         commit('SET_VISITOR_PICS', await this.$axios.$get(`/socialPhoto/list?entityId=${id}&count=10`));
+        commit('SET_ANNOUNCEMENT_DATA', await this.$axios.$get(`/banner/list?page=/beach`));
 
         let tagsCount = 0;
         if (state.beach.data.item.TAGS)
@@ -161,6 +167,7 @@ export const getters = {
 
             events: {
                 count: Math.min(state.events.data.list.length, 45),
+                link: `/event-catalog?beach=${state.beach.data.item.ID}`,
                 cardData: []
             },
 
@@ -184,8 +191,11 @@ export const getters = {
             similarBeaches: {
                 title: 'Похожие пляжи рядом',
                 subtitle: '',
-                showMore: [],
-                beachNumber: state.similarBeaches.data ? Math.min(state.similarBeaches.data.list.filter(v => {
+                showMore: {
+                    type: 'beach',
+                    query: '?'
+                },
+                beachNumber: state.similarBeaches && state.similarBeaches.data ? Math.min(state.similarBeaches.data.list.filter(v => {
                     if (v.TAGS) {
                         if (v.TAGS.length < 3) return false;
                     }
@@ -194,15 +204,31 @@ export const getters = {
                     }
                     if (!v.TAGS && !v.ADD_TAGS) return false;
                     return true;
-                }).length-1, 45) : 0, // -1 cuz 1 of them is definitely the same beach
+                }).length, 45) : 0,
                 beachSliderData: {
                     slideNumber: 4,
                     cardData: []
                 }
             },
 
-            visitorPics: []
+            visitorPics: [],
+
+            announcementData: {}
         };
+
+        // adding formatted and random announcement
+        if (state.announcementData && state.announcementData.data) {
+            let announcement = state.announcementData.data.list[Math.floor(Math.random() * state.announcementData.data.list.length)]; // getting a random announcement
+            if (announcement)
+                ret.announcementData = {
+                    link: announcement.LINK,
+                    pic: announcement.PREVIEW_PICTURE ? state.api + announcement.PREVIEW_PICTURE : null,
+                    title: announcement.NAME,
+                    date: announcement.DATE,
+                    description: announcement.DESCRIPTION,
+                    color: announcement.COLOR
+                }
+        }
 
         // adding formatted parkings and stops
         let parkings = state.beach.data.item.INFRASTRUCTURES.filter(v => v.CODE == 'parkovka'),
@@ -255,11 +281,12 @@ export const getters = {
             ret.events.cardData.push({
                 title: state.events.data.list[i].NAME,
                 date: `${state.events.data.list[i].ACTIVE_FROM} ${state.events.data.list[i].ACTIVE_TO ? '-' : ''} ${state.events.data.list[i].ACTIVE_TO ? state.events.data.list[i].ACTIVE_TO : ''}`,
-                beach: state.events.data.list[i].BEACH.NAME,
+                beach: state.events.data.list[i].BEACH ? state.events.data.list[i].BEACH.NAME : null,
                 mainLink: `event/${state.events.data.list[i].ID}`,
-                beachLink: `beach/${state.events.data.list[i].BEACH.ID}`,
-                location: state.events.data.list[i].BEACH.CITY.NAME,
-                pic: state.api + state.events.data.list[i].PHOTOS[0],
+                beachLink: state.events.data.list[i].BEACH ? `beach/${state.events.data.list[i].BEACH.ID}` : null,
+                location: state.events.data.list[i].BEACH ? state.events.data.list[i].BEACH.CITY.NAME : null,
+                locationId: state.events.data.list[i].BEACH ? state.events.data.list[i].BEACH.CITY.ID : null,
+                pic: state.events.data.list[i].PHOTOS ? state.api + state.events.data.list[i].PHOTOS[0] : null,
                 eventId: state.events.data.list[i].ID,
                 showFavorite: true
             });
@@ -296,27 +323,20 @@ export const getters = {
         }
 
         // adding formatted visitor pics
-        for (let i = 0; i < state.visitorPics.data.list.length; i++) {
-            ret.visitorPics.push({
-                avatar: state.visitorPics.data.list[i].USER.PICTURE,
-                pic: state.visitorPics.data.list[i].PICTURE,
-                name: state.visitorPics.data.list[i].USER.FIO,
-                comment: state.visitorPics.data.list[i].DESCRIPTION,
-                tags: ['#класс']
-            });
+        if (state.visitorPics) {
+            for (let i = 0; i < state.visitorPics.data.list.length; i++) {
+                ret.visitorPics.push({
+                    avatar: state.visitorPics.data.list[i].USER.PICTURE,
+                    pic: state.visitorPics.data.list[i].PICTURE,
+                    name: state.visitorPics.data.list[i].USER.FIO,
+                    comment: state.visitorPics.data.list[i].DESCRIPTION
+                });
+            }
         }
 
-
         // adding formatted similar beaches
-        if (state.similarBeaches.data) {
-            ret.similarBeaches.showMore.push({
-                param: 'cities',
-                value: {
-                    id: state.beach.data.item.CITY.ID,
-                    title: state.beach.data.item.CITY.NAME
-                },
-                query: 'city'
-            })
+        if (state.similarBeaches && state.similarBeaches.data) {
+            ret.similarBeaches.showMore.query += `city=${state.beach.data.item.CITY.ID}&`;
             let tagsCount;
             for (let i = 0; i < state.similarBeaches.data.list.length; i++) {
                 if (state.beach.data.item.ID != state.similarBeaches.data.list[i].ID) {
@@ -344,22 +364,15 @@ export const getters = {
 
             if (state.beach.data.item.TAGS) {
                 for (let i = 0; i < state.beach.data.item.TAGS.length; i++) {
-                    ret.similarBeaches.showMore.push({
-                        type: 'tags',
-                        id: state.beach.data.item.TAGS[i].ID,
-                        value: true
-                    });
+                    ret.similarBeaches.showMore.query += `tags[]=${state.beach.data.item.TAGS[i].ID}&`;
                 }
             }
             if (state.beach.data.item.ADD_TAGS) {
                 for (let i = 0; i < state.beach.data.item.ADD_TAGS.length; i++) {
-                    ret.similarBeaches.showMore.push({
-                        type: 'addTags',
-                        id: state.beach.data.item.ADD_TAGS[i].ID,
-                        value: true
-                    });
+                    ret.similarBeaches.showMore.query += `addTags[]=${state.beach.data.item.ADD_TAGS[i].ID}&`;
                 }
             }
+            ret.similarBeaches.showMore.query = ret.similarBeaches.showMore.query.slice(0, -1);
         }
 
         // adding formatted sections

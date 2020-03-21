@@ -25,10 +25,11 @@ export default {
 
 	created() {
 		this.setType(this.type);
+		this.setQuery(this.$router.currentRoute.query);
 	},
 
 	methods: {
-		...mapMutations('catalog', ['setType'])
+		...mapMutations('catalog', ['setType', 'setQuery'])
 	}
 }
 </script>

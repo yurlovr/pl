@@ -1,11 +1,4 @@
 export const state = () => ({
-	announcementData: {
-		color: '#FCAB2D',
-		date: '12-15 июня',
-		title: 'Конкурс надувных матрасов',
-		description: 'Фестиваль современной культуры и экологии пройдёт в Крыму',
-		pic: '/pics/global/pics/announcement.png'
-	},
 	beaches: [],
     events: [],
     api: 'https://crimea.air-dev.agency'
@@ -71,7 +64,19 @@ export const getters = {
                 mainLink: `beach/${state.beaches.data.list[i].ID}`,
                 beachLink: `beach/${state.beaches.data.list[i].ID}`,
                 locationId: state.beaches.data.list[i].CITY ? state.beaches.data.list[i].CITY.ID : null,
-                beachId: state.beaches.data.list[i].ID
+                beachId: state.beaches.data.list[i].ID,
+                tags: state.beaches.data.list[i].TAGS ? state.beaches.data.list[i].TAGS.map(v => {
+                    return {
+                        id: v.ID,
+                        title: v.NAME
+                    }
+                }) : null,
+                addTags: state.beaches.data.list[i].ADD_TAGS ? state.beaches.data.list[i].ADD_TAGS.map(v => {
+                    return {
+                        id: v.ID,
+                        title: v.NAME
+                    }
+                }) : null,
             });
         }
 
@@ -96,7 +101,8 @@ export const getters = {
                 mainLink: `event/${state.events.data.list[i].ID}`,
                 beachLink: `beach/${state.events.data.list[i].ID}`,
                 locationId: state.events.data.list[i].BEACH && state.events.data.list[i].BEACH.CITY ? state.events.data.list[i].BEACH.CITY.ID : null,
-                eventId: state.events.data.list[i].ID
+                eventId: state.events.data.list[i].ID,
+                beachId: state.events.data.list[i].BEACH ? state.events.data.list[i].BEACH.ID : null
             });
         }
 

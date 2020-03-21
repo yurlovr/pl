@@ -1,6 +1,6 @@
 <template>
-	<div class="announcement-card">
-		<a href="/" @click.prevent="$bus.goTo('/', $router)">
+	<div class="announcement-card" v-if="data.title">
+		<a :href="data.link" @click.prevent="$bus.goTo(data.link, $router)">
 			<div class="announcement-card__pic-area">
 				<img class="announcement-card__pic" :src="data.pic">
 			</div>

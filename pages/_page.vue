@@ -2,13 +2,13 @@
 	<div class="about-page custom-container custom-page" v-if="data">
 		<h1 class="about-page__title custom-page__title">{{ data.title }}</h1>
 		<div class="two-part-layout">
-			<main class="two-part-layout__left">
+			<main class="two-part-layout__left" :style="{ 'max-width': data.announcementData.title ? '' : '100%' }">
 				<section class="two-part-layout__card">
 					<p class="about-page__text" v-html="data.text"></p>
 				</section>
 			</main>
-			<aside class="two-part-layout__right">
-				<AnnouncementCard :data="$store.state.announcementData" />
+			<aside class="two-part-layout__right" v-if="data.announcementData.title">
+				<AnnouncementCard :data="data.announcementData" />
 			</aside>
 		</div>
 	</div>

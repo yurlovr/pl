@@ -1,7 +1,7 @@
 <template>
 	<div class="about-page custom-container custom-page">
 		<div class="two-part-layout">
-			<main class="two-part-layout__left">
+			<main class="two-part-layout__left" :style="{ 'max-width': '100%' }">
 				<section class="two-part-layout__card">
 					<div class="about-page__title custom-page__title">404 — Данная страница не найдена</div>
 					<p class="about-page__text">
@@ -11,19 +11,11 @@
 					</p>
 				</section>
 			</main>
-			<aside class="two-part-layout__right">
+			<!-- <aside class="two-part-layout__right">
 				<AnnouncementCard :data="$store.state.announcementData" />
-			</aside>
+			</aside> -->
 		</div>
 	</div>
 </template>
 
-<script>
-	import AnnouncementCard from '~/components/global/AnnouncementCard';
 
-	export default {
-		components: {
-			AnnouncementCard
-		}
-	}
-</script>

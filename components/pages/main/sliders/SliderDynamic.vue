@@ -69,7 +69,9 @@
 			this.mySwiper.on('imagesReady', () => {
 				window.addEventListener('resize', this.onResize, false);
 				this.onResize();
-				this.updateActiveSlide();
+				this.$bus.$on('mainPageReady', () => {
+					this.updateActiveSlide();
+				});
 			});
 
 			this.mySwiper.on('slideChange', () => {

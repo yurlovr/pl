@@ -375,6 +375,7 @@ input {
   &__info-area {
     padding: 45px 24px 60px 24px;
     border-radius: 0 0 12px 12px;
+    background: #317C9B;
   }
 
   &__title {
@@ -2367,15 +2368,18 @@ input {
     overflow: hidden;
 
     &__title {
-      margin-bottom: 30px;
-
       &-area {
-        margin-bottom: 0;
+        align-items: center;
+        margin-bottom: 30px;
       }
     }
 
     &__see-all {
-      display: none !important;
+      &-bottom {
+        display: none;
+        margin-top: 10px;
+        justify-content: center;
+      }
     }
 
     .swiper-container {
@@ -5118,7 +5122,7 @@ input {
 }
 
 // fixing
-// main page"s map
+// main page's map
 @media (max-width: 1400px) {
   .search-page {
     &__map-area {
@@ -5146,6 +5150,24 @@ input {
       &-beaches-main {
         .scroll-area {
           height: 500px;
+        }
+      }
+    }
+  }
+
+  .beach-page {
+    &__events {
+      &__title {
+        &-area {
+          a.beach-page__events__see-all {
+            display: none;
+          }
+        }
+      }
+
+      &__see-all {
+        &-bottom {
+          display: flex;
         }
       }
     }
@@ -5539,6 +5561,20 @@ input {
   .beach-page {
     &__events {
       overflow: visible;
+
+      &__title {
+        &-area {
+          a.beach-page__events__see-all {
+            display: flex;
+          }
+        }
+      }
+
+      &__see-all {
+        &-bottom {
+          display: none;
+        }
+      }
     }
 
     &__quick-data {
@@ -6150,6 +6186,24 @@ input {
       }
     }
   }
+
+  .beach-page {
+    &__events {
+      &__title {
+        &-area {
+          a.beach-page__events__see-all {
+            display: none;
+          }
+        }
+      }
+
+      &__see-all {
+        &-bottom {
+          display: flex;
+        }
+      }
+    }
+  }
 }
 
 @media (min-width: 801px) {
@@ -6697,11 +6751,17 @@ input {
           justify-content: space-between;
           align-items: center;
           margin-bottom: 30px;
+          a.beach-page__events__see-all {
+            display: flex;
+            padding-left: 20px;
+          }
         }
       }
 
       &__see-all {
-        display: flex !important;
+        &-bottom {
+          display: none;
+        }
       }
     }
 
@@ -7883,6 +7943,26 @@ input {
         }
       }
     }
+
+    &__events {
+      &__title {
+        &-area {
+          a.beach-page__events__see-all {
+            display: none;
+          }
+        }
+      }
+
+      &__see-all {
+        &-bottom {
+          display: flex;
+
+          a {
+            padding-left: 0;
+          }
+        }
+      }
+    }
   }
 
   .slider {
@@ -8442,19 +8522,21 @@ input {
     }
 
     &__events {
-      &__see-all {
-        display: none !important;
-      }
-
       .swiper-slide {
         max-width: 135px;
       }
 
       &__title {
-        margin-bottom: 20px;
-
         &-area {
-          margin-bottom: 0;
+          margin-bottom: 20px;
+        }
+      }
+
+      &__see-all {
+        &-bottom {
+          a {
+            display: flex;
+          }
         }
       }
     }

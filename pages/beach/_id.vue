@@ -25,14 +25,14 @@
 				<aside class="two-part-layout__right">
 					<BeachAvgRating :data="beachData.avgRating" class="beach-page__avg-rating__desktop" />
 					<BeachEventMapWeather :data="beachData.sideMapWeatherData" v-if="beachData.sideMapWeatherData.pos.length > 0" class="beach-event__map-weather__desktop" />
-					<AnnouncementCard :data="$store.state.announcementData" class="beach-page__announcement" />
+					<AnnouncementCard :data="beachData.announcementData" class="beach-page__announcement" />
 				</aside>
 			</div>
 		</div>
 		<div class="main-page__white-wrapper beach-event__visitor-pics-wrapper">
 			<BeachEventVisitorPics id="visitor-pics" :data="beachData.visitorPics" :type="'beach'" :typeId="beachData.mainData.beachId" />
 		</div>
-		<BeachSliderArea id="similar-beaches" class="beach-event__similar-beaches" :data="beachData.similarBeaches" v-if="beachData.similarBeaches.beachNumber > 0" />
+		<BeachSliderArea id="similar-beaches" class="beach-event__similar-beaches" :data="beachData.similarBeaches" v-if="beachData.similarBeaches.beachNumber > 1" />
 	</div>
 </template>
 

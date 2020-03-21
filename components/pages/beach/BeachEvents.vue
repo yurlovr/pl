@@ -2,24 +2,24 @@
 	<section class="beach-page__events">
 		<div class="main-page__section-subtitle-area beach-page__events__title-area">
 			<h3 class="two-part-layout__card__title beach-page__events__title">Ближайшие мероприятия на пляже</h3>
-			<nuxt-link to="/" class="main-page__section__subtitle-area__see-all beach-page__events__see-all">
+			<a :href="data.link" @click.prevent="$bus.goTo(data.link, $router)" class="main-page__section__subtitle-area__see-all beach-page__events__see-all">
 	          <span>Смотреть все ({{ data.count }})</span>
-	        </nuxt-link>
+	        </a>
 		</div>
 		<div v-swiper:mySwiper="swiperOption">
 			<div class="swiper-wrapper">
 				<Card v-for="(slide, i) in data.cardData" :data="slide" :showTemp="showTemp" :key="i" class="swiper-slide" />
 			</div>
 		</div>
-		<div class="pagination-wrapper">
+		<div class="pagination-wrapper" v-if="data.cardData.length > 1">
 			<div class="custom-pagination">
 				<button @click="mySwiper.slideTo(i)" class="custom-pagination-bullet" v-for="(b,i) in data.cardData.length - 1" :class="{ 'custom-pagination-bullet-active' : i == activeIndex }"></button>
 			</div>
 		</div>
-		<div class="main-page__beach-events__see-all-bottom">
-			<nuxt-link to="/" class="main-page__see-all">
+		<div class="main-page__section-subtitle-area beach-page__events__see-all-bottom">
+			<a :href="data.link" @click.prevent="$bus.goTo(data.link, $router)">
 	          <span>Смотреть все ({{ data.count }})</span>
-	        </nuxt-link>
+	        </a>
 		</div>
 	</section>
 </template>
