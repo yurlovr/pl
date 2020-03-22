@@ -13,11 +13,19 @@
       </button>
       <div class="search__params" v-show="paramsShown" v-body-scroll-lock="paramsShown && mobileView" :class="{ 'not-main' : labelId }">
         <div class="search__params__inner">
+          <div class="search__params__title-area--first">
+            <h3 class="search__params__title search__params__title--first">Параметры поиска</h3>
+            <div class="search__params__location">
+              <button class="search__params__location__button" @click="toggleGeoLocation()" :class="{ active: geoLocating }">
+                <div class="search__params__location__button__toggler"></div>
+              </button>
+              <span class="search__params__location__text">Мое местоположение</span>
+            </div>
+          </div>
           <button class="search__params__close" @click="toggleParams()">
             <img src="~/static/pics/global/svg/close_blue.svg" alt="Закрыть">
           </button>
           <form class="search__params__form" v-on:submit.prevent>
-            <h3 class="search__params__title search__params__title--first">Параметры поиска</h3>
             <div class="search__params__part__dropdowns-area">
               <div class="search__params__part__dropdowns-row" v-if="searchParams">
                 <div class="search__params__part__dropdowns">
@@ -168,7 +176,9 @@ export default {
       showAutocomplete: false,
       mouseOnAutoComplete: false,
 
-      forceRerenderer: 0
+      forceRerenderer: 0,
+
+      geoLocating: this.$cookies.get('geo_locating') ? true : false
     };
   },
 
@@ -294,6 +304,27 @@ export default {
       if (this.paramsShown)
         this.hideParams();
       else this.showParams();
+    },
+
+    async toggleGeoLocation() {
+      if (this.$cookies.get('geo_locating')) {
+        this.$cookies.set('geo_locating', -1, {
+          maxAge: -1 // remove
+        });
+      } else {
+        let cityId;
+        await this.$axios.$get('https://crimea.air-dev.agency/api/app/geo/item')
+          .then(res => {
+            cityId = res.data && res.data.city ? res.data.city.ID : -1;
+          })
+          .catch(e =>{
+            console.error(e);
+          });
+        this.$cookies.set('geo_locating', cityId, {
+          maxAge: 30 * 24 * 60 * 60 // one month
+        });
+      }
+      this.geoLocating = this.$cookies.get('geo_locating') ? true : false;
     },
 
     searchFilter() {

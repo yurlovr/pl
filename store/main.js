@@ -1,7 +1,6 @@
 export const state = () => ({
     beachesTop: [],
     citiesTop: [],
-    events: [],
     weather: [],
     beachTypes: {},
     collection: {},
@@ -19,10 +18,6 @@ export const mutations = {
 
     SET_CITIES: (state, payload) => {
         state.citiesTop = payload;
-    },
-
-    SET_EVENTS: (state, payload) => {
-        state.events = payload;
     },
 
     SET_WEATHER: (state, payload) => {
@@ -48,8 +43,8 @@ export const mutations = {
             state.banners.data.list.sort((a,b) => (parseInt(a.POSITION) - parseInt(b.POSITION)));
     },
 
-    SET_GEO: (state, payload) => {
-        state.geo = payload;
+    setGeoLocating: (state, payload) => {
+        state.geo.id = payload;
     },
 
     SET_GEO_COUNT: (state, payload) => {
@@ -59,31 +54,30 @@ export const mutations = {
 
 export const actions = {
     async getMainPageData({commit, state}, callback) {
-        commit('SET_GEO', await this.$axios.$get('/geo/item'));
-        if (state.geo && state.geo.data && state.geo.data.city)
-            commit('SET_POPULAR_BEACH', await this.$axios.$get(`/beach/list?city=${state.geo.data.city.ID}&count=45`));
-        commit('SET_GEO_COUNT', state.beachesTop.data ? state.beachesTop.data.list.length : 0)
-        if (!state.beachesTop.data || state.beachesTop.data.list.length == 0 || !state.geo.data || !state.geo.data.city || !state.geo.status)
+        if (state.geo.id) {
+            commit('SET_POPULAR_BEACH', await this.$axios.$get(`/beach/list?city=${state.geo.id}&count=45`));
+            commit('SET_GEO_COUNT', state.beachesTop.data ? state.beachesTop.data.list.length : 0)
+        }
+        if (!state.geo.id || !state.geo.count)
             commit('SET_POPULAR_BEACH', await this.$axios.$get('/beach/top?count=45'));
         commit('SET_CITIES', await this.$axios.$get('/city/top?count=9999'));
-        commit('SET_EVENTS', await this.$axios.$get('/event/list'));
         commit('SET_WEATHER', await this.$axios.$get('/weather/list'));
         commit('SET_COLLECTION', await this.$axios.$get('/collection/list/'));
         commit('SET_COLLECTION_LIST', await this.$axios.$get('/collectionList/list/'));
         commit('SET_BANNERS', await this.$axios.$get('/banner/list/'));
         commit('SET_MAP', await this.$axios.$get('/beach/clusters/'));
         callback();
-    },
+    }
 }
 
 export const getters = {
-    mainData: (state, getters, rootState) => {
+    mainData: (state, getters, rootState, rootGetters) => {
         let ret = {};
 
         // Популярные пляжи
             if (state.beachesTop.data) {
                 ret.beachesTop = {
-                    title: 'Самые популярные пляжи' + (state.geo.count != 0 ? ' ' + state.geo.data.city.NAME : ''),
+                    title: 'Самые популярные пляжи' + (state.geo.id && state.geo.count && state.geo.count != 0 && state.state.beachesTop.data.list[0] && state.state.beachesTop.data.list[0].CITY ? ' ' + state.state.beachesTop.data.list[0].CITY.NAME : ''),
                     subtitle: 'Пологий берег, плавный вход в воду, безопасность и современная инфраструктура',
                     beachNumber: Math.min(state.beachesTop.data.list.length, 45),
                     showMore: {
@@ -95,10 +89,10 @@ export const getters = {
                         cardData: []
                     }
                 }
-                if (state.geo.count != 0) {
-                    ret.beachesTop.showMore.query += `city=${state.beachesTop.data.list[0] && state.beachesTop.data.list[0].CITY ? state.beachesTop.data.list[0].CITY.ID : null}&`;
+                if (state.geo.id && state.geo.count && state.geo.count > 0) {
+                    ret.beachesTop.showMore.query += `city=${state.geo.id}&`;
                 }
-                ret.beachesTop.showMore.query = ret.beachesTop.showMore.query.slice(0, -1);
+                ret.beachesTop.showMore.query = ret.beachesTop.showMore.query.slice(0, -1); // get rid of last &
                 for (let i = 0; i < Math.min(state.beachesTop.data.list.length, 10); i++) {
                     ret.beachesTop.beachSliderData.cardData.push({
                         tempWater: state.beachesTop.data.list[i].WEATHER ? state.beachesTop.data.list[i].WEATHER.TEMP.WATER : null,
@@ -188,12 +182,12 @@ export const getters = {
                     ret.map.addressBeaches.push({
                         clusterCenter: clusterCenters[i],
                         beaches: curCluster,
-                        name: clusters[i][0].CITY ? clusters[i][0].CITY.NAME : null
+                        id: clusters[i][0].CITY ? clusters[i][0].CITY.ID : null
                     });
                 }
-                if (state.geo.count != 0) {
+                if (state.geo.id && state.geo.count && state.geo.count > 0) {
                     ret.map.geo = {
-                        id: ret.map.addressBeaches.findIndex(v => v.name == state.geo.data.city.NAME)
+                        id: ret.map.addressBeaches.findIndex(v => v.id == state.geo.id)
                     }
                 }
             } else {
@@ -258,36 +252,18 @@ export const getters = {
             }
 
         // Ближайшие мероприятия
-            if (state.events.data) {
+            if (rootGetters.events) {
                 ret.events = {
                     title: 'Ближайшие мероприятия на пляжах',
-                    beachNumber: Math.min(state.events.data.list.length, 45),
+                    beachNumber: Math.min(rootGetters.events.length, 45),
                     showMore: {
                         type: 'event',
                         query: null
                     },
                     beachSliderData: {
                         slideNumber: 4,
-                        cardData: []
+                        cardData: rootGetters.events.slice(0, 10)
                     }
-                }
-                for (let i = 0; i < Math.min(state.events.data.list.length, 10); i++) {
-                    ret.events.beachSliderData.cardData.push({
-                        temperature: state.events.data.list[i].BEACH && state.events.data.list[i].BEACH.WEATHER && state.events.data.list[i].BEACH.WEATHER.TEMP
-                            ? state.events.data.list[i].BEACH.WEATHER.TEMP.WATER
-                            : null,
-                        showFavorite: true,
-                        paid: state.events.data.list[i].PAID,
-                        date: `${state.events.data.list[i].ACTIVE_FROM} ${state.events.data.list[i].ACTIVE_TO ? '-' : ''} ${state.events.data.list[i].ACTIVE_TO ? state.events.data.list[i].ACTIVE_TO : ''}`,
-                        title: state.events.data.list[i].NAME,
-                        beach: state.events.data.list[i].BEACH ? state.events.data.list[i].BEACH.NAME : null,
-                        location: state.events.data.list[i].BEACH && state.events.data.list[i].BEACH.CITY ? state.events.data.list[i].BEACH.CITY.NAME : null,
-                        locationId: state.events.data.list[i].BEACH && state.events.data.list[i].BEACH.CITY ? state.events.data.list[i].BEACH.CITY.ID : -1,
-                        pic: state.events.data.list[i].PHOTOS ? state.api + state.events.data.list[i].PHOTOS[0] : null,
-                        mainLink: `event/${state.events.data.list[i].ID}`,
-                        beachLink: state.events.data.list[i].BEACH ? `beach/${state.events.data.list[i].BEACH.ID}` : null,
-                        eventId: state.events.data.list[i].ID
-                    });
                 }
             } else {
                 ret.events = null;

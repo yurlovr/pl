@@ -108,10 +108,10 @@ export default {
         this.updateArrows();
 
         this.$bus.$on('hidePageTransitioner', () => {
-            setTimeout(() => {this.updateArrows()}, 2000);
+            setTimeout(() => {this.update()}, 2000);
         });
         this.$bus.$on('mainPageReady', () => {
-            setTimeout(() => {this.updateArrows()}, 2000);
+            setTimeout(() => {this.update()}, 2000);
         });
     },
 
@@ -125,13 +125,17 @@ export default {
         },
 
         updateArrows () {
-            this.showLeft = !this.mySwiper.isBeginning;
-            this.showRight = !this.mySwiper.isEnd;
+            if (this.mySwiper) {
+                this.showLeft = !this.mySwiper.isBeginning;
+                this.showRight = !this.mySwiper.isEnd;
+            }
         },
 
         update() {
-            this.mySwiper.slideNext();
-            this.mySwiper.slidePrev();
+            if (this.mySwiper) {
+                this.mySwiper.slideNext();
+                this.mySwiper.slidePrev();
+            }
         } 
     },
 

@@ -35,7 +35,7 @@ import WeatherSliderArea from '~/components/pages/main/WeatherSliderArea';
 import DynamicSliderArea from '~/components/pages/main/DynamicSliderArea';
 import MapArea from '~/components/pages/main/MapArea';
 
-import { mapActions, mapGetters } from 'vuex';
+import { mapActions, mapGetters, mapMutations } from 'vuex';
 
 export default {
   components: {
@@ -61,6 +61,7 @@ export default {
   },
 
   created() {
+    this.setGeoLocating(this.$cookies.get('geo_locating'));
     this.getMainPageData(() => {
       this.$bus.$emit('mainPageReady');
       this.$bus.$emit('hidePageTransitioner');
@@ -73,6 +74,7 @@ export default {
 
   methods: {
     ...mapActions('main', ['getMainPageData']),
+    ...mapMutations('main', ['setGeoLocating']),
 
     onScroll() {
       if (document.querySelector('main-page')) {
