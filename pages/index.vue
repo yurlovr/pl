@@ -85,7 +85,7 @@ export default {
       let scrollTop = window.scrollY || document.body.scrollTop || document.documentElement.scrollTop;
 
       // show or hide the search background and the bar depending on the scroll
-      if (window.innerWidth > 900 && scrollTop >= 346 || window.innerWidth <= 900 && window.innerWidth > 800 && scrollTop >= 230 || window.innerWidth <= 800 && window.innerWidth > 500 && scrollTop >= 75 || window.innerWidth <= 500 && scrollTop >= 20) {
+      if (window.innerWidth > 900 && scrollTop >= 346 || window.innerWidth <= 900 && window.innerWidth > 800 && scrollTop >= 230 || window.innerWidth <= 800 && window.innerWidth > 650 && scrollTop >= 245 || window.innerWidth <= 650 && scrollTop >= 20) {
         this.$bus.$emit("showHeaderBgAndBar");
       } else {
         this.$bus.$emit("hideHeaderBgAndBar");

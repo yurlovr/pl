@@ -3,7 +3,7 @@
 		<h1 class="about-page__title custom-page__title">{{ data.title }}</h1>
 		<div class="two-part-layout">
 			<main class="two-part-layout__left" :style="{ 'max-width': data.announcementData.title ? '' : '100%' }">
-				<section class="two-part-layout__card">
+				<section class="two-part-layout__card" style="width: fit-content;">
 					<p class="about-page__text" v-html="data.text"></p>
 				</section>
 			</main>

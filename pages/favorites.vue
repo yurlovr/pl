@@ -9,11 +9,11 @@
 				Мероприятия
 			</button>
 		</div>
-		<CardGrid :perPage="12" :data="beachesToShow" v-show="!showBeachesOrEvents" />
-		<CardGrid :perPage="12" :data="eventsToShow" :showIfVisited="true" v-show="showBeachesOrEvents" />
+		<CardGrid :emptyText="'У вас нет понравившихся пляжей'" :perPage="12" :data="beachesToShow" v-show="!showBeachesOrEvents" />
+		<CardGrid :emptyText="'У вас нет понравившихся мероприятий'" :perPage="12" :data="eventsToShow" :showIfVisited="true" v-show="showBeachesOrEvents" />
 		<div class="custom-container" v-show="showBeachesOrEvents">
 			<h3 class="main-page__section-title">Посещенные мероприятия</h3>
-			<h4 class="favorites-page__empty" v-show="visited.length == 0">Пусто</h4>
+			<h4 class="favorites-page__empty" v-show="visited.length == 0">У вас не посещенных мероприятий</h4>
 		</div>
 		<CardGrid :perPage="12" :data="visited" v-show="showBeachesOrEvents && visited.length > 0" />
 	</div>

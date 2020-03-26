@@ -31,7 +31,7 @@
 						</div>
 					</div>
 				</div>
-				<div class="pagination-wrapper">
+				<div class="pagination-wrapper" v-if="data.pics.length > 1">
 					<div class="custom-pagination">
 						<button @click="mySwiper.slideTo(i)" class="custom-pagination-bullet" v-for="(b,i) in data.pics.length" :class="{ 'custom-pagination-bullet-active' : i == activeIndex }"></button>
 					</div>
@@ -147,6 +147,7 @@
 					slidesPerView: 'auto',
 					spaceBetween: 15,
 					direction: 'vertical',
+					mousewheel: true,
 					init: false,
 					breakpoints: {
 						600: {

@@ -1,5 +1,6 @@
 <template>
 	<header class="header">
+		<div class="search__bg" v-show="paramsShown" @click="updateParamsShown(false)"></div>
 		<div class="header__bg" :class="{ active : (bgAndBarShown || tempBgAndBarShown) }"></div>
 		<div class="header__inner custom-container">
 			<a href="/" class="header__logo" @click.prevent="$bus.goTo('/', $router)">
@@ -27,7 +28,7 @@
 <script>
 	import Search from '~/components/global/Search';
 
-	import { mapGetters, mapActions } from 'vuex';
+	import { mapGetters, mapMutations } from 'vuex';
 
 	export default {
 		components: {
@@ -44,7 +45,8 @@
 		},
 
 		computed: {
-			...mapGetters(['beachIds', 'eventIds'])
+			...mapGetters(['beachIds', 'eventIds']),
+			...mapGetters('search', ['paramsShown'])
 		},
 
 		mounted() {
@@ -88,6 +90,8 @@
 		},
 
 		methods: {
+			...mapMutations('search', ['updateParamsShown']),
+
 			toggleSearch() {
 				this.$bus.$emit('toggleMobileSearchBar');
 			}

@@ -20,7 +20,7 @@
 						</button>
 					</div>
 					<div class="beach-event__pt__right">
-						<a v-if="data" :href="`https://yandex.ru/maps/?rtext=${userPos.lat},${userPos.long}~${pos[0]},${pos[1]}&rtt=auto`" target="_blank" class="beach-event__pt__right__button banner__card__info-area__button">
+						<a v-if="data" :href="`https://yandex.ru/maps/?rtext=${userPos.lat},${userPos.long}~${pos[0]},${pos[1]}`" target="_blank" class="beach-event__pt__right__button banner__card__info-area__button">
 							<span>Проложить маршрут</span>
 						</a>
 					</div>
@@ -28,7 +28,7 @@
 			</div>
 		</section>
 		<BeachEventPtMap :data="data" />
-		<a v-if="data" :href="`https://yandex.ru/maps/?rtext=${userPos.lat},${userPos.long}~${pos[0]},${pos[1]}&rtt=auto`" target="_blank" class="beach-event__pt__right__button banner__card__info-area__button bottom">
+		<a v-if="data" :href="`https://yandex.ru/maps/?rtext=${userPos.lat},${userPos.long}~${pos[0]},${pos[1]}`" target="_blank" class="beach-event__pt__right__button banner__card__info-area__button bottom">
 			<span>Проложить маршрут</span>
 		</a>
 	</div>

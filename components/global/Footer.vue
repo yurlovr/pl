@@ -44,7 +44,7 @@
 		<div class="footer__line"></div>
 		<div class="footer__bottom">
 			<div class="footer__right">
-				<span class="footer__bottom__text">© «RussoTouristo»</span>
+				<span class="footer__bottom__text">© «пляжи.ру»</span>
 			</div>
 			<div class="footer__left">
 				<div class="footer__part">

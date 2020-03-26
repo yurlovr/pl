@@ -3,7 +3,7 @@
 		<div class="custom-container">
 			<h3 class="custom-page__title catalog-page__title">{{ data.title }}</h3>
 		</div>
-		<CardGrid :perPage="20" :data="data.grid" v-if="data && data.grid" />
+		<CardGrid :perPage="20" :data="data.grid" v-if="data.grid" />
 	</div>
 </template>
 

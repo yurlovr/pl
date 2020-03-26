@@ -11,7 +11,7 @@
 
 		data() {
 			return {
-				favorite: this.data.beachId && this.$cookies.get(`favorites.beaches.${this.data.beachId}`) || this.data.eventId && this.$cookies.get(`favorites.events.${this.data.eventId}`),
+				favorite: this.data.beachId && !this.data.eventId && this.$cookies.get(`favorites.beaches.${this.data.beachId}`) || this.data.eventId && this.$cookies.get(`favorites.events.${this.data.eventId}`),
 				favoriteHover: false
 			}
 		},
@@ -44,7 +44,7 @@
 					this.$bus.$emit('decreaseFavorites');
 				else this.$bus.$emit('increaseFavorites');
 
-				if (this.data.beachId) {
+				if (this.data.beachId && !this.data.eventId) {
 					if (this.$cookies.get(`favorites.beaches.${this.data.beachId}`)) {
 						this.$cookies.set(`favorites.beaches.${this.data.beachId}`, true, {
 							maxAge: -1 // remove

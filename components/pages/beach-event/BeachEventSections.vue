@@ -44,6 +44,7 @@ export default {
                 freeMode: true,
                 spaceBetween: 0,
                 slidesPerView: 'auto',
+                mousewheel: true,
                 init: false
             },
             margin: 300,

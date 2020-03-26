@@ -30,6 +30,12 @@
 
 		methods: {
 			chooseRating(i) {
+				if (this.rating == i) {
+					this.rating = 0;
+					this.$emit('change', this.rating);
+					return;
+				}
+
 				this.hover = -1;
 				this.rating = i;
 				this.$emit('change', this.rating)

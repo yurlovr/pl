@@ -15,11 +15,8 @@
 				</template>
 			</div>
 		</div>
-		<p class="beach-event__review__comment">
-			<client-only>
-				<v-clamp :expanded="expanded" autoresize :max-lines="maxLines" ref="clamper">{{ data.comment }}</v-clamp>
-			</client-only>
-		</p>
+		<p class="beach-event__review__comment not-expanded" v-show="!expanded && maxLines > 0" v-html="data.comment.slice(0, 300) + '...'"></p>
+		<p class="beach-event__review__comment expanded" v-show="expanded || maxLines == 0" v-html="data.comment"></p>
 		<button class="beach-event__review__comment__button" @click="expanded = !expanded" v-show="maxLines > 0">
 			<span v-show="!expanded">Развернуть</span>
 			<span v-show="expanded">Свернуть</span>
@@ -30,14 +27,8 @@
 </template>
 
 <script>
-	import VClamp from 'vue-clamp';
-
 	export default {
 		props: ['data', 'lines'],
-
-		components: {
-			VClamp
-		},
 
 		data() {
 			return {
@@ -48,19 +39,8 @@
 
 		mounted() {
 			window.addEventListener('resize', this.onResize, false);
-			setTimeout(() => { this.onResize(); }, 500);
-		},
-
-		methods: {
-			onResize() {
-				if (!this.$el.querySelector('.beach-event__review')) {
-					window.removeEventListener('resize', this.onResize, false);
-					return;
-				}
-
-				if (this.$refs.clamper && this.$refs.clamper.offset > 340 && !this.lines != 0)
-					this.maxLines = 4;
-			}
+			if (this.data && this.data.comment && this.data.comment.length < 300)
+				this.maxLines = 0;
 		}
 	}
 </script>

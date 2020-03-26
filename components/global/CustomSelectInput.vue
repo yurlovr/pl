@@ -1,5 +1,5 @@
 <template>
-	<div class="custom-new-select" :class="{ open: dropdownOpen }" v-on-clickaway="onBlur" v-if="options">
+	<div class="custom-new-select custom-new-select" :class="{ open: dropdownOpen }" v-on-clickaway="onBlur" v-if="options">
 		<div class="custom-new-select__top" @click="openDropdown()">
 			<input type="text" :placeholder="value.title" v-model="input" @input="dropdownOpen = true" @click.stop :class="{ 'not-default': value.id != -1 }">
 			<img src="~/static/pics/global/svg/dropdown.svg">
@@ -25,7 +25,7 @@ export default {
 	watch: {
 		value: function(n, o) {
 			if (n.id != -1)
-				this.input = n.title;
+				this.input = n.title.charAt(0).toUpperCase() + n.title.slice(1).replace('осёлок городского типа', 'гт.');
 		}
 	},
 
@@ -38,23 +38,14 @@ export default {
 	},
 
 	computed: {
-		title() {
-			if (this.param == 'searchBeachLengthFrom' && this.value.id != -1) {
-				if (this.value.title > 3)
-					return `Протяженность линии от, ${this.value.title} м`;
-				else return `От ${this.value.title} м`;
-			} else if (this.param == 'searchWaterTempFrom' && this.value.id != -1) {
-				if (this.value.title > 3)
-					return `Температура воды от, ${this.value.title} °C`;
-				else return `От ${this.value.title} м`;
-			} else return this.value.title;
-		},
-
 		filteredOptions() {
 			if (this.input.replace(/\s/g,"") == "")
-				return this.options.map(v => {return { title: v.title.charAt(0).toUpperCase() + v.title.substring(1).toLowerCase(), id: v.id }});
+				return this.options.map(v => {return { title: v.title.toLowerCase().replace('осёлок городского типа', 'гт.').split(' ').map(word => word != 'Любой город' ? word.charAt(0).toUpperCase() + word.slice(1) : word).join(' '), id: v.id }});
 
-			let filtered = this.options.filter(v => v.id != -1).map(v => { return { title: v.title.toLowerCase(), id: v.id }}).filter(v => { return v.title.indexOf(this.input.toLowerCase()) != -1 }).map(v => {return { title: v.title.charAt(0).toUpperCase() + v.title.substring(1).toLowerCase(), id: v.id }});
+			let filtered = this.options
+						.filter(v => v.id != -1).map(v => { return { title: v.title.toLowerCase().replace('осёлок городского типа', 'гт.'), id: v.id }})
+						.filter(v => { return v.title.indexOf(this.input.toLowerCase().replace('осёлок городского типа', 'гт.')) != -1 })
+						.map(v => {return { title: v.title.toLowerCase().replace('осёлок городского типа', 'гт.').split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' '), id: v.id }});
 			if (filtered.length == 0)
 				return [{
 					title: 'Ничего не найдено',

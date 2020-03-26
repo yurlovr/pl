@@ -99,7 +99,7 @@ export const getters = {
                 location: state.events.data.list[i].BEACH && state.events.data.list[i].BEACH.CITY ? state.events.data.list[i].BEACH.CITY.NAME : null,
                 pic: state.events.data.list[i].PHOTOS ? state.api + state.events.data.list[i].PHOTOS[0] : null,
                 mainLink: `event/${state.events.data.list[i].ID}`,
-                beachLink: `beach/${state.events.data.list[i].ID}`,
+                beachLink: state.events.data.list[i].BEACH ? `beach/${state.events.data.list[i].BEACH.ID}` : null,
                 locationId: state.events.data.list[i].BEACH && state.events.data.list[i].BEACH.CITY ? state.events.data.list[i].BEACH.CITY.ID : null,
                 eventId: state.events.data.list[i].ID,
                 beachId: state.events.data.list[i].BEACH ? state.events.data.list[i].BEACH.ID : null

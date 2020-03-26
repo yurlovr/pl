@@ -3,8 +3,9 @@
         <div class="swiper-bar-display_mobile">
             <h2 class="two-part-layout__card__title beach-page__barsNrestos__title">Бары и рестораны</h2>
             <a
-                href="#"
-                class="beach-page__barsNrestos__online-service "
+                href="/online-service"
+                @click.prevent="$bus.goTo('/online-service', $router)"
+                class="beach-page__barsNrestos__online-service"
             >
                 <img src="~/static/pics/beach/online_service.svg">
                 <span>Онлайн обслуживание</span>
@@ -40,7 +41,8 @@
                         {{ item.description }}
                     </p>
                     <a
-                        href="#"
+                        href="/online-service"
+                        @click.prevent="$bus.goTo('/online-service', $router)"
                         class="beach-page__barsNrestos__online-service swiper-bar-display"
                     >
                         <img src="~/static/pics/beach/online_service.svg">

@@ -16,7 +16,7 @@
 import { directive as onClickaway } from 'vue-clickaway';
 
 export default {
-	props: ['options', 'value', 'param'],
+	props: ['options', 'value', 'param', 'opposite'],
 
 	directives: {
 		onClickaway: onClickaway,
@@ -32,11 +32,11 @@ export default {
 	computed: {
 		title() {
 			if (this.param == 'searchBeachLengthFrom' && this.value.id != -1) {
-				if (!isNaN(this.value.title))
+				if (this.options[0].title != 'От')
 					return `Протяженность линии от, ${this.value.title} м`;
 				else return `От ${this.value.title} м`;
 			} else if (this.param == 'searchWaterTempFrom' && this.value.id != -1) {
-				if (!isNaN(this.value.title))
+				if (this.options[0].title != 'От')
 					return `Температура воды от, ${this.value.title} °C`;
 				else return `От ${this.value.title} м`;
 			} else return this.value.title;
@@ -48,6 +48,18 @@ export default {
 			this.chosenIndex = i;
 			this.dropdownOpen = false;
 			this.$bus.$emit('updateSearchParam', { param: this.param, value: { title: this.options[i].title, id: this.options[i].id } });
+
+			// id == 0 is the default value
+			if (this.opposite) {
+				setTimeout(() => {
+					if (this.value.id != -1 && this.opposite.value.id != -1 && (
+						(this.param == 'searchWaterTempFrom' || this.param == 'searchBeachLengthFrom') && this.value.title >= this.opposite.value.title) 
+						|| 
+						(this.param == 'searchWaterTempTo' || this.param == 'searchBeachLengthTo') && this.value.title <= this.opposite.value.title) {
+						this.$bus.$emit('updateSearchParam', { param: this.opposite.param, value: { title: this.opposite.options[0].title, id: this.opposite.options[0].id } });
+					}
+				}, 1);
+			}
 		},
 
 		onBlur() {

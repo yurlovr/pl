@@ -4,7 +4,7 @@
       <button class="search__bar__left-search" v-show="searchInput && searchInput.length > 0" @click="searchCurQuery()">
         <img src="~/static/pics/global/svg/search.svg" alt="Поиск">
       </button>
-      <input class="search__bar__input" type="text" placeholder="Искать пляж" :value="searchInput" @input="onInput" @blur="showAutocomplete = false" @focus="showAutocomplete = true" @keyup.enter="searchCurQuery()">
+      <input class="search__bar__input" type="text" placeholder="Искать пляж" :value="searchInput" @input="onInput" @blur="showAutocomplete = false" @focus="showAutocomplete = true" @keyup.enter="searchCurQuery()" :style="{ opacity: (searchInput.length > 0 ? 1 : 0.6) }">
       <a href="/search" class="search__bar__right-search" @click.prevent="searchFilter()">
         <img src="~/static/pics/global/svg/search.svg" alt="Поиск" v-show="searchInput.length == 0">
       </a>
@@ -30,36 +30,20 @@
               <div class="search__params__part__dropdowns-row" v-if="searchParams">
                 <div class="search__params__part__dropdowns">
                   <div class="search__params__part--dropdown search__params__part--dropdown--wider">
-                    <c-select-input
-                    :value="searchParams.selects.cities.value"
-                    :param="searchParams.selects.cities.param"
-                    :class="{ default : searchParams.selects.cities.value.id == searchParams.selects.cities.options[0].id }"
-                    :options="searchParams.selects.cities.options">
+                    <c-select-input :value="searchParams.selects.cities.value" :param="searchParams.selects.cities.param" :class="{ default : searchParams.selects.cities.value.id == searchParams.selects.cities.options[0].id }" :options="searchParams.selects.cities.options">
                     </c-select-input>
                   </div>
                   <div class="search__params__part--dropdown">
-                    <c-select-input
-                    :value="searchParams.selects.beachTypes.value"
-                    :param="searchParams.selects.beachTypes.param"
-                    :class="{ default : searchParams.selects.beachTypes.value.id == searchParams.selects.beachTypes.options[0].id }"
-                    :options="searchParams.selects.beachTypes.options">
+                    <c-select-input :value="searchParams.selects.beachTypes.value" :param="searchParams.selects.beachTypes.param" :class="{ default : searchParams.selects.beachTypes.value.id == searchParams.selects.beachTypes.options[0].id }" :options="searchParams.selects.beachTypes.options">
                     </c-select-input>
                   </div>
                 </div>
                 <div class="search__params__part__dropdowns">
                   <div class="search__params__part--dropdown search__params__part--dropdown--wider">
-                    <c-select
-                    :value="searchParams.selects.modes.value"
-                    :param="searchParams.selects.modes.param"
-                    :class="{ default: searchParams.selects.modes.value.id == searchParams.selects.modes.options[0].id }"
-                    :options="searchParams.selects.modes.options"></c-select>
+                    <c-select :value="searchParams.selects.modes.value" :param="searchParams.selects.modes.param" :class="{ default: searchParams.selects.modes.value.id == searchParams.selects.modes.options[0].id }" :options="searchParams.selects.modes.options"></c-select>
                   </div>
                   <div class="search__params__part--dropdown">
-                    <c-select
-                    :value="searchParams.selects.price.value"
-                    :param="searchParams.selects.price.param"
-                    :class="{ default : searchParams.selects.price.value.id == searchParams.selects.price.options[0].id }"
-                    :options="searchParams.selects.price.options"></c-select>
+                    <c-select :value="searchParams.selects.price.value" :param="searchParams.selects.price.param" :class="{ default : searchParams.selects.price.value.id == searchParams.selects.price.options[0].id }" :options="searchParams.selects.price.options"></c-select>
                   </div>
                 </div>
               </div>
@@ -67,34 +51,18 @@
                 <div class="search__params__part__dropdowns" :class="{ equal : searchMobileText && !labelId || showCorrectSelectText }">
                   <span class="search__params__part__label" v-show="searchMobileText || showCorrectSelectText">Протяженность линии, метров</span>
                   <div class="search__params__part--dropdown search__params__part--dropdown--merged">
-                    <c-select
-                      :value="searchParams.selects.searchBeachLengthFrom.value"
-                      :param="searchParams.selects.searchBeachLengthFrom.param" 
-                      :class="{ default : searchParams.selects.searchBeachLengthFrom.value.id == searchParams.selects.searchBeachLengthFrom.options[0].id }"
-                      :options="searchParams.selects.searchBeachLengthFrom.options">
+                    <c-select :value="searchParams.selects.searchBeachLengthFrom.value" :param="searchParams.selects.searchBeachLengthFrom.param" :class="{ default : searchParams.selects.searchBeachLengthFrom.value.id == searchParams.selects.searchBeachLengthFrom.options[0].id }" :options="searchParams.selects.searchBeachLengthFrom.options" :opposite="searchParams.selects.searchBeachLengthTo">
                     </c-select>
-                    <c-select
-                      :value="searchParams.selects.searchBeachLengthTo.value"
-                      :param="searchParams.selects.searchBeachLengthTo.param" 
-                      :class="{ default : searchParams.selects.searchBeachLengthTo.value.id == searchParams.selects.searchBeachLengthTo.options[0].id }"
-                      :options="searchParams.selects.searchBeachLengthTo.options">
+                    <c-select :value="searchParams.selects.searchBeachLengthTo.value" :param="searchParams.selects.searchBeachLengthTo.param" :class="{ default : searchParams.selects.searchBeachLengthTo.value.id == searchParams.selects.searchBeachLengthTo.options[0].id }" :options="searchParams.selects.searchBeachLengthTo.options" :opposite="searchParams.selects.searchBeachLengthFrom">
                     </c-select>
                   </div>
                 </div>
                 <div class="search__params__part__dropdowns" :class="{ equal : searchMobileText && !labelId || showCorrectSelectText }">
                   <span class="search__params__part__label" v-show="searchMobileText  || showCorrectSelectText">Температура воды от, &deg;C</span>
                   <div class="search__params__part--dropdown search__params__part--dropdown--merged">
-                    <c-select
-                      :value="searchParams.selects.searchWaterTempFrom.value"
-                      :param="searchParams.selects.searchWaterTempFrom.param"
-                      :class="{ default : searchParams.selects.searchWaterTempFrom.value.id == searchParams.selects.searchWaterTempFrom.options[0].id }"
-                      :options="searchParams.selects.searchWaterTempFrom.options">
+                    <c-select :value="searchParams.selects.searchWaterTempFrom.value" :param="searchParams.selects.searchWaterTempFrom.param" :class="{ default : searchParams.selects.searchWaterTempFrom.value.id == searchParams.selects.searchWaterTempFrom.options[0].id }" :options="searchParams.selects.searchWaterTempFrom.options" :opposite="searchParams.selects.searchWaterTempTo">
                     </c-select>
-                    <c-select
-                      :value="searchParams.selects.searchWaterTempTo.value"
-                      :param="searchParams.selects.searchWaterTempTo.param"
-                      :class="{ default : searchParams.selects.searchWaterTempTo.value.id == searchParams.selects.searchWaterTempTo.options[0].id }"
-                      :options="searchParams.selects.searchWaterTempTo.options">
+                    <c-select :value="searchParams.selects.searchWaterTempTo.value" :param="searchParams.selects.searchWaterTempTo.param" :class="{ default : searchParams.selects.searchWaterTempTo.value.id == searchParams.selects.searchWaterTempTo.options[0].id }" :options="searchParams.selects.searchWaterTempTo.options" :opposite="searchParams.selects.searchWaterTempFrom">
                     </c-select>
                   </div>
                 </div>
@@ -119,7 +87,7 @@
           </form>
         </div>
       </div>
-      <div class="search__autocomplete" v-show="searchInput && searchInput.length >= 3 && showAutocomplete || searchInput && searchInput.length >= 3 && mouseOnAutoComplete" @mouseover="mouseOnAutoComplete = true" @mouseleave="mouseOnAutoComplete = false">
+      <div class="search__autocomplete" v-show="searchInput && searchInput.length >= 1 && showAutocomplete || searchInput && searchInput.length >= 1 && mouseOnAutoComplete" @mouseover="mouseOnAutoComplete = true" @mouseleave="mouseOnAutoComplete = false">
         <div class="search__autocomplete__inner">
           <span class="search__autocomplete__empty" v-show="autocompleteResults.length == 0">Ничего не найдено</span>
           <a :href="result.link" @click.prevent="$bus.goTo(result.link, $router)" v-for="result in autocompleteResults">
@@ -164,7 +132,6 @@ export default {
       showCorrectSelectText: false,
 
       // are parameters shown?
-      paramsShown: false,
       addParamsShown: false,
       // mobile search bar vars (<= 650px) and temp for it
       mobileSearchBarShown: false,
@@ -256,39 +223,29 @@ export default {
   },
 
   computed: {
-    ...mapState('search', ['searchInput']),
-    ...mapState('search', ['autocompleteResults']),
-    ...mapState('search', ['searchParams']),
-    ...mapState('search', ['checkboxes']),
-    ...mapState('search', ['query'])
+    ...mapState('search', ['searchInput', 'autocompleteResults', 'searchParams', 'checkboxes', 'query']),
+    ...mapGetters('search', ['paramsShown'])
   },
 
   methods: {
-    ...mapActions('search', ['search']),
-    ...mapActions('search', ['searchQuery']),
-    ...mapActions('search', ['searchAutocomplete']),
-    ...mapMutations('search', ['updateSearchQuery']),
-    ...mapMutations('search', ['updateSearchSecondRowParam']),
-    ...mapMutations('search', ['updateInput']),
-    ...mapMutations('search', ['updateSearchParam']),
-    ...mapMutations('search', ['emptySearchParams']),
-    ...mapMutations('search', ['updateSearchInput']),
+    ...mapActions('search', ['search', 'searchQuery', 'searchAutocomplete']),
+    ...mapMutations('search', ['updateSearchQuery', 'updateSearchSecondRowParam', 'updateInput', 'updateSearchParam', 'emptySearchParams', 'updateSearchInput', 'updateParamsShown']),
 
     showParams() {
       // check, if not the main search (the search in the header) (has labelId), then
-      // if the screen size is less than 450px, then open the one in the header by calling an event (temporary)
-      if (this.labelId && window.innerWidth <= 450) {
+      // if the screen size is less than 650px, then open the one in the header by calling an event
+      if (this.labelId && window.innerWidth <= 650) {
         this.$bus.$emit('tempShowHeaderBgAndBar');
         this.$bus.$emit('tempShowMobileSearchBar');
         setTimeout(() => { this.$bus.$emit('showParams'); }, 1);
         return;
       }
 
-      this.paramsShown = true;
+      this.updateParamsShown(true);
     },
 
     hideParams() {
-      this.paramsShown = false;
+      this.updateParamsShown(false);
     },
 
     toggleAddParams() {
@@ -317,7 +274,7 @@ export default {
           .then(res => {
             cityId = res.data && res.data.city ? res.data.city.ID : -1;
           })
-          .catch(e =>{
+          .catch(e => {
             console.error(e);
           });
         this.$cookies.set('geo_locating', cityId, {
@@ -414,7 +371,7 @@ export default {
     },
 
     autocomplete: debounce(async function() {
-      if (this.searchInput && this.searchInput.length >= 3) {
+      if (this.searchInput && this.searchInput.length >= 1) {
         this.searchAutocomplete();
       }
     }, 250)

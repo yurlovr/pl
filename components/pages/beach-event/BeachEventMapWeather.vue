@@ -3,7 +3,7 @@
     <div class="beach-event__map-weather__map-card">
       <div class="map"></div>
       <div class="beach-event__map-weather__map-card__button-area" v-if="data.pos">
-        <a target="_blank" :href="`https://yandex.ru/maps/?ll=${data.pos[1]}%2C${data.pos[0]}&z=12`" class="banner__card__info-area__button">
+        <a target="_blank" :href="`https://yandex.ru/maps/?pt=${data.pos[1]}%2C${data.pos[0]}&z=18`" class="banner__card__info-area__button">
           <span>Перейти на карту</span>
         </a>
       </div>
@@ -63,11 +63,13 @@ export default {
           .then(maps => {
             this.map = new maps.Map(this.$el.getElementsByClassName('map')[0], {
               center: this.data.pos || [44.50465522867475, 34.21493291965433],
-              zoom: this.data.pos ? 14 : 8,
+              zoom: this.data.pos ? 18 : 8,
               controls: []
             });
 
             if (this.data.pos) {
+              this.map.behaviors.disable('drag');
+
               let icon = maps.templateLayoutFactory.createClass(
                   `<div class="map__beach-icon">
                     <div class="map__beach-caption">${this.data.title}</div>

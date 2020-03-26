@@ -153,6 +153,12 @@
 					else {
 						this.errorMsg = 'Пост успешно отправлен';
 						this.sent = true;
+						setTimeout(() => {
+							this.modalOpen = false;
+							this.error = null;
+							this.errorMsg = '';
+							this.link = '';
+						}, 1000);
 					}
 				}).catch(e => {
 					console.error(e)

@@ -1,6 +1,6 @@
 <template>
 	<div class="search-page__tag">
-		<span>{{ tag.value.title }}</span>
+		<span>{{ tag.value.title.charAt(0).toUpperCase() + tag.value.title.slice(1) }}</span>
 		<button class="search-page__tag__remove" @click="removeTag()">
 			<img src="~/static/pics/global/svg/close.svg" alt="Убрать">
 		</button>

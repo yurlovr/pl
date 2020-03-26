@@ -1,5 +1,6 @@
 export const state = () => ({
     searchInput: '',
+    paramsShown: false,
     searchParams: {
         selects: {
             cities: {
@@ -224,6 +225,10 @@ export const mutations = {
         }
     },
 
+    updateParamsShown: (state, payload) => {
+        state.paramsShown = payload;
+    },
+
     SET_SEARCH_RESULT: (state, payload) => {
         state.searchPageResult = payload;
     },
@@ -366,14 +371,14 @@ export const mutations = {
 export const actions = {
     async search({commit, state}) {
         commit('updateSearchQuery');
-        if (state.query.length > 0) {
+        // if (state.query.length > 0) {
             commit('SET_SEARCH_RESULT', await this.$axios.$get(`search/filter${state.query}&count=9999`));
-        } else commit('EMPTY_RESULTS');
+        // } else commit('EMPTY_RESULTS');
     },
 
     async searchQuery({commit, state, rootState}) {
         commit('updateSearchQuery', true);
-        if (state.query.length > 0) {
+        // if (state.query.length > 0) {
             let autocompleteRes = await this.$axios.$get(`search/autocomplete${state.query}`),
                 beaches = {
                     data: {
@@ -385,18 +390,19 @@ export const actions = {
                         list: []
                     }
                 };
-            if (!autocompleteRes.data)
-                return;
-            for (let i = 0; i < autocompleteRes.data.list.length; i++) {
-                if (rootState.beaches.data.list.find(v => v.ID == autocompleteRes.data.list[i].ID))
-                    beaches.data.list.push(rootState.beaches.data.list.find(v => v.ID == autocompleteRes.data.list[i].ID));
-                if (rootState.events.data.list.find(v => v.ID == autocompleteRes.data.list[i].ID))
-                    events.data.list.push(rootState.events.data.list.find(v => v.ID == autocompleteRes.data.list[i].ID));
-            }
+            // if (!autocompleteRes.data)
+            //     return;
+            if (autocompleteRes.data && autocompleteRes.data.list)
+                for (let i = 0; i < autocompleteRes.data.list.length; i++) {
+                    if (rootState.beaches.data.list.find(v => v.ID == autocompleteRes.data.list[i].ID))
+                        beaches.data.list.push(rootState.beaches.data.list.find(v => v.ID == autocompleteRes.data.list[i].ID));
+                    if (rootState.events.data.list.find(v => v.ID == autocompleteRes.data.list[i].ID))
+                        events.data.list.push(rootState.events.data.list.find(v => v.ID == autocompleteRes.data.list[i].ID));
+                }
             commit('SET_SEARCH_RESULT', beaches);
             commit('SET_SEARCH_RESULT_BEACH_BACKUP', beaches);
             commit('SET_SEARCH_RESULT_EVENT_BACKUP', events);
-        } else commit('EMPTY_RESULTS');
+        // } else commit('EMPTY_RESULTS');
     },
 
     async searchAutocomplete({commit, state}) {
@@ -462,5 +468,9 @@ export const getters = {
         })
 
         return ret;
+    },
+
+    paramsShown: (state) => {
+        return state.paramsShown;
     }
 }

@@ -2,7 +2,7 @@
 	<section class="beach-event__reviews" :class="{ empty: data && data.length == 0 }">
 		<h2 class="two-part-layout__card__title beach-event__reviews__title">Отзывы гостей ({{ data ? data.length : 0 }})</h2>
 		<div class="beach-event__reviews__desktop" v-if="data">
-			<BeachEventReview :data="review" v-for="(review, i) in data.slice((page-1)*perPage, Math.min(page*perPage, data.length))" :key="i" v-show="i < 6" />
+			<BeachEventReview :data="review" v-for="(review, i) in data.slice((page-1)*perPage, Math.min(page*perPage, data.length))" :key="i" v-show="i < 6" :lines="4" />
 			<div class="pagination-num-wrapper beach-event__reviews__pagination custom-container" v-if="data.length > perPage">
 				<Pagination :perPage="perPage" :totalElems="data.length" v-model="page" />
 			</div>

@@ -21,7 +21,7 @@
 				</div>
 				<div class="search-page__map-area__card__infos__item beach-event__main-info__infos__item" v-if="data.beachLength">
 					<img src="~/static/pics/search/beach_length.svg">
-					<span class="wrapper"><span class="gray">Протяженность линии:</span><span>{{ data.beachLength }}</span></span>
+					<span class="wrapper"><span class="gray">Протяженность линии:</span><span>{{ data.beachLength }} м</span></span>
 				</div>
 				<div class="search-page__map-area__card__infos__item beach-event__main-info__infos__item" v-if="data.price">
 					<img src="~/static/pics/search/beach_price.svg">
@@ -29,9 +29,9 @@
 					<img :style="{ 'height': '11px', 'width': 'unset', 'margin-bottom': '3px', 'margin-right': '0' }" src="~/static/pics/global/svg/ruble_dark.svg" alt="руб">
 					</span>/день</span></span>
 				</div>
-				<div class="search-page__map-area__card__infos__item beach-event__main-info__infos__item" v-if="data.beachType">
+				<div class="search-page__map-area__card__infos__item beach-event__main-info__infos__item" v-if="beachType">
 					<img src="~/static/pics/search/beach_type.svg">
-					<span class="wrapper"><span class="gray">Пляж:</span><span>{{ data.beachType }}</span></span>
+					<span class="wrapper"><span class="gray">Поверхность:</span><span>{{ beachType }}</span></span>
 				</div>
 				<div class="search-page__map-area__card__infos__item beach-event__main-info__infos__item" v-if="data.time">
 					<img src="~/static/pics/search/beach_worktime.svg">
@@ -71,6 +71,19 @@
 					return `/beach-catalog?city=${this.data.locationId}`;
 				else (this.data.eventId)
 					return `/event-catalog?city=${this.data.locationId}`;
+			},
+
+			beachType() {
+				if (this.data.beachType) {
+					if (this.data.beachType == 'Галечные пляжи')
+						return 'Галька';
+					else if (this.data.beachType == 'Песчаные пляжи')
+						return 'Песок';
+					else if (this.data.beachType == 'Ракушечные пляжи')
+						return 'Ракушки';
+				} else {
+					return null;
+				}
 			}
 		},
 

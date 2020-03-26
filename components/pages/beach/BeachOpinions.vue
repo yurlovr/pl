@@ -27,7 +27,7 @@
 			<div v-swiper:mySwiperOpinion="swiperOptionOpinion">
 				<div class="swiper-wrapper">
 					<div v-for="(person, i) in data" :key="i" class="swiper-slide beach-page__opinions__opinion__slide">
-						<p>{{ person.opinion }}</p>
+						<p v-html="person.opinion"></p>
 					</div>
 				</div>
 			</div>
