@@ -196,7 +196,7 @@ export const getters = {
         for (let i = 0; i < otherEvents.length; i++) {
             ret.otherEvents.beachSliderData.cardData.push({
                 title: otherEvents[i].NAME,
-                date: `${otherEvents[i].ACTIVE_FROM} ${otherEvents[i].ACTIVE_TO ? '-' : ''} ${otherEvents[i].ACTIVE_TO ? otherEvents[i].ACTIVE_TO : ''}`,
+                date: otherEvents[i].ACTIVE_FROM,
                 beach: otherEvents[i].BEACH ? otherEvents[i].BEACH.NAME : null,
                 paid: otherEvents[i].PAID,
                 tempWater: otherEvents[i].BEACH && otherEvents[i].BEACH.WEATHER && otherEvents[i].BEACH.TEMP ? otherEvents[i].BEACH.WEATHER.TEMP.WATER : null,

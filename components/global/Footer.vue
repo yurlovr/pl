@@ -3,7 +3,7 @@
 		<div class="footer__top">
 			<div class="footer__right">
 				<a href="/" @click.prevent="$bus.goTo('/', $router)">
-					<img src="~/static/pics/global/svg/nash_plyaj_blue.svg" alt="НашПляж" class="footer__logo">
+					<img src="~/static/pics/global/svg/logo-blue.svg" alt="НашПляж" class="footer__logo">
 				</a>
 			</div>
 			<div class="footer__left">

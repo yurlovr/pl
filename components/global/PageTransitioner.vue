@@ -2,7 +2,7 @@
 	<div class="page-transitioner" id="transitioner" :class="{ active : active }">
 		<div class="page-transitioner__left" id="page-transitioner__left"></div>
 		<div class="page-transitioner__right" id="page-transitioner__right"></div>
-		<img class="page-transitioner__logo" id="page-transitioner__logo" src="~/static/pics/global/svg/nash_plyaj_blue.svg">
+		<img class="page-transitioner__logo" id="page-transitioner__logo" src="~/static/pics/global/svg/logo-blue.svg">
 	</div>
 </template>
 

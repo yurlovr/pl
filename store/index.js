@@ -91,7 +91,7 @@ export const getters = {
         for (let i = 0; i < state.events.data.list.length; i++) {
             ret.push({
                 tempWater: state.events.data.list[i].BEACH && state.events.data.list[i].BEACH.WEATHER && state.events.data.list[i].BEACH.WEATHER.TEMP ? state.events.data.list[i].BEACH.WEATHER.TEMP.WATER : null,
-                date: `${state.events.data.list[i].ACTIVE_FROM} ${state.events.data.list[i].ACTIVE_TO ? '-' : ''} ${state.events.data.list[i].ACTIVE_TO ? state.events.data.list[i].ACTIVE_TO : ''}`,
+                date: state.events.data.list[i].ACTIVE_FROM,
                 showFavorite: true,
                 beach: state.events.data.list[i].BEACH ? state.events.data.list[i].BEACH.NAME : null,
                 paid: state.events.data.list[i].PAID,

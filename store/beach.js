@@ -280,7 +280,7 @@ export const getters = {
         for (let i = 0; i < state.events.data.list.length; i++) {
             ret.events.cardData.push({
                 title: state.events.data.list[i].NAME,
-                date: `${state.events.data.list[i].ACTIVE_FROM} ${state.events.data.list[i].ACTIVE_TO ? '-' : ''} ${state.events.data.list[i].ACTIVE_TO ? state.events.data.list[i].ACTIVE_TO : ''}`,
+                date: state.events.data.list[i].ACTIVE_FROM,
                 beach: state.events.data.list[i].BEACH ? state.events.data.list[i].BEACH.NAME : null,
                 mainLink: `event/${state.events.data.list[i].ID}`,
                 beachLink: state.events.data.list[i].BEACH ? `beach/${state.events.data.list[i].BEACH.ID}` : null,

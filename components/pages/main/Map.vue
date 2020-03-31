@@ -58,6 +58,7 @@
                             }
                         });
 
+
                         // markers
                         let iconStep1 = maps.templateLayoutFactory.createClass(
                             '<div class="map__circle-orange step-1"><span>$[properties.iconContent]</span></div>'
@@ -76,14 +77,22 @@
                         this.map.geoObjects.add(step1ObjectManager);
                         this.map.geoObjects.add(step2ObjectManager);
 
+                        const closeBalloon = () => {
+                            step2ObjectManager.objects.setObjectOptions(this.chosen, {
+                                iconImageHref: '/pics/global/svg/map_beach_blue.svg'
+                            });
+                            this.chosen = -1;
+                            this.map.balloon.close();
+                            this.$bus.$emit('releaseSelection');
+                        }
+
                         let goToStep2 = id => {
                             this.$bus.$emit("changeStep", 2);
                             step1ObjectManager.setFilter('id < 0'); // hide step-1 markers
                             step2ObjectManager.setFilter(''); // show step-2 markers
                             setTimeout(this.onResize, 100);
                             this.zoom = 12;
-                            this.map.setCenter(this.data.addressBeaches[id].clusterCenter,
-                            this.zoom);
+                            this.map.setCenter(this.data.addressBeaches[id].clusterCenter, this.zoom);
                             this.step = 2;
                         }
 
@@ -293,17 +302,8 @@
                                 closeBalloon();
                             }
                         });
-
-                        const closeBalloon = () => {
-                            step2ObjectManager.objects.setObjectOptions(this.chosen, {
-                                iconImageHref: '/pics/global/svg/map_beach_blue.svg'
-                            });
-                            this.chosen = -1;
-                            this.map.balloon.close();
-                            this.$bus.$emit('releaseSelection');
-                        }
                       })
-                      .catch(error => console.error('Failed to load Yandex Maps, ', error))
+                      .catch(error => console.error('Yandex Maps ERROR:', error))
                 }, 1);
             },
 

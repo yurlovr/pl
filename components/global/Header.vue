@@ -4,7 +4,7 @@
 		<div class="header__bg" :class="{ active : (bgAndBarShown || tempBgAndBarShown) }"></div>
 		<div class="header__inner custom-container">
 			<a href="/" class="header__logo" @click.prevent="$bus.goTo('/', $router)">
-				<img src="~/static/pics/global/svg/nash_plyaj_white.svg" alt="НашПляж">
+				<img src="~/static/pics/global/svg/logo-white.svg" alt="НашПляж">
 			</a>
 			<Search v-show="(bgAndBarShown || tempBgAndBarShown)" />
 			<div class="header__left">

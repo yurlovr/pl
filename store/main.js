@@ -138,35 +138,39 @@ export const getters = {
                 let clusters = Object.keys(state.map.data.list).map((k) => state.map.data.list[k]);
                 for (let i = 0; i < clusters.length; i++) {
                     curCluster = clusters[i].filter(v => v.COORDINATES != '');
-                    clusterCenters.push(
-                        curCluster.length != 1 ? ([ curCluster.reduce((a, b) => {
-                                if (typeof a === 'object') a = parseFloat(a.COORDINATES.split(',')[0]);
-                                    return a + parseFloat(b.COORDINATES.split(',')[0]);
-                            }) / curCluster.length,
-                            curCluster.reduce((a, b) => {
-                                if (typeof a === 'object') a = parseFloat(a.COORDINATES.split(',')[1]);
-                                    return a + parseFloat(b.COORDINATES.split(',')[1]);
-                            }) / curCluster.length
-                        ]) : curCluster[0].COORDINATES.split(',').map(v => parseFloat(v)));
+                    if (curCluster && curCluster.length > 0) {
+                        clusterCenters.push(
+                            curCluster.length != 1 ? ([ curCluster.reduce((a, b) => {
+                                    if (typeof a === 'object') a = parseFloat(a.COORDINATES.split(',')[0]);
+                                        return a + parseFloat(b.COORDINATES.split(',')[0]);
+                                }) / curCluster.length,
+                                curCluster.reduce((a, b) => {
+                                    if (typeof a === 'object') a = parseFloat(a.COORDINATES.split(',')[1]);
+                                        return a + parseFloat(b.COORDINATES.split(',')[1]);
+                                }) / curCluster.length
+                            ]) : curCluster[0].COORDINATES.split(',').map(v => parseFloat(v)));
+                    }
                 }
                 ret.map = {
-                    center: [
-                        clusterCenters.length != 1 ? ([ clusterCenters.reduce((a, b) => {
-                                if (typeof a === 'object') a = a[0];
-                                    return a + b[0];
-                            }) / clusterCenters.length,
-                            clusterCenters.reduce((a, b) => {
-                                if (typeof a === 'object') a = a[1];
-                                    return a + b[1];
-                            }) / clusterCenters.length
-                        ]) : clusterCenters[0]
-                    ],
                     addressBeaches: []
+                };
+                if (clusterCenters && clusterCenters.length > 0) {
+                    ret.map.center = [
+                            clusterCenters.length != 1 ? ([ clusterCenters.reduce((a, b) => {
+                                    if (typeof a === 'object') a = a[0];
+                                        return a + b[0];
+                                }) / clusterCenters.length,
+                                clusterCenters.reduce((a, b) => {
+                                    if (typeof a === 'object') a = a[1];
+                                        return a + b[1];
+                                }) / clusterCenters.length
+                            ]) : clusterCenters[0]
+                        ]
                 }
                 for (let i = 0; i < clusters.length; i++) {
                     curCluster = [];
                     for (let j = 0; j < clusters[i].length; j++) {
-                        if (clusters[i][j].COORDINATES && isNaN(clusters[i][j].COORDINATES.split(',').map(v => parseFloat(v))[0])) continue;
+                        if (!clusters[i][j].COORDINATES || clusters[i][j].COORDINATES && isNaN(clusters[i][j].COORDINATES.split(',').map(v => parseFloat(v))[0])) continue;
                         curCluster.push({
                             pos: clusters[i][j].COORDINATES ? clusters[i][j].COORDINATES.split(',').map(v => parseFloat(v)) : null,
                             rating: parseFloat(clusters[i][j].AVERAGE_RATING),
@@ -179,11 +183,13 @@ export const getters = {
                             paid: clusters[i][j].PAID
                         });
                     }
-                    ret.map.addressBeaches.push({
-                        clusterCenter: clusterCenters[i],
-                        beaches: curCluster,
-                        id: clusters[i][0].CITY ? clusters[i][0].CITY.ID : null
-                    });
+                    if (clusterCenters[i] && clusterCenters[i].length > 0) {
+                        ret.map.addressBeaches.push({
+                            clusterCenter: clusterCenters[i],
+                            beaches: curCluster,
+                            id: clusters[i][0].CITY ? clusters[i][0].CITY.ID : null
+                        });
+                    }
                 }
                 if (state.geo.id && state.geo.count && state.geo.count > 0) {
                     ret.map.geo = {
