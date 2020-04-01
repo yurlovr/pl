@@ -30,12 +30,12 @@
               <div class="search__params__part__dropdowns-row" v-if="searchParams">
                 <div class="search__params__part__dropdowns">
                   <div class="search__params__part--dropdown search__params__part--dropdown--wider">
-                    <c-select-input :value="searchParams.selects.cities.value" :param="searchParams.selects.cities.param" :class="{ default : searchParams.selects.cities.value.id == searchParams.selects.cities.options[0].id }" :options="searchParams.selects.cities.options">
-                    </c-select-input>
+                    <c-select :value="searchParams.selects.cities.value" :param="searchParams.selects.cities.param" :class="{ default : searchParams.selects.cities.value.id == searchParams.selects.cities.options[0].id }" :options="searchParams.selects.cities.options">
+                    </c-select>
                   </div>
                   <div class="search__params__part--dropdown">
-                    <c-select-input :value="searchParams.selects.beachTypes.value" :param="searchParams.selects.beachTypes.param" :class="{ default : searchParams.selects.beachTypes.value.id == searchParams.selects.beachTypes.options[0].id }" :options="searchParams.selects.beachTypes.options">
-                    </c-select-input>
+                    <c-select :value="searchParams.selects.beachTypes.value" :param="searchParams.selects.beachTypes.param" :class="{ default : searchParams.selects.beachTypes.value.id == searchParams.selects.beachTypes.options[0].id }" :options="searchParams.selects.beachTypes.options">
+                    </c-select>
                   </div>
                 </div>
                 <div class="search__params__part__dropdowns">
@@ -108,7 +108,6 @@
 <script>
 import CustomCheckbox from '~/components/global/CustomCheckbox';
 import CustomSelect from '~/components/global/CustomSelect';
-import CustomSelectInput from '~/components/global/CustomSelectInput';
 
 import { mapGetters, mapActions, mapState, mapMutations } from 'vuex';
 import { debounce } from '~/helpers/index';
@@ -120,8 +119,7 @@ export default {
 
   components: {
     CustomCheckbox,
-    'c-select': CustomSelect,
-    'c-select-input': CustomSelectInput
+    'c-select': CustomSelect
   },
 
   data() {

@@ -15,7 +15,6 @@
 					</h3>
 					<div class="beach-event__leave-review__modal__img-area" @click="chooseImg">
 						<span class="beach-event__leave-review__modal__part-title" v-show="file == null">Добавьте фото</span>
-						<span class="beach-event__leave-review__modal__part-title" v-if="file != null">{{ file.name.length > 27 ? '...' : '' }}{{ file.name.slice(file.name.length - 27, file.name.length) }}</span>
 						<img :src="file == null ? 'pics/beach/upload.svg' : fileName">
 					</div>
 				</div>
