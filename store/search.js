@@ -1,4 +1,5 @@
 export const state = () => ({
+    my_coords: {},
     searchInput: '',
     paramsShown: false,
     searchParams: {
@@ -466,6 +467,8 @@ export const getters = {
         ret.push({
             updateTime: `${rn.getHours()}:${rn.getMinutes()}:${rn.getSeconds()}`
         })
+
+        console.log(ret, 'mmm ret')
 
         return ret;
     },

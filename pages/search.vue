@@ -34,8 +34,9 @@
 	import SearchTags from '~/components/pages/search/SearchTags';
 	import SearchMapArea from '~/components/pages/search/SearchMapArea';
 	import CardGrid from '~/components/global/CardGrid';
+	import {getDistanceFromLatLonInKm} from "../assets/calcDistance";
 
-	import { mapGetters, mapMutations, mapState, mapActions } from 'vuex';
+  import { mapGetters, mapMutations, mapState, mapActions } from 'vuex';
 
 	export default {
 		components: {
@@ -61,6 +62,7 @@
 
 			getSearchResult: function (n, o) {
 				this.$bus.$emit('updateMap', n);
+				this.dynamicRadius = this.getMaxDistance(n.slice(0, -1))
 			}
 		},
 
@@ -70,7 +72,10 @@
 				mapShownForTheFirstTime: false,
 				tags: [],
 				wait: false,
-				showBeachesOrEvents: false // beaches: false, events: true
+				showBeachesOrEvents: false, // beaches: false, events: true,
+        last_coordinates: this.$cookies.get('last_coordinates') || null,
+        geo_locating: this.$cookies.get('geo_locating') || -1,
+        dynamicRadius: null,
 			}
 		},
 
@@ -87,6 +92,21 @@
 		methods: {
 			...mapMutations('search', ['updateSearchParam', 'updateInput', 'showBeaches', 'showEvents']),
 			...mapActions('search', ['search', 'searchQuery']),
+
+      getMaxDistance(array = []){
+			  let distances = [];
+			  if (array.length && this.geo_locating && this.geo_locating != -1 && Object.keys(this.last_coordinates).length){
+			    array.forEach(e => {
+			      const {pos} = e,
+              lat2 = pos[0],
+              lng2 = pos[1],
+              {lat, lng} = this.last_coordinates
+            distances.push(getDistanceFromLatLonInKm(lat, lng, lat2, lng2));
+          })
+          return  Math.max(...distances);
+        }
+			  return null;
+      },
 
 			showMap() {
 				this.showCardsOrMap = true;
