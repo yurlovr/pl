@@ -1,6 +1,5 @@
 <template>
   <div class="search-page custom-page">
-    <SearchTags :tags="tags" v-if="tags.length > 0"/>
     <div class="search-page__title-area custom-container">
       <h3 class="main-page__section-title">Результаты поиска {{getRadiusIfCityExists ? `(в радиусе
         ${Math.ceil(getRadiusIfCityExists)}км)`: ''}}</h3>
@@ -17,6 +16,7 @@
         </button>
       </div>
     </div>
+    <SearchTags :tags="tags" v-if="tags.length > 0"/>
     <div class="favorites-page__favorites-types custom-container"
          v-show="searchPageResultEventBackup.data && searchPageResultEventBackup.data.list.length > 0">
       <button class="favorites-page__favorites-type" @click="showOnlyBeaches()"
@@ -42,7 +42,6 @@
   import SearchTags from '~/components/pages/search/SearchTags';
   import SearchMapArea from '~/components/pages/search/SearchMapArea';
   import CardGrid from '~/components/global/CardGrid';
-  import {getDistanceFromLatLonInKm} from "../assets/calcDistance";
 
   import {mapGetters, mapMutations, mapState, mapActions} from 'vuex';
 
@@ -70,7 +69,6 @@
 
       getSearchResult: function (n, o) {
         this.$bus.$emit('updateMap', n);
-        this.dynamicRadius = this.getMaxDistance(n.slice(0, -1))
       }
     },
 
@@ -81,9 +79,8 @@
         tags: [],
         wait: false,
         showBeachesOrEvents: false, // beaches: false, events: true,
-        last_coordinates: this.$cookies.get('last_coordinates') || null,
+        last_coordinates: this.$cookies.get('last_coordinates') || {},
         geo_locating: this.$cookies.get('geo_locating') || -1,
-        dynamicRadius: null,
       }
     },
 
@@ -106,20 +103,6 @@
       ...mapMutations('search', ['updateSearchParam', 'updateInput', 'showBeaches', 'showEvents']),
       ...mapActions('search', ['search', 'searchQuery']),
 
-      getMaxDistance(array = []) {
-        /*      let distances = [];
-              if (array.length && this.geo_locating && this.geo_locating != -1 && Object.keys(this.last_coordinates).length) {
-                array.forEach(e => {
-                  const {pos} = e,
-                    lat2 = pos[0],
-                    lng2 = pos[1],
-                    {lat, lng} = this.last_coordinates
-                  distances.push(getDistanceFromLatLonInKm(lat, lng, lat2, lng2));
-                })
-                return Math.max(...distances);
-              }*/
-        return null;
-      },
 
       showMap() {
         this.showCardsOrMap = true;

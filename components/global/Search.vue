@@ -345,13 +345,13 @@
 
       searchFilter() {
         if (this.$nuxt.$route.path == '/search') { // already in the search page
-          this.search([this.$cookies.get('last_coordinates') || null, this.$cookies.get('geo_locating') || -1]); // update results and tags
+          this.search([this.$cookies.get('last_coordinates') || {}, this.$cookies.get('geo_locating') || -1]); // update results and tags
           this.$bus.goTo(`/search${this.query}`, this.$router, false); // updateQuery
           setTimeout(() => {
             this.$bus.goTo(`/search${this.query}`, this.$router, false)
           }, 1); // updateQuery
         } else {
-          this.search([this.$cookies.get('last_coordinates') || null, this.$cookies.get('geo_locating') || -1]);
+          this.search([this.$cookies.get('last_coordinates') || {}, this.$cookies.get('geo_locating') || -1]);
           setTimeout(() => {
             this.$bus.goTo(`/search${this.query}`, this.$router);
           }, 1);
@@ -364,13 +364,13 @@
           this.$bus.goTo(this.autocompleteResults[0].link, this.$router);
         } else if (this.searchInput != '') {
           if (this.$nuxt.$route.path == '/search') { // already in the search page
-            this.searchQuery([this.$cookies.get('last_coordinates') || null, this.$cookies.get('geo_locating') || -1]); // update results and tags
+            this.searchQuery([this.$cookies.get('last_coordinates') || {}, this.$cookies.get('geo_locating') || -1]); // update results and tags
             this.$bus.goTo(`/search${this.query}`, this.$router, false); // updateQuery
             setTimeout(() => {
               this.$bus.goTo(`/search${this.query}`, this.$router, false)
             }, 1); // updateQuery
           } else {
-            this.searchQuery([this.$cookies.get('last_coordinates') || null, this.$cookies.get('geo_locating') || -1]);
+            this.searchQuery([this.$cookies.get('last_coordinates') || {}, this.$cookies.get('geo_locating') || -1]);
             setTimeout(() => {
               this.$bus.goTo(`/search${this.query}`, this.$router);
             }, 1);
@@ -443,7 +443,7 @@
 
       autocomplete: debounce(async function () {
         if (this.searchInput && this.searchInput.length >= 1) {
-          this.searchAutocomplete([this.$cookies.get('last_coordinates') || null, this.$cookies.get('geo_locating') || -1]);
+          this.searchAutocomplete([this.$cookies.get('last_coordinates') || {}, this.$cookies.get('geo_locating') || -1]);
         }
       }, 250)
     }

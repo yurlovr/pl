@@ -1,5 +1,5 @@
 <template>
-	<section class="main-page__beach-slider-area custom-container">
+  <section class="main-page__beach-slider-area custom-container">
     <div class="main-page__beach-slider-area-wrapper" :class="{ 'no-subtitle' : !data.subtitle }">
       <h3 class="main-page__section-title" style="margin-bottom: 10px;">{{ data.title }}</h3>
       <div class="main-page__section-subtitle-area">
@@ -22,7 +22,7 @@
   import SliderBeachEventHotel from '~/components/global/sliders/SliderBeachEventHotel';
 
   export default {
-  	props: ['data'],
+    props: ['data'],
 
     components: {
       SliderBeachEventHotel

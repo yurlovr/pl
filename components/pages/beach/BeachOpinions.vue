@@ -1,15 +1,15 @@
 <template>
-	<section class="two-part-layout__card beach-page__opinions">
-		<h2 class="two-part-layout__card__title beach-page__opinions__title">Мнения местных жителей</h2>
-		<div class="beach-page__opinions__people">
+	<section class="two-part-layout__card beach-page__opinions p-0">
+		<h2 class="two-part-layout__card__title beach-page__opinions__title m-side-opinion mlr-35 m-t-35">Мнения местных жителей</h2>
+		<div class="beach-page__opinions__people m-side-opinion">
 			<div v-swiper:mySwiperMain="swiperOptionMain">
 				<div class="swiper-wrapper">
-					<div v-for="(person, i) in data" :key="i" class="swiper-slide beach-page__opinions__people__slide" :class="{ active: activeIndex == i }" @click="changeSlide(i)">
+					<div v-for="(person, i) in data" :key="i" class="swiper-slide beach-page__opinions__people__slide opinion-mobile" :class="{ active: activeIndex == i }" @click="changeSlide(i)">
 						<div class="beach-page__opinions__people__pic-area">
 							<img :src="person.pic" class="beach-page__opinions__people__pic">
 							<a :href="person.social" class="beach-page__opinions__people__vk" v-if="person.social"><img src="~/static/pics/beach/vk.svg"></a>
 						</div>
-						<span v-html="person.name.replace(' ', '<br>')"></span>
+						<span class="span-16-px" v-html="person.name.replace(' ', '<br>')"></span>
 					</div>
 				</div>
 			</div>

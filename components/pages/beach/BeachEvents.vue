@@ -18,7 +18,7 @@
 		</div>
 		<div class="main-page__section-subtitle-area beach-page__events__see-all-bottom">
 			<a :href="data.link" @click.prevent="$bus.goTo(data.link, $router)">
-	          <span>Смотреть все ({{ data.count }})</span>
+	          <span class="span-color-overload">Смотреть все ({{ data.count }})</span>
 	        </a>
 		</div>
 	</section>
