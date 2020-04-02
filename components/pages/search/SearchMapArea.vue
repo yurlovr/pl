@@ -22,20 +22,11 @@
 </template>
 
 <script>
-	import Vue from 'vue';
 	import SearchMap from '~/components/pages/search/SearchMap';
 	import SearchMapCard from '~/components/pages/search/SearchMapCard';
 
 	export default {
 		props: ['data'],
-
-		beforeMount () {
-			if (process.browser) {
-				require('swiper/dist/css/swiper.css');
-				const VueAwesomeSwiper = require('vue-awesome-swiper/dist/ssr');
-				Vue.use(VueAwesomeSwiper);
-			}
-		},
 
 		components: {
 			SearchMap,
