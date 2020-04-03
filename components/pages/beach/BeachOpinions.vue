@@ -1,6 +1,6 @@
 <template>
 	<section class="two-part-layout__card beach-page__opinions p-0">
-		<h2 class="two-part-layout__card__title beach-page__opinions__title m-side-opinion mlr-35 m-t-35">Мнения местных жителей</h2>
+		<h2 class="two-part-layout__card__title beach-page__opinions__title m-t-35 pt-4 ml-3">Мнения местных жителей</h2>
 		<div class="beach-page__opinions__people m-side-opinion">
 			<div v-swiper:mySwiperMain="swiperOptionMain">
 				<div class="swiper-wrapper">

@@ -1,0 +1,25 @@
+$main_span_btn_color: #228596;
+$classic-span-font-size: 16px;
+.span-color-overload {
+  color: $main_span_btn_color !important;
+}
+
+.span-16-px {
+  font-size: $classic-span-font-size !important;
+}
+
+.m-side-opinion {
+  margin-left: 35px;
+  margin-right: 35px;
+}
+
+.m-t-35 {
+  margin-top: 35px;
+}
+
+.pointer-events-none {
+  pointer-events: none;
+}
+.distance-show{
+
+}

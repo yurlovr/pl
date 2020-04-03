@@ -2,13 +2,13 @@
   <div class="search"
        :class="{ hidden: (mobileView && !mobileSearchBarShown && !tempMobileSearchBarShown), 'dark-bg': paramsShown && !labelId }">
     <div class="search__bar">
-      <button class="search__bar__left-search" v-show="searchInput && searchInput.length > 0" @click="searchCurQuery()">
+      <button class="search__bar__left-search" v-show="searchInput && searchInput.length > 0" @click="searchCurQuery()" :class="{'pointer-events-none': !searchInput.length}">
         <img src="~/static/pics/global/svg/search.svg" alt="Поиск">
       </button>
       <input class="search__bar__input" type="text" :placeholder="showAutocomplete ? '' : 'Искать пляж'"
              :value="searchInput" @input="onInput" @blur="showAutocomplete = false" @focus="showAutocomplete = true"
              @keyup.enter="searchCurQuery()" :style="{ opacity: (searchInput.length > 0 ? 1 : 0.6) }">
-      <a href="/search" class="search__bar__right-search" @click.prevent="searchFilter()">
+      <a href="/search" class="search__bar__right-search" @click.prevent="searchFilter()" :class="{'pointer-events-none': !searchInput.length}">
         <img src="~/static/pics/global/svg/search.svg" alt="Поиск" v-show="searchInput.length == 0">
       </a>
       <button class="search__bar__right-cross" v-show="searchInput && searchInput.length > 0" @click="clearInput">

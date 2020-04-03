@@ -356,7 +356,9 @@ export const getters = {
                             beachLink: `beach/${state.similarBeaches.data.list[i].ID}`,
                             beachId: state.similarBeaches.data.list[i].ID,
                             showFavorite: true,
-                            filter: []
+                            filter: [],
+                            coordinates: state.similarBeaches.data.list[i].COORDINATES.length ? state.similarBeaches.data.list[i].COORDINATES.split(',') : [],
+                            show_distance: true
                         });
                     }
                 }

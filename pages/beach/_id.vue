@@ -32,7 +32,7 @@
 		<div class="main-page__white-wrapper beach-event__visitor-pics-wrapper">
 			<BeachEventVisitorPics id="visitor-pics" :data="beachData.visitorPics" :type="'beach'" :typeId="beachData.mainData.beachId" />
 		</div>
-		<BeachSliderArea id="similar-beaches" class="beach-event__similar-beaches" :data="beachData.similarBeaches" v-if="beachData.similarBeaches.beachNumber > 1" />
+		<BeachSliderArea id="similar-beaches" class="beach-event__similar-beaches" :data="beachData.similarBeaches" v-if="beachData.similarBeaches.beachNumber" />
 	</div>
 </template>
 

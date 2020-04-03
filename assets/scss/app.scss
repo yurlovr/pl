@@ -1,5 +1,5 @@
-$main_span_btn_color: #228596;
-$classic-span-font-size: 16px;
+@import "helpers";
+
 @font-face {
   font-family: Museo Sans Cyrl;
   font-weight: 100;
@@ -2857,7 +2857,7 @@ input {
       font-size: 36px;
       line-height: 120%;
       margin-right: 10px;
-      margin-bottom: 15px;
+      margin-bottom: 20px;
 
       &-area {
         margin-bottom: 60px;
@@ -3733,6 +3733,16 @@ input {
           color: #228596;
         }
       }
+      .distance{
+        position: absolute;
+        right: 0;
+        top: 0;
+        ont-weight: 500;
+        font-size: 14px;
+        line-height: 120%;
+        text-align: right;
+        color: #73767D;
+      }
     }
   }
 
@@ -4344,7 +4354,7 @@ input {
           height: 100%;
           object-fit: cover;
           border-radius: 12px;
-          filter: brightness(0.5);
+          filter: brightness(0.8);
           transition: transform 0.2s ease;
         }
 
@@ -8804,7 +8814,7 @@ input {
     margin-left: 5px;
 
     span {
-      margin-left: 20px;
+      margin-left: 10px;
     }
   }
   .m-side-opinion {
@@ -9380,11 +9390,6 @@ body.touch {
   }
 }
 
-.mlr-35 {
-  margin-left: 35px;
-  margin-right: 35px;
-}
-
 // .fade-enter-active,
 // .fade-leave-active {
 //     transition: opacity 1.5s;
@@ -9395,22 +9400,4 @@ body.touch {
 
 .btn-ymaps {
   display: none;
-}
-
-.span-color-overload {
-  color: $main_span_btn_color !important;
-}
-
-.span-16-px {
-  font-size: $classic-span-font-size !important;
-}
-
-.m-side-opinion {
-  margin-left: 35px;
-  margin-right: 35px;
-}
-
-
-.m-t-35 {
-  margin-top: 35px;
 }
