@@ -2,7 +2,11 @@
 	<div class="slider-beach-event">
 		<div class="slider-beach-event__left">
 			<div class="slider-beach-event__left__inner">
-				<div class="slider-beach-event__medal-gold" v-if="data.goldMedal">
+<!--        не вижу никакой камеры тут, потому пока что будет так-->
+        <div class="slider-beach-event__3d-as-360" @click.stop="$emit('call-modal')">
+          <img src="~/static/pics/global/svg/3d.svg" alt="">
+        </div>
+				<div class="slider-beach-event__medal-gold">
 					<img src="~/static/pics/global/svg/goldMedal.svg">
 					<div class="slider-beach-event__medal-gold__tooltip">
 						<span>Пляж сертифицирован</span>

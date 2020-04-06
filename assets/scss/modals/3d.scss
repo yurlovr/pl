@@ -1,0 +1,48 @@
+.modal-for-3d {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  display: -webkit-box;
+  display: flex;
+  -webkit-box-pack: center;
+  justify-content: center;
+  -webkit-box-align: center;
+  align-items: center;
+  z-index: 105;
+  overflow-y: auto;
+
+  &__modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+
+    &__body {
+      position: relative;
+      background: white;
+      box-shadow: 10px 4px 20px rgba(70, 101, 93, 0.3);
+      z-index: 1;
+      width: 100vw;
+
+      &__cross {
+        font-size: 50px;
+        position: absolute;
+        top: 0;
+        right: 10px;
+        color: #9ea2ad;
+        cursor: pointer;
+      }
+
+      iframe {
+        width: 100%;
+        height: 100%;
+      }
+    }
+  }
+}
