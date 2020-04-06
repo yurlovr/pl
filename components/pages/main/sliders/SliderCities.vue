@@ -52,21 +52,18 @@
 					slidesPerView: 6,
 					init: false,
 					breakpoints: {
-						1150: {
-							slidesPerView: 6,
-						},
-						950: {
+						1350: {
 							slidesPerView: 5,
 						},
-						800: {
+						1150: {
 							slidesPerView: 4,
 							spaceBetween: 10
 						},
-						600: {
+						750: {
 							slidesPerView: 3,
 							spaceBetween: 10
 						},
-						500: {
+						580: {
 							slidesPerView: 2,
 							spaceBetween: 10
 						}

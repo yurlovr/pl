@@ -77,6 +77,12 @@ export const getters = {
                         title: v.NAME
                     }
                 }) : null,
+                pos: state.beaches.data.list[i].COORDINATES && state.beaches.data.list[i].COORDINATES.length > 0 ? [parseFloat(state.beaches.data.list[i].COORDINATES.split(',')[0]), parseFloat(state.beaches.data.list[i].COORDINATES.split(',')[1])] : [],
+                beachLength: state.beaches.data.list[i].PARAMETERS ? (state.beaches.data.list[i].PARAMETERS.P_LINE_LENGTH == '' ? null : state.beaches.data.list[i].PARAMETERS.P_LINE_LENGTH) : null,
+                beachPrice: state.beaches.data.list[i].PARAMETERS ? (state.beaches.data.list[i].PARAMETERS.P_PRICE == '' ? null : state.beaches.data.list[i].PARAMETERS.P_PRICE) : null,
+                beachType: state.beaches.data.list[i].PARAMETERS ? (state.beaches.data.list[i].PARAMETERS.P_BEACH_TYPE ? state.beaches.data.list[i].PARAMETERS.P_BEACH_TYPE.NAME : null) : null,
+                beachWorktime: state.beaches.data.list[i].PARAMETERS ? (state.beaches.data.list[i].PARAMETERS.P_MODE ? state.beaches.data.list[i].PARAMETERS.P_MODE.NAME : null) : null,
+                beachSeabedType: null
             });
         }
 
