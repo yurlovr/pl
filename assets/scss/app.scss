@@ -2080,8 +2080,17 @@ input {
 }
 
 .catalog-page {
+  padding-bottom: 50px;
+
   &__title {
-    margin-bottom: 30px;
+    margin-bottom: 0;
+
+    &-area {
+      margin-bottom: 30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
   }
 }
 
@@ -3369,7 +3378,6 @@ input {
     &__title {
       margin-bottom: 30px;
       color: #393e48;
-      opacity: 0.9;
       font-size: 24px;
       line-height: 29px;
       font-weight: 700;
@@ -3656,7 +3664,7 @@ input {
     object-fit: cover;
     -webkit-backface-visibility: hidden;
     -webkit-transform: translateZ(0) scale(1.0, 1.0);
-    transition: transform 0.4s ease;
+    transition: transform 0.8s ease;
 
     &.tall {
       height: 300px;
@@ -4234,7 +4242,7 @@ input {
         border-radius: 12px;
         -webkit-backface-visibility: hidden;
         -webkit-transform: translateZ(0) scale(1.0, 1.0);
-        transition: transform 0.3s ease;
+        transition: transform 0.8s ease;
         transform-origin: center;
       }
 
@@ -5220,7 +5228,7 @@ input {
 }
 
 @media (min-width: 1450px) {
-  .search-page {
+  .search-page, .catalog-page {
     &__map-area {
       position: relative;
       max-width: 1440px;
@@ -6563,6 +6571,14 @@ input {
   }
 
   .main-page {
+    &__popular-beaches {
+      .slider__arrow {
+        &-left, &-right {
+          display: none;
+        }
+      }
+    }
+
     &__beach-type {
       margin-bottom: 50px;
 
@@ -7076,6 +7092,11 @@ input {
           font-size: 12px;
           line-height: 14px;
         }
+      }
+
+      &__title {
+        font-size: 20px;
+        line-height: 24px;
       }
     }
 
@@ -8134,8 +8155,14 @@ input {
 
   .beach-event {
     &__visitor-pics {
+      &__title {
+        font-size: 18px;
+        line-height: 22px;
+      }
+
       &.empty {
         flex-direction: column;
+        align-items: flex-start;
 
         .beach-event__visitor-pics__title {
           margin-bottom: 15px;
@@ -8822,6 +8849,7 @@ input {
     &__reviews {
       &.empty {
         flex-direction: column;
+        align-items: flex-start;
 
         .beach-event__reviews__title {
           margin-bottom: 15px;
@@ -9175,6 +9203,18 @@ input {
           width: 40px;
           height: 40px;
         }
+      }
+    }
+  }
+
+  .beach-event {
+    &__leave-review {
+      width: 100%;
+    }
+
+    &__visitor-pics {
+      &__add-button-area {
+        width: 100%;
       }
     }
   }

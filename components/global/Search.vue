@@ -35,49 +35,30 @@
               <div class="search__params__part__dropdowns-row" v-if="searchParams">
                 <div class="search__params__part__dropdowns">
                   <div class="search__params__part--dropdown search__params__part--dropdown--wider">
-                    <c-select-input :value="searchParams.selects.cities.value"
-                                    :param="searchParams.selects.cities.param"
-                                    :class="{ default : searchParams.selects.cities.value.id == searchParams.selects.cities.options[0].id }"
-                                    :options="searchParams.selects.cities.options">
-                    </c-select-input>
+                    <c-select :value="searchParams.selects.cities.value" :param="searchParams.selects.cities.param" :class="{ default : searchParams.selects.cities.value.id == searchParams.selects.cities.options[0].id }" :options="searchParams.selects.cities.options">
+                    </c-select>
                   </div>
                   <div class="search__params__part--dropdown">
-                    <c-select-input :value="searchParams.selects.beachTypes.value"
-                                    :param="searchParams.selects.beachTypes.param"
-                                    :class="{ default : searchParams.selects.beachTypes.value.id == searchParams.selects.beachTypes.options[0].id }"
-                                    :options="searchParams.selects.beachTypes.options">
-                    </c-select-input>
+                    <c-select :value="searchParams.selects.beachTypes.value" :param="searchParams.selects.beachTypes.param" :class="{ default : searchParams.selects.beachTypes.value.id == searchParams.selects.beachTypes.options[0].id }" :options="searchParams.selects.beachTypes.options">
+                    </c-select>
                   </div>
                 </div>
                 <div class="search__params__part__dropdowns">
                   <div class="search__params__part--dropdown search__params__part--dropdown--wider">
-                    <c-select :value="searchParams.selects.modes.value" :param="searchParams.selects.modes.param"
-                              :class="{ default: searchParams.selects.modes.value.id == searchParams.selects.modes.options[0].id }"
-                              :options="searchParams.selects.modes.options"></c-select>
+                    <c-select :value="searchParams.selects.modes.value" :param="searchParams.selects.modes.param" :class="{ default: searchParams.selects.modes.value.id == searchParams.selects.modes.options[0].id }" :options="searchParams.selects.modes.options"></c-select>
                   </div>
                   <div class="search__params__part--dropdown">
-                    <c-select :value="searchParams.selects.price.value" :param="searchParams.selects.price.param"
-                              :class="{ default : searchParams.selects.price.value.id == searchParams.selects.price.options[0].id }"
-                              :options="searchParams.selects.price.options"></c-select>
+                    <c-select :value="searchParams.selects.price.value" :param="searchParams.selects.price.param" :class="{ default : searchParams.selects.price.value.id == searchParams.selects.price.options[0].id }" :options="searchParams.selects.price.options"></c-select>
                   </div>
                 </div>
               </div>
               <div class="search__params__part__dropdowns-row">
-                <div class="search__params__part__dropdowns"
-                     :class="{ equal : searchMobileText && !labelId || showCorrectSelectText }">
+                <div class="search__params__part__dropdowns" :class="{ equal : searchMobileText && !labelId || showCorrectSelectText }">
                   <span class="search__params__part__label" v-show="searchMobileText || showCorrectSelectText">Протяженность линии, метров</span>
                   <div class="search__params__part--dropdown search__params__part--dropdown--merged">
-                    <c-select :value="searchParams.selects.searchBeachLengthFrom.value"
-                              :param="searchParams.selects.searchBeachLengthFrom.param"
-                              :class="{ default : searchParams.selects.searchBeachLengthFrom.value.id == searchParams.selects.searchBeachLengthFrom.options[0].id }"
-                              :options="searchParams.selects.searchBeachLengthFrom.options"
-                              :opposite="searchParams.selects.searchBeachLengthTo">
+                    <c-select :value="searchParams.selects.searchBeachLengthFrom.value" :param="searchParams.selects.searchBeachLengthFrom.param" :class="{ default : searchParams.selects.searchBeachLengthFrom.value.id == searchParams.selects.searchBeachLengthFrom.options[0].id }" :options="searchParams.selects.searchBeachLengthFrom.options" :opposite="searchParams.selects.searchBeachLengthTo">
                     </c-select>
-                    <c-select :value="searchParams.selects.searchBeachLengthTo.value"
-                              :param="searchParams.selects.searchBeachLengthTo.param"
-                              :class="{ default : searchParams.selects.searchBeachLengthTo.value.id == searchParams.selects.searchBeachLengthTo.options[0].id }"
-                              :options="searchParams.selects.searchBeachLengthTo.options"
-                              :opposite="searchParams.selects.searchBeachLengthFrom">
+                    <c-select :value="searchParams.selects.searchBeachLengthTo.value" :param="searchParams.selects.searchBeachLengthTo.param" :class="{ default : searchParams.selects.searchBeachLengthTo.value.id == searchParams.selects.searchBeachLengthTo.options[0].id }" :options="searchParams.selects.searchBeachLengthTo.options" :opposite="searchParams.selects.searchBeachLengthFrom">
                     </c-select>
                   </div>
                 </div>
@@ -150,9 +131,8 @@
 </template>
 
 <script>
-  import CustomCheckbox from '~/components/global/CustomCheckbox';
-  import CustomSelect from '~/components/global/CustomSelect';
-  import CustomSelectInput from '~/components/global/CustomSelectInput';
+import CustomCheckbox from '~/components/global/CustomCheckbox';
+import CustomSelect from '~/components/global/CustomSelect';
 
   import {mapGetters, mapActions, mapState, mapMutations} from 'vuex';
   import {debounce} from '~/helpers/index';
@@ -162,32 +142,31 @@
     // differentiates IDs for parameters
     props: ['labelId'],
 
-    components: {
-      CustomCheckbox,
-      'c-select': CustomSelect,
-      'c-select-input': CustomSelectInput
-    },
+  components: {
+    CustomCheckbox,
+    'c-select': CustomSelect
+  },
 
-    data() {
-      return {
-        // in the params change От to Протяженность линии от or Температура воды от
-        searchMobileText: false,
-        // sometimes it is not needed to show the mobile text even its corrected for a small width
-        showCorrectSelectText: false,
+  data() {
+    return {
+      // in the params change От to Протяженность линии от or Температура воды от
+      searchMobileText: false,
+      // sometimes it is not needed to show the mobile text even its corrected for a small width
+      showCorrectSelectText: false,
 
-        // are parameters shown?
-        addParamsShown: false,
-        // mobile search bar vars (<= 650px) and temp for it
-        mobileSearchBarShown: false,
-        tempMobileSearchBarShown: false,
+      // are parameters shown?
+      addParamsShown: false,
+      // mobile search bar vars (<= 650px) and temp for it
+      mobileSearchBarShown: false,
+      tempMobileSearchBarShown: false,
 
-        // mobileView starts from 650px and less
-        mobileView: false,
+      // mobileView starts from 650px and less
+      mobileView: false,
 
-        showAutocomplete: false,
-        mouseOnAutoComplete: false,
+      showAutocomplete: false,
+      mouseOnAutoComplete: false,
 
-        forceRerenderer: 0,
+      forceRerenderer: 0,
 
         geoLocating: this.$cookies.get('geo_locating') ? true : false
       };

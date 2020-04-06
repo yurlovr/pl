@@ -1,12 +1,12 @@
 <template>
 	<div class="custom-new-select" :class="{ open: dropdownOpen }" v-on-clickaway="onBlur" v-if="options">
 		<div class="custom-new-select__top" @click="dropdownOpen = !dropdownOpen">
-			<span>{{ title }}</span>
+			<span>{{ filteredTitle(title) }}</span>
 			<img src="~/static/pics/global/svg/dropdown.svg">
 		</div>
 		<div class="custom-new-select__bottom" v-show="dropdownOpen">
 			<div class="custom-new-select__bottom__item" v-for="(option, i) in options" @click="choose(i)">
-				<span>{{ option.title }}</span>
+				<span>{{ filteredTitle(option.title) }}</span>
 			</div>
 		</div>
 	</div>
@@ -64,6 +64,12 @@ export default {
 
 		onBlur() {
 			this.dropdownOpen = false;
+		},
+
+		filteredTitle(title) {
+			if (title && title.replace)
+				return title.replace('посёлок городского типа', 'пгт.')
+			return title;
 		}
 	}
 }

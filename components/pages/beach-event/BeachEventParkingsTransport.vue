@@ -58,7 +58,7 @@
 		mounted() {
 			if (navigator.geolocation) {
 				navigator.geolocation.getCurrentPosition(this.setUserPos);
-			} else console.error("Cannot get user's position (ParkingsTransport)")
+			} else console.error("Cannot get user's position (ParkingsTransport)");
 
 			this.$bus.$on('routeCoords', coords => {
 				this.pos = coords;
