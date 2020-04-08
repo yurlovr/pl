@@ -1,0 +1,18 @@
+.my-hint, .my-balloon {
+  display: inline-block;
+  position: relative;
+  left: -10px;
+  font-size: 11px;
+  width: 200px;
+  line-height: 17px;
+  color: black;
+  text-align: center;
+  vertical-align: middle;
+  background-color: #fff;
+  border-radius: 4px;
+  padding: 10px;
+}
+
+.my-hint {
+  border: 1px solid #CDB7B5;
+}

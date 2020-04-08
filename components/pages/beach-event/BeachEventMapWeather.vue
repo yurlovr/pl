@@ -6,6 +6,7 @@
         <a target="_blank" :href="`https://yandex.ru/maps/?pt=${data.pos[1]}%2C${data.pos[0]}&z=18`" class="banner__card__info-area__button">
           <span>Перейти на карту</span>
         </a>
+        <span @click.stop="goto">Перейти на panto</span>
       </div>
     </div>
     <div class="beach-event__map-weather__weather-card">
@@ -56,6 +57,13 @@ export default {
   },
 
   methods: {
+    goto(){
+      this.map.panTo([45.32, 33.03], {
+        safe: true
+      }).then(() =>{
+        this.map.geoObjects.get(0).objects.balloon.open(1)
+      })
+    },
     initMap() {
       setTimeout(() => {
         ymaps
@@ -68,7 +76,7 @@ export default {
             });
 
             if (this.data.pos) {
-              this.map.behaviors.disable('drag');
+              // this.map.behaviors.disable('drag');
 
               let icon = maps.templateLayoutFactory.createClass(
                   `<div class="map__beach-icon">
@@ -76,10 +84,45 @@ export default {
                   </div>`
                 ),
                 objectManager = new maps.ObjectManager({
-                  geoObjectOpenBalloonOnClick: false
+                  geoObjectOpenBalloonOnClick: true
                 });
               this.map.geoObjects.add(objectManager);
-
+              let HintLayout =maps.templateLayoutFactory.createClass( "<div class='my-hint'>" +
+                "<b>fsdfdssdfdsfdsfdsdsf</b><br />" +
+                "</div>"
+              ),
+                emit_data = {
+                  pic:"https://crimea.air-dev.agency/upload/iblock/2c5/2c56d3fbff9b56fabe97a74f461e77f8.png",
+                  title:"Пункт медицинской помощи",
+                  pos: [45.32, 33.03]
+                },
+                _em = {
+                  type: "Feature",
+                  id: 1,
+                  geometry: {
+                    type: "Point",
+                    coordinates: emit_data.pos
+                  },
+                  options: {
+                    iconLayout: 'default#imageWithContent',
+                    iconImageHref: emit_data.pic,
+                    iconContentLayout: maps.templateLayoutFactory.createClass(
+                      `<div class="map__beach-icon">
+                    <div class="map__beach-caption">${emit_data.title}</div>
+                  </div>`),
+                    iconImageSize: [46, 60],
+                    iconImageOffset: [-18, -50],
+                    hintLayout: maps.templateLayoutFactory.createClass( "<div class='my-hint'>" +
+                      `<b>${emit_data.title}</b><br />` +
+                      "</div>"
+                    )
+                  },
+                  properties:{
+                    balloonContentBody: "<div class='my-balloon'>" +
+                      `<b>${emit_data.title}</b><br />` +
+                      "</div>"
+                  }
+                }
               objectManager.add({
                 type: "FeatureCollection",
                 features: [{
@@ -94,10 +137,10 @@ export default {
                     iconImageHref: '/pics/global/svg/map_beach_blue.svg',
                     iconContentLayout: icon,
                     iconImageSize: [30, 43],
-                    iconImageOffset: [-18, -50]
-                  }
-                }]
-              });
+                    iconImageOffset: [-18, -50],
+                  },
+                }, _em]
+              })
             }
           })
           .catch(error => console.error('Failed to load Yandex Maps, ', error))
