@@ -126,7 +126,9 @@ export const getters = {
                 price: state.beach.data.item.PARAMETERS.P_PRICE,
                 beachType: state.beach.data.item.PARAMETERS.P_BEACH_TYPE.NAME,
                 beachSeabedType:  state.beach.data.item.PARAMETERS.P_BOTTOM ? state.beach.data.item.PARAMETERS.P_BOTTOM.NAME : null,
-                time: state.beach.data.item.PARAMETERS.P_MODE ? state.beach.data.item.PARAMETERS.P_MODE.NAME : null
+                time: state.beach.data.item.PARAMETERS.P_MODE ? state.beach.data.item.PARAMETERS.P_MODE.NAME : null,
+              sunrise: state.beach.data.item.WEATHER.SUNRISE,
+              sunset: state.beach.data.item.WEATHER.SUNSET,
             },
 
             hugeSliderData: {
@@ -137,7 +139,10 @@ export const getters = {
                 pics: state.beach.data.item.PHOTOS.map((s) => { return state.api + s }),
                 beachClosedText: state.beach.data.item.LABEL.TEXT,
                 beachClosedColor: state.beach.data.item.LABEL.COLOR,
-                beachClosedTooltip: state.beach.data.item.LABEL.DESCRIPTION
+                beachClosedTooltip: state.beach.data.item.LABEL.DESCRIPTION,
+              beautySunrise: state.beach.data.item.WEATHER.BEAUTIFUL_SUNRISE,
+              beautySunset: state.beach.data.item.WEATHER.BEAUTIFUL_SUNSET,
+
             },
 
             infraData: [],
@@ -246,7 +251,7 @@ export const getters = {
         for (let i = 0; i < stops.length; i++) {
             ret.ptData.parkings.bus.push({
                 pos: stops[i].COORDINATES ? stops[i].COORDINATES.split(',').map(Number) : [],
-                title: stops[i].DESCRIPTION,
+                title: stops[i].DESCRIPTION || 'Автобусная остановка',
                 buses: '',
                 taxi: ''
             })

@@ -41,6 +41,14 @@
 					<img src="~/static/pics/search/beach_seabedtype.svg">
 					<span class="wrapper"><span class="gray">Дно:</span><span>{{ data.beachSeabedType }}</span></span>
 				</div>
+        <div class="search-page__map-area__card__infos__item beach-event__main-info__infos__item" v-if="data.sunrise">
+					<img src="~/static/pics/search/beach_seabedtype.svg">
+					<span class="wrapper"><span class="gray">Время рассвета:</span><span>{{ data.sunrise }}</span></span>
+				</div>
+        <div class="search-page__map-area__card__infos__item beach-event__main-info__infos__item" v-if="data.sunset">
+					<img src="~/static/pics/search/beach_seabedtype.svg">
+					<span class="wrapper"><span class="gray">Время заката:</span><span>{{ data.sunset }}</span></span>
+				</div>
 			</div>
 		</div>
 	</section>

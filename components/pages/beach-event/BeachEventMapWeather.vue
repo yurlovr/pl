@@ -7,7 +7,7 @@
            class="banner__card__info-area__button">
           <span>Перейти на карту</span>
         </a>
-        <span @click.stop="goto">Перейти на panto</span>
+<!--        <span @click.stop="goto">Перейти на panto</span>-->
       </div>
     </div>
     <div class="beach-event__map-weather__weather-card">
@@ -61,11 +61,12 @@
     },
 
     methods: {
-      goto() {
-        this.map.panTo([45.32, 33.03], {
+      goto(i, coords = [45.32, 33.03]) {
+        console.warn(this.map, i, coords, 'fsdsdfsfdfsdsfddfs')
+        this.map.panTo(coords, {
           safe: true
         }).then(() => {
-          this.map.geoObjects.get(0).objects.balloon.open(1)
+          this.map.geoObjects.get(0).objects.balloon.open(i)
         })
       },
       initMap() {
@@ -91,11 +92,7 @@
                     geoObjectOpenBalloonOnClick: true
                   });
                 this.map.geoObjects.add(objectManager);
-                let HintLayout = maps.templateLayoutFactory.createClass("<div class='my-hint'>" +
-                  "<b>fsdfdssdfdsfdsfdsdsf</b><br />" +
-                  "</div>"
-                  ),
-                  emit_data = {
+                /*let emit_data = {
                     pic: "https://crimea.air-dev.agency/upload/iblock/2c5/2c56d3fbff9b56fabe97a74f461e77f8.png",
                     title: "Пункт медицинской помощи",
                     pos: [45.32, 33.03]
@@ -126,7 +123,7 @@
                         `<b>${emit_data.title}</b><br />` +
                         "</div>"
                     }
-                  }
+                  }*/
                 let main = {
                     type: "Feature",
                     id: 0,
@@ -145,7 +142,7 @@
                   features = [];
                 if (this.additional && this.additional.length) {
                   this.additional.forEach(el => {
-                    let {pos, id, title } = el;
+                    let {pos, id, title, pic} = el;
                     let icon = maps.templateLayoutFactory.createClass(
                       `<div class="map__beach-icon">
                     <div class="map__beach-caption">${title}</div>
@@ -160,18 +157,18 @@
                       },
                       options: {
                         iconLayout: 'default#imageWithContent',
-                        iconImageHref: '/pics/global/svg/map_beach_blue.svg',
+                        iconImageHref:  pic || '/pics/global/svg/map_beach_blue.svg',
                         iconContentLayout: icon,
                         iconImageSize: [30, 43],
                         iconImageOffset: [-18, -50],
                         hintLayout: maps.templateLayoutFactory.createClass("<div class='my-hint'>" +
-                          `<b>${emit_data.title}</b><br />` +
+                          `<b>${title}</b><br />` +
                           "</div>"
-                        )
+                        ),
                       },
                       properties: {
                         balloonContentBody: "<div class='my-balloon'>" +
-                          `<b>${emit_data.title}</b><br />` +
+                          `<b>${title}</b><br />` +
                           "</div>"
                       }
                     })
@@ -179,6 +176,7 @@
                 }
 
                 features.unshift(main);
+                // features.push(_em);
 
                 objectManager.add({
                   type: "FeatureCollection",
@@ -201,6 +199,11 @@
       this.initMap();
 
       window.addEventListener('resize', this.onResize);
+    },
+    created() {
+      this.$bus.$on('call-balloon-weather', (id, coords) => {
+        this.goto(id, coords);
+      })
     }
   }
 </script>
