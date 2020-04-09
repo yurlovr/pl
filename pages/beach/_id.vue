@@ -35,6 +35,7 @@
         <aside class="two-part-layout__right">
           <BeachAvgRating :data="beachData.avgRating" class="beach-page__avg-rating__desktop"/>
           <BeachEventMapWeather :data="beachData.sideMapWeatherData" v-if="beachData.sideMapWeatherData.pos.length > 0"
+                                :additional="beachData.infraData.filter(e => Array.isArray(e.pos))"
                                 class="beach-event__map-weather__desktop"/>
           <AnnouncementCard :data="beachData.announcementData" class="beach-page__announcement"/>
         </aside>

@@ -255,9 +255,12 @@ export const getters = {
         // adding formatted infrastructures
         let filteredInfra = state.beach.data.item.INFRASTRUCTURES.filter(v => v.CODE != 'parkovka' && v.CODE != 'ostanovki-obshchestvennogo-transporta');
         for (let i = 0; i < filteredInfra.length; i++) {
+            console.log(filteredInfra[i], 'api/contractors/list/subsidiaries')
             ret.infraData.push({
                 title: filteredInfra[i].NAME,
-                pic: filteredInfra[i].ICON ? state.api + filteredInfra[i].ICON : filteredInfra[i].ICON
+                pic: filteredInfra[i].ICON ? state.api + filteredInfra[i].ICON : filteredInfra[i].ICON,
+                pos: filteredInfra[i].COORDINATES ? filteredInfra[i].COORDINATES.split(',') : null,
+                id: filteredInfra[i].ID
             })
         }
 
@@ -265,7 +268,9 @@ export const getters = {
         for (let i = 0; i < state.beach.data.item.SERVICES.length; i++) {
             ret.servicesData.push({
                 title: state.beach.data.item.SERVICES[i].NAME,
-                pic: state.beach.data.item.SERVICES[i].ICON ? state.api + state.beach.data.item.SERVICES[i].ICON : state.beach.data.item.SERVICES[i].ICON
+                pic: state.beach.data.item.SERVICES[i].ICON ? state.api + state.beach.data.item.SERVICES[i].ICON : state.beach.data.item.SERVICES[i].ICON,
+                pos: state.beach.data.item.SERVICES[i].COORDINATES ? state.beach.data.item.SERVICES[i].COORDINATES.split(',') : null,
+                id: state.beach.data.item.SERVICES[i].ID,
             })
         }
 
