@@ -20,7 +20,6 @@
 
 <script>
   import SliderBeachEventHotel from '~/components/global/sliders/SliderBeachEventHotel';
-
   export default {
     props: ['data'],
 

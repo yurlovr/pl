@@ -1,9 +1,10 @@
+import {pic_url} from '../.env.js'
 export const state = () => ({
     event: [],
     reviews: [],
     visitorPics: [],
     announcementData: null,
-    api: 'https://crimea.air-dev.agency'
+    api: pic_url
 })
 
 export const mutations = {

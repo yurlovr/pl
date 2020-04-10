@@ -1,3 +1,4 @@
+import {pic_url} from '../.env.js'
 export const state = () => ({
     beachesTop: [],
     citiesTop: [],
@@ -8,7 +9,7 @@ export const state = () => ({
     banners: {},
     map: {},
     geo: {},
-    api: 'https://crimea.air-dev.agency'
+    api: pic_url
 })
 
 export const mutations = {
@@ -364,7 +365,7 @@ export const getters = {
         // Выбирайте по своим желаниям
             if (state.collectionList.data) {
                 let beachType = state.collectionList.data.list.find(v => v.CODE == 'choose-to-your-wishes');
-                
+
                 if (beachType) {
                     ret.chooseToYourWishes = {
                         title: beachType.NAME,

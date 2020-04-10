@@ -1,4 +1,5 @@
 import {getDistanceFromLatLonInKm} from "../assets/calcDistance";
+import {pic_url} from '../.env.js'
 
 export const state = () => ({
   my_coords: {},
@@ -137,7 +138,7 @@ export const state = () => ({
   autocompleteResults: [],
   query: '',
   tags: [],
-  api: 'https://crimea.air-dev.agency',
+  api: pic_url,
   init: false // SET_SEARCH gets called twice, so I will check if it's init or not to not call it the second time
 })
 
@@ -420,7 +421,7 @@ export const actions = {
     console.warn(coords, city, 'coords city search autocomplite')
     commit('SET_MY_COORDS', coords);
     commit('SET_MY_CITY', city);
-    let res = await this.$axios.$get(`https://crimea.air-dev.agency/api/app/search/autocomplete?q=${state.searchInput}`);
+    let res = await this.$axios.$get(`search/autocomplete?q=${state.searchInput}`);
     if (res.data) {
       commit('updateAutocomplete', res.data);
     }

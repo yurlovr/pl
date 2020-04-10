@@ -297,7 +297,7 @@ import CustomSelect from '~/components/global/CustomSelect';
         } else {
           let cityId,
             my_coords = {};
-          await this.$axios.$get('https://crimea.air-dev.agency/api/app/geo/item')
+          await this.$axios.$get('geo/item')
             .then(res => {
               cityId = res.data && res.data.city ? res.data.city.ID : -1;
               if (res.data && res.data.geoInfo) {

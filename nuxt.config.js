@@ -1,4 +1,5 @@
 import axios from 'axios';
+import {url_api} from './.env.js';
 
 export default {
   mode: "universal",
@@ -26,7 +27,7 @@ export default {
   router: {
     base: '/',
 
-    extendRoutes (routes, resolve) {
+    extendRoutes(routes, resolve) {
       routes.push({
         name: 'custom',
         path: '*',
@@ -63,27 +64,27 @@ export default {
   buildModules: [],
 
   generate: {
-    async routes () {
-      let beachAsync = await axios.get('https://crimea.air-dev.agency/api/app/beach/list?count=9999'),
-          beachRoutes = beachAsync.data.data.list.map((b) => {
-        return {
-          route: `/beach/${b.ID}`
-        }
-      });
+    async routes() {
+      let beachAsync = await axios.get(url_api+'beach/list?count=9999'),
+        beachRoutes = beachAsync.data.data.list.map((b) => {
+          return {
+            route: `/beach/${b.ID}`
+          }
+        });
 
-      let eventAsync = await axios.get('https://crimea.air-dev.agency/api/app/event/list?count=9999'),
+      let eventAsync = await axios.get(url_api+'event/list?count=9999'),
         eventRoutes = eventAsync.data.data.list.map((e) => {
-        return {
-          route: `/event/${e.ID}`
-        }
-      });
+          return {
+            route: `/event/${e.ID}`
+          }
+        });
 
-      let infoPagesAsync = await axios.get('https://crimea.air-dev.agency/api/app/page/list?count=9999'),
+      let infoPagesAsync = await axios.get(url_api+'page/list?count=9999'),
         infoPages = infoPagesAsync.data.data.list.map((e) => {
-        return {
-          route: `/${e.CODE}`
-        }
-      });
+          return {
+            route: `/${e.CODE}`
+          }
+        });
 
       return [
         ...beachRoutes, ...eventRoutes, ...infoPages
@@ -101,7 +102,7 @@ export default {
     'cookie-universal-nuxt'
   ],
   axios: {
-    baseURL: "https://crimea.air-dev.agency/api/app"
+    baseURL: url_api
   },
 
   /*
@@ -112,6 +113,7 @@ export default {
      ** You can extend webpack config here
      */
     transpile: ["vue-clamp", "resize-detector"],
-    extend(config, ctx) {}
+    extend(config, ctx) {
+    }
   }
 }

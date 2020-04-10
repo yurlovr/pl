@@ -20,7 +20,7 @@ export const mutations = {
 
 export const actions = {
 	async getPageData({commit, state}, page) {
-		commit('SET_ALL_PAGES', await this.$axios.$get('https://crimea.air-dev.agency/api/app/page/list?count=9999'));
+		commit('SET_ALL_PAGES', await this.$axios.$get('page/list?count=9999'));
         if (!state.allPages || !state.allPages.data || !state.allPages.data.list)
             return 404;
         let pageData = state.allPages.data.list.find(v => v.CODE == page);
