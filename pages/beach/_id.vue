@@ -122,7 +122,6 @@
         if (Object.values(this.last_coordinates).length && pos && pos.length){
           let lat2 = pos[0], lng2 = pos[1],
             {lat, lng} = this.last_coordinates;
-          console.log(lat, lng, lat2, lng2, 'fsdffsd')
           return Number(getDistanceFromLatLonInKm(lat, lng, Number(lat2), Number(lng2)).toFixed(1))
         }
         return null
