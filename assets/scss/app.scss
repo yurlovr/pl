@@ -1,6 +1,7 @@
 @import "helpers";
 @import "modals/3d.scss";
 @import "yandexMap/yandex.scss";
+@import "modals/geoModal.scss";
 
 @font-face {
   font-family: Museo Sans Cyrl;
@@ -4394,7 +4395,7 @@ input {
       }
     }
 
-    &__blue{
+    &__blue {
       position: absolute;
       top: 20px;
       right: 10px;
@@ -5611,6 +5612,7 @@ input {
   .two-part-layout {
     flex-direction: column;
 
+
     &__left {
       max-width: unset;
       margin-bottom: 50px;
@@ -5621,6 +5623,7 @@ input {
       max-width: unset;
       padding-left: 0;
       min-width: unset;
+
     }
   }
 
@@ -6752,7 +6755,8 @@ input {
         top: 10px;
         left: 70px;
       }
-      &__blue{
+
+      &__blue {
         top: 10px;
         right: 10px;
       }
@@ -9530,4 +9534,27 @@ body.touch {
 
 .btn-ymaps {
   display: none;
+}
+
+
+.distance {
+  margin-bottom: 15px;
+  padding: 19px 37px;
+  background: white;
+  border-radius: 12px;
+
+  p {
+    font-style: normal;
+    font-weight: 500;
+    font-size: 18px;
+    line-height: 22px;
+    /* identical to box height */
+    color: #73767D;
+  }
+
+  span {
+    color: #4A4A4A;
+
+  }
+
 }

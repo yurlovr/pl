@@ -6,6 +6,8 @@ export const state = () => ({
   searchInput: '',
   paramsShown: false,
   searchParams: {
+    coords: [],
+    radius: null,
     selects: {
       cities: {
         value: {
@@ -138,10 +140,17 @@ export const state = () => ({
   query: '',
   tags: [],
   api: 'https://crimea.air-dev.agency',
-  init: false // SET_SEARCH gets called twice, so I will check if it's init or not to not call it the second time
+  init: false, // SET_SEARCH gets called twice, so I will check if it's init or not to not call it the second time,
+  coords: {
+    lat:52.9760256,
+    lng: 36.077568
+  },
+  radius: 5000
 })
 
 export const mutations = {
+  set_coords: (state, pos) => state.coords = pos,
+  set_radius: (state, rad) => state.radius = rad,
   SET_MY_COORDS: (state, data) => state.my_coords = data,
   SET_MY_CITY: (state, city) => state.my_city_id = city,
   SET_SEARCH: (state, payload) => {
@@ -348,6 +357,12 @@ export const mutations = {
         state.query += `infrastructures[]=${e.id}&`;
     })
 
+    if (Object.values(state.coords).length && state.radius) {
+      console.log(state.radius, state.radius/1000, 'state.radius/1000')
+      state.query += `coordinates=` + encodeURIComponent(Object.values(state.coords).join(',')) + '&diameter='+(state.radius/1000)+'&'
+    }
+    console.log(`&coordinates=` + encodeURIComponent(Object.values(state.coords).join(',')) + '&diameter='+state.radius, 'f')
+
     // cleaning up the last & or ? if it's empty
     state.query = state.query.slice(0, -1);
   },
@@ -371,12 +386,14 @@ export const mutations = {
     state.searchParams.checkboxes.addTags.forEach(v => v.value = false);
     state.searchParams.checkboxes.services.forEach(v => v.value = false);
     state.searchParams.checkboxes.infrastructures.forEach(v => v.value = false);
+    state.searchParams.coods = [];
+    state.searchParams.radius = null;
+
   }
 }
 
 export const actions = {
   async search({commit, state}, [coords = null, city = -1]) {
-    console.warn(coords, city, 'coords city')
     commit('SET_MY_COORDS', coords);
     commit('SET_MY_CITY', city);
     commit('updateSearchQuery');
@@ -390,6 +407,7 @@ export const actions = {
     commit('SET_MY_COORDS', coords);
     commit('SET_MY_CITY', city);
     // if (state.query.length > 0) {
+    console.log(state.query, 'state.query')
     let autocompleteRes = await this.$axios.$get(`search/autocomplete${state.query}`),
       beaches = {
         data: {
@@ -438,7 +456,6 @@ export const actions = {
 
 export const getters = {
   getRadiusIfCityExists: state => {
-    console.log(state.searchPageResult, 'state.searchPageResult')
     if (state.searchPageResult && state.searchPageResult.data) {
       let {data: {list}} = state.searchPageResult,
         {my_city_id, my_coords} = state;

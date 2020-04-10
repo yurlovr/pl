@@ -105,7 +105,9 @@ export const getters = {
                         mainLink: `beach/${state.beachesTop.data.list[i].ID}`,
                         beachLink: `beach/${state.beachesTop.data.list[i].ID}`,
                         locationId: state.beachesTop.data.list[i].CITY ? state.beachesTop.data.list[i].CITY.ID : -1,
-                        beachId: state.beachesTop.data.list[i].ID
+                        beachId: state.beachesTop.data.list[i].ID,
+                      coordinates: state.beachesTop.data.list[i].COORDINATES.length ? state.beachesTop.data.list[i].COORDINATES.split(',') : [],
+                        show_distance: true
                     });
                 }
             } else {
@@ -364,7 +366,7 @@ export const getters = {
         // Выбирайте по своим желаниям
             if (state.collectionList.data) {
                 let beachType = state.collectionList.data.list.find(v => v.CODE == 'choose-to-your-wishes');
-                
+
                 if (beachType) {
                     ret.chooseToYourWishes = {
                         title: beachType.NAME,
