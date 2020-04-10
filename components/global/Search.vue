@@ -199,6 +199,11 @@
       window.addEventListener('resize', this.onResize);
       this.onResize();
 
+      this.$bus.$on('changeToggle', (status) => {
+        this.geoLocating = status;
+      });
+
+
       this.$bus.$on('showCorrectSelectText', () => {
         this.showCorrectSelectText = true;
       });

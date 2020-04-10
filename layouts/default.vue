@@ -9,7 +9,7 @@
       <nuxt class="full-screen" />
     </transition>
     <div class="main-page__white-wrapper"><Footer /></div>
-    <search-popup v-if="choose_position" @close="choose_position = false" :coords="last_coordinates"></search-popup>
+    <search-popup v-if="choose_position" @close="choose_position = false" :coords="last_coordinates" @clean="last_coordinates = {}"></search-popup>
   </div>
 </template>
 
