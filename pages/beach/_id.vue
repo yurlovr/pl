@@ -8,6 +8,9 @@
       </div>
       <div class="two-part-layout">
         <main class="two-part-layout__left">
+          <div class="beach-page__avg-rating__mobile distance">
+            <p class="m-0">Расстояние до пляжа <span>{{distance}}км</span></p>
+          </div>
           <BeachEventMainInfo id="main-info" :data="beachData.mainData"/>
           <BeachAvgRating :data="beachData.avgRating" v-if="beachData.avgRating.ratings.length > 0"
                           class="beach-page__avg-rating__mobile"/>
@@ -34,6 +37,9 @@
                              class="beach-page__cardless-area"/>
         </main>
         <aside class="two-part-layout__right">
+            <div class="distance">
+              <p class="m-0">Расстояние до пляжа <span>{{distance}}км</span></p>
+            </div>
           <BeachAvgRating :data="beachData.avgRating" class="beach-page__avg-rating__desktop"/>
           <BeachEventMapWeather :data="beachData.sideMapWeatherData" v-if="beachData.sideMapWeatherData.pos.length > 0"
                                 :additional="beachData.infraData.filter(e => Array.isArray(e.pos))"
@@ -73,6 +79,7 @@
   import iframe360 from "../../components/pages/beach/iframe360";
 
   import {mapGetters} from 'vuex';
+  import {getDistanceFromLatLonInKm} from "../../assets/calcDistance";
 
   export default {
     components: {
@@ -97,7 +104,8 @@
     },
     data() {
       return {
-        show_pano: false
+        show_pano: false,
+        last_coordinates: this.$cookies.get('last_coordinates') || {}
       }
     },
 
@@ -108,7 +116,17 @@
     },
 
     computed: {
-      ...mapGetters('beach', ['beachData'])
+      ...mapGetters('beach', ['beachData']),
+      distance(){
+        let {sideMapWeatherData:{pos}} = this.beachData;
+        if (Object.values(this.last_coordinates).length && pos && pos.length){
+          let lat2 = pos[0], lng2 = pos[1],
+            {lat, lng} = this.last_coordinates;
+          console.log(lat, lng, lat2, lng2, 'fsdffsd')
+          return Number(getDistanceFromLatLonInKm(lat, lng, Number(lat2), Number(lng2)).toFixed(1))
+        }
+        return null
+      }
     },
     methods: {
       changeModalState() {

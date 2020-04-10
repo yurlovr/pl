@@ -1,0 +1,186 @@
+.modal-geo {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  display: -webkit-box;
+  display: flex;
+  -webkit-box-pack: center;
+  justify-content: center;
+  -webkit-box-align: center;
+  align-items: center;
+  z-index: 105;
+  overflow-y: auto;
+
+  &__modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+
+    &__body {
+      position: relative;
+      background: white;
+      box-shadow: 10px 4px 20px rgba(70, 101, 93, 0.3);
+      z-index: 1;
+      min-width: 1070px;
+      min-height: 800px;
+      padding: 28px 0;
+
+      &__top {
+        display: flex;
+        justify-content: space-between;
+
+        p {
+          font-family: Museo Sans Cyrl;
+          font-style: normal;
+          font-weight: bold;
+          font-size: 24px;
+          line-height: 29px;
+          /* identical to box height */
+
+          color: #393E48;
+          margin-left: 50px;
+          margin-top: 20px !important;
+          opacity: 0.9;
+        }
+
+        &__input {
+          input {
+            border: 1px solid black;
+          }
+        }
+      }
+
+
+      &__bottom {
+        margin-top: 20px;
+        display: flex;
+        justify-content: space-between;
+
+        &__left {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+
+
+          .active {
+            background: #FF8C00;
+            color: white;
+          }
+
+         &__radius {
+            font-family: Museo Sans Cyrl;
+            font-style: normal;
+            font-weight: normal;
+            font-size: 14px;
+            line-height: 140%;
+            /* identical to box height, or 20px */
+            color: #73767D;
+            margin-left: 50px;
+          }
+
+          &__circle {
+            background: #FFFFFF;
+            border: 1px solid #FF8C00;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0 8px;
+            cursor: pointer;
+            font-weight: 500;
+            font-size: 14px;
+            line-height: 120%;
+            /* identical to box height, or 17px */
+
+            color: #4D515A;
+
+          }
+
+          .small {
+            width: 40px;
+            height: 40px;
+          }
+
+          .big {
+            width: 86px;
+            height: 40px;
+          }
+
+        }
+
+        &__right {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          margin-right: 50px;
+
+          &__clean {
+            margin-right: 30px;
+            font-size: 14px;
+            color: #FF8C00;
+            cursor: pointer;
+          }
+
+          &__accept {
+            border: 2px solid #fcab2d;
+            background: #fcab2d;
+            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            padding: 14px 34px;
+            -webkit-transition: background 0.2s ease, border-color 0.2s ease;
+            transition: background 0.2s ease, border-color 0.2s ease;
+            display: -webkit-box;
+            display: flex;
+            -webkit-box-pack: center;
+            justify-content: center;
+            -webkit-box-align: center;
+            align-items: center;
+            color: white;
+
+            &:hover {
+              background: white;
+              color: #fcab2d;
+              border-color: #228596;
+            }
+
+            span {
+              &:after {
+                content: "";
+                display: inline-block;
+                vertical-align: middle;
+                width: 6px;
+                margin-left: 5px;
+                height: 8px;
+                padding-left: 5px;
+                background: url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNiIgaGVpZ2h0PSI4IiB2aWV3Qm94PSIwIDAgNiA4IiBmaWxsPSJub25lIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8cGF0aCBkPSJNMS4wNjI1IDFMNC4xIDRMMS4wNjI1IDciIHN0cm9rZT0id2hpdGUiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIi8+Cjwvc3ZnPgo=)
+              }
+            }
+          }
+        }
+      }
+
+      &__cross {
+        font-size: 50px;
+        position: absolute;
+        top: 0;
+        right: 10px;
+        color: #9ea2ad;
+        cursor: pointer;
+      }
+
+      iframe {
+        width: 100%;
+        height: 100%;
+      }
+    }
+  }
+}

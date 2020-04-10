@@ -9,6 +9,7 @@
       <nuxt class="full-screen" />
     </transition>
     <div class="main-page__white-wrapper"><Footer /></div>
+    <search-popup v-if="choose_position" @close="choose_position = false" :coords="last_coordinates" @clean="last_coordinates = {}"></search-popup>
   </div>
 </template>
 
@@ -17,6 +18,7 @@
   import PageTransitioner from '~/components/global/PageTransitioner';
   import Header from '~/components/global/Header';
   import Footer from '~/components/global/Footer';
+  import SearchPopup from '~/components/global/search/SearchPopup';
 
   import { mapState } from 'vuex';
 
@@ -27,7 +29,14 @@
       PageTransitioner,
       Preloader,
       Header,
-      Footer
+      Footer,
+      SearchPopup
+    },
+    data(){
+      return{
+        choose_position: false,
+        last_coordinates: this.$cookies.get('last_coordinates') || {}
+      }
     },
 
     computed: {
@@ -39,6 +48,12 @@
         if (this.$router.currentRoute.path != '/')
           this.$bus.$emit('hidePageTransitioner');
       }
+    },
+
+    created() {
+      this.$bus.$on('position-modal', (state)=>{
+        this.choose_position = state
+      })
     },
 
     mounted() {
