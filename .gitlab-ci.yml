@@ -1,0 +1,37 @@
+include: 'https://gitlab.com/gitlab-cd/ssh-template/raw/master/ssh.yml'
+
+stages:
+  - build
+  - deploy
+
+build prod:
+  image: node:10.15.0-stretch
+  stage: build
+  only:
+    - tags
+  script:
+    - npm ci
+    - npm run build
+ssh
+deploy prod:
+  stage: deploy
+  only:
+    - tags
+  script:
+  - ssh_run "$REMOTE_USER" "$REMOTE_HOST" "$SSH_PRIVATE_KEY" "ls -la"
+
+build stage:
+  image: node:10.15.0-stretch
+  stage: build
+  only:
+    - master
+  script:
+    - npm ci
+    - npm run build
+
+deploy stage:
+  stage: deploy
+  only:
+    - master
+  script:
+    - echo "test"
