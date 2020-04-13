@@ -20,6 +20,12 @@ $classic-span-font-size: 16px;
 .pointer-events-none {
   pointer-events: none;
 }
-.distance-show{
 
+.play-back {
+  opacity: .5;
+  background: white;
 }
+.my-flex{
+  display: flex;
+}
+

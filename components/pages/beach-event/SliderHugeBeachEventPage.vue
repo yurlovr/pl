@@ -3,7 +3,6 @@
     <div class="slider-beach-event__left">
       <div class="slider-beach-event__left__inner">
         <!--        не вижу никакой камеры тут, потому пока что будет так-->
-
         <div class="slider-beach-event__medal-gold">
           <img src="~/static/pics/global/svg/goldMedal.svg">
           <div class="slider-beach-event__medal-gold__tooltip">
@@ -29,12 +28,6 @@
           <img src="~/static/pics/global/svg/3d.png" alt="" @click.stop="$emit('call-modal')">
 
         </div>
-        <!--<div class="slider-beach-event__3d-as-360" @click.stop="$emit('call-modal')">
-          <img src="~/static/pics/global/svg/3d.svg" alt="">
-        </div>
-        <div class="slider-beach-event__medal-blue" v-if="data.blueMedal">
-          <img src="~/static/pics/global/svg/blueMedal.svg">
-        </div>-->
         <div class="slider-beach-event__beach-closed" v-if="data.isBeachClosed">
           <div class="slider-beach-event__beach-closed__inner">
             <div class="slider-beach-event__beach-closed__tooltip" v-if="data.beachClosedTooltip">
@@ -51,7 +44,10 @@
         <div v-swiper:mySwiper="swiperOption">
           <div class="swiper-wrapper">
             <div class="swiper-slide" v-for="(pic, i) in data.pics" :key="i">
-              <img :src="pic">
+              <img :src="pic" v-if="!pic.includes('youtube')">
+              <div v-else class="w-100 h-100 position-relative">
+                <video-youtube :key="i+'gui'" :url="pic" :reference="i+'z'"/>
+              </div>
             </div>
           </div>
         </div>
@@ -77,7 +73,10 @@
       <div class="slider-beach-event__right__item" v-for="(pic, i) in data.pics" :key="i" v-if="i != 0 && i <= 6"
            :style="{ height: getRightPicsHeight }">
         <div class="slider-beach-event__right__item__inner" @click="openModal(i)">
-          <img :src="pic">
+          <img :src="pic" v-if="!pic.includes('youtube')">
+          <div v-else class="w-100 h-100">
+            <iframe class="pointer-events-none" :src="pic" width="100%" height="100%" allowfullscreen="allowfullscreen"></iframe>
+          </div>
           <span v-if="i == 6 && data.pics.length - 7 > 0">+{{ data.pics.length - 7 }}</span>
         </div>
       </div>
@@ -96,7 +95,10 @@
             <div v-swiper:mySwiperModal="swiperOption">
               <div class="swiper-wrapper">
                 <div class="swiper-slide" v-for="(pic, i) in data.pics" :key="i">
-                  <img :src="pic">
+                  <img :src="pic" v-if="!pic.includes('youtube')">
+                  <div v-else class="w-100 h-100">
+                    <iframe :src="pic" width="100%" height="100%" allowfullscreen="allowfullscreen"></iframe>
+                  </div>
                 </div>
               </div>
             </div>
@@ -114,7 +116,10 @@
               <div class="swiper-wrapper">
                 <div class="swiper-slide" v-for="(pic, i) in data.pics" :key="i" :class="{ active: activeIndex == i }"
                      @click="mySwiperModal.slideTo(i)">
-                  <img :src="pic">
+                  <img :src="pic" v-if="!pic.includes('youtube')">
+                  <div v-else class="w-100 h-100">
+                    <iframe class="pointer-events-none" :src="pic" width="100%" height="100%" allowfullscreen="allowfullscreen"></iframe>
+                  </div>
                 </div>
               </div>
             </div>
@@ -135,9 +140,13 @@
 
 <script>
   import Vue from 'vue';
+  import VideoYoutube from '../beach/video-tube'
 
   export default {
     props: ['data'],
+    components: {
+      VideoYoutube
+    },
 
     beforeMount() {
       if (process.browser) {
@@ -152,6 +161,9 @@
         if (Math.min(this.data.pics.length - 1, 6) % 2 == 0)
           return `${(100 / (Math.min(this.data.pics.length - 1, 6) / 2)).toFixed(2)}%`;
         else return `${(100 / (Math.min(this.data.pics.length, 6) / 2)).toFixed(2)}%`;
+      },
+      player() {
+        return this.$refs['youtube'].player
       }
     },
 
@@ -215,6 +227,12 @@
     },
 
     methods: {
+      ready(e) {
+        console.log('f', e)
+      },
+      async playVideo(e) {
+        await this.player.playVideo()
+      },
       updateArrows() {
         this.showLeft = !this.mySwiper.isBeginning;
         this.showRight = !this.mySwiper.isEnd;

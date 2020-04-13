@@ -137,13 +137,13 @@ export const getters = {
                 isBeachClosed: state.beach.data.item.LABEL.TEXT != '',
                 goldMedal: state.beach.data.item.CERTIFICATION,
                 blueMedal: state.beach.data.item.WEBCAMERA,
-                pics: state.beach.data.item.PHOTOS.map((s) => { return state.api + s }),
+                pics: !state.beach.data.item.VIDEO.LINK ?  state.beach.data.item.PHOTOS.map((s) => { return state.api + s })
+                  : [...state.beach.data.item.PHOTOS.map((s) => { return state.api + s }), state.beach.data.item.VIDEO.LINK],
                 beachClosedText: state.beach.data.item.LABEL.TEXT,
                 beachClosedColor: state.beach.data.item.LABEL.COLOR,
                 beachClosedTooltip: state.beach.data.item.LABEL.DESCRIPTION,
-              beautySunrise: state.beach.data.item.WEATHER.BEAUTIFUL_SUNRISE,
-              beautySunset: state.beach.data.item.WEATHER.BEAUTIFUL_SUNSET,
-
+                beautySunrise: state.beach.data.item.WEATHER.BEAUTIFUL_SUNRISE,
+                beautySunset: state.beach.data.item.WEATHER.BEAUTIFUL_SUNSET,
             },
 
             infraData: [],

@@ -56,6 +56,10 @@ export default {
     }, {
       src: '~/plugins/custom-scroll',
       ssr: false
+    },
+    {
+      src: '~/plugins/youtube',
+      ssr: false
     }
   ],
   /*
