@@ -91,7 +91,6 @@
       this.updateTags();
 
       if (this.tags.length > 0) {
-        console.warn(this.last_coordinates, this.geo_locating, 'this.last_coordinates, this.geo_locating')
         this.search([this.last_coordinates, this.geo_locating]);
       }
       setTimeout(() => {

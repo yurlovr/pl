@@ -51,7 +51,8 @@
     },
 
     created() {
-      this.$bus.$on('position-modal', (state)=>{
+      this.$bus.$on('position-modal', (state, coords)=>{
+        this.last_coordinates = coords
         this.choose_position = state
       })
     },

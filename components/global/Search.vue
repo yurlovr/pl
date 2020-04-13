@@ -318,9 +318,8 @@
 
       async toggleGeoLocation() {
         if (this.$cookies.get('geo_locating')) {
-          this.$cookies.set('geo_locating', -1, {
-            maxAge: -1 // remove
-          });
+
+          this.$cookies.remove('geo_locating');
           this.$cookies.remove('last_coordinates');
           this.set_coords({})
           this.set_radius(null)
@@ -353,7 +352,7 @@
               this.$cookies.set('last_coordinates', JSON.stringify(my_coords), {
                 maxAge: 30 * 24 * 60 * 60 // one month
               });
-              this.$bus.$emit('position-modal', true);
+              this.$bus.$emit('position-modal', true, my_coords);
             });
           }
 
@@ -361,7 +360,7 @@
             maxAge: 30 * 24 * 60 * 60 // one month
           });
         }
-        this.geoLocating = this.$cookies.get('geo_locating') ? true : false;
+        this.geoLocating = this.$cookies.get('geo_locating')
       },
 
       searchFilter() {

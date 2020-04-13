@@ -54,11 +54,13 @@
       toSearch() {
         this.set_coords(this.localCoords)
         this.set_radius(this.radius)
-        this.$emit('close')
+        this.$emit('close');
+        this.$bus.$emit('changeToggle', true);
       },
 
       reset() {
         this.$cookies.remove('last_coordinates');
+        this.$cookies.remove('geo_locating');
         this.$cookies.set('geo_locating', -1, {
           maxAge: -1 // remove
         });
