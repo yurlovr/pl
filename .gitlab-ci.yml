@@ -43,7 +43,7 @@ deploy develop:
     - ssh_run "$REMOTE_USER" "$REMOTE_HOST" "$SSH_PRIVATE_KEY" "cd $REMOTE_DIR_MASTER && docker stop krym-$CI_COMMIT_BRANCH || true"    
     - ssh_run "$REMOTE_USER" "$REMOTE_HOST" "$SSH_PRIVATE_KEY" "cd $REMOTE_DIR_MASTER && docker rm krym-$CI_COMMIT_BRANCH || true"
     - ssh_run "$REMOTE_USER" "$REMOTE_HOST" "$SSH_PRIVATE_KEY" "cd $REMOTE_DIR_MASTER && docker run -d --name krym-$CI_COMMIT_BRANCH --restart=on-failure:10 -p 127.0.0.1:3000:3000 krym-vue/$CI_COMMIT_BRANCH:latest"       
-    - ssh_run "$REMOTE_USER" "$REMOTE_HOST" "$SSH_PRIVATE_KEY" "cd $REMOTE_DIR_MASTER && docker images prune -f"       
+    - ssh_run "$REMOTE_USER" "$REMOTE_HOST" "$SSH_PRIVATE_KEY" "cd $REMOTE_DIR_MASTER && docker image prune -f"       
 
 build master:
   image: docker:19.03.1
@@ -72,4 +72,4 @@ deploy master:
     - ssh_run "$REMOTE_USER" "$REMOTE_HOST" "$SSH_PRIVATE_KEY" "cd $REMOTE_DIR_MASTER && docker stop krym-$CI_COMMIT_BRANCH || true"   
     - ssh_run "$REMOTE_USER" "$REMOTE_HOST" "$SSH_PRIVATE_KEY" "cd $REMOTE_DIR_MASTER && docker rm krym-$CI_COMMIT_BRANCH || true" 
     - ssh_run "$REMOTE_USER" "$REMOTE_HOST" "$SSH_PRIVATE_KEY" "cd $REMOTE_DIR_MASTER && docker run -d --name krym-$CI_COMMIT_BRANCH --restart=on-failure:10 -p 127.0.0.1:3001:3000 krym-vue/$CI_COMMIT_BRANCH:latest"       
-    - ssh_run "$REMOTE_USER" "$REMOTE_HOST" "$SSH_PRIVATE_KEY" "cd $REMOTE_DIR_MASTER && docker images prune -f"       
+    - ssh_run "$REMOTE_USER" "$REMOTE_HOST" "$SSH_PRIVATE_KEY" "cd $REMOTE_DIR_MASTER && docker image prune -f"       
