@@ -19,8 +19,8 @@ deploy stage:
     - develop
   script:
     - ssh_run "$REMOTE_USER" "$REMOTE_HOST" "$SSH_PRIVATE_KEY" "cd $REMOTE_DIR_DEVELOP && git fetch origin"
-    - ssh_run "$REMOTE_USER" "$REMOTE_HOST" "$SSH_PRIVATE_KEY" "cd $REMOTE_DIR_DEVELOP && git reset --hard origin/develop"
-    - ssh_run "$REMOTE_USER" "$REMOTE_HOST" "$SSH_PRIVATE_KEY" "cd $REMOTE_DIR_DEVELOP && docker build . -t krym-vue/develop"  
+    - ssh_run "$REMOTE_USER" "$REMOTE_HOST" "$SSH_PRIVATE_KEY" "cd $REMOTE_DIR_MASTER && git reset --hard origin/$CI_COMMIT_BRANCH:$CI_COMMIT_SHORT_SHA"
+    - ssh_run "$REMOTE_USER" "$REMOTE_HOST" "$SSH_PRIVATE_KEY" "cd $REMOTE_DIR_MASTER && docker build . -t krym-vue/$CI_COMMIT_BRANCH:$CI_COMMIT_SHORT_SHA" 
 
 build master:
   image: node:10.15.0-stretch
@@ -38,5 +38,5 @@ deploy master:
     - master
   script:
     - ssh_run "$REMOTE_USER" "$REMOTE_HOST" "$SSH_PRIVATE_KEY" "cd $REMOTE_DIR_MASTER && git fetch origin"
-    - ssh_run "$REMOTE_USER" "$REMOTE_HOST" "$SSH_PRIVATE_KEY" "cd $REMOTE_DIR_MASTER && git reset --hard origin/master"
-    - ssh_run "$REMOTE_USER" "$REMOTE_HOST" "$SSH_PRIVATE_KEY" "cd $REMOTE_DIR_MASTER && docker build . -t krym-vue/master"    
+    - ssh_run "$REMOTE_USER" "$REMOTE_HOST" "$SSH_PRIVATE_KEY" "cd $REMOTE_DIR_MASTER && git reset --hard origin/$CI_COMMIT_BRANCH:$CI_COMMIT_SHORT_SHA"
+    - ssh_run "$REMOTE_USER" "$REMOTE_HOST" "$SSH_PRIVATE_KEY" "cd $REMOTE_DIR_MASTER && docker build . -t krym-vue/$CI_COMMIT_BRANCH:$CI_COMMIT_SHORT_SHA"    
