@@ -318,8 +318,9 @@
 
       async toggleGeoLocation() {
         if (this.$cookies.get('geo_locating')) {
-
-          this.$cookies.remove('geo_locating');
+          this.$cookies.set('geo_locating', -1, {
+            maxAge: -1 // remove
+          });
           this.$cookies.remove('last_coordinates');
           this.set_coords({})
           this.set_radius(null)
@@ -329,13 +330,6 @@
           await this.$axios.$get('geo/item')
             .then(res => {
               cityId = res.data && res.data.city ? res.data.city.ID : -1;
-              /*     if (res.data && res.data.geoInfo) {
-                     const {lat, lng} = res.data.geoInfo;
-                     my_coords = {
-                       lat: lat,
-                       lng: lng
-                     }
-                   }*/
             })
             .catch(e => {
               console.error(e);
@@ -360,7 +354,8 @@
             maxAge: 30 * 24 * 60 * 60 // one month
           });
         }
-        this.geoLocating = this.$cookies.get('geo_locating')
+        let geo = this.$cookies.get('geo_locating') || -1;
+        this.geoLocating = geo ? (geo < 0 ? false : true) : false;
       },
 
       searchFilter() {

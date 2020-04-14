@@ -1,7 +1,15 @@
+<style scoped>
+  iframe {
+    width: 100%;
+    height: 100%;
+  }
+</style>
 <template>
   <client-only>
     <div class="w-100 h-100 overflow-hidden">
-      <div v-show="show" class="my-flex justify-content-center align-items-center w-100 h-100 play-back position-absolute" v-click-outside="outside">
+      <div v-show="show"
+           class="my-flex justify-content-center align-items-center w-100 h-100 play-back position-absolute"
+           v-click-outside="outside">
         <img style="width: 48px; height: 48px" src="~/static/pics/global/pics/play.png" alt="play"
              @click="playVideo"/>
       </div>
@@ -9,7 +17,7 @@
                id="vid"
                frameborder="0" allowfullscreen></iframe>-->
 
-      <youtube :video-id="transformUrl(url)" :ref="reference" :fit-parent="true" height="100%"></youtube>
+      <youtube :video-id="transformUrl(url)" :ref="reference" :fit-parent="true"></youtube>
     </div>
   </client-only>
 </template>
@@ -36,7 +44,7 @@
       transformUrl(s) {
         return getIdFromUrl(s)
       },
-      outside(){
+      outside() {
         this.$refs[this.reference].player.stopVideo();
         this.show = true;
       }
