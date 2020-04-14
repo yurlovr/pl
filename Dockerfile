@@ -5,7 +5,12 @@ WORKDIR /app
 # Copy package information
 COPY package*.json ./
 # Install deps
-RUN npm ci
+RUN apk --no-cache --virtual build-dependencies add \
+    python \
+    make \
+    g++ \
+    && npm co \
+    && apk del build-dependencies
 # Copy other project files
 ADD . .
 
