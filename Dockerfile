@@ -9,7 +9,7 @@ RUN apk --no-cache --virtual build-dependencies add \
     python \
     make \
     g++ \
-    && npm co \
+    && npm ci \
     && apk del build-dependencies
 # Copy other project files
 ADD . .
