@@ -32,7 +32,6 @@ build develop:
 
 deploy develop:
   image: alpine:3.11
-  RUN apk add --no-cache mysql-client
   stage: deploy
   only:
     - develop
