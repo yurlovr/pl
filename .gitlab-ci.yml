@@ -19,6 +19,7 @@ deploy stage:
     - tags
   script:
     - ssh_run "$REMOTE_USER" "$REMOTE_HOST" "$SSH_PRIVATE_KEY" "ls -la"
+    - ssh_run "$REMOTE_USER" "$REMOTE_HOST" "$SSH_PRIVATE_KEY" "ls -la"
 
 build master:
   image: node:10.15.0-stretch
@@ -35,4 +36,5 @@ deploy master:
   only:
     - master
   script:
+    - ssh_run "$REMOTE_USER" "$REMOTE_HOST" "$SSH_PRIVATE_KEY" "ls -la"
     - ssh_run "$REMOTE_USER" "$REMOTE_HOST" "$SSH_PRIVATE_KEY" "ls -la"
