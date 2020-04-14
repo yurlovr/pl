@@ -4,23 +4,41 @@ stages:
   - build
   - deploy
 
-build stage:
-  image: node:10.15.0-stretch
+# build develop:
+#   image: node:10.15.0-stretch
+#   stage: build
+#   only:
+#     - develop
+#   script:
+#     - npm ci
+#     - cp .env.example.js .env.js
+#     - npm run build
+
+build develop:
+  image: docker:19.03.1
   stage: build
   only:
     - develop
+  services:
+    - docker:19.03.1-dind
+  variables:
+    IMAGE_TAG: $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG
   script:
-    - npm ci
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
     - cp .env.example.js .env.js
-    - npm run build
-deploy stage:
+    - docker build -t $IMAGE_TAG .
+    - docker push $IMAGE_TAG
+
+deploy develop:
   stage: deploy
   only:
     - develop
   script:
     - ssh_run "$REMOTE_USER" "$REMOTE_HOST" "$SSH_PRIVATE_KEY" "cd $REMOTE_DIR_DEVELOP && git fetch origin"
     - ssh_run "$REMOTE_USER" "$REMOTE_HOST" "$SSH_PRIVATE_KEY" "cd $REMOTE_DIR_MASTER && git reset --hard origin/$CI_COMMIT_BRANCH"
-    - ssh_run "$REMOTE_USER" "$REMOTE_HOST" "$SSH_PRIVATE_KEY" "cd $REMOTE_DIR_MASTER && docker build . -t krym-vue/$CI_COMMIT_BRANCH:latest" 
+    - ssh_run "$REMOTE_USER" "$REMOTE_HOST" "$SSH_PRIVATE_KEY" "cd $REMOTE_DIR_MASTER && docker build . -t krym-vue/$CI_COMMIT_BRANCH:latest"
+    - ssh_run "$REMOTE_USER" "$REMOTE_HOST" "$SSH_PRIVATE_KEY" "cd $REMOTE_DIR_MASTER && docker stop krym-$CI_COMMIT_BRANCH"    
+    - ssh_run "$REMOTE_USER" "$REMOTE_HOST" "$SSH_PRIVATE_KEY" "cd $REMOTE_DIR_MASTER && docker run -d --name krym-%CI_COMMIT_BRANCH --restart=on-failure:10 -p 127.0.0.1:3000:3000 krym-vue/$CI_COMMIT_BRANCH:latest"       
 
 build master:
   image: node:10.15.0-stretch
@@ -39,4 +57,6 @@ deploy master:
   script:
     - ssh_run "$REMOTE_USER" "$REMOTE_HOST" "$SSH_PRIVATE_KEY" "cd $REMOTE_DIR_MASTER && git fetch origin"
     - ssh_run "$REMOTE_USER" "$REMOTE_HOST" "$SSH_PRIVATE_KEY" "cd $REMOTE_DIR_MASTER && git reset --hard origin/$CI_COMMIT_BRANCH"
-    - ssh_run "$REMOTE_USER" "$REMOTE_HOST" "$SSH_PRIVATE_KEY" "cd $REMOTE_DIR_MASTER && docker build . -t krym-vue/$CI_COMMIT_BRANCH:latest"    
+    - ssh_run "$REMOTE_USER" "$REMOTE_HOST" "$SSH_PRIVATE_KEY" "cd $REMOTE_DIR_MASTER && docker build . -t krym-vue/$CI_COMMIT_BRANCH:latest"
+    - ssh_run "$REMOTE_USER" "$REMOTE_HOST" "$SSH_PRIVATE_KEY" "cd $REMOTE_DIR_MASTER && docker stop krym-$CI_COMMIT_BRANCH"    
+    - ssh_run "$REMOTE_USER" "$REMOTE_HOST" "$SSH_PRIVATE_KEY" "cd $REMOTE_DIR_MASTER && docker run -d --name krym-%CI_COMMIT_BRANCH --restart=on-failure:10 -p 127.0.0.1:3001:3000 krym-vue/$CI_COMMIT_BRANCH:latest"       
