@@ -19,7 +19,7 @@ deploy stage:
     - develop
   script:
     - ssh_run "$REMOTE_USER" "$REMOTE_HOST" "$SSH_PRIVATE_KEY" "cd $REMOTE_DIR_DEVELOP && git fetch origin"
-    - ssh_run "$REMOTE_USER" "$REMOTE_HOST" "$SSH_PRIVATE_KEY" "cd $REMOTE_DIR_DEVELOP && git reset --hard origin/master"
+    - ssh_run "$REMOTE_USER" "$REMOTE_HOST" "$SSH_PRIVATE_KEY" "cd $REMOTE_DIR_DEVELOP && git reset --hard origin/develop"
     - ssh_run "$REMOTE_USER" "$REMOTE_HOST" "$SSH_PRIVATE_KEY" "cd $REMOTE_DIR_DEVELOP && docker build . -t krym-vue/develop"  
 
 build master:
