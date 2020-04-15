@@ -5,3 +5,4 @@ Dockerfile
 .git*
 .editorconfig
 .env.js.example
+.gitlab-ci.yml
