@@ -1,23 +1,31 @@
-<style scoped>
-  iframe {
-    width: 100%;
-    height: 100%;
+<style lang="scss">
+  .youtube-slider, .modality {
+    iframe {
+      width: 100%;
+      height: 100%;
+    }
+  }
+
+  @media (max-width: 600px) {
+    .modality {
+      iframe {
+        height: 300px;
+      }
+    }
+  }
+  @media (max-width: 500px) {
+    .modality {
+      iframe {
+        height: 225px;
+      }
+    }
   }
 </style>
 <template>
   <client-only>
-    <div class="w-100 h-100 overflow-hidden">
-      <div v-show="show"
-           class="my-flex justify-content-center align-items-center w-100 h-100 play-back position-absolute"
-           v-click-outside="outside">
-        <img style="width: 48px; height: 48px" src="~/static/pics/global/pics/play.png" alt="play"
-             @click="playVideo"/>
-      </div>
-      <!-- <iframe ref="playVideo" :src="pic+'?rel=0'" width="100%" height="100%"
-               id="vid"
-               frameborder="0" allowfullscreen></iframe>-->
-
-      <youtube :video-id="transformUrl(url)" :ref="reference" :fit-parent="true"></youtube>
+    <div class="w-100 h-100 overflow-hidden" :class="{modality: modal, 'youtube-slider': !modal}">
+      <button @click.stop="playVideo" :id="reference" class="d-none">emit play</button>
+      <youtube :video-id="transformUrl(url)" :ref="reference" :fit-parent="true" v-click-outside="outside"></youtube>
     </div>
   </client-only>
 </template>
@@ -27,19 +35,16 @@
   import ClickOutside from 'vue-click-outside'
 
   export default {
-    props: ['url', 'reference'],
+    props: ['url', 'reference', 'modal'],
     directives: {
       ClickOutside
     },
-    data() {
-      return {
-        show: true
-      }
-    },
     methods: {
-      async playVideo() {
-        await this.$refs[this.reference].player.playVideo();
-        this.show = false
+      playVideo() {
+        this.$nextTick(() => {
+          console.log('herer', this.$refs[this.reference].player)
+          this.$refs[this.reference].player.playVideo();
+        })
       },
       transformUrl(s) {
         return getIdFromUrl(s)

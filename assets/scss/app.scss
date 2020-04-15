@@ -3854,7 +3854,7 @@ input {
     position: relative;
 
     .swiper-slide {
-      img {
+      img, .y-block {
         width: 100%;
         height: 100%;
         object-fit: cover;
@@ -4315,6 +4315,11 @@ input {
         width: 100%;
         height: 100%;
         object-fit: cover;
+        border-radius: 12px;
+      }
+      .y-block {
+        width: 100%;
+        height: 100%;
         border-radius: 12px;
       }
     }

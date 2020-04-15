@@ -1,3 +1,8 @@
+<style scoped>
+  .z-index-preview {
+    z-index: 2;
+  }
+</style>
 <template>
   <div class="slider-beach-event">
     <div class="slider-beach-event__left">
@@ -45,8 +50,11 @@
           <div class="swiper-wrapper">
             <div class="swiper-slide" v-for="(pic, i) in data.pics" :key="i">
               <img :src="pic" v-if="!pic.includes('youtube')">
-              <div v-else class="w-100 h-100 position-relative">
-                <video-youtube :key="i+'gui'" :url="pic" :reference="i+'z'"/>
+              <div v-else class="w-100 h-100">
+                <no-ssr>
+                  <video-youtube :key="i+'gui'" :url="pic" :reference="'v'+i"/>
+                </no-ssr>
+                <!--                </client-only>-->
               </div>
             </div>
           </div>
@@ -72,12 +80,20 @@
     <div class="slider-beach-event__right">
       <div class="slider-beach-event__right__item" v-for="(pic, i) in data.pics" :key="i" v-if="i != 0 && i <= 6"
            :style="{ height: getRightPicsHeight }">
-        <div class="slider-beach-event__right__item__inner" @click="openModal(i)">
-          <img :src="pic" v-if="!pic.includes('youtube')">
-          <div v-else class="w-100 h-100">
-            <iframe class="pointer-events-none" :src="pic" width="100%" height="100%" allowfullscreen="allowfullscreen"></iframe>
-          </div>
+        <div class="slider-beach-event__right__item__inner" @click="openModal(i)" v-if="!pic.includes('youtube')">
+          <img :src="pic">
           <span v-if="i == 6 && data.pics.length - 7 > 0">+{{ data.pics.length - 7 }}</span>
+        </div>
+<!--        page-->
+        <div v-else class="slider-beach-event__right__item__inner" @click="openModal(i, true, 'model')">
+          <div class="w-100 h-100 overflow-hidden position-relative">
+            <div
+              class="my-flex justify-content-center align-items-center w-100 h-100 position-absolute z-index-preview">
+              <img style="width: 48px; height: 48px; opacity: .9" src="~/static/pics/global/pics/play.png" alt="play"
+              />
+            </div>
+            <img :src="`https://img.youtube.com/vi/${transformUrl(pic)}/0.jpg`" alt="Youtube is failed">
+          </div>
         </div>
       </div>
     </div>
@@ -96,8 +112,11 @@
               <div class="swiper-wrapper">
                 <div class="swiper-slide" v-for="(pic, i) in data.pics" :key="i">
                   <img :src="pic" v-if="!pic.includes('youtube')">
-                  <div v-else class="w-100 h-100">
-                    <iframe :src="pic" width="100%" height="100%" allowfullscreen="allowfullscreen"></iframe>
+                  <div v-else class="w-100 h-100 y-block">
+                    <!--                    active in modal-->
+                    <no-ssr>
+                      <video-youtube :key="i+'gui-modal'" :url="pic" :reference="'model'+i" :modal="true"/>
+                    </no-ssr>
                   </div>
                 </div>
               </div>
@@ -117,8 +136,19 @@
                 <div class="swiper-slide" v-for="(pic, i) in data.pics" :key="i" :class="{ active: activeIndex == i }"
                      @click="mySwiperModal.slideTo(i)">
                   <img :src="pic" v-if="!pic.includes('youtube')">
+<!--                  modal true-->
                   <div v-else class="w-100 h-100">
-                    <iframe class="pointer-events-none" :src="pic" width="100%" height="100%" allowfullscreen="allowfullscreen"></iframe>
+                    <div class="slider-beach-event__right__item__inner" @click="openModal(i)">
+                      <div class="w-100 h-100 overflow-hidden position-relative">
+                        <div
+                          class="my-flex justify-content-center align-items-center w-100 h-100 position-absolute z-index-preview">
+                          <img style="width: 48px; height: 48px; opacity: .9" src="~/static/pics/global/pics/play.png"
+                               alt="play"
+                          />
+                        </div>
+                        <img :src="`https://img.youtube.com/vi/${transformUrl(pic)}/0.jpg`" alt="Youtube is failed">
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -141,6 +171,7 @@
 <script>
   import Vue from 'vue';
   import VideoYoutube from '../beach/video-tube'
+  import {getIdFromUrl} from 'vue-youtube';
 
   export default {
     props: ['data'],
@@ -227,8 +258,8 @@
     },
 
     methods: {
-      ready(e) {
-        console.log('f', e)
+      transformUrl(s) {
+        return getIdFromUrl(s)
       },
       async playVideo(e) {
         await this.player.playVideo()
@@ -238,10 +269,22 @@
         this.showRight = !this.mySwiper.isEnd;
       },
 
-      openModal(i) {
+      openModal(i, video = false, pos = 'main-') {
         this.mySwiper.slideTo(i);
-        if (i > 5)
+        /*if (video && i <= 4) {
+          setTimeout(() => {
+            document.getElementById('v1').click();
+          }, 200)
+        }*/
+        if (i > 5 || video) {
           this.modalOpen = true;
+          if (video) {
+            setTimeout(() => {
+              console.log(pos+i, 'pos + i')
+              document.getElementById(pos+i).click();
+            }, 200)
+          }
+        }
       }
     }
   }
