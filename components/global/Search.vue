@@ -190,8 +190,7 @@
         mouseOnAutoComplete: false,
 
         forceRerenderer: 0,
-
-        geoLocating: this.$cookies.get('geo_locating') ? true : false
+        geoLocating: Boolean(this.$cookies.get('last_coordinates') && Object.values(this.$cookies.get('last_coordinates')).length)
       };
     },
 
@@ -317,13 +316,15 @@
       },
 
       async toggleGeoLocation() {
-        if (this.$cookies.get('geo_locating')) {
+        if (this.geoLocating) {
           this.$cookies.set('geo_locating', -1, {
             maxAge: -1 // remove
           });
+
           this.$cookies.remove('last_coordinates');
           this.set_coords({})
-          this.set_radius(null)
+          this.set_radius(null);
+          this.geoLocating = false;
         } else {
           let cityId,
             my_coords = {};
@@ -346,6 +347,7 @@
               this.$cookies.set('last_coordinates', JSON.stringify(my_coords), {
                 maxAge: 30 * 24 * 60 * 60 // one month
               });
+              this.geoLocating = false;
               this.$bus.$emit('position-modal', true, my_coords);
             });
           }
@@ -354,8 +356,7 @@
             maxAge: 30 * 24 * 60 * 60 // one month
           });
         }
-        let geo = this.$cookies.get('geo_locating') || -1;
-        this.geoLocating = geo ? (geo < 0 ? false : true) : false;
+
       },
 
       searchFilter() {

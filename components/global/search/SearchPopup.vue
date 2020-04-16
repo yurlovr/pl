@@ -4,6 +4,7 @@
       <div class="modal-geo__modal">
         <div class="modal-geo__modal__body">
           <!--        <span @click="gg"> butt</span>-->
+          <p class="modal-geo__modal__body__cross" @click.stop="reset">&#10005</p>
           <div class="modal-geo__modal__body__top">
             <p>Мое местоположение</p>
           </div>
@@ -11,9 +12,11 @@
           <div class="modal-geo__modal__body__bottom">
             <div class="modal-geo__modal__body__bottom__left">
               <div class="modal-geo__modal__body__bottom__left__radius">Радиус поиска пляжей, км</div>
-              <div @click="gg(item.val)" class="modal-geo__modal__body__bottom__left__circle"
+              <div class="modal-geo__modal__body__bottom__left__circles">
+              <div @click="gg(item.val, item.zoom)" class="modal-geo__modal__body__bottom__left__circles__circle"
                    :class="{active: radius == item.val, small: item.small, big: !item.small}" v-for="item in list">
                 <span>{{item.text}}</span></div>
+              </div>
             </div>
             <div class="modal-geo__modal__body__bottom__right">
               <div class="modal-geo__modal__body__bottom__right__clean" @click.stop="reset">Сбросить</div>
@@ -43,14 +46,22 @@
         myCircle: null,
         objectManager: null,
         list: [
-          {text: 1, val: 1000, small: true},
-          {text: 5, val: 5000, small: true},
-          {text: 10, val: 10000, small: true},
-          {text: 25, val: 25000, small: true},
-          {text: 50, val: 50000, small: true},
-          {text: 'Более 50', val: 200000, small: false},
+          {text: 1, val: 1000, small: true, zoom: 14},
+          {text: 5, val: 5000, small: true, zoom: 12},
+          {text: 10, val: 10000, small: true, zoom: 11},
+          {text: 25, val: 25000, small: true, zoom: 10},
+          {text: 50, val: 50000, small: true, zoom: 9},
+          {text: '>', val: 220000, small: true},
         ],
-        myPlacemark: null
+        myPlacemark: null,
+        zoom: 12
+      }
+    },
+    watch: {
+      zoom(n) {
+        if (n) {
+          this.map.setZoom(n, {duration: 300})
+        }
       }
     },
     methods: {
@@ -68,7 +79,7 @@
         console.log(document.getElementById('map'))
         this.map = new ymaps.Map(`map-modal`, {
           center: coords,
-          zoom: 13,
+          zoom: this.zoom,
           controls: ['fullscreenControl', 'zoomControl', 'geolocationControl'],
         })
         let searchControl = new ymaps.control.SearchControl({
@@ -80,7 +91,6 @@
 
         this.map.controls.add(searchControl);
         this.map.events.add("click", this.mapClick);
-
 
 
         searchControl.events.add('resultselect', (e) => {
@@ -163,8 +173,11 @@
         this.$emit('clean');
       },
 
-      gg(r) {
+      gg(r, zoom = null) {
         this.radius = r;
+        if (zoom) {
+          this.zoom = zoom;
+        }
         this.objectManager.remove(this.myCircle);
         this.myCircle = {
           type: "Feature",

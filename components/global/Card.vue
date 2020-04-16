@@ -26,20 +26,21 @@
     </div>
     <div class="custom-card__info-area position-relative" :class="{ event: data.beach }">
       <p class="distance" v-if="data.show_distance" v-show="distanceValue(data.coordinates)"> {{distanceValue(data.coordinates)}}км</p>
-      <div class="custom-card__rating-area" v-if="data.rating">
+      <div class="mobile-distance"><span v-if="data.show_distance" v-show="distanceValue(data.coordinates)">{{distanceValue(data.coordinates)}}км</span></div>
+      <div class="custom-card__rating-area" v-if="data.rating" :class="{'fat-title': data.show_distance}">
         <img src="~/static/pics/global/svg/star.svg" alt="Рейтинг">
         <span>{{ data.rating.toFixed(1) }}</span>
       </div>
-      <div class="custom-card__date-area" v-if="data.date">
+      <div class="custom-card__date-area" v-if="data.date" :class="{'fat-title': data.show_distance}">
         <img src="~/static/pics/global/svg/calendar.svg" alt="Дата">
         <span>{{ data.date }}</span>
       </div>
-      <div><a :href="data.mainLink ? data.mainLink : '#'" class="custom-card__title"
+      <div :class="{'fat-title': data.show_distance}"><a :href="data.mainLink ? data.mainLink : '#'" class="custom-card__title"
               @click.prevent="$bus.goTo(data.mainLink ? data.mainLink : '#', $router)"
               :style="{ 'font-size': data.beach ? '18px' : '20px' }">
         <v-clamp autoresize :max-lines="max">{{ data.title }}</v-clamp>
       </a></div>
-      <div class="custom-card__subtitle-area">
+      <div class="custom-card__subtitle-area" :class="{'fat-title': data.show_distance}">
         <a :href="data.beachLink ? data.beachLink : '#'"
            @click.prevent="$bus.goTo(data.beachLink ? data.beachLink : '#', $router)" class="custom-card__beach"
            v-if="data.beach">{{ data.beach }}</a>
