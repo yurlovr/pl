@@ -125,6 +125,7 @@
         this.bot = 0;
         this.indexToShow = -1;
         this.$bus.$emit('modalClosed');
+        this.bot = 0;
       },
 
       scrollToCard(i) {
