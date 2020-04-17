@@ -122,6 +122,7 @@
       },
 
       closeModal() {
+        this.bot = 0;
         this.indexToShow = -1;
         this.$bus.$emit('modalClosed');
       },
