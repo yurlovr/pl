@@ -1,5 +1,5 @@
 <template>
-	<a :href="data.beachLink" @click.prevent="$bus.goTo(data.beachLink, $router)" class="search-page__map-area__card" v-if="data" @touchend="a" @touchmove="b">
+	<a :href="data.beachLink" @click.prevent="$bus.goTo(data.beachLink, $router)" class="search-page__map-area__card" v-if="data">
 		<div class="search-page__map-area__card__pic-area">
 			<img :src="data.pic">
 		</div>
@@ -45,10 +45,10 @@
 		props: ['data'],
     methods:{
       a(e){
-        console.log('dfsfsdfsdfsdfsd', e)
+        // console.log('dfsfsdfsdfsdfsd', e)
       },
       b(e){
-        // console.log(e, 'e')
+        console.log(e, 'e')
       }
     }
 	}
