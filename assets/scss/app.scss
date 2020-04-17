@@ -3761,7 +3761,7 @@ input {
         right: 0;
         background-color: rgba(0, 0, 0, 0);
         top: 0;
-        ont-weight: 500;
+        font-weight: 500;
         font-size: 14px;
         line-height: 120%;
         text-align: right;
@@ -5559,6 +5559,12 @@ input {
 // after 1200px
 // BeachEntranceFree gets broken, so making it just like in the TABLET version
 @media (max-width: 1200px) {
+  .distance-right {
+    display: none;
+  }
+  .distance-right-mobile{
+    display: block !important;
+  }
   .search-page {
     &__map-area {
       &__card {
@@ -9545,8 +9551,6 @@ body.touch {
 
 
 .distance {
-  margin-bottom: 15px;
-  padding: 19px 37px;
   background: rgba(0, 0, 0, 0);;
   border-radius: 12px;
   margin: 0;
@@ -9568,9 +9572,25 @@ body.touch {
 
 }
 
+.distance-right {
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 19px 37px;
+  width: 100%;
+  margin-bottom: 14px;
+}
+
 //mobile
-.mobile-distance{
+.mobile-distance {
   display: none;
+}
+.distance-right-mobile{
+  display: none;
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 19px 37px;
+  width: 100%;
+  margin-bottom: 14px;
 }
 @media (max-width: 400px) {
   .mobile-distance {
@@ -9590,7 +9610,7 @@ body.touch {
     text-align: center;
     border-radius: 20px;
   }
-  .fat-title, .distance{
+  .fat-title, .distance {
     display: none;
   }
 }

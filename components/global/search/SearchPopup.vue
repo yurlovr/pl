@@ -51,7 +51,7 @@
           {text: 10, val: 10000, small: true, zoom: 11},
           {text: 25, val: 25000, small: true, zoom: 10},
           {text: 50, val: 50000, small: true, zoom: 9},
-          {text: '>', val: 220000, small: true},
+          {text: '50+', val: 220000, small: true},
         ],
         myPlacemark: null,
         zoom: 12

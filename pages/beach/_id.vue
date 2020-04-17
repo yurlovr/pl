@@ -8,10 +8,10 @@
       </div>
       <div class="two-part-layout">
         <main class="two-part-layout__left">
-          <div class="beach-page__avg-rating__mobile distance">
+          <BeachEventMainInfo id="main-info" :data="beachData.mainData"/>
+          <div class="beach-page__avg-rating__mobile distance-right-mobile">
             <p class="m-0">Расстояние до пляжа <span>{{distance}}км</span></p>
           </div>
-          <BeachEventMainInfo id="main-info" :data="beachData.mainData"/>
           <BeachAvgRating :data="beachData.avgRating" v-if="beachData.avgRating.ratings.length > 0"
                           class="beach-page__avg-rating__mobile"/>
           <BeachQuickData id="infra" :title="'Инфраструктура пляжа'" :data="beachData.infraData" action="weather"
@@ -37,7 +37,7 @@
                              class="beach-page__cardless-area"/>
         </main>
         <aside class="two-part-layout__right">
-            <div class="distance">
+            <div class="distance-right">
               <p class="m-0">Расстояние до пляжа <span>{{distance}}км</span></p>
             </div>
           <BeachAvgRating :data="beachData.avgRating" class="beach-page__avg-rating__desktop"/>
