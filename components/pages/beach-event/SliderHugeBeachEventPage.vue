@@ -29,9 +29,15 @@
           </div>
         </div>
         <div class="slider-beach-event__blue">
-          <img src="~/static/pics/global/svg/blueMedal.svg" v-if="data.blueMedal">
-          <img src="~/static/pics/global/svg/3d.png" alt="" @click.stop="$emit('call-modal')">
-
+          <div class="cursor-pointer bem-is-a-dead-methodology">
+            <img src="~/static/pics/global/svg/blueMedal.svg" v-if="data.blueMedal"/>
+          </div>
+          <div class="cursor-pointer bem-is-a-dead-methodology">
+            <img src="~/static/pics/global/svg/3d.png" alt="" @click.stop="$emit('call-modal')"/>
+            <div class="right-tooltip">
+              <span>Обзор 360</span>
+            </div>
+          </div>
         </div>
         <div class="slider-beach-event__beach-closed" v-if="data.isBeachClosed">
           <div class="slider-beach-event__beach-closed__inner">
@@ -84,7 +90,7 @@
           <img :src="pic">
           <span v-if="i == 6 && data.pics.length - 7 > 0">+{{ data.pics.length - 7 }}</span>
         </div>
-<!--        page-->
+        <!--        page-->
         <div v-else class="slider-beach-event__right__item__inner" @click="openModal(i, true, 'model')">
           <div class="w-100 h-100 overflow-hidden position-relative">
             <div
@@ -136,7 +142,7 @@
                 <div class="swiper-slide" v-for="(pic, i) in data.pics" :key="i" :class="{ active: activeIndex == i }"
                      @click="mySwiperModal.slideTo(i)">
                   <img :src="pic" v-if="!pic.includes('youtube')">
-<!--                  modal true-->
+                  <!--                  modal true-->
                   <div v-else class="w-100 h-100">
                     <div class="slider-beach-event__right__item__inner" @click="openModal(i)">
                       <div class="w-100 h-100 overflow-hidden position-relative">
@@ -280,8 +286,8 @@
           this.modalOpen = true;
           if (video) {
             setTimeout(() => {
-              console.log(pos+i, 'pos + i')
-              document.getElementById(pos+i).click();
+              console.log(pos + i, 'pos + i')
+              document.getElementById(pos + i).click();
             }, 200)
           }
         }

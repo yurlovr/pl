@@ -9,7 +9,7 @@
       <div class="two-part-layout">
         <main class="two-part-layout__left">
           <BeachEventMainInfo id="main-info" :data="beachData.mainData"/>
-          <div class="beach-page__avg-rating__mobile distance-right-mobile">
+          <div v-if="distance" class="beach-page__avg-rating__mobile distance-right-mobile">
             <p class="m-0">Расстояние до пляжа <span>{{distance}}км</span></p>
           </div>
           <BeachAvgRating :data="beachData.avgRating" v-if="beachData.avgRating.ratings.length > 0"
@@ -37,7 +37,7 @@
                              class="beach-page__cardless-area"/>
         </main>
         <aside class="two-part-layout__right">
-            <div class="distance-right">
+            <div class="distance-right" v-if="distance">
               <p class="m-0">Расстояние до пляжа <span>{{distance}}км</span></p>
             </div>
           <BeachAvgRating :data="beachData.avgRating" class="beach-page__avg-rating__desktop"/>
