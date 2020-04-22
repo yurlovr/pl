@@ -3100,6 +3100,7 @@ input {
       color: #4a4a4a;
       font-size: 16px;
       line-height: 170%;
+      overflow-wrap: break-word;
 
       &__button {
         background: none;
@@ -8938,6 +8939,7 @@ input {
 
     span {
       margin-left: 10px;
+      text-align: left;
     }
   }
   .m-side-opinion {
@@ -9620,6 +9622,7 @@ body.touch {
 
 .bem-is-a-dead-methodology {
   position: relative;
+
   &:hover {
     .right-tooltip {
       display: block;
