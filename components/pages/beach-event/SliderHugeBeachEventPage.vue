@@ -58,7 +58,20 @@
               <img :src="pic" v-if="!pic.includes('youtube')">
               <div v-else class="w-100 h-100">
                 <no-ssr>
-                  <video-youtube :key="i+'gui'" :url="pic" :reference="'v'+i"/>
+                  <!--                  desktop logic-->
+                  <video-youtube v-if="mobile > 768" :key="i+'gui'" :url="pic" :reference="'v'+i"/>
+                  <!--                  mobile-logic-->
+                  <div v-else class="slider-beach-event__right__item__inner" @click="openModal(i, true, 'model')">
+                    <div class="w-100 h-100 overflow-hidden position-relative">
+                      <div
+                        class="my-flex justify-content-center align-items-center w-100 h-100 position-absolute z-index-preview">
+                        <img style="width: 48px; height: 48px; opacity: .9" src="~/static/pics/global/pics/play.png"
+                             alt="play"
+                        />
+                      </div>
+                      <img :src="`https://img.youtube.com/vi/${transformUrl(pic)}/0.jpg`" alt="Youtube is failed">
+                    </div>
+                  </div>
                 </no-ssr>
                 <!--                </client-only>-->
               </div>
@@ -201,11 +214,12 @@
       },
       player() {
         return this.$refs['youtube'].player
-      }
+      },
     },
 
     data() {
       return {
+        mobile: 1024,
         swiperOption: {
           spaceBetween: 20,
           slidesPerView: 1,
@@ -238,6 +252,14 @@
               spaceBetween: 10
             }
           }
+        }
+      }
+    },
+    created() {
+      if (process.browser) {
+        this.mobile = window.innerWidth
+        window.onresize = () => {
+          this.mobile = window.innerWidth
         }
       }
     },
