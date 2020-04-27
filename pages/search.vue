@@ -54,9 +54,7 @@
 
     computed: {
       ...mapGetters('search', ['getSearchResult', 'getRadiusIfCityExists']),
-      ...mapState('search', ['searchParams']),
-      ...mapState('search', ['searchPageResultEventBackup']),
-      ...mapState('search', ['query'])
+      ...mapState('search', ['searchParams', 'searchPageResultEventBackup', 'query'])
     },
 
     watch: {

@@ -73,8 +73,10 @@ export default {
                 for (let i = 0; i < this.sections.length; i++) {
                     if (document.querySelector(`#${this.sections[i].hash}`)) {
                         bounding = document.querySelector(`#${this.sections[i].hash}`).getBoundingClientRect();
-                        if (bounding.top <= this.margin && bounding.bottom >= this.margin)
-                                this.activeSectionHash = this.sections[i].hash;
+                        if (bounding.top <= this.margin && bounding.bottom >= this.margin) {
+                            this.activeSectionHash = this.sections[i].hash;
+                            this.mySwiper.slideTo(i);
+                        }
                     }
                 }
             } else console.error("Couldn't fetch sections (BeachEventSections)");

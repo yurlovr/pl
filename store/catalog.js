@@ -72,6 +72,10 @@ export const getters = {
                 if (state.query.beach) {
                     ret.grid = ret.grid.filter(v => v.beachId == state.query.beach);
                 }
+
+                if (state.query.fromEvent) {
+                    ret.grid = ret.grid.filter(v => v.eventId != state.query.fromEvent);
+                }
             }
             if (state.query.city) {
                 ret.grid = ret.grid.filter(v => v.locationId == state.query.city);

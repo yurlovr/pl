@@ -33,7 +33,7 @@
       </div>
       <div class="custom-card__date-area" v-if="data.date" :class="{'fat-title': data.show_distance}">
         <img src="~/static/pics/global/svg/calendar.svg" alt="Дата">
-        <span>{{ data.date }}</span>
+        <span>{{ formattedDate(data.date) }}</span>
       </div>
       <div :class="{'fat-title': data.show_distance}"><a :href="data.mainLink ? data.mainLink : '#'" class="custom-card__title"
               @click.prevent="$bus.goTo(data.mainLink ? data.mainLink : '#', $router)"
@@ -126,6 +126,17 @@
             this.$bus.$emit('visitedAdd', this.data.eventId);
           }
         }
+      },
+
+      formattedDate(date) {
+        if (date) {
+          let day = date.slice(0, 2),
+              month = date.slice(3, 5),
+              year = date.slice(8, 10),
+              time = date.slice(11, 16);
+          return `${day}.${month}.${year} ${time}`;
+        }
+        return "";
       },
 
       onResize() {
