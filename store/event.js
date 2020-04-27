@@ -108,7 +108,7 @@ export const getters = {
                 title: 'Другие мероприятия на этом пляже',
                 showMore: {
                     type: 'event',
-                    query: state.event.data.item.BEACH ? `?beach=${state.event.data.item.BEACH.ID}` : null
+                    query: state.event.data.item.BEACH && state.event.data.item.ID ? `?beach=${state.event.data.item.BEACH.ID}&fromEvent=${state.event.data.item.ID}` : null
                 },
                 beachSliderData: {
                     slideNumber: 4,

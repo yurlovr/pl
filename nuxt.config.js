@@ -50,10 +50,12 @@ export default {
    ** Plugins to load before mounting the App
    */
   plugins: [
-    '~/plugins/bus', {
+    '~/plugins/bus',
+    {
       src: '~/plugins/scroll-lock',
       ssr: false
-    }, {
+    },
+    {
       src: '~/plugins/custom-scroll',
       ssr: false
     },
@@ -65,7 +67,31 @@ export default {
   /*
    ** Nuxt.js dev-modules
    */
-  buildModules: [],
+  buildModules: [
+    '@nuxtjs/gtm'
+  ],
+
+  gtm: {
+    dev: true,
+
+    id: 'GTM-T7SKSV7',
+    layer: 'dataLayer',
+    variables: {},
+
+    pageTracking: false,
+    pageViewEventName: 'nuxtRoute',
+
+    autoInit: true,
+    respectDoNotTrack: true,
+
+    scriptId: 'gtm-script',
+    scriptDefer: false,
+    scriptURL: 'https://www.googletagmanager.com/gtm.js',
+
+    noscript: true,
+    noscriptId: 'gtm-noscript',
+    noscriptURL: 'https://www.googletagmanager.com/ns.html'
+  },
 
   generate: {
     async routes() {

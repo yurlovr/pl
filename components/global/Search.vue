@@ -392,6 +392,8 @@
             }, 1);
           }
         }
+        this.clearInput();
+        this.mobileSearchBarShown = false;
       },
 
       clearInput() {

@@ -20,8 +20,7 @@
                 >
                     <div class="beach-page__barsNrestos__subtitle-area">
                         <h3 class="beach-page__barsNrestos__subtitle">{{ item.title }}</h3>
-
-                        <div class="beach-page__barsNrestos__arrow-controls swiper-bar-display">
+                        <div class="beach-page__barsNrestos__arrow-controls swiper-bar-display" v-if="data.length != 1">
                             <button @click="mySwiper.slidePrev()">
                                 <img
                                     src="~/static/pics/beach/arrow_left_orange.svg"

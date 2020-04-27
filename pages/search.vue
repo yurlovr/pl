@@ -55,9 +55,8 @@
 
     computed: {
       ...mapGetters('search', ['getSearchResult', 'getRadiusIfCityExists']),
-      ...mapState('search', ['searchParams']),
-      ...mapState('search', ['searchPageResultEventBackup']),
-      ...mapState('search', ['query']),
+      ...mapState('search', ['searchParams', 'searchPageResultEventBackup', 'query']),
+      
       radius() {
         return this.$route.query && this.$route.query.diameter ? this.$route.query.diameter : null;
       }
@@ -134,7 +133,7 @@
           return false;
 
         if (query[0].length > 0) {
-          this.updateInput(query[0]);
+          // this.updateInput(query[0]);
           this.searchQuery([this.last_coordinates, this.geo_locating]);
         }
       },
