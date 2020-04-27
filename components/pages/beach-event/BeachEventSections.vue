@@ -1,5 +1,5 @@
 <template>
-    <div class="beach-page-sections slider-weather__months" :class="{ scroll: !atTop }" style="margin-top: 3px !important;">
+    <div class="beach-page-sections slider-weather__months" :class="{ scroll: !atTop }">
         <div class="custom-container" v-if="sections">
             <div v-swiper:mySwiper="swiperOption">
                 <div class="swiper-wrapper" :style="{ 'justify-content': sections.length <= 8 ? 'flex-start' : 'space-between' }">
