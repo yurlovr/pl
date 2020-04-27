@@ -261,7 +261,6 @@ export const getters = {
         // adding formatted infrastructures
         let filteredInfra = state.beach.data.item.INFRASTRUCTURES.filter(v => v.CODE != 'parkovka' && v.CODE != 'ostanovki-obshchestvennogo-transporta');
         for (let i = 0; i < filteredInfra.length; i++) {
-            console.log(filteredInfra[i], 'api/contractors/list/subsidiaries')
             ret.infraData.push({
                 title: filteredInfra[i].NAME,
                 pic: filteredInfra[i].ICON ? state.api + filteredInfra[i].ICON : filteredInfra[i].ICON,
