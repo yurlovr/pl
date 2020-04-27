@@ -9584,9 +9584,7 @@ body.touch {
 }
 
 //mobile
-.mobile-distance {
-  display: none;
-}
+
 
 .distance-right-mobile {
   display: none;
@@ -9596,30 +9594,6 @@ body.touch {
   width: 100%;
   margin-bottom: 14px;
 }
-
-@media (max-width: 400px) {
-  .mobile-distance {
-    display: block;
-    margin: 0 auto;
-    top: 0;
-    right: 0;
-    left: 0;
-    bottom: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 1;
-    font-weight: 500;
-    font-size: 14px;
-    line-height: 22px;
-    color: #73767D;
-    text-align: center;
-    border-radius: 20px;
-  }
-  .fat-title, .distance {
-    display: none;
-  }
-}
-
 
 .bem-is-a-dead-methodology {
   position: relative;

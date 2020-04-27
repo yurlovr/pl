@@ -25,22 +25,23 @@
       </button>
     </div>
     <div class="custom-card__info-area position-relative" :class="{ event: data.beach }">
-      <p class="distance" v-if="data.show_distance" v-show="distanceValue(data.coordinates)"> {{distanceValue(data.coordinates)}} км</p>
-      <div class="mobile-distance"><span v-if="data.show_distance" v-show="distanceValue(data.coordinates)">{{distanceValue(data.coordinates)}} км</span></div>
-      <div class="custom-card__rating-area" v-if="data.rating" :class="{'fat-title': data.show_distance}">
+      <p class="distance" v-if="data.show_distance" v-show="distanceValue(data.coordinates)">
+        {{distanceValue(data.coordinates)}} км</p>
+      <!--      <div class="mobile-distance"><span v-if="data.show_distance" v-show="distanceValue(data.coordinates)">{{distanceValue(data.coordinates)}} км</span></div>-->
+      <div class="custom-card__rating-area" v-if="data.rating">
         <img src="~/static/pics/global/svg/star.svg" alt="Рейтинг">
         <span>{{ data.rating.toFixed(1) }}</span>
       </div>
-      <div class="custom-card__date-area" v-if="data.date" :class="{'fat-title': data.show_distance}">
+      <div class="custom-card__date-area" v-if="data.date">
         <img src="~/static/pics/global/svg/calendar.svg" alt="Дата">
         <span>{{ formattedDate(data.date) }}</span>
       </div>
-      <div :class="{'fat-title': data.show_distance}"><a :href="data.mainLink ? data.mainLink : '#'" class="custom-card__title"
+      <div><a :href="data.mainLink ? data.mainLink : '#'" class="custom-card__title"
               @click.prevent="$bus.goTo(data.mainLink ? data.mainLink : '#', $router)"
               :style="{ 'font-size': data.beach ? '18px' : '20px' }">
         <v-clamp autoresize :max-lines="max">{{ data.title }}</v-clamp>
       </a></div>
-      <div class="custom-card__subtitle-area" :class="{'fat-title': data.show_distance}">
+      <div class="custom-card__subtitle-area">
         <a :href="data.beachLink ? data.beachLink : '#'"
            @click.prevent="$bus.goTo(data.beachLink ? data.beachLink : '#', $router)" class="custom-card__beach"
            v-if="data.beach">{{ data.beach }}</a>
@@ -81,8 +82,21 @@
         visited: this.data && this.data.eventId && this.$cookies.get(`visited.events.${this.data.eventId}`),
         max: 2,
         picLoaded: false,
-        last_coordinates: this.$cookies.get('last_coordinates') || {}
+        // last_coordinates: this.$cookies.get('last_coordinates') || {}
       };
+    },
+    computed: {
+      last_coordinates() {
+        let cookie_coords = this.$cookies.get('last_coordinates') || {},
+          route_coords = this.$route.params && this.$route.params.coordinates ? this.$route.params.coordinates : {}
+        if (Object.values(cookie_coords).length) {
+          return cookie_coords
+        }
+        return route_coords ? (() => {
+          let obj = Object.values(route_coords);
+          return obj.length == 2 ? {lat: obj[0], lng: obj[1]} : {}
+        }) : {}
+      }
     },
 
     mounted() {
@@ -131,9 +145,9 @@
       formattedDate(date) {
         if (date) {
           let day = date.slice(0, 2),
-              month = date.slice(3, 5),
-              year = date.slice(8, 10),
-              time = date.slice(11, 16);
+            month = date.slice(3, 5),
+            year = date.slice(8, 10),
+            time = date.slice(11, 16);
           return `${day}.${month}.${year} ${time}`;
         }
         return "";
