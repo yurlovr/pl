@@ -59,7 +59,7 @@
         },
         start_y: null,
         end_y: null,
-        mobile: window.innerWidth
+        mobile: 1024
       }
     },
 
@@ -87,8 +87,14 @@
 
         this.closeModal();
       }
-      window.onresize = () => {
+    },
+
+    created() {
+      if (process.browser) {
         this.mobile = window.innerWidth
+        window.onresize = () => {
+          this.mobile = window.innerWidth
+        }
       }
     },
 

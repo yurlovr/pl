@@ -76,7 +76,6 @@
       },
 
       initMapState(coords = [55.753215, 37.622504]) {
-        console.log(document.getElementById('map'))
         this.map = new ymaps.Map(`map-modal`, {
           center: coords,
           zoom: this.zoom,

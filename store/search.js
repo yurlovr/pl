@@ -357,10 +357,10 @@ export const mutations = {
     })
 
     if (Object.values(state.coords).length && state.radius) {
-      console.log(state.radius, state.radius/1000, 'state.radius/1000')
-      state.query += `coordinates=` + encodeURIComponent(Object.values(state.coords).join(',')) + '&diameter='+(state.radius/1000)+'&'
+      console.log(state.radius, state.radius / 1000, 'state.radius/1000')
+      state.query += `coordinates=` + encodeURIComponent(Object.values(state.coords).join(',')) + '&diameter=' + (state.radius / 1000) + '&'
     }
-    console.log(`&coordinates=` + encodeURIComponent(Object.values(state.coords).join(',')) + '&diameter='+state.radius, 'f')
+    console.log(`&coordinates=` + encodeURIComponent(Object.values(state.coords).join(',')) + '&diameter=' + state.radius, 'f')
 
     // cleaning up the last & or ? if it's empty
     state.query = state.query.slice(0, -1);
@@ -508,8 +508,11 @@ export const getters = {
         ret[i].beach = state.searchPageResult.data.list[i].BEACH ? state.searchPageResult.data.list[i].BEACH.NAME : null;
       } else {
         ret[i].rating = state.searchPageResult.data.list[i].AVERAGE_RATING ? parseFloat(state.searchPageResult.data.list[i].AVERAGE_RATING) : (state.searchPageResult.data.list[i].BEACH ? parseFloat(state.searchPageResult.data.list[i].BEACH.AVERAGE_RATING) : null);
-        if (state.searchPageResult.data.list[i].COORDINATES)
-          ret[i].pos = state.searchPageResult.data.list[i].COORDINATES.length > 0 ? [parseFloat(state.searchPageResult.data.list[i].COORDINATES.split(',')[0]), parseFloat(state.searchPageResult.data.list[i].COORDINATES.split(',')[1])] : []
+        if (state.searchPageResult.data.list[i].COORDINATES) {
+          ret[i].pos = state.searchPageResult.data.list[i].COORDINATES.length > 0 ? [parseFloat(state.searchPageResult.data.list[i].COORDINATES.split(',')[0]), parseFloat(state.searchPageResult.data.list[i].COORDINATES.split(',')[1])] : [];
+          ret[i].coordinates = state.searchPageResult.data.list[i].COORDINATES.length > 0 ? [parseFloat(state.searchPageResult.data.list[i].COORDINATES.split(',')[0]), parseFloat(state.searchPageResult.data.list[i].COORDINATES.split(',')[1])] : []
+          ret[i].show_distance = true;
+        }
       }
     }
 

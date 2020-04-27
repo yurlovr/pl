@@ -226,7 +226,6 @@
           observer: true,
           observeParents: true,
           init: false,
-          loop: true,
           breakpoints: {
             550: {
               spaceBetween: 10
