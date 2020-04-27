@@ -30,7 +30,6 @@
             </div>
           </div>
           <button class="search__params__close" @click="toggleParams()">
-            <p>suffer is {{tempMobileSearchBarShown}}</p>
             <img src="~/static/pics/global/svg/close_blue.svg" alt="Закрыть">
           </button>
           <form class="search__params__form" v-on:submit.prevent>
