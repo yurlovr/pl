@@ -1,8 +1,8 @@
 <template>
   <div class="search-page custom-page">
     <div class="search-page__title-area custom-container">
-      <h3 class="main-page__section-title">Результаты поиска {{getRadiusIfCityExists ? `(в радиусе
-        ${Math.ceil(getRadiusIfCityExists)}км)`: ''}}</h3>
+      <h3 class="main-page__section-title">Результаты поиска {{radius ? `(в радиусе
+        ${radius}км)`: ''}}</h3>
       <div class="search-page__title-area__buttons" v-if="getSearchResult && getSearchResult.length > 1">
         <button class="search-page__title-area__button" :class="{ active: !showCardsOrMap }"
                 @click="showCardsOrMap = false">
@@ -46,6 +46,7 @@
   import {mapGetters, mapMutations, mapState, mapActions} from 'vuex';
 
   export default {
+    name: 'main-search',
     components: {
       SearchTags,
       CardGrid,
@@ -56,7 +57,10 @@
       ...mapGetters('search', ['getSearchResult', 'getRadiusIfCityExists']),
       ...mapState('search', ['searchParams']),
       ...mapState('search', ['searchPageResultEventBackup']),
-      ...mapState('search', ['query'])
+      ...mapState('search', ['query']),
+      radius() {
+        return this.$route.query && this.$route.query.diameter ? this.$route.query.diameter : null;
+      }
     },
 
     watch: {

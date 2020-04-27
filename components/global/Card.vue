@@ -107,7 +107,7 @@
         if (d && d.length == 2 && Object.keys(this.last_coordinates).length) {
           let lat2 = d[0], lng2 = d[1],
             {lat, lng} = this.last_coordinates;
-          return Number(getDistanceFromLatLonInKm(lat, lng, Number(lat2), Number(lng2)).toFixed(1))
+          return Number(getDistanceFromLatLonInKm(lat, lng, Number(lat2), Number(lng2)).toFixed(1)).toString().replace(/\./, ',')
         }
         return 0;
       },
