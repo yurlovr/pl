@@ -25,8 +25,8 @@
       </button>
     </div>
     <div class="custom-card__info-area position-relative" :class="{ event: data.beach }">
-      <p class="distance" v-if="data.show_distance" v-show="distanceValue(data.coordinates)"> {{distanceValue(data.coordinates)}}км</p>
-      <div class="mobile-distance"><span v-if="data.show_distance" v-show="distanceValue(data.coordinates)">{{distanceValue(data.coordinates)}}км</span></div>
+      <p class="distance" v-if="data.show_distance" v-show="distanceValue(data.coordinates)"> {{distanceValue(data.coordinates)}} км</p>
+      <div class="mobile-distance"><span v-if="data.show_distance" v-show="distanceValue(data.coordinates)">{{distanceValue(data.coordinates)}} км</span></div>
       <div class="custom-card__rating-area" v-if="data.rating" :class="{'fat-title': data.show_distance}">
         <img src="~/static/pics/global/svg/star.svg" alt="Рейтинг">
         <span>{{ data.rating.toFixed(1) }}</span>
