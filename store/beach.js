@@ -209,6 +209,7 @@ export const getters = {
                         if (v.ADD_TAGS.length < 3) return false;
                     }
                     if (!v.TAGS && !v.ADD_TAGS) return false;
+                    if (v.ID == state.beach.data.item.ID) return false;
                     return true;
                 }).length, 45) : 0,
                 beachSliderData: {

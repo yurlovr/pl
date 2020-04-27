@@ -141,7 +141,7 @@ export const state = () => ({
   api: pic_url,
   init: false, // SET_SEARCH gets called twice, so I will check if it's init or not to not call it the second time
   coords: {
-    lat:52.9760256,
+    lat: 52.9760256,
     lng: 36.077568
   },
   radius: 5000
