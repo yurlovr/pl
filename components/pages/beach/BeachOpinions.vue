@@ -67,7 +67,6 @@
           slidesPerView: 5,
           spaceBetween: 42,
           init: false,
-          loop:true,
           breakpoints: {
             700: {
               slidesPerView: 4
@@ -76,9 +75,11 @@
               slidesPerView: 3
             },
             500: {
+              loop:true,
               slidesPerView: 2
             },
             400: {
+              loop:true,
               slidesPerView: 1
             }
           }
