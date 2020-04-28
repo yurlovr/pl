@@ -238,7 +238,7 @@ export const getters = {
                             cardData: []
                         }
                     }
-                    console.log(family, 'family')
+
                     for (let i = 0; i < Math.min(10, family.BEACHES.length); i++) {
                         ret.familyRest.beachSliderData.cardData.push({
                             temperature: family.BEACHES[i].WEATHER ? family.BEACHES[i].WEATHER.TEMP.WATER : null,
