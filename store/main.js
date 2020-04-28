@@ -238,6 +238,7 @@ export const getters = {
                             cardData: []
                         }
                     }
+                    console.log(family, 'family')
                     for (let i = 0; i < Math.min(10, family.BEACHES.length); i++) {
                         ret.familyRest.beachSliderData.cardData.push({
                             temperature: family.BEACHES[i].WEATHER ? family.BEACHES[i].WEATHER.TEMP.WATER : null,
@@ -250,7 +251,9 @@ export const getters = {
                             pic: state.api + family.BEACHES[i].PHOTOS[0],
                             mainLink: `beach/${family.BEACHES[i].ID}`,
                             beachLink: `beach/${family.BEACHES[i].ID}`,
-                            beachId: family.BEACHES[i].ID
+                            beachId: family.BEACHES[i].ID,
+                            coordinates: family.BEACHES[i].COORDINATES.length ? family.BEACHES[i].COORDINATES.split(',') : [],
+                            show_distance: true
                         });
                     }
                 } else {
