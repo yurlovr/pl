@@ -54,7 +54,7 @@
     </div>
     <BeachSliderArea id="similar-beaches" class="beach-event__similar-beaches" :data="beachData.similarBeaches"
                      v-if="beachData.similarBeaches.beachNumber"/>
-    <iframe360 v-if="show_pano" @close-modal="changeModalState"></iframe360>
+    <iframe360 v-if="show_pano" @close-modal="changeModalState" :url="beachData.hugeSliderData.panorama"></iframe360>
   </div>
 </template>
 

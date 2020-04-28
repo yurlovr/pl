@@ -32,7 +32,7 @@
           <div class="cursor-pointer bem-is-a-dead-methodology">
             <img src="~/static/pics/global/svg/blueMedal.svg" v-if="data.blueMedal"/>
           </div>
-          <div class="cursor-pointer bem-is-a-dead-methodology">
+          <div class="cursor-pointer bem-is-a-dead-methodology" v-if="data.panorama">
             <img src="~/static/pics/global/svg/3d.png" alt="" @click.stop="$emit('call-modal')"/>
             <div class="right-tooltip">
               <span>Обзор 360</span>

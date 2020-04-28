@@ -144,6 +144,7 @@ export const getters = {
                 beachClosedTooltip: state.beach.data.item.LABEL.DESCRIPTION,
                 beautySunrise: state.beach.data.item.WEATHER.BEAUTIFUL_SUNRISE,
                 beautySunset: state.beach.data.item.WEATHER.BEAUTIFUL_SUNSET,
+                panorama: state.beach.data.item.PANORAMA
             },
 
             infraData: [],

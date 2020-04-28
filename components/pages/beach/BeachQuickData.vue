@@ -6,14 +6,15 @@
         <div class="beach-page__quick-data__item" v-for="item in data" @click="callMapAction(item)">
           <img :src="item.pic">
           <span v-html="item.title"></span>
-          <div class="beach-page__quick-data__popup" v-if="item.time">
+          <div class="beach-page__quick-data__popup">
             <div class="beach-page__quick-data__popup__section">
-              <h5 class="beach-page__quick-data__popup__heading">Время проката</h5>
-              <span class="beach-page__quick-data__popup__time">{{ item.time }}</span>
-              <span class="beach-page__quick-date__popup__comment">{{ item.comment }}</span>
-              <span class="beach-page__quick-date__popup__comment">{{ item.comment2 }}</span>
+              <h5 class="beach-page__quick-data__popup__heading">{{item.title}}</h5>
+              <h5 class="beach-page__quick-data__popup__heading" v-show="item.time">Время проката</h5>
+              <span class="beach-page__quick-data__popup__time" v-show="item.time">{{ item.time }}</span>
+              <span class="beach-page__quick-date__popup__comment" v-show="item.comment">{{ item.comment }}</span>
+              <span class="beach-page__quick-date__popup__comment" v-show="item.comment2">{{ item.comment2 }}</span>
             </div>
-            <div class="beach-page__quick-data__popup__section">
+            <div class="beach-page__quick-data__popup__section" v-show="item.prices">
               <h5 class="beach-page__quick-data__popup__heading">Стоимость, руб/час</h5>
               <div class="beach-page__quick-data__popup__price-wrapper" v-for="price in item.prices">
                 <span>{{ price.label }}</span>
@@ -47,7 +48,7 @@
         const {pos, id} = item;
         console.warn(this.action, 'this action')
         if (Array.isArray(pos) && id && this.action) {
-          this.$bus.$emit('call-balloon-'+this.action, id, pos)
+          this.$bus.$emit('call-balloon-' + this.action, id, pos)
         }
         // this.$bus.$emit('call-balloon-'+this.action, 1)
       }
