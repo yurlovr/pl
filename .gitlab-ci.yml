@@ -28,7 +28,7 @@ stages:
     - echo $IMAGE_TAG
     - docker pull $IMAGE_TAG || true
     - echo "Build image for $URL_API"
-    - docker build -t $IMAGE_TAG . --build-arg URL_API=$URL_API
+    - docker build -t $IMAGE_TAG . --build-arg URL_API=$URL_API --compress --cache-from $IMAGE_TAG
     - docker push $IMAGE_TAG 
 
 .deploy_template:
