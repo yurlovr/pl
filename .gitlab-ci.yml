@@ -4,21 +4,9 @@ stages:
   - build
   - deploy
 
-# build develop:
-#   image: node:10.15.0-stretch
-#   stage: build
-#   only:
-#     - develop
-#   script:
-#     - npm ci
-#     - cp .env.example.js .env.js
-#     - npm run build
-
-build develop:
+.build_template:
   image: docker:19.03.1
   stage: build
-  only:
-    - develop
   services:
     - docker:19.03.1-dind
   variables:
@@ -28,9 +16,9 @@ build develop:
     - docker pull $IMAGE_TAG || true
     - echo "Build image for $URL_API"
     - docker build -t $IMAGE_TAG . --build-arg URL_API=$URL_API
-    - docker push $IMAGE_TAG
+    - docker push $IMAGE_TAG 
 
-deploy develop:
+.deploy_template:
   image: alpine:3.11
   stage: deploy
   only:
@@ -43,7 +31,19 @@ deploy develop:
     - ssh_run "$REMOTE_USER" "$REMOTE_HOST" "$SSH_PRIVATE_KEY" "cd $REMOTE_DIR_MASTER && docker stop krym-$CI_COMMIT_BRANCH || true"    
     - ssh_run "$REMOTE_USER" "$REMOTE_HOST" "$SSH_PRIVATE_KEY" "cd $REMOTE_DIR_MASTER && docker rm krym-$CI_COMMIT_BRANCH || true"
     - ssh_run "$REMOTE_USER" "$REMOTE_HOST" "$SSH_PRIVATE_KEY" "cd $REMOTE_DIR_MASTER && docker run -d --name krym-$CI_COMMIT_BRANCH --restart=on-failure:10 -p 127.0.0.1:3000:3000 krym-vue/$CI_COMMIT_BRANCH:latest"       
-    - ssh_run "$REMOTE_USER" "$REMOTE_HOST" "$SSH_PRIVATE_KEY" "cd $REMOTE_DIR_MASTER && docker image prune -f"       
+    - ssh_run "$REMOTE_USER" "$REMOTE_HOST" "$SSH_PRIVATE_KEY" "cd $REMOTE_DIR_MASTER && docker image prune -f"    
+
+build develop:
+  extends: - .build_template
+  only:
+    - develop
+
+deploy develop:
+  extends: .deploy_template
+  variables: 
+    $PORT: 3000
+  only:
+    - develop
 
 build master:
   image: docker:19.03.1
