@@ -25,9 +25,8 @@ build develop:
     IMAGE_TAG: $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG
   script:
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
-    # - docker pull $CI_REGISTRY_IMAGE:latest
-    - cp .env.example.js .env.js
-    - docker build -t $IMAGE_TAG .
+    - docker pull $CI_REGISTRY_IMAGE:latest || true
+    - docker build -t $IMAGE_TAG . --build-arg URL_API=$URL_API
     - docker push $IMAGE_TAG
 
 deploy develop:

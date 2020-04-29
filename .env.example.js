@@ -1,2 +1,1 @@
-export const url_api = 'https://backuat.plyazhi.ru/api/app/'
-export const pic_url = 'https://backuat.plyazhi.ru'
+export const url_api = process.env.URL_API || 'https://backuat.plyazhi.ru/api/app/'
