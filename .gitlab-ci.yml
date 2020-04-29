@@ -34,8 +34,6 @@ stages:
 .deploy_template:
   image: alpine:3.11
   stage: deploy
-  only:
-    - develop
   script:
     - apk update && apk add openssh
     - ssh_run "$REMOTE_USER" "$REMOTE_HOST" "$SSH_PRIVATE_KEY" "cd $REMOTE_DIR_DEVELOP && git fetch origin"
@@ -47,14 +45,19 @@ stages:
     - ssh_run "$REMOTE_USER" "$REMOTE_HOST" "$SSH_PRIVATE_KEY" "cd $REMOTE_DIR_MASTER && docker image prune -f"    
 
 build develop:
-  extends: .build_template
+  extends: 
+  extends:
+    - .build_template
+    - .develop_environment
   only:
     - develop
 
 deploy develop:
-  extends: .deploy_template
+  extends: 
+    - .deploy_template
+    - .develop_environment
   variables: 
-    $PORT: 3000
+    PORT: 3000
   only:
     - develop
 
