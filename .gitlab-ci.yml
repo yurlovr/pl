@@ -34,7 +34,7 @@ stages:
     - ssh_run "$REMOTE_USER" "$REMOTE_HOST" "$SSH_PRIVATE_KEY" "cd $REMOTE_DIR_MASTER && docker image prune -f"    
 
 build develop:
-  extends: - .build_template
+  extends: .build_template
   only:
     - develop
 
