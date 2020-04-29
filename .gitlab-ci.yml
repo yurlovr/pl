@@ -26,7 +26,7 @@ build develop:
   script:
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
     - docker pull $IMAGE_TAG || true
-    - Echo "Build image for $URL_API"
+    - echo "Build image for $URL_API"
     - docker build -t $IMAGE_TAG . --build-arg URL_API=$URL_API
     - docker push $IMAGE_TAG
 
