@@ -1,4 +1,3 @@
-import {pic_url} from '../.env.js'
 export const state = () => ({
     beach: null,
     temperatures: null,
@@ -9,7 +8,6 @@ export const state = () => ({
     similarBeaches: null,
     visitorPics: null,
     announcementData: null,
-    api: pic_url
 })
 
 export const mutations = {
@@ -137,8 +135,8 @@ export const getters = {
                 isBeachClosed: state.beach.data.item.LABEL.TEXT != '',
                 goldMedal: state.beach.data.item.CERTIFICATION,
                 blueMedal: state.beach.data.item.WEBCAMERA,
-                pics: !state.beach.data.item.VIDEO.LINK ?  state.beach.data.item.PHOTOS.map((s) => { return state.api + s })
-                  : [...state.beach.data.item.PHOTOS.map((s) => { return state.api + s }), state.beach.data.item.VIDEO.LINK],
+                pics: !state.beach.data.item.VIDEO.LINK ?  state.beach.data.item.PHOTOS
+                  : [...state.beach.data.item.PHOTOS, state.beach.data.item.VIDEO.LINK],
                 beachClosedText: state.beach.data.item.LABEL.TEXT,
                 beachClosedColor: state.beach.data.item.LABEL.COLOR,
                 beachClosedTooltip: state.beach.data.item.LABEL.DESCRIPTION,
@@ -230,7 +228,7 @@ export const getters = {
             if (announcement)
                 ret.announcementData = {
                     link: announcement.LINK,
-                    pic: announcement.PREVIEW_PICTURE ? state.api + announcement.PREVIEW_PICTURE : null,
+                    pic: announcement.PREVIEW_PICTURE ? announcement.PREVIEW_PICTURE : null,
                     title: announcement.NAME,
                     date: announcement.DATE,
                     description: announcement.DESCRIPTION,
@@ -265,7 +263,7 @@ export const getters = {
         for (let i = 0; i < filteredInfra.length; i++) {
             ret.infraData.push({
                 title: filteredInfra[i].NAME,
-                pic: filteredInfra[i].ICON ? state.api + filteredInfra[i].ICON : filteredInfra[i].ICON,
+                pic: filteredInfra[i].ICON ? filteredInfra[i].ICON : filteredInfra[i].ICON,
                 pos: filteredInfra[i].COORDINATES ? filteredInfra[i].COORDINATES.split(',') : null,
                 id: filteredInfra[i].ID
             })
@@ -275,7 +273,7 @@ export const getters = {
         for (let i = 0; i < state.beach.data.item.SERVICES.length; i++) {
             ret.servicesData.push({
                 title: state.beach.data.item.SERVICES[i].NAME,
-                pic: state.beach.data.item.SERVICES[i].ICON ? state.api + state.beach.data.item.SERVICES[i].ICON : state.beach.data.item.SERVICES[i].ICON,
+                pic: state.beach.data.item.SERVICES[i].ICON ? state.beach.data.item.SERVICES[i].ICON : state.beach.data.item.SERVICES[i].ICON,
                 pos: state.beach.data.item.SERVICES[i].COORDINATES ? state.beach.data.item.SERVICES[i].COORDINATES.split(',') : null,
                 id: state.beach.data.item.SERVICES[i].ID,
             })
@@ -298,7 +296,7 @@ export const getters = {
                 beachLink: state.events.data.list[i].BEACH ? `beach/${state.events.data.list[i].BEACH.ID}` : null,
                 location: state.events.data.list[i].BEACH ? state.events.data.list[i].BEACH.CITY.NAME : null,
                 locationId: state.events.data.list[i].BEACH ? state.events.data.list[i].BEACH.CITY.ID : null,
-                pic: state.events.data.list[i].PHOTOS ? state.api + state.events.data.list[i].PHOTOS[0] : null,
+                pic: state.events.data.list[i].PHOTOS ? state.events.data.list[i].PHOTOS[0] : null,
                 eventId: state.events.data.list[i].ID,
                 showFavorite: true
             });
@@ -309,14 +307,14 @@ export const getters = {
             ret.barsNRestos.push({
                 title: state.barsNRestos.data.list[i].NAME,
                 description: state.barsNRestos.data.list[i].DESCRIPTION,
-                pics: state.barsNRestos.data.list[i].PHOTOS.map(v => v ? state.api + v : null)
+                pics: state.barsNRestos.data.list[i].PHOTOS.map(v => v ? v : null)
             });
         }
 
         // adding formatted opinions
         for (let i = 0; i < state.opinions.data.list.length; i++) {
             ret.opinions.push({
-                pic: state.api + state.opinions.data.list[i].PICTURE,
+                pic: state.opinions.data.list[i].PICTURE,
                 name: state.opinions.data.list[i].NAME,
                 opinion: state.opinions.data.list[i].DESCRIPTION,
                 social: state.opinions.data.list[i].SOCIAL_LINK
@@ -326,7 +324,7 @@ export const getters = {
         // adding formatted reviews
         for (let i = 0; i < state.reviews.data.list.length; i++) {
             ret.reviews.push({
-                pic: state.reviews.data.list[i].PICTURE ? state.api + state.reviews.data.list[i].PICTURE : null,
+                pic: state.reviews.data.list[i].PICTURE ?  state.reviews.data.list[i].PICTURE : null,
                 name: state.reviews.data.list[i].FIO,
                 date: state.reviews.data.list[i].CREATED_DATE,
                 rating: state.reviews.data.list[i].AVERAGE_RATING,
@@ -363,7 +361,7 @@ export const getters = {
                             title: state.similarBeaches.data.list[i].NAME,
                             location: state.similarBeaches.data.list[i].CITY ? state.similarBeaches.data.list[i].CITY.NAME : 'Не указан',
                             locationId: state.similarBeaches.data.list[i].CITY ? state.similarBeaches.data.list[i].CITY.ID : null,
-                            pic: state.similarBeaches.data.list[i].PHOTOS ? state.api + state.similarBeaches.data.list[i].PHOTOS[0] : null,
+                            pic: state.similarBeaches.data.list[i].PHOTOS ? state.similarBeaches.data.list[i].PHOTOS[0] : null,
                             mainLink: `beach/${state.similarBeaches.data.list[i].ID}`,
                             beachLink: `beach/${state.similarBeaches.data.list[i].ID}`,
                             beachId: state.similarBeaches.data.list[i].ID,

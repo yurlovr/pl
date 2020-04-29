@@ -1,10 +1,8 @@
-import {pic_url} from '../.env.js'
 export const state = () => ({
     event: [],
     reviews: [],
     visitorPics: [],
     announcementData: null,
-    api: pic_url
 })
 
 export const mutations = {
@@ -54,7 +52,7 @@ export const getters = {
         	hugeSliderData: {
         		title: state.event.data.item.NAME,
                 isBeachClosed: false,
-                pics: state.event.data.item.PHOTOS.map((s) => { return state.api + s }),
+                pics: state.event.data.item.PHOTOS,
                 goldMedal: null,
                 blueMedal: null
         	},
@@ -127,7 +125,7 @@ export const getters = {
             if (announcement)
                 ret.announcementData = {
                     link: announcement.LINK,
-                    pic: announcement.PREVIEW_PICTURE ? state.api + announcement.PREVIEW_PICTURE : null,
+                    pic: announcement.PREVIEW_PICTURE ?  announcement.PREVIEW_PICTURE : null,
                     title: announcement.NAME,
                     date: announcement.DATE,
                     description: announcement.DESCRIPTION,
@@ -141,7 +139,7 @@ export const getters = {
             for (let i = 0; i < filteredInfra.length; i++) {
                 ret.infraData.push({
                     title: filteredInfra[i].NAME,
-                    pic: filteredInfra[i].ICON ? state.api + filteredInfra[i].ICON : filteredInfra[i].ICON
+                    pic: filteredInfra[i].ICON ? filteredInfra[i].ICON : filteredInfra[i].ICON
                 })
             }
         }
@@ -149,7 +147,7 @@ export const getters = {
         // adding formatted reviews
         for (let i = 0; i < state.reviews.data.list.length; i++) {
             ret.reviews.push({
-                pic: state.reviews.data.list[i].PICTURE ? state.api + state.reviews.data.list[i].PICTURE : null,
+                pic: state.reviews.data.list[i].PICTURE ? state.reviews.data.list[i].PICTURE : null,
                 name: state.reviews.data.list[i].FIO,
                 date: state.reviews.data.list[i].CREATED_DATE,
                 rating: state.reviews.data.list[i].AVERAGE_RATING,
@@ -205,7 +203,7 @@ export const getters = {
                 beachLink: otherEvents[i].BEACH ? `beach/${otherEvents[i].BEACH.ID}` : null,
                 location: otherEvents[i].BEACH && otherEvents[i].BEACH.CITY ? otherEvents[i].BEACH.CITY.NAME : null,
                 locationId: otherEvents[i].BEACH && otherEvents[i].BEACH.CITY ? otherEvents[i].BEACH.CITY.ID : null,
-                pic: otherEvents[i].PHOTOS ? state.api + otherEvents[i].PHOTOS[0] : null,
+                pic: otherEvents[i].PHOTOS ? otherEvents[i].PHOTOS[0] : null,
                 eventId: otherEvents[i].ID,
                 showFavorite: true
             });

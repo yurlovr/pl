@@ -1,4 +1,3 @@
-import {pic_url} from '../.env.js'
 export const state = () => ({
     beachesTop: [],
     citiesTop: [],
@@ -9,7 +8,6 @@ export const state = () => ({
     banners: {},
     map: {},
     geo: {},
-    api: pic_url
 })
 
 export const mutations = {
@@ -102,7 +100,7 @@ export const getters = {
                         rating: parseFloat(state.beachesTop.data.list[i].AVERAGE_RATING),
                         title: state.beachesTop.data.list[i].NAME,
                         location: state.beachesTop.data.list[i].CITY ? state.beachesTop.data.list[i].CITY.NAME : null,
-                        pic: state.beachesTop.data.list[i].PHOTOS ? state.api + state.beachesTop.data.list[i].PHOTOS[0] : null,
+                        pic: state.beachesTop.data.list[i].PHOTOS ? state.beachesTop.data.list[i].PHOTOS[0] : null,
                         mainLink: `beach/${state.beachesTop.data.list[i].ID}`,
                         beachLink: `beach/${state.beachesTop.data.list[i].ID}`,
                         locationId: state.beachesTop.data.list[i].CITY ? state.beachesTop.data.list[i].CITY.ID : -1,
@@ -126,7 +124,7 @@ export const getters = {
                             city: cities[i].NAME,
                             cityId: cities[i].ID,
                             beachNumber: cities[i].COUNT_BEACHES,
-                            pic: cities[i].PREVIEW_PICTURE ? state.api + cities[i].PREVIEW_PICTURE : null
+                            pic: cities[i].PREVIEW_PICTURE ? cities[i].PREVIEW_PICTURE : null
                         });
                 }
             } else {
@@ -181,7 +179,7 @@ export const getters = {
                             location: clusters[i][j].CITY ? clusters[i][j].CITY.NAME : null,
                             locationId: clusters[i][j].CITY ? clusters[i][j].CITY.ID : -1,
                             beachId: clusters[i][j].ID,
-                            pics: clusters[i][j].PHOTOS ? [ ...clusters[i][j].PHOTOS.map(v => state.api + v) ] : null,
+                            pics: clusters[i][j].PHOTOS ? [ ...clusters[i][j].PHOTOS ] : null,
                             showFavorite: true,
                             paid: clusters[i][j].PAID
                         });
@@ -211,7 +209,7 @@ export const getters = {
                         title: state.banners.data.list[i].NAME,
                         description: state.banners.data.list[i].DESCRIPTION,
                         link: state.banners.data.list[i].LINK,
-                        pic: state.api + state.banners.data.list[i].PREVIEW_PICTURE,
+                        pic: state.banners.data.list[i].PREVIEW_PICTURE,
                         buttonText: state.banners.data.list[i].BUTTON_NAME,
                         // by default pic is on the left
                         rightToLeft: state.banners.data.list[i].PICTURE_POSITION == 'right'
@@ -248,7 +246,7 @@ export const getters = {
                             title: family.BEACHES[i].NAME,
                             location: family.BEACHES[i].CITY ? family.BEACHES[i].CITY.NAME : null,
                             locationId: family.BEACHES[i].CITY ? family.BEACHES[i].CITY.ID : -1,
-                            pic: state.api + family.BEACHES[i].PHOTOS[0],
+                            pic: family.BEACHES[i].PHOTOS[0],
                             mainLink: `beach/${family.BEACHES[i].ID}`,
                             beachLink: `beach/${family.BEACHES[i].ID}`,
                             beachId: family.BEACHES[i].ID,
@@ -314,7 +312,7 @@ export const getters = {
                     for (let i = 0; i < activeRest.COLLECTIONS.length; i++) {
                         ret.activeRest.push({
                             title: activeRest.COLLECTIONS[i].NAME,
-                            pic: activeRest.COLLECTIONS[i].PREVIEW_PICTURE ? (state.api + activeRest.COLLECTIONS[i].PREVIEW_PICTURE) : null,
+                            pic: activeRest.COLLECTIONS[i].PREVIEW_PICTURE ? (activeRest.COLLECTIONS[i].PREVIEW_PICTURE) : null,
                             beachNumber: activeRest.COLLECTIONS[i].BEACHES ? activeRest.COLLECTIONS[i].BEACHES.length : 0,
                             filter: []
                         });
@@ -353,7 +351,7 @@ export const getters = {
                         for (let j = 0; j < weatherData[i].length; j++) {
                             curCluster.push({
                                 city: weatherData[i][j].CITY ? weatherData[i][j].CITY.NAME : null,
-                                pic: weatherData[i][j].CITY && weatherData[i][j].CITY.PREVIEW_PICTURE ? state.api + '/' + weatherData[i][j].CITY.PREVIEW_PICTURE : null,
+                                pic: weatherData[i][j].CITY && weatherData[i][j].CITY.PREVIEW_PICTURE ? weatherData[i][j].CITY.PREVIEW_PICTURE : null,
                                 airTemperature: weatherData[i][j].TEMP ? parseFloat(weatherData[i][j].TEMP.AIR) : null,
                                 waterTemperature: weatherData[i][j].TEMP ? parseFloat(weatherData[i][j].TEMP.WATER) : null
                             })
@@ -381,7 +379,7 @@ export const getters = {
                     for (let i = 0; i < beachType.COLLECTIONS.length; i++) {
                         ret.chooseToYourWishes.cards.push({
                             title: beachType.COLLECTIONS[i].NAME,
-                            pic: beachType.COLLECTIONS[i].PREVIEW_PICTURE ? (state.api + beachType.COLLECTIONS[i].PREVIEW_PICTURE) : null,
+                            pic: beachType.COLLECTIONS[i].PREVIEW_PICTURE ? (beachType.COLLECTIONS[i].PREVIEW_PICTURE) : null,
                             beachNumber: beachType.COLLECTIONS[i].BEACHES ? beachType.COLLECTIONS[i].BEACHES.length : 0,
                             description: beachType.COLLECTIONS[i].DESCRIPTION,
                             filter: []

@@ -1,9 +1,6 @@
-import {pic_url} from '../.env.js'
-
 export const state = () => ({
   beaches: [],
   events: [],
-  api: pic_url
 })
 
 export const mutations = {
@@ -62,7 +59,7 @@ export const getters = {
         rating: parseFloat(state.beaches.data.list[i].AVERAGE_RATING),
         title: state.beaches.data.list[i].NAME,
         location: state.beaches.data.list[i].CITY ? state.beaches.data.list[i].CITY.NAME : null,
-        pic: state.beaches.data.list[i].PHOTOS ? state.api + state.beaches.data.list[i].PHOTOS[0] : null,
+        pic: state.beaches.data.list[i].PHOTOS ?  state.beaches.data.list[i].PHOTOS[0] : null,
         mainLink: `beach/${state.beaches.data.list[i].ID}`,
         beachLink: `beach/${state.beaches.data.list[i].ID}`,
         locationId: state.beaches.data.list[i].CITY ? state.beaches.data.list[i].CITY.ID : null,
@@ -107,7 +104,7 @@ export const getters = {
         paid: state.events.data.list[i].PAID,
         title: state.events.data.list[i].NAME,
         location: state.events.data.list[i].BEACH && state.events.data.list[i].BEACH.CITY ? state.events.data.list[i].BEACH.CITY.NAME : null,
-        pic: state.events.data.list[i].PHOTOS ? state.api + state.events.data.list[i].PHOTOS[0] : null,
+        pic: state.events.data.list[i].PHOTOS ?  state.events.data.list[i].PHOTOS[0] : null,
         mainLink: `event/${state.events.data.list[i].ID}`,
         beachLink: state.events.data.list[i].BEACH ? `beach/${state.events.data.list[i].BEACH.ID}` : null,
         locationId: state.events.data.list[i].BEACH && state.events.data.list[i].BEACH.CITY ? state.events.data.list[i].BEACH.CITY.ID : null,

@@ -1,5 +1,4 @@
 import {getDistanceFromLatLonInKm} from "../assets/calcDistance";
-import {pic_url} from '../.env.js'
 
 export const state = () => ({
   my_coords: {},
@@ -138,7 +137,6 @@ export const state = () => ({
   autocompleteResults: [],
   query: '',
   tags: [],
-  api: pic_url,
   init: false, // SET_SEARCH gets called twice, so I will check if it's init or not to not call it the second time
   coords: {
     lat: 52.9760256,
@@ -158,7 +156,6 @@ export const mutations = {
     state.init = true;
 
     state.searchConfig = payload;
-
     // initializing the first row
     for (let i = 0; i < payload.data.cities.length; i++) {
       state.searchParams.selects.cities.options.push({
@@ -489,7 +486,7 @@ export const getters = {
         title: state.searchPageResult.data.list[i].NAME,
         location: state.searchPageResult.data.list[i].CITY ? state.searchPageResult.data.list[i].CITY.NAME : (state.searchPageResult.data.list[i].BEACH && state.searchPageResult.data.list[i].BEACH.CITY ? state.searchPageResult.data.list[i].BEACH.CITY.NAME : null),
         locationId: state.searchPageResult.data.list[i].CITY ? state.searchPageResult.data.list[i].CITY.ID : (state.searchPageResult.data.list[i].BEACH && state.searchPageResult.data.list[i].BEACH.CITY ? state.searchPageResult.data.list[i].BEACH.CITY.ID : null),
-        pic: state.searchPageResult.data.list[i].PHOTOS && state.searchPageResult.data.list[i].PHOTOS[0] ? (state.api + state.searchPageResult.data.list[i].PHOTOS[0]) : null,
+        pic: state.searchPageResult.data.list[i].PHOTOS && state.searchPageResult.data.list[i].PHOTOS[0] ? state.searchPageResult.data.list[i].PHOTOS[0] : null,
         mainLink: `${state.beachesOrEventsAreShown ? 'event' : 'beach'}/${state.searchPageResult.data.list[i].ID}`,
         beachLink: `${state.beachesOrEventsAreShown ? 'event' : 'beach'}/${state.searchPageResult.data.list[i].ID}`,
         beachLength: state.searchPageResult.data.list[i].PARAMETERS ? (state.searchPageResult.data.list[i].PARAMETERS.P_LINE_LENGTH == '' ? null : state.searchPageResult.data.list[i].PARAMETERS.P_LINE_LENGTH) : (state.searchPageResult.data.list[i].BEACH && state.searchPageResult.data.list[i].BEACH.PARAMETERS ? (state.searchPageResult.data.list[i].BEACH.PARAMETERS.P_LINE_LENGTH == '' ? null : state.searchPageResult.data.list[i].BEACH.PARAMETERS.P_LINE_LENGTH) : null),
