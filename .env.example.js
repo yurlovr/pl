@@ -1,2 +1,2 @@
-export const url_api = 'https://crimea.air-dev.agency/api/app/'
-export const pic_url = 'https://crimea.air-dev.agency'
+export const url_api = 'https://backuat.plyazhi.ru/api/app/'
+export const pic_url = 'https://backuat.plyazhi.ru'
