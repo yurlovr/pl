@@ -38,6 +38,7 @@ stages:
     SSH_PARAMS: $REMOTE_USER $REMOTE_HOST 
   script:
     - apk update && apk add openssh
+    - echo $SSH_PARAMS $SSH_PRIVATE_KEY
     - ssh_run $SSH_PARAMS $SSH_PRIVATE_KEY "docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY"
     - ssh_run $SSH_PARAMS $SSH_PRIVATE_KEY "echo "Pulling $IMAGE_TAG"
     - ssh_run $SSH_PARAMS $SSH_PRIVATE_KEY "docker pull $IMAGE_TAG"
