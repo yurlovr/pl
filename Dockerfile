@@ -13,9 +13,10 @@ RUN apk --no-cache --virtual build-dependencies add \
     && apk del build-dependencies
 # Copy other project files
 ADD . .
-
-RUN npm run build
+RUN cp .env.example.js .env.js
+ARG URL_API
 ENV HOST 0.0.0.0
+RUN npm run build
 EXPOSE 3000
 # start command
 CMD [ "npm", "run", "start" ]
