@@ -14,8 +14,6 @@ stages:
     name: develop
     url: https://develop.krym-project.cloud
 
-
-
 .build_template:
   image: docker:19.03.1
   stage: build
