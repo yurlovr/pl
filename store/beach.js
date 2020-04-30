@@ -202,7 +202,7 @@ export const getters = {
                 subtitle: '',
                 showMore: {
                     type: 'beach',
-                    query: '?' + (state.tags ? state.tags.slice(1) : '') + `city=${state.beach && state.beach.data && state.beach.data.item && state.beach.data.item.CITY ? 
+                    query: '?' + (state.tags ? state.tags.slice(1) : '') + `city=${state.beach && state.beach.data && state.beach.data.item && state.beach.data.item.CITY ?
                         state.beach.data.item.CITY.ID : -1}&fromBeach=${state.beach && state.beach.data && state.beach.data.item ? state.beach.data.item.ID : -1}`
                 },
                 beachNumber: state.similarBeaches && state.similarBeaches.data ? Math.min(state.similarBeaches.data.list.filter(v => {
@@ -312,7 +312,8 @@ export const getters = {
             ret.barsNRestos.push({
                 title: state.barsNRestos.data.list[i].NAME,
                 description: state.barsNRestos.data.list[i].DESCRIPTION,
-                pics: state.barsNRestos.data.list[i].PHOTOS.map(v => v ? v : null)
+                pics: state.barsNRestos.data.list[i].PHOTOS.map(v => v ? v : null),
+                coordinates: state.barsNRestos.data.list[i].COORDINATES ? state.barsNRestos.data.list[i].COORDINATES : []
             });
         }
 

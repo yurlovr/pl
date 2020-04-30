@@ -95,7 +95,7 @@
         return route_coords ? (() => {
           let obj = Object.values(route_coords);
           return obj.length == 2 ? {lat: obj[0], lng: obj[1]} : {}
-        }) : {}
+        })() : {}
       }
     },
 

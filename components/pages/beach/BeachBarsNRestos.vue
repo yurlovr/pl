@@ -16,10 +16,11 @@
                 <div
                     class="swiper-slide"
                     v-for="(item, i) in data"
-                    :key="i"
+                    :key="i+'slider-bar-restor'"
                 >
                     <div class="beach-page__barsNrestos__subtitle-area">
-                        <h3 class="beach-page__barsNrestos__subtitle">{{ item.title }}</h3>
+                        <h3 class="beach-page__barsNrestos__subtitle">{{ item.title }}<span class="bar-distance" v-if="getDistance(item.coordinates)">
+                          <br>{{getDistance(item.coordinates).toString().replace(/\./, ',')}} км</span></h3>
                         <div class="beach-page__barsNrestos__arrow-controls swiper-bar-display" v-if="data.length != 1">
                             <button @click="mySwiper.slidePrev()">
                                 <img
@@ -57,6 +58,7 @@
 <script>
 import Vue from 'vue';
 import SliderBeachBarsNRestos from '~/components/pages/beach/SliderBeachBarsNRestos';
+import {getDistanceFromLatLonInKm} from "../../../assets/calcDistance";
 
 export default {
     props: ['data'],
@@ -73,6 +75,20 @@ export default {
         SliderBeachBarsNRestos
     },
 
+    computed:{
+      last_coordinates() {
+        let cookie_coords = this.$cookies.get('last_coordinates') || {},
+          route_coords = this.$route.params && this.$route.params.coordinates ? this.$route.params.coordinates : {}
+        if (Object.values(cookie_coords).length) {
+          return cookie_coords
+        }
+        return route_coords ? (() => {
+          let obj = Object.values(route_coords);
+          return obj.length == 2 ? {lat: obj[0], lng: obj[1]} : {}
+        })() : {}
+      }
+    },
+
     data () {
         return {
             swiperOption: {
@@ -83,6 +99,18 @@ export default {
                 init: false
             }
         };
+    },
+    methods:{
+      getDistance(d = []){
+        if (d.length){
+          if (d && d.length == 2 && Object.keys(this.last_coordinates).length) {
+            let lat2 = d[0], lng2 = d[1],
+              {lat, lng} = this.last_coordinates;
+            return Number(getDistanceFromLatLonInKm(lat, lng, Number(lat2), Number(lng2)).toFixed(1)).toString().replace(/\./, ',')
+          }
+        }
+        return 0;
+      }
     },
 
     mounted () {
