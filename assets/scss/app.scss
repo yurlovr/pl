@@ -282,7 +282,6 @@ input {
   &__bottom {
     position: absolute;
     bottom: 0;
-    transform: translateY(100%);
     background: white;
     border: 1px solid #228596;
     border-top: none;
@@ -293,7 +292,7 @@ input {
     padding: 5px 0;
     max-height: 200px;
     overflow-y: auto;
-    -webkit-transform: translate3d(0,0,0);
+    -webkit-transform: translate3d(0,100%,0);
     -webkit-overflow-scrolling: touch;
 
     &__item {
