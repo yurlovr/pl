@@ -35,6 +35,7 @@ stages:
   image: alpine:3.11
   stage: deploy
   variables:
+    IMAGE_TAG: $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG-latest
     SSH_PARAMS: $REMOTE_USER $REMOTE_HOST
   script:
     - apk update && apk add openssh
