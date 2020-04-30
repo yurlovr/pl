@@ -35,17 +35,17 @@ stages:
   image: alpine:3.11
   stage: deploy
   variables:
-    SSH_PARAMS: $REMOTE_USER $REMOTE_HOST 
+    SSH_PARAMS: $REMOTE_USER $REMOTE_HOST "$SSH_PRIVATE_KEY"
   script:
     - apk update && apk add openssh
     - echo $SSH_PARAMS
-    - ssh_run $SSH_PARAMS "$SSH_PRIVATE_KEY" "docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY"
-    - ssh_run $SSH_PARAMS $SSH_PRIVATE_KEY "echo "Pulling $IMAGE_TAG"
-    - ssh_run $SSH_PARAMS $SSH_PRIVATE_KEY "docker pull $IMAGE_TAG"
-    - ssh_run $SSH_PARAMS $SSH_PRIVATE_KEY "docker stop krym-$CI_COMMIT_BRANCH || true"    
-    - ssh_run $SSH_PARAMS $SSH_PRIVATE_KEY "docker rm krym-$CI_COMMIT_BRANCH || true"
-    - ssh_run $SSH_PARAMS $SSH_PRIVATE_KEY "docker run -d --name krym-$CI_COMMIT_BRANCH --restart=on-failure:10 -p 127.0.0.1:$PORT:3000 $IMAGE_TAG"       
-    - ssh_run $SSH_PARAMS $SSH_PRIVATE_KEY "docker image prune -f" || true   
+    - ssh_run $SSH_PARAMS "docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY"
+    - ssh_run $SSH_PARAMS "echo "Pulling $IMAGE_TAG""
+    - ssh_run $SSH_PARAMS "docker pull $IMAGE_TAG"
+    - ssh_run $SSH_PARAMS "docker stop krym-$CI_COMMIT_BRANCH || true"    
+    - ssh_run $SSH_PARAMS "docker rm krym-$CI_COMMIT_BRANCH || true"
+    - ssh_run $SSH_PARAMS "docker run -d --name krym-$CI_COMMIT_BRANCH --restart=on-failure:10 -p 127.0.0.1:$PORT:3000 $IMAGE_TAG"       
+    - ssh_run $SSH_PARAMS "docker image prune -f" || true   
     
     
 # build develop:
