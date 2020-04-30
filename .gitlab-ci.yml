@@ -35,7 +35,7 @@ stages:
   image: alpine:3.11
   stage: deploy
   variables:
-    SSH_PARAMS: "$REMOTE_USER" "$REMOTE_HOST" "$SSH_PRIVATE_KEY"
+    SSH_PARAMS: $REMOTE_USER $REMOTE_HOST $SSH_PRIVATE_KEY
   script:
     - apk update && apk add openssh
     - ssh_run $SSH_PARAMS "docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY"
