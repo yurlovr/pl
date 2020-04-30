@@ -4,74 +4,78 @@ stages:
   - build
   - deploy
 
-# build develop:
-#   image: node:10.15.0-stretch
-#   stage: build
-#   only:
-#     - develop
-#   script:
-#     - npm ci
-#     - cp .env.example.js .env.js
-#     - npm run build
+.master_environment:
+  environment:
+    name: master
+    url: https://master.krym-project.cloud
+  
+.develop_environment:
+  environment:
+    name: develop
+    url: https://develop.krym-project.cloud
 
-build develop:
+.build_template:
   image: docker:19.03.1
   stage: build
-  only:
-    - develop
   services:
     - docker:19.03.1-dind
   variables:
-    IMAGE_TAG: $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG
+    IMAGE_TAG: $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG-latest
   script:
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
-    # - docker pull $CI_REGISTRY_IMAGE:latest
-    - cp .env.example.js .env.js
-    - docker build -t $IMAGE_TAG .
-    - docker push $IMAGE_TAG
+    - echo $IMAGE_TAG
+    - docker pull $IMAGE_TAG || true
+    - echo "Build image for $URL_API"
+    - docker build -t $IMAGE_TAG . --build-arg URL_API=$URL_API --compress --cache-from $IMAGE_TAG
+    - docker push $IMAGE_TAG 
+
+.deploy_template:
+  image: alpine:3.11
+  stage: deploy
+  variables:
+    IMAGE_TAG: $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG-latest
+    SSH_PARAMS: $REMOTE_USER $REMOTE_HOST
+  script:
+    - apk update && apk add openssh
+    - echo $SSH_PARAMS
+    - ssh_run $SSH_PARAMS "$SSH_PRIVATE_KEY" "docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY"
+    - ssh_run $SSH_PARAMS "$SSH_PRIVATE_KEY" "docker pull $IMAGE_TAG"
+    - ssh_run $SSH_PARAMS "$SSH_PRIVATE_KEY" "docker stop krym-$CI_COMMIT_BRANCH || true"    
+    - ssh_run $SSH_PARAMS "$SSH_PRIVATE_KEY" "docker rm krym-$CI_COMMIT_BRANCH || true"
+    - ssh_run $SSH_PARAMS "$SSH_PRIVATE_KEY" "docker run -d --name krym-$CI_COMMIT_BRANCH --restart=on-failure:10 -p 127.0.0.1:$PORT:3000 $IMAGE_TAG"       
+    # - ssh_run $SSH_PARAMS "$SSH_PRIVATE_KEY" "docker image prune -f" || true   
+    
+    
+build develop:
+  extends: 
+  extends:
+    - .build_template
+    - .develop_environment
+  only:
+    - develop
 
 deploy develop:
-  image: alpine:3.11
-  stage: deploy
+  extends: 
+    - .deploy_template
+    - .develop_environment
+  variables: 
+    PORT: 3000
   only:
     - develop
-  script:
-    - apk update && apk add openssh
-    - ssh_run "$REMOTE_USER" "$REMOTE_HOST" "$SSH_PRIVATE_KEY" "cd $REMOTE_DIR_DEVELOP && git fetch origin"
-    - ssh_run "$REMOTE_USER" "$REMOTE_HOST" "$SSH_PRIVATE_KEY" "cd $REMOTE_DIR_MASTER && git reset --hard origin/$CI_COMMIT_BRANCH"
-    - ssh_run "$REMOTE_USER" "$REMOTE_HOST" "$SSH_PRIVATE_KEY" "cd $REMOTE_DIR_MASTER && docker build . -t krym-vue/$CI_COMMIT_BRANCH:latest"
-    - ssh_run "$REMOTE_USER" "$REMOTE_HOST" "$SSH_PRIVATE_KEY" "cd $REMOTE_DIR_MASTER && docker stop krym-$CI_COMMIT_BRANCH || true"    
-    - ssh_run "$REMOTE_USER" "$REMOTE_HOST" "$SSH_PRIVATE_KEY" "cd $REMOTE_DIR_MASTER && docker rm krym-$CI_COMMIT_BRANCH || true"
-    - ssh_run "$REMOTE_USER" "$REMOTE_HOST" "$SSH_PRIVATE_KEY" "cd $REMOTE_DIR_MASTER && docker run -d --name krym-$CI_COMMIT_BRANCH --restart=on-failure:10 -p 127.0.0.1:3000:3000 krym-vue/$CI_COMMIT_BRANCH:latest"       
-    - ssh_run "$REMOTE_USER" "$REMOTE_HOST" "$SSH_PRIVATE_KEY" "cd $REMOTE_DIR_MASTER && docker image prune -f"       
 
 build master:
-  image: docker:19.03.1
-  stage: build
+  extends: 
+  extends:
+    - .build_template
+    - .master_environment
   only:
     - master
-  services:
-    - docker:19.03.1-dind
-  variables:
-    IMAGE_TAG: $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG
-  script:
-    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
-    # - docker pull $CI_REGISTRY_IMAGE:latest
-    - cp .env.example.js .env.js
-    - docker build -t $IMAGE_TAG .
-    - docker push $IMAGE_TAG
 
 deploy master:
-  image: alpine:3.11
-  stage: deploy
+  extends: 
+    - .deploy_template
+    - .master_environment
+  variables: 
+    PORT: 3001
   only:
     - master
-  script:
-    - apk update && apk add openssh
-    - ssh_run "$REMOTE_USER" "$REMOTE_HOST" "$SSH_PRIVATE_KEY" "cd $REMOTE_DIR_MASTER && git fetch origin"
-    - ssh_run "$REMOTE_USER" "$REMOTE_HOST" "$SSH_PRIVATE_KEY" "cd $REMOTE_DIR_MASTER && git reset --hard origin/$CI_COMMIT_BRANCH"
-    - ssh_run "$REMOTE_USER" "$REMOTE_HOST" "$SSH_PRIVATE_KEY" "cd $REMOTE_DIR_MASTER && docker build . -t krym-vue/$CI_COMMIT_BRANCH:latest"
-    - ssh_run "$REMOTE_USER" "$REMOTE_HOST" "$SSH_PRIVATE_KEY" "cd $REMOTE_DIR_MASTER && docker stop krym-$CI_COMMIT_BRANCH || true"   
-    - ssh_run "$REMOTE_USER" "$REMOTE_HOST" "$SSH_PRIVATE_KEY" "cd $REMOTE_DIR_MASTER && docker rm krym-$CI_COMMIT_BRANCH || true" 
-    - ssh_run "$REMOTE_USER" "$REMOTE_HOST" "$SSH_PRIVATE_KEY" "cd $REMOTE_DIR_MASTER && docker run -d --name krym-$CI_COMMIT_BRANCH --restart=on-failure:10 -p 127.0.0.1:3001:3000 krym-vue/$CI_COMMIT_BRANCH:latest"       
-    - ssh_run "$REMOTE_USER" "$REMOTE_HOST" "$SSH_PRIVATE_KEY" "cd $REMOTE_DIR_MASTER && docker image prune -f"       
