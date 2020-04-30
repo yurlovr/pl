@@ -215,7 +215,7 @@ export const getters = {
                 title: 'Инфраструктура',
                 hash: 'infra'
             });
-        if (ret.about.length > 1 && ret.about[1].paragraph && ret.about[1].paragraph.length > 0)
+        if (ret.about && ret.about.length > 1)
             ret.sections.push({
                 title: 'О мероприятии',
                 hash: 'about'

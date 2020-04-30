@@ -68,6 +68,10 @@ export const getters = {
                         }
                     }
                 }
+
+                if (state.query.fromBeach) {
+                    ret.grid = ret.grid.filter(v => v.beachId != state.query.fromBeach);
+                }
             } else if (state.type == 'event') {
                 if (state.query.beach) {
                     ret.grid = ret.grid.filter(v => v.beachId == state.query.beach);
