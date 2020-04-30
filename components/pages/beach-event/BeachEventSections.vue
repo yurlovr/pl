@@ -75,7 +75,14 @@ export default {
                         bounding = document.querySelector(`#${this.sections[i].hash}`).getBoundingClientRect();
                         if (bounding.top <= this.margin && bounding.bottom >= this.margin) {
                             this.activeSectionHash = this.sections[i].hash;
-                            this.mySwiper.slideTo(i);
+                            if (this.mySwiper) {
+                                if (i == 0 || i == this.sections.length - 1)
+                                    this.mySwiper.slideTo(i);
+                                else if (i / this.sections.length < .25)
+                                    this.mySwiper.slideTo(i-1);
+                                else if (i / this.sections.length > .7)
+                                    this.mySwiper.slideTo(i+1);
+                            }
                         }
                     }
                 }

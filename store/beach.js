@@ -8,6 +8,7 @@ export const state = () => ({
     similarBeaches: null,
     visitorPics: null,
     announcementData: null,
+    tags: null
 })
 
 export const mutations = {
@@ -71,10 +72,10 @@ export const actions = {
         if (state.beach.data.item.ADD_TAGS)
             tagsCount += state.beach.data.item.ADD_TAGS.length;
         if (tagsCount >= 3) {
-            let tags = '&';
+            state.tags = '&';
             for (let i = 0; i < state.beach.data.item.TAGS.length; i++)
-                tags += `tags[]=${state.beach.data.item.TAGS[i]}&`;
-            commit('SET_SIMILAR_BEACHES', await this.$axios.$get(`/beach/list?city=${state.beach.data.item.CITY.ID}${tags.slice(0, -1)}`));
+                state.tags += `tags[]=${state.beach.data.item.TAGS[i].ID}&`;
+            // commit('SET_SIMILAR_BEACHES', await this.$axios.$get(`/beach/list?city=${state.beach.data.item.CITY.ID}${state.tags.slice(0, -1)}`));
         }
     }
 }
@@ -126,8 +127,8 @@ export const getters = {
                 beachType: state.beach.data.item.PARAMETERS.P_BEACH_TYPE.NAME,
                 beachSeabedType:  state.beach.data.item.PARAMETERS.P_BOTTOM ? state.beach.data.item.PARAMETERS.P_BOTTOM.NAME : null,
                 time: state.beach.data.item.PARAMETERS.P_MODE ? state.beach.data.item.PARAMETERS.P_MODE.NAME : null,
-              sunrise: state.beach.data.item.WEATHER.SUNRISE,
-              sunset: state.beach.data.item.WEATHER.SUNSET,
+                sunrise: state.beach.data.item.WEATHER.SUNRISE,
+                sunset: state.beach.data.item.WEATHER.SUNSET,
             },
 
             hugeSliderData: {
@@ -198,7 +199,8 @@ export const getters = {
                 subtitle: '',
                 showMore: {
                     type: 'beach',
-                    query: '?'
+                    query: '?' + (state.tags ? state.tags.slice(1) : '') + `city=${state.beach && state.beach.data && state.beach.data.item && state.beach.data.item.CITY ? 
+                        state.beach.data.item.CITY.ID : -1}&fromBeach=${state.beach && state.beach.data && state.beach.data.item ? state.beach.data.item.ID : -1}`
                 },
                 beachNumber: state.similarBeaches && state.similarBeaches.data ? Math.min(state.similarBeaches.data.list.filter(v => {
                     if (v.TAGS) {
@@ -346,45 +348,26 @@ export const getters = {
 
         // adding formatted similar beaches
         if (state.similarBeaches && state.similarBeaches.data) {
-            ret.similarBeaches.showMore.query += `city=${state.beach.data.item.CITY.ID}&`;
-            let tagsCount;
             for (let i = 0; i < state.similarBeaches.data.list.length; i++) {
                 if (state.beach.data.item.ID != state.similarBeaches.data.list[i].ID) {
-                    tagsCount = 0;
-                    if (state.similarBeaches.data.list[i].TAGS) tagsCount += state.similarBeaches.data.list[i].TAGS.length;
-                    if (state.similarBeaches.data.list[i].ADD_TAGS) tagsCount += state.similarBeaches.data.list[i].ADD_TAGS.length;
-                    if (tagsCount >= 3) {
-                        ret.similarBeaches.beachSliderData.cardData.push({
-                            tempWater: state.similarBeaches.data.list[i].WEATHER.TEMP ? state.similarBeaches.data.list[i].WEATHER.TEMP.WATER : 0,
-                            paid: state.similarBeaches.data.list[i].PAID,
-                            rating: parseFloat(state.similarBeaches.data.list[i].AVERAGE_RATING),
-                            title: state.similarBeaches.data.list[i].NAME,
-                            location: state.similarBeaches.data.list[i].CITY ? state.similarBeaches.data.list[i].CITY.NAME : 'Не указан',
-                            locationId: state.similarBeaches.data.list[i].CITY ? state.similarBeaches.data.list[i].CITY.ID : null,
-                            pic: state.similarBeaches.data.list[i].PHOTOS ? state.similarBeaches.data.list[i].PHOTOS[0] : null,
-                            mainLink: `beach/${state.similarBeaches.data.list[i].ID}`,
-                            beachLink: `beach/${state.similarBeaches.data.list[i].ID}`,
-                            beachId: state.similarBeaches.data.list[i].ID,
-                            showFavorite: true,
-                            filter: [],
-                            coordinates: state.similarBeaches.data.list[i].COORDINATES.length ? state.similarBeaches.data.list[i].COORDINATES.split(',') : [],
-                            show_distance: true
-                        });
-                    }
+                    ret.similarBeaches.beachSliderData.cardData.push({
+                        tempWater: state.similarBeaches.data.list[i].WEATHER.TEMP ? state.similarBeaches.data.list[i].WEATHER.TEMP.WATER : 0,
+                        paid: state.similarBeaches.data.list[i].PAID,
+                        rating: parseFloat(state.similarBeaches.data.list[i].AVERAGE_RATING),
+                        title: state.similarBeaches.data.list[i].NAME,
+                        location: state.similarBeaches.data.list[i].CITY ? state.similarBeaches.data.list[i].CITY.NAME : 'Не указан',
+                        locationId: state.similarBeaches.data.list[i].CITY ? state.similarBeaches.data.list[i].CITY.ID : null,
+                        pic: state.similarBeaches.data.list[i].PHOTOS ? state.similarBeaches.data.list[i].PHOTOS[0] : null,
+                        mainLink: `beach/${state.similarBeaches.data.list[i].ID}`,
+                        beachLink: `beach/${state.similarBeaches.data.list[i].ID}`,
+                        beachId: state.similarBeaches.data.list[i].ID,
+                        showFavorite: true,
+                        filter: [],
+                        coordinates: state.similarBeaches.data.list[i].COORDINATES.length ? state.similarBeaches.data.list[i].COORDINATES.split(',') : [],
+                        show_distance: true
+                    });
                 }
             }
-
-            if (state.beach.data.item.TAGS) {
-                for (let i = 0; i < state.beach.data.item.TAGS.length; i++) {
-                    ret.similarBeaches.showMore.query += `tags[]=${state.beach.data.item.TAGS[i].ID}&`;
-                }
-            }
-            if (state.beach.data.item.ADD_TAGS) {
-                for (let i = 0; i < state.beach.data.item.ADD_TAGS.length; i++) {
-                    ret.similarBeaches.showMore.query += `addTags[]=${state.beach.data.item.ADD_TAGS[i].ID}&`;
-                }
-            }
-            ret.similarBeaches.showMore.query = ret.similarBeaches.showMore.query.slice(0, -1);
         }
 
         // adding formatted sections
@@ -393,7 +376,7 @@ export const getters = {
                 title: 'Инфраструктура',
                 hash: 'infra'
             });
-        if (ret.about.length > 1 && ret.about[1].paragraph && ret.about[1].paragraph.length > 0)
+        if (ret.about && ret.about.length > 0)
             ret.sections.push({
                 title: 'О пляже',
                 hash: 'about'
