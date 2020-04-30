@@ -16,20 +16,20 @@ stages:
 
 
 
-# .build_template:
-#   image: docker:19.03.1
-#   stage: build
-#   services:
-#     - docker:19.03.1-dind
-#   variables:
-#     IMAGE_TAG: $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG-latest
-#   script:
-#     # - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
-#     - echo $IMAGE_TAG
-#     # - docker pull $IMAGE_TAG || true
-#     # - echo "Build image for $URL_API"
-#     # - docker build -t $IMAGE_TAG . --build-arg URL_API=$URL_API --compress --cache-from $IMAGE_TAG
-#     # - docker push $IMAGE_TAG 
+.build_template:
+  image: docker:19.03.1
+  stage: build
+  services:
+    - docker:19.03.1-dind
+  variables:
+    IMAGE_TAG: $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG-latest
+  script:
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+    - echo $IMAGE_TAG
+    - docker pull $IMAGE_TAG || true
+    - echo "Build image for $URL_API"
+    - docker build -t $IMAGE_TAG . --build-arg URL_API=$URL_API --compress --cache-from $IMAGE_TAG
+    - docker push $IMAGE_TAG 
 
 .deploy_template:
   image: alpine:3.11
@@ -48,13 +48,13 @@ stages:
     - ssh_run $SSH_PARAMS $SSH_PRIVATE_KEY "docker image prune -f" || true   
     
     
-build develop:
-  extends: 
-  extends:
-    - .build_template
-    - .develop_environment
-  only:
-    - develop
+# build develop:
+#   extends: 
+#   extends:
+#     - .build_template
+#     - .develop_environment
+#   only:
+#     - develop
 
 deploy develop:
   extends: 
