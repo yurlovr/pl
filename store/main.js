@@ -105,7 +105,7 @@ export const getters = {
                         beachLink: `beach/${state.beachesTop.data.list[i].ID}`,
                         locationId: state.beachesTop.data.list[i].CITY ? state.beachesTop.data.list[i].CITY.ID : -1,
                         beachId: state.beachesTop.data.list[i].ID,
-                      coordinates: state.beachesTop.data.list[i].COORDINATES.length ? state.beachesTop.data.list[i].COORDINATES.split(',') : [],
+                        coordinates: state.beachesTop.data.list[i].COORDINATES.length ? state.beachesTop.data.list[i].COORDINATES.split(',') : [],
                         show_distance: true
                     });
                 }

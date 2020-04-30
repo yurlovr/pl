@@ -8,7 +8,7 @@
           <div class="modal-geo__modal__body__top">
             <p>Мое местоположение</p>
           </div>
-          <div class="map" id="map-modal"></div>
+          <div id="map-modal"></div>
           <div class="modal-geo__modal__body__bottom">
             <div class="modal-geo__modal__body__bottom__left">
               <div class="modal-geo__modal__body__bottom__left__radius">Радиус поиска пляжей, км</div>

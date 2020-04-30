@@ -280,3 +280,17 @@
     height: 37.33px;
   }
 }
+
+#map-modal {
+  width: 100%;
+  max-width: 100%;
+  min-height: 650px;
+}
+
+@media (min-width: 415px) and (min-height: 760px) and (max-height: 855px) {
+  #map-modal {
+    width: 100%;
+    max-width: 100%;
+    min-height: calc(100vh / 1.3);
+  }
+}
