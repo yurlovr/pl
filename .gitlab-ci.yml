@@ -16,20 +16,20 @@ stages:
 
 
 
-.build_template:
-  image: docker:19.03.1
-  stage: build
-  services:
-    - docker:19.03.1-dind
-  variables:
-    IMAGE_TAG: $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG-latest
-  script:
-    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
-    - echo $IMAGE_TAG
-    - docker pull $IMAGE_TAG || true
-    - echo "Build image for $URL_API"
-    - docker build -t $IMAGE_TAG . --build-arg URL_API=$URL_API --compress --cache-from $IMAGE_TAG
-    - docker push $IMAGE_TAG 
+# .build_template:
+#   image: docker:19.03.1
+#   stage: build
+#   services:
+#     - docker:19.03.1-dind
+#   variables:
+#     IMAGE_TAG: $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG-latest
+#   script:
+#     # - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+#     - echo $IMAGE_TAG
+#     # - docker pull $IMAGE_TAG || true
+#     # - echo "Build image for $URL_API"
+#     # - docker build -t $IMAGE_TAG . --build-arg URL_API=$URL_API --compress --cache-from $IMAGE_TAG
+#     # - docker push $IMAGE_TAG 
 
 .deploy_template:
   image: alpine:3.11
@@ -38,8 +38,8 @@ stages:
     SSH_PARAMS: $REMOTE_USER $REMOTE_HOST 
   script:
     - apk update && apk add openssh
-    - echo $SSH_PARAMS $SSH_PRIVATE_KEY
-    - ssh_run $SSH_PARAMS $SSH_PRIVATE_KEY "docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY"
+    - echo $SSH_PARAMS
+    - ssh_run $SSH_PARAMS "$SSH_PRIVATE_KEY" "docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY"
     - ssh_run $SSH_PARAMS $SSH_PRIVATE_KEY "echo "Pulling $IMAGE_TAG"
     - ssh_run $SSH_PARAMS $SSH_PRIVATE_KEY "docker pull $IMAGE_TAG"
     - ssh_run $SSH_PARAMS $SSH_PRIVATE_KEY "docker stop krym-$CI_COMMIT_BRANCH || true"    
