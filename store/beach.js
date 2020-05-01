@@ -46,7 +46,9 @@ export const mutations = {
 
     SET_ANNOUNCEMENT_DATA: (state, payload) => {
         state.announcementData = payload;
-    }
+    },
+
+    SET_TAGS: (state, payload) => state.tags = payload
 }
 
 export const actions = {
@@ -66,15 +68,16 @@ export const actions = {
         commit('SET_VISITOR_PICS', await this.$axios.$get(`/socialPhoto/list?entityId=${id}&count=10`));
         commit('SET_ANNOUNCEMENT_DATA', await this.$axios.$get(`/banner/list?page=/beach`));
 
-        let tagsCount = 0;
+        let tagsCount = 0, tags;
         if (state.beach.data.item.TAGS)
             tagsCount += state.beach.data.item.TAGS.length;
         if (state.beach.data.item.ADD_TAGS)
             tagsCount += state.beach.data.item.ADD_TAGS.length;
         if (tagsCount >= 3) {
-            state.tags = '&';
+            tags = '&';
             for (let i = 0; i < state.beach.data.item.TAGS.length; i++)
-                state.tags += `tags[]=${state.beach.data.item.TAGS[i].ID}&`;
+                tags += `tags[]=${state.beach.data.item.TAGS[i].ID}&`;
+            commit('SET_TAGS', tags);
             // commit('SET_SIMILAR_BEACHES', await this.$axios.$get(`/beach/list?city=${state.beach.data.item.CITY.ID}${state.tags.slice(0, -1)}`));
         }
     }
@@ -199,7 +202,7 @@ export const getters = {
                 subtitle: '',
                 showMore: {
                     type: 'beach',
-                    query: '?' + (state.tags ? state.tags.slice(1) : '') + `city=${state.beach && state.beach.data && state.beach.data.item && state.beach.data.item.CITY ? 
+                    query: '?' + (state.tags ? state.tags.slice(1) : '') + `city=${state.beach && state.beach.data && state.beach.data.item && state.beach.data.item.CITY ?
                         state.beach.data.item.CITY.ID : -1}&fromBeach=${state.beach && state.beach.data && state.beach.data.item ? state.beach.data.item.ID : -1}`
                 },
                 beachNumber: state.similarBeaches && state.similarBeaches.data ? Math.min(state.similarBeaches.data.list.filter(v => {
@@ -309,7 +312,8 @@ export const getters = {
             ret.barsNRestos.push({
                 title: state.barsNRestos.data.list[i].NAME,
                 description: state.barsNRestos.data.list[i].DESCRIPTION,
-                pics: state.barsNRestos.data.list[i].PHOTOS.map(v => v ? v : null)
+                pics: state.barsNRestos.data.list[i].PHOTOS.map(v => v ? v : null),
+                coordinates: state.barsNRestos.data.list[i].COORDINATES ? state.barsNRestos.data.list[i].COORDINATES : []
             });
         }
 
