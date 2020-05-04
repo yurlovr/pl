@@ -19,32 +19,51 @@
       <img src="~/static/pics/global/svg/pave_way.svg" v-show="!showPave">
     </button>
     <transition name="bounce" v-if="data.pos">
-      <a target="_blank" :href="`https://yandex.ru/maps/?pt=${data.pos[1]}%2C${data.pos[0]}&mode=routes&rtext=~${data.pos[1]}%2C${data.pos[0]}&text=${data.pos[1]}%2C${data.pos[0]}&z=12&l=map`" v-show="showPave" class="btn-ymaps">
+      <a target="_blank" :href="'https://yandex.ru/maps/' + yandexTransform(data.pos)" v-show="showPave"
+         class="btn-ymaps">
         <img src="~/static/pics/global/svg/ymaps.svg">
       </a>
     </transition>
     <transition name="bounce" v-if="data.pos">
-      <a target="_blank" :href="`yandexmaps://maps.yandex.ru/?pt=${data.pos[1]}%2C${data.pos[0]}&mode=routes&rtext=~${data.pos[1]}%2C${data.pos[0]}&text=${data.pos[1]}%2C${data.pos[0]}&z=12&l=map`" v-show="showPave" class="btn-display">
+      <a target="_blank" :href="`yandexmaps://maps.yandex.ru/` + yandexTransform(data.pos) " v-show="showPave"
+         class="btn-display">
         <img src="~/static/pics/global/svg/yandex.svg">
       </a>
     </transition>
   </div>
 </template>
-
 <script>
-export default {
-  props: ['data', 'dontShowPave'],
-
-  data() {
-    return {
-      showShare: false,
-      showPave: false,
-      link: ''
-    };
-  },
-
-  mounted() {
-    this.link = window.location.href;
+  export default {
+    props: ['data', 'dontShowPave'],
+    data() {
+      return {
+        showShare: false,
+        showPave: false,
+        link: ''
+      };
+    },
+    computed: {
+      last_coordinates() {
+        let cookie_coords = this.$cookies.get('last_coordinates') || {},
+          route_coords = this.$route.params && this.$route.params.coordinates ? this.$route.params.coordinates : {}
+        if (Object.values(cookie_coords).length) {
+          return cookie_coords
+        }
+        return route_coords ? (() => {
+          let obj = Object.values(route_coords);
+          return obj.length == 2 ? {lat: obj[0], lng: obj[1]} : {}
+        })() : {}
+      }
+    },
+    methods: {
+      yandexTransform(pos) {
+        const user_pos = Object.values(this.last_coordinates).join(','),
+          beach_pos = pos.join(',')
+        return '?rtext=' + user_pos + '~' + beach_pos + '&rtt=auto&z=12'
+      }
+    },
+    mounted() {
+      this.link = window.location.href;
+    }
   }
-}
 </script>
