@@ -4,17 +4,17 @@
     <div class="search__bar">
       <button class="search__bar__left-search" v-show="searchInput && searchInput.length > 0" @click="searchCurQuery()"
               :class="{'pointer-events-none': !searchInput.length}">
-        <img src="~/static/pics/global/svg/search.svg" alt="Поиск">
+        <img loading="lazy" src="~/static/pics/global/svg/search.svg" alt="Поиск">
       </button>
       <input class="search__bar__input" type="text" :placeholder="showAutocomplete ? '' : 'Искать пляж'"
              :value="searchInput" @input="onInput" @blur="showAutocomplete = false" @focus="showAutocomplete = true"
              @keyup.enter="searchCurQuery()" :style="{ opacity: (searchInput.length > 0 ? 1 : 0.6) }">
       <a href="/search" class="search__bar__right-search" @click.prevent="searchFilter()"
          :class="{'pointer-events-none': !searchInput.length}">
-        <img src="~/static/pics/global/svg/search.svg" alt="Поиск" v-show="searchInput.length == 0">
+        <img loading="lazy" src="~/static/pics/global/svg/search.svg" alt="Поиск" v-show="searchInput.length == 0">
       </a>
       <button class="search__bar__right-cross" v-show="searchInput && searchInput.length > 0" @click="clearInput">
-        <img src="~/static/pics/global/svg/close.svg" alt="Убрать">
+        <img loading="lazy" src="~/static/pics/global/svg/close.svg" alt="Убрать">
       </button>
       <div class="search__params" v-show="paramsShown" v-body-scroll-lock="paramsShown && mobileView"
            :class="{ 'not-main' : labelId }">
@@ -30,7 +30,7 @@
             </div>
           </div>
           <button class="search__params__close" @click="toggleParams()">
-            <img src="~/static/pics/global/svg/close_blue.svg" alt="Закрыть">
+            <img loading="lazy" src="~/static/pics/global/svg/close_blue.svg" alt="Закрыть">
           </button>
           <form class="search__params__form" v-on:submit.prevent>
             <div class="search__params__part__dropdowns-area">
@@ -109,7 +109,7 @@
             </div>
             <div class="search__params__title-area" @click="toggleAddParams()">
               <h3 class="search__params__title">Дополнительные параметры</h3>
-              <img src="~/static/pics/global/svg/dropdown.svg" :class="{ active : !addParamsShown }">
+              <img loading="lazy" src="~/static/pics/global/svg/dropdown.svg" :class="{ active : !addParamsShown }">
             </div>
             <div class="search__params__part__checkboxes search__params__part__checkboxes--second"
                  v-show="addParamsShown">
@@ -144,8 +144,8 @@
     </div>
     <div class="dark-bg-inner" v-show="paramsShown && mobileView" @click="hideParams()"></div>
     <button class="search__options" @click="toggleParams()">
-      <img src="~/static/pics/global/svg/filter.svg" alt="Поиск" v-show="!paramsShown">
-      <img src="~/static/pics/global/svg/close_blue.svg" alt="Закрыть" v-show="paramsShown">
+      <img loading="lazy" src="~/static/pics/global/svg/filter.svg" alt="Поиск" v-show="!paramsShown">
+      <img loading="lazy" src="~/static/pics/global/svg/close_blue.svg" alt="Закрыть" v-show="paramsShown">
     </button>
     <!--    <SearchPopup></SearchPopup>-->
   </div>

@@ -5,7 +5,7 @@
       <section class="two-part-layout__card">
         <div class="beach-page__water-temp__title-area" :class="{ active : modalOpen }" @click="toggleModal()">
           <h2 class="two-part-layout__card__title beach-page__water-temp__title">График температуры воды на пляже</h2>
-          <img src="~/static/pics/beach/accordion_dropdown_orange.svg">
+          <img loading="lazy" src="~/static/pics/beach/accordion_dropdown_orange.svg">
         </div>
         <div class="beach-page__water-temp__content" :class="{ active : modalOpen }">
           <div class="beach-page__water-temp__histogram">
