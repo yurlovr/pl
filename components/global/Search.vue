@@ -190,7 +190,7 @@
         mouseOnAutoComplete: false,
 
         forceRerenderer: 0,
-        geoLocating: Boolean(this.$cookies.get('last_coordinates') && Object.values(this.$cookies.get('last_coordinates')).length)
+        geoLocating: false
       };
     },
 
@@ -317,6 +317,7 @@
 
       async toggleGeoLocation() {
         if (this.geoLocating) {
+          this.geoLocating = false;
           this.$cookies.set('geo_locating', -1, {
             maxAge: -1 // remove
           });
@@ -324,18 +325,10 @@
           this.$cookies.remove('last_coordinates');
           this.set_coords({})
           this.set_radius(null);
-          this.geoLocating = false;
         } else {
+          this.geoLocating = true;
           let cityId,
             my_coords = {};
-          await this.$axios.$get('geo/item')
-            .then(res => {
-              cityId = res.data && res.data.city ? res.data.city.ID : -1;
-            })
-            .catch(e => {
-              console.error(e);
-            });
-
           if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition((pos) => {
               const {coords: {latitude, longitude}} = pos;
@@ -346,13 +339,22 @@
               this.$cookies.set('last_coordinates', JSON.stringify(my_coords), {
                 maxAge: 30 * 24 * 60 * 60 // one month
               });
-              this.geoLocating = true;
               this.$bus.$emit('position-modal', true, my_coords);
+            }, err => {
+              this.geoLocating = false;
+              alert('Доступ к геолокации отклонён!')
             });
           } else {
             this.geoLocating = false;
-            alert('Доступ к местоположению отклонён пользователем')
+            alert('Навигация не поддерживается')
           }
+          await this.$axios.$get('geo/item')
+            .then(res => {
+              cityId = res.data && res.data.city ? res.data.city.ID : -1;
+            })
+            .catch(e => {
+              console.error(e);
+            });
 
           this.$cookies.set('geo_locating', cityId, {
             maxAge: 30 * 24 * 60 * 60 // one month
