@@ -20,7 +20,7 @@
 						</button>
 					</div>
 					<div class="beach-event__pt__right">
-						<a v-if="data" :href="`https://yandex.ru/maps/?rtext=${userPos.lat},${userPos.long}~${pos[0]},${pos[1]}`" target="_blank" class="beach-event__pt__right__button banner__card__info-area__button">
+						<a v-if="data" :href="'https://yandex.ru/maps/' + yandexTransform(pos)" target="_blank" class="beach-event__pt__right__button banner__card__info-area__button">
 							<span>Проложить маршрут</span>
 						</a>
 					</div>
@@ -28,7 +28,7 @@
 			</div>
 		</section>
 		<BeachEventPtMap :data="data" :additional="additional"/>
-		<a v-if="data" :href="`https://yandex.ru/maps/?rtext=${userPos.lat},${userPos.long}~${pos[0]},${pos[1]}`" target="_blank" class="beach-event__pt__right__button banner__card__info-area__button bottom">
+		<a v-if="data" :href="'https://yandex.ru/maps/' + yandexTransform(pos)" target="_blank" class="beach-event__pt__right__button banner__card__info-area__button bottom">
 			<span>Проложить маршрут</span>
 		</a>
 	</div>
@@ -55,6 +55,20 @@
 			}
 		},
 
+    computed: {
+      last_coordinates() {
+        let cookie_coords = this.$cookies.get('last_coordinates') || {},
+          route_coords = this.$route.params && this.$route.params.coordinates ? this.$route.params.coordinates : {}
+        if (Object.values(cookie_coords).length) {
+          return cookie_coords
+        }
+        return route_coords ? (() => {
+          let obj = Object.values(route_coords);
+          return obj.length == 2 ? {lat: obj[0], lng: obj[1]} : {}
+        })() : {}
+      }
+    },
+
 		mounted() {
 			if (navigator.geolocation) {
 				navigator.geolocation.getCurrentPosition(this.setUserPos);
@@ -66,7 +80,13 @@
 		},
 
 		methods: {
+      yandexTransform(pos) {
+        const user_pos = Object.values(this.last_coordinates).join(','),
+          beach_pos = pos.join(',')
+        return '?rtext=' + user_pos + '~' + beach_pos + '&rtt=auto&z=12'
+      },
 			setUserPos(pos) {
+			  console.log(pos, 'poooooos')
 				this.userPos.lat = pos.coords.latitude;
 				this.userPos.long = pos.coords.longitude;
         const {coords: {latitude, longitude}} = pos;
@@ -74,6 +94,7 @@
           lat: latitude,
           lng: longitude
         }
+        console.log(my_coords, 'm')
         this.$cookies.set('last_coordinates', JSON.stringify(my_coords), {
           maxAge: 30 * 24 * 60 * 60 // one month
         });
