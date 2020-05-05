@@ -103,6 +103,7 @@ export const getters = {
                         pic: state.beachesTop.data.list[i].PREVIEW ? state.beachesTop.data.list[i].PREVIEW : null,
                         mainLink: `beach/${state.beachesTop.data.list[i].ID}`,
                         beachLink: `beach/${state.beachesTop.data.list[i].ID}`,
+                        humanLink: state.beachesTop.data.list[i].CODE ? `beach/${state.beachesTop.data.list[i].CODE}` : null,
                         locationId: state.beachesTop.data.list[i].CITY ? state.beachesTop.data.list[i].CITY.ID : -1,
                         beachId: state.beachesTop.data.list[i].ID,
                         coordinates: state.beachesTop.data.list[i].COORDINATES.length ? state.beachesTop.data.list[i].COORDINATES.split(',') : [],
@@ -249,6 +250,7 @@ export const getters = {
                             pic: family.BEACHES[i].PHOTOS[0],
                             mainLink: `beach/${family.BEACHES[i].ID}`,
                             beachLink: `beach/${family.BEACHES[i].ID}`,
+                            humanLink: family.BEACHES[i].CODE ? `beach/${family.BEACHES[i].CODE}` : null,
                             beachId: family.BEACHES[i].ID,
                             coordinates: family.BEACHES[i].COORDINATES.length ? family.BEACHES[i].COORDINATES.split(',') : [],
                             show_distance: true
