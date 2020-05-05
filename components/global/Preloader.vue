@@ -1,6 +1,6 @@
 <template>
 	<div class="preloader" v-body-scroll-lock="preloaderShown">
-		<img src="~/static/pics/global/svg/logo-blue.svg" alt="НашПляж">
+		<img loading="lazy" src="~/static/pics/global/svg/logo-blue.svg" alt="НашПляж">
 	</div>
 </template>
 

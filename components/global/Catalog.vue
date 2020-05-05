@@ -4,12 +4,12 @@
 			<h3 class="custom-page__title catalog-page__title">{{ data.title }}</h3>
 			<div class="search-page__title-area__buttons" v-if="data && type == 'beach'">
 				<button class="search-page__title-area__button" :class="{ active: !showCardsOrMap }" @click="showCardsOrMap = false">
-					<img src="~/static/pics/search/cards_orange.svg" alt="Вид: Карточки" v-show="!showCardsOrMap">
-					<img src="~/static/pics/search/cards_gray.svg" alt="Вид: Карточки" v-show="showCardsOrMap">
+					<img loading="lazy" src="~/static/pics/search/cards_orange.svg" alt="Вид: Карточки" v-show="!showCardsOrMap">
+					<img loading="lazy" src="~/static/pics/search/cards_gray.svg" alt="Вид: Карточки" v-show="showCardsOrMap">
 				</button>
 				<button class="search-page__title-area__button" :class="{ active: showCardsOrMap }" @click="showMap()">
-					<img src="~/static/pics/search/map_orange.svg" alt="Вид: Карта" v-show="showCardsOrMap">
-					<img src="~/static/pics/search/map_gray.svg" alt="Вид: Карта" v-show="!showCardsOrMap">
+					<img loading="lazy" src="~/static/pics/search/map_orange.svg" alt="Вид: Карта" v-show="showCardsOrMap">
+					<img loading="lazy" src="~/static/pics/search/map_gray.svg" alt="Вид: Карта" v-show="!showCardsOrMap">
 				</button>
 			</div>
 		</div>

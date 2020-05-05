@@ -2,7 +2,7 @@
 	<section class="banner custom-container">
 		<div class="banner__card" :class="{ 'rtl': data.rightToLeft }">
 			<div class="banner__card__pic-area">
-				<img class="banner__card__pic" alt="Пляж" :src="data.pic">
+				<img loading="lazy" class="banner__card__pic" alt="Пляж" :src="data.pic">
 			</div>
 			<div class="banner__card__info-area">
 				<h4 class="banner__card__info-area__title" v-html="getTitle"></h4>

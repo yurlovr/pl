@@ -7,7 +7,7 @@
 					<a :href="getLink" @click.prevent="$bus.goTo(getLink, $router)" class="search-page__map-area__card__subtitle beach-event__main-info__subtitle">{{ data.location }}</a>
 				</div>
 				<button class="beach-event__main-info__hearts" @click="updateHeart()">
-					<img src="~/static/pics/global/svg/heart_button_unclicked.svg" v-show="!favorite">
+					<img loading="lazy" src="~/static/pics/global/svg/heart_button_unclicked.svg" v-show="!favorite">
 					<img src="~/static/pics/global/svg/heart_button_clicked.svg" v-show="favorite">
 					<span>{{ data.likes + (favorite ? 1 : 0) }}</span>
 				</button>

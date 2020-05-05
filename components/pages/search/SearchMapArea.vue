@@ -15,7 +15,7 @@
       <SearchMapCard v-if="data" :data="data[indexToShow == -1 ? 0 : indexToShow]"/>
       <div class="search-page__map-area__info-area__modal__close-button-wrapper">
         <button class="search-page__map-area__info-area__modal__close-button" @click="closeModal()">
-          <img src="~/static/pics/global/svg/cross_blue.svg">
+          <img loading="lazy" src="~/static/pics/global/svg/cross_blue.svg">
         </button>
         <!--				<a :href="data ? (data[indexToShow == -1 ? 0 : indexToShow] ? data[indexToShow == -1 ? 0 : indexToShow].beachLink : '#') : '#'" @click.prevent="$bus.goTo(data ? (data[indexToShow == -1 ? 0 : indexToShow] ? data[indexToShow == -1 ? 0 : indexToShow].beachLink : '#') : '#', $router)" class="banner__card__info-area__button"><span>Подробнее</span></a>-->
       </div>

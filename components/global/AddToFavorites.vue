@@ -1,7 +1,7 @@
 <template>
 	<button class="heart" @click.prevent="updateHeart()" @mouseenter="updateHeartHover()" @mouseleave="updateHeartHover()" v-if="data.showFavorite != undefined">
-		<img src="~/static/pics/global/svg/heart_unclicked.svg" alt="В избранное" v-show="!favorite && !favoriteHover">
-		<img src="~/static/pics/global/svg/heart_clicked.svg" alt="В избранное" v-show="favorite || favoriteHover && !favorite">
+		<img loading="lazy" src="~/static/pics/global/svg/heart_unclicked.svg" alt="В избранное" v-show="!favorite && !favoriteHover">
+		<img loading="lazy" src="~/static/pics/global/svg/heart_clicked.svg" alt="В избранное" v-show="favorite || favoriteHover && !favorite">
 	</button>
 </template>
 
