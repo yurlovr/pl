@@ -2,7 +2,7 @@
 	<div class="custom-new-select" :class="{ open: dropdownOpen }" v-on-clickaway="onBlur" v-if="options">
 		<div class="custom-new-select__top" @click="dropdownOpen = !dropdownOpen">
 			<span>{{ filteredTitle(title) }}</span>
-			<img loading="lazy" src="~/static/pics/global/svg/dropdown.svg">
+			<img  src="~/static/pics/global/svg/dropdown.svg">
 		</div>
 		<div class="custom-new-select__bottom" v-show="dropdownOpen">
 			<div class="custom-new-select__bottom__item" v-for="(option, i) in options" @click="choose(i)">

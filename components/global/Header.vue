@@ -4,16 +4,16 @@
 		<div class="header__bg" :class="{ active : (bgAndBarShown || tempBgAndBarShown) }"></div>
 		<div class="header__inner custom-container">
 			<a href="/" class="header__logo" @click.prevent="$bus.goTo('/', $router)">
-				<img loading="lazy" src="~/static/pics/global/svg/logo-white.svg" alt="НашПляж">
+				<img  src="~/static/pics/global/svg/logo-white.svg" alt="НашПляж">
 			</a>
 			<Search v-show="(bgAndBarShown || tempBgAndBarShown)" />
 			<div class="header__left">
 				<button class="header__search-button" @click="toggleSearch()" v-show="(bgAndBarShown || tempBgAndBarShown)">
-					<img loading="lazy" src="~/static/pics/global/svg/search_white.svg" alt="Поиск">
+					<img  src="~/static/pics/global/svg/search_white.svg" alt="Поиск">
 				</button>
 				<div class="header__favorites">
 					<a href="/favorites" @click.prevent="$bus.goTo('/favorites', $router)">
-						<img loading="lazy" class="header__favorites-img" alt="Избранное" src="~/static/pics/global/svg/heart_white.svg">
+						<img  class="header__favorites-img" alt="Избранное" src="~/static/pics/global/svg/heart_white.svg">
 						<div class="header__favorites-text">
 							<span>Избранное</span>
 						</div>

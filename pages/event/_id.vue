@@ -9,8 +9,8 @@
 			<div class="two-part-layout">
 				<main class="two-part-layout__left">
 					<button class="event-page__hearts" @click="updateHeart()">
-						<img loading="lazy" src="~/static/pics/global/svg/heart_button_unclicked.svg" v-show="!favorite">
-						<img loading="lazy" src="~/static/pics/global/svg/heart_button_clicked.svg" v-show="favorite">
+						<img  src="~/static/pics/global/svg/heart_button_unclicked.svg" v-show="!favorite">
+						<img  src="~/static/pics/global/svg/heart_button_clicked.svg" v-show="favorite">
 						<span>({{ eventData.mainData.likes + (favorite ? 1 : 0) }}) Добавить в избранное</span>
 					</button>
 					<BeachEventMainInfo id="main-info" :data="eventData.mainData" class="event-page__main-info" />

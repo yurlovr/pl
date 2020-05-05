@@ -1,14 +1,14 @@
 <template>
     <section class="main-page__map">
         <button class="main-page__map__return" v-show="step == 2" id="go-to-step-1-button">
-            <img loading="lazy" src="~/static/pics/global/svg/arrow_prev_orange.svg" alt="Назад">
+            <img  src="~/static/pics/global/svg/arrow_prev_orange.svg" alt="Назад">
         </button>
         <div class="map__zoom-wrapper">
             <button class="map__zoom map__zoom-plus">
-                <img loading="lazy" src="~/static/pics/global/svg/plus.svg">
+                <img  src="~/static/pics/global/svg/plus.svg">
             </button>
             <button class="map__zoom map__zoom-minus">
-                <img loading="lazy" src="~/static/pics/global/svg/minus.svg">
+                <img  src="~/static/pics/global/svg/minus.svg">
             </button>
         </div>
 	   <div class="map" id="map"></div>
@@ -175,7 +175,7 @@
                                 for (let k = 0; k < this.data.addressBeaches[i].beaches[j].pics.length; k++) {
                                     slides.push(`
                                         <div class="swiper-slide map-popup__slide">
-                                            <img loading="lazy" src="${this.data.addressBeaches[i].beaches[j].pics[k]}">
+                                            <img  src="${this.data.addressBeaches[i].beaches[j].pics[k]}">
                                         </div>
                                     `);
                                 }
@@ -191,10 +191,10 @@
                                                 </div>
                                                 <div class="pagination-wrapper"><div class="swiper-pagination"></div></div>
                                                 <button class="slider__arrow-left slider__arrow-left-balloon">
-                                                    <img loading="lazy" src="/pics/global/svg/arrow_next_map.svg" alt="Налево">
+                                                    <img  src="/pics/global/svg/arrow_next_map.svg" alt="Налево">
                                                 </button>
                                                 <button class="slider__arrow-right slider__arrow-right-balloon">
-                                                    <img loading="lazy" src="/pics/global/svg/arrow_next_map.svg" alt="Направо">
+                                                    <img  src="/pics/global/svg/arrow_next_map.svg" alt="Направо">
                                                 </button>
                                             </div>
                                         </div>

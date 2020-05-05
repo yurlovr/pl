@@ -16,11 +16,11 @@
 			<div class="slider-weather__parts">
 				<div class="slider-weather__part-left">
 					<div class="slider-weather__part__info slider-weather__part__temperature-text">
-						<img loading="lazy" src="~/static/pics/global/svg/temp_air.svg">
+						<img  src="~/static/pics/global/svg/temp_air.svg">
 						<span>Температура воздуха</span>
 					</div>
 					<div class="slider-weather__part__info slider-weather__part__temperature-text">
-						<img loading="lazy" src="~/static/pics/global/svg/temp_water.svg">
+						<img  src="~/static/pics/global/svg/temp_water.svg">
 						<span>Температура воды</span>
 					</div>
 					<div class="slider-weather__part-left__cover"></div>
