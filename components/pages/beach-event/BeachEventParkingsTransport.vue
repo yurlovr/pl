@@ -69,6 +69,14 @@
 			setUserPos(pos) {
 				this.userPos.lat = pos.coords.latitude;
 				this.userPos.long = pos.coords.longitude;
+        const {coords: {latitude, longitude}} = pos;
+        let my_coords = {
+          lat: latitude,
+          lng: longitude
+        }
+        this.$cookies.set('last_coordinates', JSON.stringify(my_coords), {
+          maxAge: 30 * 24 * 60 * 60 // one month
+        });
 			},
 
 			showOnMap(i) { // 0 parkings, 1 transport
