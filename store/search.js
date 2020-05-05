@@ -355,7 +355,8 @@ export const mutations = {
 
     if (Object.values(state.coords).length && state.radius) {
 
-      state.query += `coordinates=` + encodeURIComponent(Object.values(state.coords).join(',')) + '&diameter=' + (state.radius / 1000) + '&'
+      state.query += `coordinates=` + encodeURIComponent(Object.values(state.coords).join(',')) + '&diameter=' + (typeof state.radius === 'number' ?
+        (state.radius / 1000) : encodeURIComponent(state.radius)) + '&'
     }
 
 

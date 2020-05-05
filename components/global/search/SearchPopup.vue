@@ -13,9 +13,9 @@
             <div class="modal-geo__modal__body__bottom__left">
               <div class="modal-geo__modal__body__bottom__left__radius">Радиус поиска пляжей, км</div>
               <div class="modal-geo__modal__body__bottom__left__circles">
-              <div @click="gg(item.val, item.zoom)" class="modal-geo__modal__body__bottom__left__circles__circle"
-                   :class="{active: radius == item.val, small: item.small, big: !item.small}" v-for="item in list">
-                <span>{{item.text}}</span></div>
+                <div @click="gg(item.val, item.zoom)" class="modal-geo__modal__body__bottom__left__circles__circle"
+                     :class="{active: radius == item.val, small: item.small, big: !item.small}" v-for="item in list">
+                  <span>{{item.text}}</span></div>
               </div>
             </div>
             <div class="modal-geo__modal__body__bottom__right">
@@ -51,7 +51,7 @@
           {text: 10, val: 10000, small: true, zoom: 11},
           {text: 25, val: 25000, small: true, zoom: 10},
           {text: 50, val: 50000, small: true, zoom: 9},
-          {text: '50+', val: 220000, small: true},
+          {text: '50+', val: '50+', small: true},
         ],
         myPlacemark: null,
         zoom: 12
@@ -75,7 +75,7 @@
         }
       },
 
-      initMapState(coords = [44,29, 34.99]) {
+      initMapState(coords = [44, 29, 34.99]) {
         this.map = new ymaps.Map(`map-modal`, {
           center: coords,
           zoom: this.zoom,
@@ -178,19 +178,20 @@
           this.zoom = zoom;
         }
         this.objectManager.remove(this.myCircle);
-        this.myCircle = {
-          type: "Feature",
-          id: 1,
-          geometry: {
-            type: "Circle",
-            coordinates: Object.values(this.localCoords),
-            radius: r
+        if (r !== '50+') {
+          this.myCircle = {
+            type: "Feature",
+            id: 1,
+            geometry: {
+              type: "Circle",
+              coordinates: Object.values(this.localCoords),
+              radius: r
+            }
           }
+          setTimeout(() => {
+            this.objectManager.add(this.myCircle)
+          }, 100)
         }
-        setTimeout(() => {
-          this.objectManager.add(this.myCircle)
-        }, 100)
-
       },
     },
     mounted() {
