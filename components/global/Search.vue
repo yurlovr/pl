@@ -339,7 +339,6 @@
           if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition((pos) => {
               const {coords: {latitude, longitude}} = pos;
-              console.log('pos', pos)
               my_coords = {
                 lat: latitude,
                 lng: longitude
@@ -347,9 +346,12 @@
               this.$cookies.set('last_coordinates', JSON.stringify(my_coords), {
                 maxAge: 30 * 24 * 60 * 60 // one month
               });
-              this.geoLocating = false;
+              this.geoLocating = true;
               this.$bus.$emit('position-modal', true, my_coords);
             });
+          } else {
+            this.geoLocating = false;
+            alert('Доступ к местоположению отклонён пользователем')
           }
 
           this.$cookies.set('geo_locating', cityId, {
@@ -360,7 +362,6 @@
       },
 
       searchFilter() {
-        console.log(this.geoLocating, 'this.geoLocating')
         if (this.$nuxt.$route.path == '/search') { // already in the search page
           this.search([this.geoLocating ? (this.$cookies.get('last_coordinates') || {}) : {}, this.$cookies.get('geo_locating') || -1]); // update results and tags
           this.$bus.goTo(`/search${this.query}`, this.$router, false); // updateQuery
