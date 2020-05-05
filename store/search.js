@@ -352,12 +352,12 @@ export const mutations = {
       if (e.value)
         state.query += `infrastructures[]=${e.id}&`;
     })
-    console.warn(state.coords, 'state.coords')
+
     if (Object.values(state.coords).length && state.radius) {
-      console.log(state.radius, state.radius / 1000, 'state.radius/1000')
+
       state.query += `coordinates=` + encodeURIComponent(Object.values(state.coords).join(',')) + '&diameter=' + (state.radius / 1000) + '&'
     }
-    console.log(`&coordinates=` + encodeURIComponent(Object.values(state.coords).join(',')) + '&diameter=' + state.radius, 'f')
+
 
     // cleaning up the last & or ? if it's empty
     state.query = state.query.slice(0, -1);
