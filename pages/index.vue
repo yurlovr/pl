@@ -1,6 +1,6 @@
 <template>
   <div class="main-page">
-    <img src="~/static/pics/main/bg.png" class="main-page__welcome__background" alt="Добро пожаловать">
+    <img src="~/static/pics/main/bg.jpg" class="main-page__welcome__background" alt="Добро пожаловать">
     <div class="main-page__welcome__gradient"></div>
     <Welcome />
     <Search class="main-page__welcome__search" labelId="1" />
