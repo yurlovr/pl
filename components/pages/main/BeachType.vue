@@ -4,7 +4,7 @@
 		<div class="main-page__beach-type__card-area">
 			<div class="main-page__beach-type__card" v-for="(card, i) in data.cards">
 				<a :href="getLink(i)" @click.prevent="search(card)">
-					<img loading="lazy" :src="card.pic" class="main-page__beach-type__card__bg">
+					<img  :src="card.pic" class="main-page__beach-type__card__bg">
 					<div class="main-page__beach-type__card__text-area">
 						<h4 class="main-page__beach-type__card__title">{{ card.title }}</h4>
 						<p class="main-page__beach-type__card__text">

@@ -3,7 +3,7 @@
 		<div class="footer__top">
 			<div class="footer__right">
 				<a href="/" @click.prevent="$bus.goTo('/', $router)">
-					<img loading="lazy" src="~/static/pics/global/svg/logo-blue.svg" alt="НашПляж" class="footer__logo">
+					<img  src="~/static/pics/global/svg/logo-blue.svg" alt="НашПляж" class="footer__logo">
 				</a>
 			</div>
 			<div class="footer__left">
@@ -26,16 +26,16 @@
 					<h4>Мы в соцсетях</h4>
 					<div class="footer__part__social-links">
 						<a class="footer__part__social" href="https://facebook.com">
-							<img loading="lazy" src="~/static/pics/global/svg/fb.svg" alt="Facebook">
+							<img  src="~/static/pics/global/svg/fb.svg" alt="Facebook">
 						</a>
 						<a class="footer__part__social" href="https://odnoklassniki.ru">
-							<img loading="lazy" src="~/static/pics/global/svg/ok.svg" alt="Odnoklassniki">
+							<img  src="~/static/pics/global/svg/ok.svg" alt="Odnoklassniki">
 						</a>
 						<a class="footer__part__social" href="https://vk.com">
-							<img loading="lazy" src="~/static/pics/global/svg/vk.svg" alt="VK">
+							<img  src="~/static/pics/global/svg/vk.svg" alt="VK">
 						</a>
 						<a class="footer__part__social" href="https://instagram.com">
-							<img loading="lazy" src="~/static/pics/global/svg/ig.svg" alt="Instagram">
+							<img  src="~/static/pics/global/svg/ig.svg" alt="Instagram">
 						</a>
 					</div>
 				</div>

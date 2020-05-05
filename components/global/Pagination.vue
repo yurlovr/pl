@@ -1,8 +1,8 @@
 <template>
   <div class="pagination" v-show="totalElems > perPage">
     <button class="pagination__button-left" @click="changePage(page-1)" :disabled="page == 1">
-      <img loading="lazy" alt="Назад" v-show="page == 1" src="~/static/pics/global/svg/pagination_prev_gray.svg">
-      <img loading="lazy" alt="Назад" v-show="page > 1" src="~/static/pics/global/svg/pagination_prev_orange.svg">
+      <img  alt="Назад" v-show="page == 1" src="~/static/pics/global/svg/pagination_prev_gray.svg">
+      <img  alt="Назад" v-show="page > 1" src="~/static/pics/global/svg/pagination_prev_orange.svg">
     </button>
     <button class="pagination__button" @click="changePage(1)" :class="{ 'current': page == 1 }" :disabled="page == 1">
       <span>1</span>
@@ -14,8 +14,8 @@
       <span>{{ lastPage }}</span>
     </button>
     <button class="pagination__button-right" @click="changePage(page+1)" :disabled="page == lastPage">
-      <img loading="lazy" alt="Вперед" v-show="page == lastPage" src="~/static/pics/global/svg/pagination_next_gray.svg">
-      <img loading="lazy" alt="Вперед" v-show="page < lastPage" src="~/static/pics/global/svg/pagination_next_orange.svg">
+      <img  alt="Вперед" v-show="page == lastPage" src="~/static/pics/global/svg/pagination_next_gray.svg">
+      <img  alt="Вперед" v-show="page < lastPage" src="~/static/pics/global/svg/pagination_next_orange.svg">
     </button>
   </div>
 </template>

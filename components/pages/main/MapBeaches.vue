@@ -5,13 +5,13 @@
 				<div class="map-beaches-main__card" v-for="(beach, i) in getBeaches" :id="`smc-${i}`" :class="{ active : activeCard == i}">
 					<div class="map-beaches-main__card__pic-area">
 						<a :href="`/beach/${beach.beachId}`" @click.prevent="$bus.goTo(`/beach/${beach.beachId}`, $router)">
-							<img loading="lazy" :src="beach.pics[0]">
+							<img  :src="beach.pics[0]">
 						</a>
 						<AddToFavorites :data="beach" />
 					</div>
 					<div class="map-beaches-main__card__info-area">
 						<div class="map-beaches-main__card__rating-area">
-							<img loading="lazy" src="~/static/pics/global/svg/star.svg" alt="Рейтинг">
+							<img  src="~/static/pics/global/svg/star.svg" alt="Рейтинг">
 							<span>{{ beach.rating.toFixed(1) }}</span>
 						</div>
 						<a :href="`/beach/${beach.beachId}`" @click.prevent="$bus.goTo(`/beach/${beach.beachId}`, $router)">
@@ -30,13 +30,13 @@
 					<div class="swiper-slide map-beaches-main__slide" v-for="(beach, i) in getBeaches" :class="{ active : activeCard == i}">
 						<div class="map-beaches-main__card__pic-area">
 							<a href="/" @click.prevent="$bus.goTo('/', $router)">
-								<img loading="lazy" class="map-beaches-main__card__pic" :src="beach.pics[0]">
+								<img  class="map-beaches-main__card__pic" :src="beach.pics[0]">
 							</a>
 							<AddToFavorites :data="beach" />
 						</div>
 						<div class="map-beaches-main__card__info-area">
 							<div class="map-beaches-main__card__rating-area">
-								<img loading="lazy" src="~/static/pics/global/svg/star.svg" alt="Рейтинг">
+								<img  src="~/static/pics/global/svg/star.svg" alt="Рейтинг">
 								<span>{{ beach.rating.toFixed(1) }}</span>
 							</div>
 							<a href="/" @click.prevent="$bus.goTo('/', $router)">

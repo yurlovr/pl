@@ -14,10 +14,10 @@
 			</div>
 		</div>
 		<button class="slider__arrow-left" :style="{ transform: 'translate(-50%, -50%)', display: showLeft && showArrows ? '' : 'none' }" @click="mySwiper.slidePrev()">
-			<img loading="lazy" src="~/static/pics/global/svg/slider_arrow_left.svg" alt="Налево">
+			<img  src="~/static/pics/global/svg/slider_arrow_left.svg" alt="Налево">
 		</button>
 		<button class="slider__arrow-right" :style="{ transform: 'translate(50%, -50%)', display: showRight && showArrows ? '' : 'none' }" @click="mySwiper.slideNext();">
-			<img loading="lazy" src="~/static/pics/global/svg/slider_arrow_right.svg" alt="Направо">
+			<img  src="~/static/pics/global/svg/slider_arrow_right.svg" alt="Направо">
 		</button>
 	</div>
 </template>

@@ -9,20 +9,20 @@
       <div class="slider-beach-event__left__inner">
         <!--        не вижу никакой камеры тут, потому пока что будет так-->
         <div class="slider-beach-event__medal-gold">
-          <img loading="lazy" src="~/static/pics/global/svg/goldMedal.svg">
+          <img  src="~/static/pics/global/svg/goldMedal.svg">
           <div class="slider-beach-event__medal-gold__tooltip">
             <span>Пляж сертифицирован</span>
           </div>
         </div>
         <div class="slider-beach-event__sun">
           <div class="slider-beach-event__sun-item" v-if="data.beautySunrise">
-            <img loading="lazy" src="~/static/pics/global/svg/sunrise.svg">
+            <img  src="~/static/pics/global/svg/sunrise.svg">
             <div class="slider-beach-event__sun-item__tooltip">
               <span>Красивый рассвет</span>
             </div>
           </div>
           <div class="slider-beach-event__sun-item" v-if="data.beautySunset">
-            <img loading="lazy" src="~/static/pics/global/svg/sunset.svg">
+            <img  src="~/static/pics/global/svg/sunset.svg">
             <div class="slider-beach-event__sun-item__tooltip">
               <span>Красивый закат</span>
             </div>
@@ -30,10 +30,12 @@
         </div>
         <div class="slider-beach-event__blue">
           <div class="cursor-pointer bem-is-a-dead-methodology">
-            <img loading="lazy" src="~/static/pics/global/svg/blueMedal.svg" v-if="data.blueMedal"/>
+            <img  src="~/static/pics/global/svg/blueMedal.svg" v-if="data.blueMedal"
+                 @click.stop="openCamera(data.blueMedal)"/>
           </div>
-          <div class="cursor-pointer bem-is-a-dead-methodology" v-if="data.panorama">
-            <img loading="lazy" src="~/static/pics/global/svg/3d.png" alt="" @click.stop="$emit('call-modal')"/>
+          <div class="cursor-pointer bem-is-a-dead-methodology" v-if="data.panorama"
+               :style="{'margin-top': data.blueMedal ? '5px': 0}">
+            <img  src="~/static/pics/global/svg/3d.png" alt="" @click.stop="$emit('call-modal')"/>
             <div class="right-tooltip">
               <span>Обзор 360</span>
             </div>
@@ -50,12 +52,12 @@
 					</span>
         </div>
         <button class="slider-beach-event__zoom-button" @click="modalOpen = !modalOpen">
-          <img loading="lazy" src="~/static/pics/global/svg/zoom.svg">
+          <img  src="~/static/pics/global/svg/zoom.svg">
         </button>
         <div v-swiper:mySwiper="swiperOption">
           <div class="swiper-wrapper">
             <div class="swiper-slide" v-for="(pic, i) in data.pics" :key="i">
-              <img loading="lazy" :src="pic" v-if="!pic.includes('youtube')">
+              <img  :src="pic" v-if="!pic.includes('youtube')">
               <div v-else class="w-100 h-100">
                 <no-ssr>
                   <!--                  desktop logic-->
@@ -65,11 +67,13 @@
                     <div class="w-100 h-100 overflow-hidden position-relative">
                       <div
                         class="my-flex justify-content-center align-items-center w-100 h-100 position-absolute z-index-preview">
-                        <img loading="lazy" style="width: 48px; height: 48px; opacity: .9" src="~/static/pics/global/pics/play.png"
+                        <img  style="width: 48px; height: 48px; opacity: .9"
+                             src="~/static/pics/global/pics/play.png"
                              alt="play"
                         />
                       </div>
-                      <img loading="lazy" :src="`https://img.youtube.com/vi/${transformUrl(pic)}/0.jpg`" alt="Youtube is failed">
+                      <img  :src="`https://img.youtube.com/vi/${transformUrl(pic)}/0.jpg`"
+                           alt="Youtube is failed">
                     </div>
                   </div>
                 </no-ssr>
@@ -87,12 +91,12 @@
         <button class="slider__arrow-left"
                 :style="{ transform: 'translate(-50%, -50%)', display: showLeft ? '' : 'none' }"
                 @click="mySwiper.slidePrev()">
-          <img loading="lazy" src="~/static/pics/global/svg/slider_arrow_left.svg" alt="Налево">
+          <img  src="~/static/pics/global/svg/slider_arrow_left.svg" alt="Налево">
         </button>
         <button class="slider__arrow-right"
                 :style="{ transform: 'translate(50%, -50%)', display: showRight ? '' : 'none' }"
                 @click="mySwiper.slideNext();">
-          <img loading="lazy" src="~/static/pics/global/svg/slider_arrow_right.svg" alt="Направо">
+          <img  src="~/static/pics/global/svg/slider_arrow_right.svg" alt="Направо">
         </button>
       </div>
     </div>
@@ -100,7 +104,7 @@
       <div class="slider-beach-event__right__item" v-for="(pic, i) in data.pics" :key="i" v-if="i != 0 && i <= 6"
            :style="{ height: getRightPicsHeight }">
         <div class="slider-beach-event__right__item__inner" @click="openModal(i)" v-if="!pic.includes('youtube')">
-          <img loading="lazy" :src="pic">
+          <img  :src="pic">
           <span v-if="i == 6 && data.pics.length - 7 > 0">+{{ data.pics.length - 7 }}</span>
         </div>
         <!--        page-->
@@ -108,17 +112,18 @@
           <div class="w-100 h-100 overflow-hidden position-relative">
             <div
               class="my-flex justify-content-center align-items-center w-100 h-100 position-absolute z-index-preview">
-              <img loading="lazy" style="width: 48px; height: 48px; opacity: .9" src="~/static/pics/global/pics/play.png" alt="play"
+              <img  style="width: 48px; height: 48px; opacity: .9"
+                   src="~/static/pics/global/pics/play.png" alt="play"
               />
             </div>
-            <img loading="lazy" :src="`https://img.youtube.com/vi/${transformUrl(pic)}/0.jpg`" alt="Youtube is failed">
+            <img  :src="`https://img.youtube.com/vi/${transformUrl(pic)}/0.jpg`" alt="Youtube is failed">
           </div>
         </div>
       </div>
     </div>
     <div class="slider-beach-event__modal" v-body-scroll-lock="modalOpen" :class="{ active: modalOpen }">
       <button class="slider-beach-event__modal__close-button" @click="modalOpen = !modalOpen">
-        <img loading="lazy" src="~/static/pics/global/svg/cross_blue.svg">
+        <img  src="~/static/pics/global/svg/cross_blue.svg">
       </button>
       <div class="slider-beach-event__modal__inner">
         <div class="slider-beach-event__modal__title-area">
@@ -130,7 +135,7 @@
             <div v-swiper:mySwiperModal="swiperOption">
               <div class="swiper-wrapper">
                 <div class="swiper-slide" v-for="(pic, i) in data.pics" :key="i">
-                  <img loading="lazy" :src="pic" v-if="!pic.includes('youtube')">
+                  <img  :src="pic" v-if="!pic.includes('youtube')">
                   <div v-else class="w-100 h-100 y-block">
                     <!--                    active in modal-->
                     <no-ssr>
@@ -142,11 +147,11 @@
             </div>
             <button class="slider__arrow-left" :style="{ display: showLeft ? '' : 'none' }"
                     @click="mySwiperModal.slidePrev()">
-              <img loading="lazy" src="~/static/pics/global/svg/slider_arrow_left.svg" alt="Налево">
+              <img  src="~/static/pics/global/svg/slider_arrow_left.svg" alt="Налево">
             </button>
             <button class="slider__arrow-right" :style="{ display: showRight ? '' : 'none' }"
                     @click="mySwiperModal.slideNext();">
-              <img loading="lazy" src="~/static/pics/global/svg/slider_arrow_right.svg" alt="Направо">
+              <img  src="~/static/pics/global/svg/slider_arrow_right.svg" alt="Направо">
             </button>
           </div>
           <div class="slider-beach-event__modal__right">
@@ -154,18 +159,20 @@
               <div class="swiper-wrapper">
                 <div class="swiper-slide" v-for="(pic, i) in data.pics" :key="i" :class="{ active: activeIndex == i }"
                      @click="mySwiperModal.slideTo(i)">
-                  <img loading="lazy" :src="pic" v-if="!pic.includes('youtube')">
+                  <img  :src="pic" v-if="!pic.includes('youtube')">
                   <!--                  modal true-->
                   <div v-else class="w-100 h-100">
                     <div class="slider-beach-event__right__item__inner" @click="openModal(i)">
                       <div class="w-100 h-100 overflow-hidden position-relative">
                         <div
                           class="my-flex justify-content-center align-items-center w-100 h-100 position-absolute z-index-preview">
-                          <img loading="lazy" style="width: 48px; height: 48px; opacity: .9" src="~/static/pics/global/pics/play.png"
+                          <img  style="width: 48px; height: 48px; opacity: .9"
+                               src="~/static/pics/global/pics/play.png"
                                alt="play"
                           />
                         </div>
-                        <img loading="lazy" :src="`https://img.youtube.com/vi/${transformUrl(pic)}/0.jpg`" alt="Youtube is failed">
+                        <img  :src="`https://img.youtube.com/vi/${transformUrl(pic)}/0.jpg`"
+                             alt="Youtube is failed">
                       </div>
                     </div>
                   </div>
@@ -174,11 +181,11 @@
             </div>
             <button class="slider__arrow-left" :style="{ display: showLeft ? '' : 'none' }"
                     @click="mySwiperModal.slidePrev()">
-              <img loading="lazy" src="~/static/pics/global/svg/slider_arrow_left.svg" alt="Налево">
+              <img  src="~/static/pics/global/svg/slider_arrow_left.svg" alt="Налево">
             </button>
             <button class="slider__arrow-right" :style="{ display: showRight ? '' : 'none' }"
                     @click="mySwiperModal.slideNext();">
-              <img loading="lazy" src="~/static/pics/global/svg/slider_arrow_right.svg" alt="Направо">
+              <img  src="~/static/pics/global/svg/slider_arrow_right.svg" alt="Направо">
             </button>
           </div>
         </div>
@@ -286,6 +293,9 @@
     },
 
     methods: {
+      openCamera(url) {
+        window.open(url, '_blank');
+      },
       transformUrl(s) {
         return getIdFromUrl(s)
       },

@@ -5,8 +5,8 @@
 				<div class="swiper-slide slider-cities__slide" v-for="slide in data">
 					<a :href="`/search?city=${slide.cityId}`" @click.prevent="searchCity(slide)" class="slider__slide__link">
 						<div class="slider-cities__slide__pic-area">
-							<img loading="lazy" v-if="slide.pic" :src="slide.pic" class="slider-cities__slide__pic">
-							<img loading="lazy" v-if="!slide.pic" src="~/static/pics/global/pics/slider_cities_placeholder.png">
+							<img  v-if="slide.pic" :src="slide.pic" class="slider-cities__slide__pic">
+							<img  v-if="!slide.pic" src="~/static/pics/global/pics/slider_cities_placeholder.png">
 							<h4 class="slider-cities__slide__title">{{ slide.city }}</h4>
 						</div>
 						<div class="slider-cities__slide__info-area">
@@ -23,10 +23,10 @@
 			</div>
 		</div>
 		<button class="slider__arrow-left" :style="{ transform: 'translate(-50%, -50%)', display: showLeft && showArrows ? '' : 'none' }" @click="mySwiper.slidePrev()">
-			<img loading="lazy" src="~/static/pics/global/svg/slider_arrow_left.svg" alt="Налево">
+			<img  src="~/static/pics/global/svg/slider_arrow_left.svg" alt="Налево">
 		</button>
 		<button class="slider__arrow-right" :style="{ transform: 'translate(50%, -50%)', display: showRight && showArrows ? '' : 'none' }" @click="mySwiper.slideNext();">
-			<img loading="lazy" src="~/static/pics/global/svg/slider_arrow_right.svg" alt="Направо">
+			<img  src="~/static/pics/global/svg/slider_arrow_right.svg" alt="Направо">
 		</button>
 	</div>
 </template>

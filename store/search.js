@@ -142,7 +142,7 @@ export const state = () => ({
     lat: 52.9760256,
     lng: 36.077568
   },
-  radius: 5000
+  radius: null
 })
 
 export const mutations = {
@@ -354,10 +354,10 @@ export const mutations = {
     })
 
     if (Object.values(state.coords).length && state.radius) {
-      console.log(state.radius, state.radius / 1000, 'state.radius/1000')
+
       state.query += `coordinates=` + encodeURIComponent(Object.values(state.coords).join(',')) + '&diameter=' + (state.radius / 1000) + '&'
     }
-    console.log(`&coordinates=` + encodeURIComponent(Object.values(state.coords).join(',')) + '&diameter=' + state.radius, 'f')
+
 
     // cleaning up the last & or ? if it's empty
     state.query = state.query.slice(0, -1);
