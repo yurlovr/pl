@@ -107,3 +107,17 @@ dist
 
 # Editor files
 .vscode
+
+.bash_history
+.bash_logout
+.bash_profile
+.bashrc
+.gitconfig
+
+.config/
+.pm2/
+.ssh/
+.viminfo
+.yarnrc
+
+static/robots.txt
