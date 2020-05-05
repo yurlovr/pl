@@ -109,6 +109,12 @@
       }
     },
 
+    /*head(){
+      return {
+        title: 'meta here'
+      }
+    },*/
+
     async fetch({store, params, redirect}) {
       let res = await store.dispatch('beach/getBeach', params.id);
       if (res == 404)

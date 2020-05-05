@@ -201,6 +201,7 @@ export const getters = {
                 tempWater: otherEvents[i].BEACH && otherEvents[i].BEACH.WEATHER && otherEvents[i].BEACH.TEMP ? otherEvents[i].BEACH.WEATHER.TEMP.WATER : null,
                 mainLink: `event/${otherEvents[i].ID}`,
                 beachLink: otherEvents[i].BEACH ? `beach/${otherEvents[i].BEACH.ID}` : null,
+                humanLink: otherEvents[i].CODE ? `event/${otherEvents[i].CODE}` : null,
                 location: otherEvents[i].BEACH && otherEvents[i].BEACH.CITY ? otherEvents[i].BEACH.CITY.NAME : null,
                 locationId: otherEvents[i].BEACH && otherEvents[i].BEACH.CITY ? otherEvents[i].BEACH.CITY.ID : null,
                 pic: otherEvents[i].PHOTOS ? otherEvents[i].PHOTOS[0] : null,

@@ -1,25 +1,25 @@
 <template>
   <div class="custom-card" v-if="data">
     <div class="custom-card__pic-area">
-      <a :href="data.mainLink ? data.mainLink : '#'" class="custom-card__link"
-         @click.prevent="$bus.goTo(data.mainLink ? data.mainLink : '#', $router)">
-        <img  :src="data.pic" v-show="this.picLoaded" alt="Фото" class="custom-card__pic" @load="picLoaded = true">
-        <img  v-show="!this.picLoaded" class="custom-card__pic"
+      <a :href="data.humanLink ? data.humanLink : ( data.mainLink ? data.mainLink : '#')" class="custom-card__link"
+         @click.prevent="$bus.goTo( data.humanLink ? data.humanLink : ( data.mainLink ? data.mainLink : '#'), $router)">
+        <img :src="data.pic" v-show="this.picLoaded" alt="Фото" class="custom-card__pic" @load="picLoaded = true">
+        <img v-show="!this.picLoaded" class="custom-card__pic"
              src="~/static/pics/global/pics/slider_beh_placeholder.png">
       </a>
       <div class="custom-card__temp-area" v-if="data.tempWater != undefined && showTemp != false">
-        <img  src="~/static/pics/global/svg/temper_big.svg" alt="Температура" class="big">
-        <img  src="~/static/pics/global/svg/temper_small.svg" alt="Температура" class="small">
+        <img src="~/static/pics/global/svg/temper_big.svg" alt="Температура" class="big">
+        <img src="~/static/pics/global/svg/temper_small.svg" alt="Температура" class="small">
         <span class="custom-card__temp">{{ (data.tempWater > 0 ? '+ ' : '') + (data.tempWater < 0 ? '- ' : '' ) + data.tempWater }}</span>
         <span class="custom-card__temp-o"><span>o</span></span>
         <span class="custom-card__temp-C">C</span>
       </div>
       <AddToFavorites :data="data"/>
-      <img  class="custom-card__paid" v-if="data.paid" src="~/static/pics/global/svg/paid.svg" alt="Платный">
+      <img class="custom-card__paid" v-if="data.paid" src="~/static/pics/global/svg/paid.svg" alt="Платный">
       <button class="custom-card__visited" @click="updateVisited()" v-if="this.data && this.data.eventId"
               v-show="showIfEventIsPast(data.date)">
         <div class="custom-card__visited__round">
-          <img  src="~/static/pics/global/svg/tick.svg" v-show="visited">
+          <img src="~/static/pics/global/svg/tick.svg" v-show="visited">
         </div>
         <span class="custom-card__visited__text">посетил</span>
       </button>
@@ -29,11 +29,11 @@
         {{distanceValue(data.coordinates)}} км</p>
       <!--      <div class="mobile-distance"><span v-if="data.show_distance" v-show="distanceValue(data.coordinates)">{{distanceValue(data.coordinates)}} км</span></div>-->
       <div class="custom-card__rating-area" v-if="data.rating">
-        <img  src="~/static/pics/global/svg/star.svg" alt="Рейтинг">
+        <img src="~/static/pics/global/svg/star.svg" alt="Рейтинг">
         <span>{{ data.rating.toFixed(1) }}</span>
       </div>
       <div class="custom-card__date-area" v-if="data.date">
-        <img  src="~/static/pics/global/svg/calendar.svg" alt="Дата">
+        <img src="~/static/pics/global/svg/calendar.svg" alt="Дата">
         <span>{{ formattedDate(data.date) }}</span>
       </div>
       <div><a :href="data.mainLink ? data.mainLink : '#'" class="custom-card__title"
@@ -51,7 +51,7 @@
            @click.prevent="$bus.goTo(data.beachLink ? data.beachLink : '#', $router)" class="custom-card__price"
            :style="{ 'font-size': data.beach ? '10px' : '12px' }" v-if="data.price">от {{ data.price }}
           <span>
-            <img  :style="{ 'height': data.beach ? '9px' : '11px', 'margin-bottom': '3px' }"
+            <img :style="{ 'height': data.beach ? '9px' : '11px', 'margin-bottom': '3px' }"
                  src="~/static/pics/global/svg/ruble.svg" alt="руб">
           </span>/сутки
         </a>

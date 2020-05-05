@@ -7,7 +7,7 @@ export default {
    ** Headers of the page
    */
   head: {
-    title: process.env.npm_package_name || '',
+    title: 'ПЛЯЖИ.РУ',
     meta: [{
       charset: 'utf-8'
     }, {
@@ -51,6 +51,7 @@ export default {
    */
   plugins: [
     '~/plugins/bus',
+    '~/plugins/gtm',
     {
       src: '~/plugins/scroll-lock',
       ssr: false
