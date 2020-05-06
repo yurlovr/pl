@@ -1,3 +1,6 @@
+import moment from 'moment';
+moment.locale('ru');
+
 export const state = () => ({
     event: [],
     reviews: [],
@@ -47,7 +50,19 @@ export const getters = {
             sideMapData: {},
             ptData: {}
         };
-
+        let dataAndTimeTransform = (from, to, part = 'date') =>{
+          let result = null
+          if (part === 'date'){
+            let _from = from ?  moment(from, 'YYYY-MM-DD HH:mm:ss').format('D MMMM') : null,
+              _to = to ? moment(to, 'YYYY-MM-DD HH:mm:ss').format('D MMMM') : null;
+            result = to && from ? (_from + ' - ' + _to) : (_to || _from);
+          } else {
+            let _from = from ?  moment(from, 'YYYY-MM-DD HH:mm:ss').format('HH:mm') : null,
+              _to = to ? moment(to, 'YYYY-MM-DD HH:mm:ss').format('HH:mm') : null;
+            result = to && from ? (_from + ' - ' + _to) : (_to || _from);
+          }
+          return result;
+        }
         let ret = {
         	hugeSliderData: {
         		title: state.event.data.item.NAME,
@@ -59,15 +74,14 @@ export const getters = {
 
         	mainData: {
                 title: state.event.data.item.NAME,
+                date: dataAndTimeTransform(state.event.data.item.ACTIVE_FROM, state.event.data.item.ACTIVE_TO, 'date'),
                 likes: state.event.data.item.COUNT_FAVORITES,
                 location: state.event.data.item.BEACH && state.event.data.item.BEACH.CITY ? state.event.data.item.BEACH.CITY.NAME : null,
                 locationId: state.event.data.item.BEACH && state.event.data.item.BEACH.CITY ? state.event.data.item.BEACH.CITY.ID : null,
                 eventId: state.event.data.item.ID,
-                beachLength: state.event.data.item.BEACH && state.event.data.item.BEACH.PARAMETERS ? state.event.data.item.BEACH.PARAMETERS.P_LINE_LENGTH : null,
-                price: state.event.data.item.BEACH && state.event.data.item.BEACH.PARAMETERS ? state.event.data.item.BEACH.PARAMETERS.P_PRICE: null,
-                beachType: state.event.data.item.BEACH && state.event.data.item.BEACH.PARAMETERS && state.event.data.item.BEACH.PARAMETERS.P_BEACH_TYPE ? state.event.data.item.BEACH.PARAMETERS.P_BEACH_TYPE.NAME : null,
+                price: state.event.data.item.PRICE || null,
                 beachSeabedType: state.event.data.item.BEACH && state.event.data.item.BEACH.PARAMETERS && state.event.data.item.BEACH.PARAMETERS.P_BOTTOM ? state.event.data.item.BEACH.PARAMETERS.P_BOTTOM.NAME : null,
-                time: state.event.data.item.BEACH && state.event.data.item.BEACH.PARAMETERS && state.event.data.item.BEACH.PARAMETERS.P_MODE ? state.event.data.item.BEACH.PARAMETERS.P_MODE.NAME : ''
+                time: dataAndTimeTransform(state.event.data.item.ACTIVE_FROM, state.event.data.item.ACTIVE_TO, 'time'),
             },
 
             about: state.event.data.item.DESCRIPTION,
@@ -133,8 +147,8 @@ export const getters = {
                 }
         }
 
-        // adding formatted infrastructures
-        if (state.event.data.item.BEACH) {
+        // adding formatted infrastructures - РАНЬШЕ БЫЛА ИНФРАСТУКТУРА ТУТ
+     /*   if (state.event.data.item.BEACH) {
             let filteredInfra = state.event.data.item.BEACH.INFRASTRUCTURES.filter(v => v.CODE != 'parkovka' && v.CODE != 'ostanovki-obshchestvennogo-transporta');
             for (let i = 0; i < filteredInfra.length; i++) {
                 ret.infraData.push({
@@ -142,7 +156,7 @@ export const getters = {
                     pic: filteredInfra[i].ICON ? filteredInfra[i].ICON : filteredInfra[i].ICON
                 })
             }
-        }
+        }*/
 
         // adding formatted reviews
         for (let i = 0; i < state.reviews.data.list.length; i++) {
