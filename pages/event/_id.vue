@@ -66,9 +66,24 @@
 
 		data() {
 			return {
-				favorite: false
+				favorite: false,
+        meta: {}
 			}
 		},
+    head(){
+      const stable = 'ПЛЯЖИ.РУ'
+      return {
+        title: this.meta.title || stable,
+        meta: [
+          {
+            hid: 'description-event',
+            name: 'description',
+            content: this.meta.description || stable
+          },
+          {hid: 'keywords-event', name: 'keywords', content: this.meta.keywords || stable},
+        ]
+      }
+    },
 
 		mounted() {
 			this.$bus.$on('pToggleFavorites', () => {
@@ -93,6 +108,11 @@
 
 		computed: {
 		    ...mapGetters('event', ['eventData'])
-		}
+		},
+    async created(){
+      await this.$axios.$get('seo/meta?url=/event/'+ this.eventData.mainData.eventId).then(res => {
+        this.meta = res.data
+      })
+    }
 	}
 </script>

@@ -105,15 +105,25 @@
     data() {
       return {
         show_pano: false,
-        last_coordinates: this.$cookies.get('last_coordinates') || {}
+        last_coordinates: this.$cookies.get('last_coordinates') || {},
+        meta: {}
       }
     },
 
-    /*head(){
+    head(){
+    const stable = 'ПЛЯЖИ.РУ'
       return {
-        title: 'meta here'
+        title: this.meta.title || stable,
+        meta: [
+          {
+            hid: 'description-beach',
+            name: 'description',
+            content: this.meta.description || stable
+          },
+          {hid: 'keywords-beach', name: 'keywords', content: this.meta.keywords || stable},
+        ]
       }
-    },*/
+    },
 
     async fetch({store, params, redirect}) {
       let res = await store.dispatch('beach/getBeach', params.id);
@@ -131,12 +141,17 @@
           return Number(getDistanceFromLatLonInKm(lat, lng, Number(lat2), Number(lng2)).toFixed(1))
         }
         return null
-      }
+      },
     },
     methods: {
       changeModalState() {
         this.show_pano = !this.show_pano;
       }
+    },
+   async created() {
+      await this.$axios.$get('seo/meta?url=/beach/'+ this.beachData.mainData.beachId).then(res => {
+        this.meta = res.data
+      })
     }
   }
 </script>
