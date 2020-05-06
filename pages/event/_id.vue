@@ -14,7 +14,8 @@
 						<span>({{ eventData.mainData.likes + (favorite ? 1 : 0) }}) Добавить в избранное</span>
 					</button>
 					<BeachEventMainInfo id="main-info" :data="eventData.mainData" class="event-page__main-info" />
-					<BeachQuickData id="infra" :title="'Инфраструктура'" :data="eventData.infraData" v-if="eventData.infraData.length > 0" />
+<!--          //ранее тут отображалась инфрастуктура-->
+<!--					<BeachQuickData id="infra" :title="'Инфраструктура'" :data="eventData.infraData" v-if="eventData.infraData.length > 0" />-->
 					<BeachEventAbout id="about" :title="'О мероприятии'" :data="eventData.about" v-if="eventData.about.length > 0" />
 					<BeachEventParkingsTransport id="pt" :data="eventData.ptData" v-if="eventData.ptData.parkings.auto.length > 0 || eventData.ptData.parkings.bus.length > 0" />
 					<BeachEventReviews id="reviews" :typeId="eventData.mainData.eventId" :data="eventData.reviews" :type="'event'" class="beach-page__cardless-area" />
@@ -33,7 +34,7 @@
 </template>
 
 <script>
-	import BeachQuickData from '~/components/pages/beach/BeachQuickData';
+	// import BeachQuickData from '~/components/pages/beach/BeachQuickData';
 	import BeachEventSections from '~/components/pages/beach-event/BeachEventSections';
 	import SliderHugeBeachEventPage from '~/components/pages/beach-event/SliderHugeBeachEventPage';
 	import BeachEventMapWeather from '~/components/pages/beach-event/BeachEventMapWeather';
@@ -61,7 +62,7 @@
 			BeachEventVisitorPics,
 			BeachEventMapWeather,
 			BeachEventSideButtons,
-			BeachQuickData
+			// BeachQuickData
 		},
 
 		data() {

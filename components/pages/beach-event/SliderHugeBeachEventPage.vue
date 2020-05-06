@@ -8,7 +8,7 @@
     <div class="slider-beach-event__left">
       <div class="slider-beach-event__left__inner">
         <!--        не вижу никакой камеры тут, потому пока что будет так-->
-        <div class="slider-beach-event__medal-gold">
+        <div class="slider-beach-event__medal-gold" v-if="!isEvent">
           <img  src="~/static/pics/global/svg/goldMedal.svg">
           <div class="slider-beach-event__medal-gold__tooltip">
             <span>Пляж сертифицирован</span>
@@ -222,6 +222,9 @@
       player() {
         return this.$refs['youtube'].player
       },
+      isEvent(){
+        return this.$route.path.includes('event')
+      }
     },
 
     data() {

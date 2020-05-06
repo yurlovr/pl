@@ -27,7 +27,7 @@
 					<img src="~/static/pics/search/beach_price.svg">
 					<span class="wrapper"><span class="gray">Вход:</span><span>{{ data.price }} <span>
 					<img :style="{ 'height': '11px', 'width': 'unset', 'margin-bottom': '3px', 'margin-right': '0' }" src="~/static/pics/global/svg/ruble_dark.svg" alt="руб">
-					</span>/день</span></span>
+					</span><span v-if="!isEvent">/день</span></span></span>
 				</div>
 				<div class="search-page__map-area__card__infos__item beach-event__main-info__infos__item" v-if="beachType">
 					<img src="~/static/pics/search/beach_type.svg">
@@ -35,7 +35,7 @@
 				</div>
 				<div class="search-page__map-area__card__infos__item beach-event__main-info__infos__item" v-if="data.time">
 					<img src="~/static/pics/search/beach_worktime.svg">
-					<span class="wrapper"><span class="gray">Режим работы:</span><span>{{ data.time }}</span></span>
+					<span class="wrapper"><span class="gray" v-if="!isEvent">Режим работы:</span><span class="gray" v-else>Время проведения:</span><span>{{ data.time }}</span></span>
 				</div>
 				<div class="search-page__map-area__card__infos__item beach-event__main-info__infos__item" v-if="data.beachSeabedType">
 					<img src="~/static/pics/search/beach_seabedtype.svg">
@@ -92,7 +92,10 @@
 				} else {
 					return null;
 				}
-			}
+			},
+      isEvent(){
+			  return this.$route.path.includes('event')
+      }
 		},
 
 		methods: {
