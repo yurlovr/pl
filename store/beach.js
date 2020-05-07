@@ -60,12 +60,14 @@ export const actions = {
             return {};
         }));
         if (error) return error;
-        commit('SET_EVENTS', await this.$axios.$get(`/event/list?beachId=${id}`));
-        commit('SET_BARS_N_RESTOS', await this.$axios.$get(`/restaurant/list?beachId=${id}`));
-        commit('SET_OPINIONS', await this.$axios.$get(`/opinion/list?entityId=${id}`));
+        let beach_id = state.beach.data.item.ID
+
+        commit('SET_EVENTS', await this.$axios.$get(`/event/list?beachId=${beach_id}`));
+        commit('SET_BARS_N_RESTOS', await this.$axios.$get(`/restaurant/list?beachId=${beach_id}`));
+        commit('SET_OPINIONS', await this.$axios.$get(`/opinion/list?entityId=${beach_id}`));
         commit('SET_TEMPERATURES', await this.$axios.$get(`/weather/list`));
-        commit('SET_REVIEWS', await this.$axios.$get(`/review/list?entityId=${id}&count=9999`));
-        commit('SET_VISITOR_PICS', await this.$axios.$get(`/socialPhoto/list?entityId=${id}&count=10`));
+        commit('SET_REVIEWS', await this.$axios.$get(`/review/list?entityId=${beach_id}&count=9999`));
+        commit('SET_VISITOR_PICS', await this.$axios.$get(`/socialPhoto/list?entityId=${beach_id}&count=10`));
         commit('SET_ANNOUNCEMENT_DATA', await this.$axios.$get(`/banner/list?page=/beach`));
 
         let tagsCount = 0, tags;
