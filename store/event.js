@@ -27,7 +27,7 @@ export const mutations = {
 }
 
 export const actions = {
-    async getEvent({commit}, id) {
+    async getEvent({commit, state}, id) {
         let error;
         commit('SET_EVENT', await this.$axios.$get(`/event/item?id=${id}`).catch(e => {
             console.error(e);
@@ -35,8 +35,10 @@ export const actions = {
             return {};
         }));
         if (error) return error;
-        commit('SET_REVIEWS', await this.$axios.$get(`/review/list?entityId=${id}&count=9999`));
-        commit('SET_VISITOR_PICS', await this.$axios.$get(`/socialPhoto/list?entityId=${id}&count=10`));
+
+        let event_id = state.event.data.item.ID
+        commit('SET_REVIEWS', await this.$axios.$get(`/review/list?entityId=${event_id}&count=9999`));
+        commit('SET_VISITOR_PICS', await this.$axios.$get(`/socialPhoto/list?entityId=${event_id}&count=10`));
         commit('SET_ANNOUNCEMENT_DATA', await this.$axios.$get(`/banner/list?page=/event`));
     }
 }
