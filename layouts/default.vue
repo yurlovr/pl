@@ -1,6 +1,6 @@
 <template>
   <div id="content">
-    <PageTransitioner />
+<!--    <PageTransitioner />-->
 <!--    <Preloader />-->
     <Header />
     <transition
