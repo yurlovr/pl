@@ -93,7 +93,6 @@ export default {
     noscriptId: 'gtm-noscript',
     noscriptURL: 'https://www.googletagmanager.com/ns.html'
   },
-
   generate: {
     async routes() {
       let beachAsync = await axios.get(url_api+'beach/list?count=9999'),
