@@ -4,7 +4,7 @@
       <h2 class="two-part-layout__card__title beach-page__quick-data__title">{{ title }}</h2>
       <div class="beach-page__quick-data__items" :class="{ active: open || data && data.length && data.length <= 4 }">
         <div class="beach-page__quick-data__item" v-for="item in data" @click="callMapAction(item)">
-          <img v-lazy-load :src="item.pic">
+          <img v-lazy-load :data-src="item.pic">
           <span v-html="item.title"></span>
           <div class="beach-page__quick-data__popup">
             <div class="beach-page__quick-data__popup__section">

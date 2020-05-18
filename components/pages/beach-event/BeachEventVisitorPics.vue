@@ -7,13 +7,13 @@
           <div class="swiper-slide" v-if="data && data.length == 0"></div>
           <div class="swiper-slide" v-for="(review, i) in data">
             <div class="beach-event__visitor-pics__user-area">
-              <img :src="review.avatar">
+              <img :data-src="review.avatar">
               <div class="beach-event__visitor-pics__user-area__nickname-wrapper">
                 <span>{{ review.name }}</span>
               </div>
             </div>
             <div class="beach-event__visitor-pics__pic-area">
-              <img :src="review.pic">
+              <img :data-src="review.pic">
             </div>
             <div class="beach-event__visitor-pics__comment-area">
               <span v-html="review.comment"></span>

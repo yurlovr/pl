@@ -15,7 +15,7 @@
 					</h3>
 					<div class="beach-event__leave-review__modal__img-area" @click="chooseImg">
 						<span class="beach-event__leave-review__modal__part-title" v-show="file == null">Добавьте фото</span>
-						<img :src="file == null ? 'pics/beach/upload.svg' : fileName">
+						<img :data-src="file == null ? 'pics/beach/upload.svg' : fileName">
 					</div>
 				</div>
 				<div class="beach-event__leave-review__modal__input-name-area">

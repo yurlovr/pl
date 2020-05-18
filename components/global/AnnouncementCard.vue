@@ -2,7 +2,7 @@
 	<div class="announcement-card" v-if="data.title">
 		<a :href="data.link" @click.prevent="$bus.goTo(data.link, $router)">
 			<div class="announcement-card__pic-area">
-				<img v-lazy-load class="announcement-card__pic" :src="data.pic">
+				<img v-lazy-load class="announcement-card__pic" :data-src="data.pic">
 			</div>
 			<div class="announcement-card__info-area" :style="{ background: data.color }">
 				<div class="announcement-card__date-area">
