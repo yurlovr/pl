@@ -95,21 +95,21 @@ export default {
   },
   generate: {
     async routes() {
-      let beachAsync = await axios.get(url_api+'beach/list?count=9999'),
+      let beachAsync = await axios.get(url_api + 'beach/list?count=9999'),
         beachRoutes = beachAsync.data.data.list.map((b) => {
           return {
             route: `/beach/${b.ID}`
           }
         });
 
-      let eventAsync = await axios.get(url_api+'event/list?count=9999'),
+      let eventAsync = await axios.get(url_api + 'event/list?count=9999'),
         eventRoutes = eventAsync.data.data.list.map((e) => {
           return {
             route: `/event/${e.ID}`
           }
         });
 
-      let infoPagesAsync = await axios.get(url_api+'page/list?count=9999'),
+      let infoPagesAsync = await axios.get(url_api + 'page/list?count=9999'),
         infoPages = infoPagesAsync.data.data.list.map((e) => {
           return {
             route: `/${e.CODE}`
@@ -129,7 +129,12 @@ export default {
   modules: [
     "bootstrap-vue/nuxt",
     "@nuxtjs/axios",
-    'cookie-universal-nuxt'
+    'cookie-universal-nuxt',
+    ['nuxt-lazy-load', {
+      images: true,
+      directiveOnly: true,
+      defaultImage: '/pics/global/pics/slider_beh_placeholder.png'
+    }]
   ],
   axios: {
     baseURL: url_api

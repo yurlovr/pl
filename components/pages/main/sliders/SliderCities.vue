@@ -5,7 +5,7 @@
 				<div class="swiper-slide slider-cities__slide" v-for="slide in data">
 					<a :href="`/search?city=${slide.cityId}`" @click.prevent="searchCity(slide)" class="slider__slide__link">
 						<div class="slider-cities__slide__pic-area">
-							<img  v-if="slide.pic" :src="slide.pic" class="slider-cities__slide__pic">
+							<img v-lazy-load v-if="slide.pic" :src="slide.pic" class="slider-cities__slide__pic">
 							<img  v-if="!slide.pic" src="~/static/pics/global/pics/slider_cities_placeholder.png">
 							<h4 class="slider-cities__slide__title">{{ slide.city }}</h4>
 						</div>

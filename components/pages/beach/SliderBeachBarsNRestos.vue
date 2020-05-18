@@ -3,7 +3,7 @@
 		<div v-swiper:mySwiper="swiperOption">
 			<div class="swiper-wrapper">
 				<div class="swiper-slide" v-for="(pic, i) in data" :key="i">
-					<img :src="pic">
+					<img v-lazy-load :src="pic">
 				</div>
 			</div>
 		</div>
