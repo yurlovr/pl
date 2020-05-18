@@ -3,7 +3,7 @@
 		<div v-swiper:mySwiper="swiperOption">
 			<div class="swiper-wrapper">
 				<div class="swiper-slide map-popup__slide" v-for="pic in pics">
-					<img :src="pic">
+					<img :data-src="pic">
 				</div>
 			</div>
 		</div>

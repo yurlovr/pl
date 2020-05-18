@@ -57,7 +57,7 @@
         <div v-swiper:mySwiper="swiperOption">
           <div class="swiper-wrapper">
             <div class="swiper-slide" v-for="(pic, i) in data.pics" :key="i">
-              <img  :src="pic" v-if="!pic.includes('youtube')">
+              <img  :data-src="pic" v-if="!pic.includes('youtube')">
               <div v-else class="w-100 h-100">
                 <no-ssr>
                   <!--                  desktop logic-->
@@ -72,7 +72,7 @@
                              alt="play"
                         />
                       </div>
-                      <img  :src="`https://img.youtube.com/vi/${transformUrl(pic)}/0.jpg`"
+                      <img  :data-src="`https://img.youtube.com/vi/${transformUrl(pic)}/0.jpg`"
                            alt="Youtube is failed">
                     </div>
                   </div>
@@ -104,7 +104,7 @@
       <div class="slider-beach-event__right__item" v-for="(pic, i) in data.pics" :key="i" v-if="i != 0 && i <= 6"
            :style="{ height: getRightPicsHeight }">
         <div class="slider-beach-event__right__item__inner" @click="openModal(i)" v-if="!pic.includes('youtube')">
-          <img v-lazy-load :src="pic">
+          <img v-lazy-load :data-src="pic">
           <span v-if="i == 6 && data.pics.length - 7 > 0">+{{ data.pics.length - 7 }}</span>
         </div>
         <!--        page-->
@@ -116,7 +116,7 @@
                    src="~/static/pics/global/pics/play.png" alt="play"
               />
             </div>
-            <img  v-lazy-load :src="`https://img.youtube.com/vi/${transformUrl(pic)}/0.jpg`" alt="Youtube is failed">
+            <img  v-lazy-load :data-src="`https://img.youtube.com/vi/${transformUrl(pic)}/0.jpg`" alt="Youtube is failed">
           </div>
         </div>
       </div>
@@ -135,7 +135,7 @@
             <div v-swiper:mySwiperModal="swiperOption">
               <div class="swiper-wrapper">
                 <div class="swiper-slide" v-for="(pic, i) in data.pics" :key="i">
-                  <img v-lazy-load :src="pic" v-if="!pic.includes('youtube')">
+                  <img v-lazy-load :data-src="pic" v-if="!pic.includes('youtube')">
                   <div v-else class="w-100 h-100 y-block">
                     <!--                    active in modal-->
                     <no-ssr>
@@ -159,7 +159,7 @@
               <div class="swiper-wrapper">
                 <div class="swiper-slide" v-for="(pic, i) in data.pics" :key="i" :class="{ active: activeIndex == i }"
                      @click="mySwiperModal.slideTo(i)">
-                  <img v-lazy-load :src="pic" v-if="!pic.includes('youtube')">
+                  <img v-lazy-load :data-src="pic" v-if="!pic.includes('youtube')">
                   <!--                  modal true-->
                   <div v-else class="w-100 h-100">
                     <div class="slider-beach-event__right__item__inner" @click="openModal(i)">
@@ -171,7 +171,7 @@
                                alt="play"
                           />
                         </div>
-                        <img v-lazy-load :src="`https://img.youtube.com/vi/${transformUrl(pic)}/0.jpg`"
+                        <img v-lazy-load :data-src="`https://img.youtube.com/vi/${transformUrl(pic)}/0.jpg`"
                              alt="Youtube is failed">
                       </div>
                     </div>

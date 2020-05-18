@@ -1,7 +1,7 @@
 <template>
 	<a :href="data.beachLink" @click.prevent="$bus.goTo(data.beachLink, $router)" class="search-page__map-area__card" v-if="data">
 		<div class="search-page__map-area__card__pic-area">
-			<img  :src="data.pic">
+			<img  :data-src="data.pic">
 		</div>
 		<div class="search-page__map-area__card__info-area">
 			<div class="search-page__map-area__card__title-area">

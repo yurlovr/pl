@@ -3,7 +3,7 @@
     <div class="modal-for-3d__modal">
       <div class="modal-for-3d__modal__body">
         <p class="modal-for-3d__modal__body__cross" @click.stop="close">&#10005</p>
-        <iframe :src="url" width="560" height="315" allowfullscreen="allowfullscreen"></iframe>
+        <iframe :data-src="url" width="560" height="315" allowfullscreen="allowfullscreen"></iframe>
       </div>
     </div>
   </div>
