@@ -8,7 +8,7 @@
                class="swiper-slide beach-page__opinions__people__slide opinion-mobile"
                :class="{ active: activeIndex == i }" @click="changeSlide(i)">
             <div class="beach-page__opinions__people__pic-area flex-shrink-1">
-              <img :src="person.pic" class="beach-page__opinions__people__pic">
+              <img v-lazy-load :src="person.pic" class="beach-page__opinions__people__pic">
               <a :href="person.social" class="beach-page__opinions__people__vk" v-if="person.social"><img
                 src="~/static/pics/beach/vk.svg"></a>
             </div>

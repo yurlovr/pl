@@ -3,7 +3,7 @@
     <div class="custom-card__pic-area">
       <a :href="data.humanLink ? data.humanLink : ( data.mainLink ? data.mainLink : '#')" class="custom-card__link"
          @click.prevent="$bus.goTo( data.humanLink ? data.humanLink : ( data.mainLink ? data.mainLink : '#'), $router)">
-        <img :src="data.pic" v-show="this.picLoaded" alt="Фото" class="custom-card__pic" @load="picLoaded = true">
+        <img v-lazy-load :src="data.pic" v-show="this.picLoaded" alt="Фото" class="custom-card__pic" @load="picLoaded = true">
         <img v-show="!this.picLoaded" class="custom-card__pic"
              src="~/static/pics/global/pics/slider_beh_placeholder.png">
       </a>
