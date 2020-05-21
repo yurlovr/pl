@@ -36,19 +36,19 @@
         <img src="~/static/pics/global/svg/calendar.svg" alt="Дата">
         <span>{{ formattedDate(data.date) }}</span>
       </div>
-      <div><a :href="data.mainLink ? data.mainLink : '#'" class="custom-card__title"
-              @click.prevent="$bus.goTo(data.mainLink ? data.mainLink : '#', $router)"
+      <div><a :href="data.humanLink ? data.humanLink : ( data.mainLink ? data.mainLink : '#')" class="custom-card__title"
+              @click.prevent="$bus.goTo( data.humanLink ? data.humanLink : ( data.mainLink ? data.mainLink : '#'), $router)"
               :style="{ 'font-size': data.beach ? '18px' : '20px' }">
         <v-clamp autoresize :max-lines="max">{{ data.title }}</v-clamp>
       </a></div>
       <div class="custom-card__subtitle-area">
-        <a :href="data.beachLink ? data.beachLink : '#'"
-           @click.prevent="$bus.goTo(data.beachLink ? data.beachLink : '#', $router)" class="custom-card__beach"
+        <a :href="data.humanLink ? data.humanLink : ( data.mainLink ? data.mainLink : '#')"
+           @click.prevent="$bus.goTo( data.humanLink ? data.humanLink : ( data.mainLink ? data.mainLink : '#'), $router)" class="custom-card__beach"
            v-if="data.beach">{{ data.beach }}</a>
         <a :href="`/search?city=${data.locationId}`" @click.prevent="searchCity()" class="custom-card__location"
            :style="{ 'font-size': data.beach ? '10px' : '12px' }">{{ data.location }}</a>
-        <a :href="data.beachLink ? data.beachLink : '#'"
-           @click.prevent="$bus.goTo(data.beachLink ? data.beachLink : '#', $router)" class="custom-card__price"
+        <a :href="data.humanLink ? data.humanLink : ( data.mainLink ? data.mainLink : '#')"
+           @click.prevent="$bus.goTo( data.humanLink ? data.humanLink : ( data.mainLink ? data.mainLink : '#'), $router)" class="custom-card__price"
            :style="{ 'font-size': data.beach ? '10px' : '12px' }" v-if="data.price">от {{ data.price }}
           <span>
             <img :style="{ 'height': data.beach ? '9px' : '11px', 'margin-bottom': '3px' }"
