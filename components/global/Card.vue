@@ -36,8 +36,8 @@
         <img src="~/static/pics/global/svg/calendar.svg" alt="Дата">
         <span>{{ formattedDate(data.date) }}</span>
       </div>
-      <div><a :href="data.mainLink ? data.mainLink : '#'" class="custom-card__title"
-              @click.prevent="$bus.goTo(data.mainLink ? data.mainLink : '#', $router)"
+      <div><a :href="data.humanLink ? data.humanLink : ( data.mainLink ? data.mainLink : '#')" class="custom-card__title"
+              @click.prevent="$bus.goTo( data.humanLink ? data.humanLink : ( data.mainLink ? data.mainLink : '#'), $router)"
               :style="{ 'font-size': data.beach ? '18px' : '20px' }">
         <v-clamp autoresize :max-lines="max">{{ data.title }}</v-clamp>
       </a></div>
