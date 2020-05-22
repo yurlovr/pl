@@ -8,13 +8,13 @@
     <div class="slider-beach-event__left">
       <div class="slider-beach-event__left__inner">
         <!--        не вижу никакой камеры тут, потому пока что будет так-->
-        <div class="slider-beach-event__medal-gold" v-if="!isEvent">
+        <!--<div class="slider-beach-event__medal-gold" v-if="!isEvent">
           <img src="~/static/pics/global/svg/goldMedal.svg">
           <div class="slider-beach-event__medal-gold__tooltip">
             <span>Пляж сертифицирован</span>
           </div>
-        </div>
-        <div class="slider-beach-event__sun">
+        </div>-->
+        <!--<div class="slider-beach-event__sun">
           <div class="slider-beach-event__sun-item" v-if="data.beautySunrise">
             <img src="~/static/pics/global/svg/sunrise.svg">
             <div class="slider-beach-event__sun-item__tooltip">
@@ -26,6 +26,17 @@
             <div class="slider-beach-event__sun-item__tooltip">
               <span>Красивый закат</span>
             </div>
+          </div>
+        </div>-->
+        <div class="position-absolute d-flex icon-group">
+          <div class="orange-cont"  v-if="!isEvent">
+            <img src="~/static/pics/global/svg/sert_beach.svg" alt="">
+          </div>
+          <div class="orange-cont" v-if="data.beautySunrise">
+            <img src="~/static/pics/global/svg/sunrise-icon.svg" alt="">
+          </div>
+          <div class="orange-cont" v-if="data.beautySunset">
+            <img src="~/static/pics/global/svg/sunset-icon.svg" alt="">
           </div>
         </div>
         <div class="slider-beach-event__blue">
