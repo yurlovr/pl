@@ -1,0 +1,46 @@
+.icon-group {
+  flex-direction: row;
+  justify-content: space-around;
+  z-index: 5;
+  top: 20px;
+  left: 15px;
+
+  .orange-cont {
+    background: #FF8C00;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    margin: 0 5px;
+    display: flex;
+    justify-content: center;
+  }
+}
+
+@media (max-width: 800px) {
+  .icon-group {
+    top: 10px;
+  }
+}
+
+@media (max-width: 550px) {
+  .icon-group {
+    top: 7px;
+  }
+}
+
+@media (max-width: 350px) {
+  .icon-group {
+    left: 5px;
+
+    .orange-cont {
+      width: 40px !important;
+      height: 40px !important;
+
+      img {
+        width: 80%;
+        height: 80%;
+        margin: auto;
+      }
+    }
+  }
+}
