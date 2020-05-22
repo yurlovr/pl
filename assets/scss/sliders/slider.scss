@@ -1,3 +1,17 @@
+.svg-heart {
+  margin-right: 4px;
+  vertical-align: middle;
+  border-style: none;
+
+  .lovely {
+    fill: #FF8C00 !important;
+  }
+
+  .unknown {
+    fill: #FEE6C0 !important;
+  }
+}
+
 .icon-group {
   flex-direction: row;
   justify-content: space-around;
