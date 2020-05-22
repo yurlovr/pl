@@ -119,9 +119,9 @@
               <CustomCheckbox class="search__params__part--checkbox"
                               v-for="(cb, i) in Object.values(searchParams.checkboxes.services)" :key="'services-' + i"
                               :title="cb.title" :value="cb.value" :id="cb.id" :type="cb.type"/>
-              <CustomCheckbox class="search__params__part--checkbox"
+              <!--<CustomCheckbox class="search__params__part&#45;&#45;checkbox"
                               v-for="(cb, i) in Object.values(searchParams.checkboxes.infrastructures)"
-                              :key="'infras-' + i" :title="cb.title" :value="cb.value" :id="cb.id" :type="cb.type"/>
+                              :key="'infras-' + i" :title="cb.title" :value="cb.value" :id="cb.id" :type="cb.type"/>-->
             </div>
             <div class="search__params__apply-area">
               <a href="/search" @click.prevent="searchFilter()" class="search__params__apply"><span>Применить</span></a>
