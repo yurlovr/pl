@@ -36,7 +36,7 @@
 
 <script>
   export default {
-    props: ['data', 'title', 'action'],
+    props: ['data', 'title', 'action', 'href'],
 
     data() {
       return {
@@ -45,11 +45,15 @@
     },
     methods: {
       callMapAction(item) {
-        const {pos, id} = item;
-        console.warn(this.action, 'this action')
-        if (Array.isArray(pos) && id && this.action) {
-          this.$bus.$emit('call-balloon-' + this.action, id, pos)
+        if (this.href){
+          document.getElementById('parks').scrollIntoView(true);   //Even IE6 supports this
         }
+        this.$nextTick(() => {
+          const {pos, id} = item;
+          if (Array.isArray(pos) && id && this.action) {
+            this.$bus.$emit('call-balloon-' + this.action, id, pos)
+          }
+        })
         // this.$bus.$emit('call-balloon-'+this.action, 1)
       }
     }

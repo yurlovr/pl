@@ -119,6 +119,7 @@
               <CustomCheckbox class="search__params__part--checkbox"
                               v-for="(cb, i) in Object.values(searchParams.checkboxes.services)" :key="'services-' + i"
                               :title="cb.title" :value="cb.value" :id="cb.id" :type="cb.type"/>
+
               <!--<CustomCheckbox class="search__params__part&#45;&#45;checkbox"
                               v-for="(cb, i) in Object.values(searchParams.checkboxes.infrastructures)"
                               :key="'infras-' + i" :title="cb.title" :value="cb.value" :id="cb.id" :type="cb.type"/>-->

@@ -14,7 +14,7 @@
           </div>
           <BeachAvgRating :data="beachData.avgRating" v-if="beachData.avgRating.ratings.length > 0"
                           class="beach-page__avg-rating__mobile"/>
-          <BeachQuickData id="infra" :title="'Инфраструктура пляжа'" :data="beachData.infraData" action="weather"
+          <BeachQuickData id="infra" :title="'Инфраструктура пляжа'" :data="beachData.infraData" action="service" :href="true"
                           v-if="beachData.infraData.length > 0"/>
           <BeachEventMapWeather :data="beachData.sideMapWeatherData" class="beach-event__map-weather__tablet"/>
           <BeachEventAbout id="about" :data="beachData.about" v-if="beachData.about && beachData.about.length > 1"
@@ -24,7 +24,7 @@
           <BeachQuickData id="services" :title="'Услуги и аренда'" :data="beachData.servicesData" action="service"
                           v-if="beachData.servicesData.length > 0"/>
           <BeachEventParkingsTransport id="pt" :data="beachData.ptData"
-                                       :additional="beachData.servicesData.filter(e => Array.isArray(e.pos))"
+                                       :additional="[...beachData.servicesData.filter(e => Array.isArray(e.pos)), ...beachData.infraData.filter(e => Array.isArray(e.pos))]"
                                        v-if="beachData.ptData.parkings.auto.length > 0 || beachData.ptData.parkings.bus.length > 0"/>
           <BeachWaterTemperatureHistogram id="water-temp" v-if="beachData.waterHistogramData.length > 0"
                                           :data="beachData.waterHistogramData"/>
@@ -42,7 +42,6 @@
             </div>
           <BeachAvgRating :data="beachData.avgRating" class="beach-page__avg-rating__desktop"/>
           <BeachEventMapWeather :data="beachData.sideMapWeatherData" v-if="beachData.sideMapWeatherData.pos.length > 0"
-                                :additional="beachData.infraData.filter(e => Array.isArray(e.pos))"
                                 class="beach-event__map-weather__desktop"/>
           <AnnouncementCard :data="beachData.announcementData" class="beach-page__announcement"/>
         </aside>
