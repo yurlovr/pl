@@ -1,7 +1,7 @@
 <template>
 	<div class="beach-event__pt-wrapper">
 		<section class="two-part-layout__card">
-			<div class="beach-event__pt">
+			<div class="beach-event__pt" id="parks">
 				<h2 class="two-part-layout__card__title beach-event__pt__title">Парковки и общественный транспорт</h2>
 				<div class="beach-event__pt__bottom">
 					<div class="beach-event__pt__left">

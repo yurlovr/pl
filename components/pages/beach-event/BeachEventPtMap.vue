@@ -19,10 +19,12 @@
 
     methods: {
       goto(i, coords = [45.32, 33.03]) {
-        this.map.panTo(coords, {
+        console.warn(i, 'coords', coords);
+        this.map.panTo(coords.map(e => Number(e)), {
           safe: true
         }).then(() => {
-          this.map.geoObjects.get(0).objects.balloon.open(i)
+          this.map.setZoom(23);
+          this.map.geoObjects.get(0).objects.balloon.open(1)
         })
       },
       initMap() {
@@ -63,7 +65,7 @@
 
              let features = [];
              if (this.additional && this.additional.length){
-               this.additional.forEach(el =>{
+               this.additional.forEach((el, i) =>{
                  let {pos, id, title, pic} = el;
                  let icon = maps.templateLayoutFactory.createClass(
                    `<div class="map__beach-icon">
@@ -72,7 +74,7 @@
                  );
                  features.push({
                    type: "Feature",
-                   id: Number(id),
+                   id: id,
                    geometry: {
                      type: "Point",
                      coordinates: pos
@@ -80,7 +82,7 @@
                    options: {
                      iconLayout: 'default#imageWithContent',
                      iconImageHref:  pic || '/pics/global/svg/map_beach_blue.svg',
-                     iconContentLayout: icon,
+                     // iconContentLayout: icon,
                      iconImageSize: [30, 43],
                      iconImageOffset: [-18, -50],
                      hintLayout: maps.templateLayoutFactory.createClass("<div class='my-hint'>" +
@@ -96,40 +98,7 @@
                  })
                })
              }
-              /*let emit_data = {
-                  pic: "https://crimea.air-dev.agency/upload/iblock/2c5/2c56d3fbff9b56fabe97a74f461e77f8.png",
-                  title: "Пункт медицинской помощи",
-                  pos: [45.32, 33.03]
-                },
-                _em = {
-                  type: "Feature",
-                  id: 1,
-                  geometry: {
-                    type: "Point",
-                    coordinates: emit_data.pos
-                  },
-                  options: {
-                    iconLayout: 'default#imageWithContent',
-                    iconImageHref: emit_data.pic,
-                    iconContentLayout: maps.templateLayoutFactory.createClass(
-                      `<div class="map__beach-icon">
-                    <div class="map__beach-caption">${emit_data.title}</div>
-                  </div>`),
-                    iconImageSize: [46, 60],
-                    iconImageOffset: [-18, -50],
-                    hintLayout: maps.templateLayoutFactory.createClass("<div class='my-hint'>" +
-                      `<b>${emit_data.title}</b><br />` +
-                      "</div>"
-                    )
-                  },
-                  properties: {
-                    balloonContentBody: "<div class='my-balloon'>" +
-                      `<b>${emit_data.title}</b><br />` +
-                      "</div>"
-                  }
-                }
-             features.push(_em)*/
-
+            console.log(features, 'features')
               additionalObjectManager.add({
                 type: "FeatureCollection",
                 features: features
