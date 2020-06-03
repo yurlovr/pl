@@ -9,7 +9,7 @@
                :class="{ active: activeIndex == i }" @click="changeSlide(i)">
             <div class="beach-page__opinions__people__pic-area flex-shrink-1">
               <img v-lazy-load :data-src="person.pic" class="beach-page__opinions__people__pic">
-              <a :href="person.social" class="beach-page__opinions__people__vk" v-if="person.social"><img
+              <a :href="person.social" target="_blank" class="beach-page__opinions__people__vk" v-if="person.social"><img
                 src="~/static/pics/beach/vk.svg"></a>
             </div>
             <span class="span-16-px cut-text flex-shrink-0"

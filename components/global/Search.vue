@@ -136,9 +136,11 @@
            @mouseover="mouseOnAutoComplete = true" @mouseleave="mouseOnAutoComplete = false">
         <div class="search__autocomplete__inner">
           <span class="search__autocomplete__empty" v-show="autocompleteResults.length == 0">Ничего не найдено</span>
-          <a :href="result.link" @click.prevent="$bus.goTo(result.link, $router)" v-for="result in autocompleteResults">
+          <a :href="result.link" @click.prevent="$bus.goTo(result.link, $router)" v-for="(result, _key) in autocompleteResults"
+          @mouseover="hoverAutocomplete([_key, true])" @mouseleave="hoverAutocomplete([_key, false])"
+          >
             <span>{{ result.title }}</span>
-            <span class="orange">{{ result.type }}</span>
+            <span :class="[{'autocomplete-line': result.hover}, 'orange']">{{ result.type }}</span>
           </a>
         </div>
       </div>
@@ -280,7 +282,10 @@
 
     methods: {
       ...mapActions('search', ['search', 'searchQuery', 'searchAutocomplete']),
-      ...mapMutations('search', ['updateSearchQuery', 'updateSearchSecondRowParam', 'updateInput', 'updateSearchParam', 'emptySearchParams', 'updateSearchInput', 'updateParamsShown', 'set_coords', 'set_radius']),
+      ...mapMutations('search',
+        ['updateSearchQuery', 'updateSearchSecondRowParam', 'updateInput', 'updateSearchParam', 'emptySearchParams',
+          'updateSearchInput', 'updateParamsShown', 'set_coords', 'set_radius',
+        'hoverAutocomplete']),
 
       showParams() {
         // check, if not the main search (the search in the header) (has labelId), then

@@ -143,9 +143,10 @@ input {
   background: #e8e8e8;
 }
 
-.orange {
+.orange, .autocomplete-line {
   color: #FF8C00 !important;
 }
+
 
 .bg {
   &-orange {
@@ -627,6 +628,12 @@ input {
       padding: 20px 0;
       overflow-y: auto;
       max-height: calc(100vh - 100px);
+
+      &:hover {
+        .autocomplete-line {
+          color: #ffffff !important;
+        }
+      }
     }
 
     a, &__empty {
@@ -1548,8 +1555,9 @@ input {
       transition: background 0.2s ease, color 0.2s ease;
 
       &:hover {
-        background: #228596;
-        color: white;
+        .main-beach-h2-helper {
+          color: #228596;
+        }
       }
 
       &:last-of-type {
@@ -3756,6 +3764,7 @@ input {
     line-height: 120%;
     margin-bottom: 8px;
     display: block;
+    color: #228596;
   }
 
   &__info {
