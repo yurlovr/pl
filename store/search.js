@@ -286,10 +286,16 @@ export const mutations = {
         state.autocompleteResults.push({
           title: payload.list[i].TITLE,
           type: payload.list[i].TYPE == 'beach' ? 'Пляж' : 'Мероприятие',
-          link: `/${payload.list[i].TYPE}/${payload.list[i].ID}`
+          link: `/${payload.list[i].TYPE}/${payload.list[i].ID}`,
+          hover: false,
         });
       }
     }
+  },
+
+  hoverAutocomplete(state, [index, value, field = 'hover']){
+    console.log(index, value, 'index, value', state.autocompleteResults)
+    state.autocompleteResults[index][field] = value;
   },
 
   showBeaches(state) {
