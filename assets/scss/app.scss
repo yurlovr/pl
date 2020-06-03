@@ -3442,7 +3442,6 @@ input {
         width: 100%;
         height: 100%;
         object-fit: cover;
-        border-radius: 12px;
       }
     }
 
@@ -4680,11 +4679,11 @@ input {
         position: relative;
 
         .swiper-slide {
-          border: 4px solid transparent;
+          border: 2px solid transparent;
           border-radius: 12px;
           overflow: hidden;
           cursor: pointer;
-          max-height: 86px;
+          max-height: 87px;
 
           &.active {
             border-color: #228596;
@@ -4703,10 +4702,8 @@ input {
           }
 
           img {
-            width: 86px;
-            height: 86px;
-            margin-right: -1px;
-            margin-top: -1px;
+            width: 87px;
+            height: 87px;
             transition: transform 0.2s ease;
           }
         }
@@ -9664,4 +9661,7 @@ body.touch {
   line-height: 120%;
   text-align: right;
   color: #73767D;
+}
+.slider-beach-event .swiper-slide img {
+  border-radius: 0 !important;
 }
