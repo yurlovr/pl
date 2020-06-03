@@ -11,7 +11,7 @@
 						</div>
 						<div class="slider-cities__slide__info-area">
 							<span class="slider-cities__slide__beach-number">{{ slide.beachNumber }}</span>
-							<span class="slider-cities__slide__beach">{{ (slide.beachNumber % 10 == 1 && slide.beachNumber % 100 != 11) ? 'пляж' : 'пляжей' }}</span>
+							<span class="slider-cities__slide__beach">{{ getBeachText (slide.beachNumber)}}</span>
 						</div>
 					</a>
 				</div>
@@ -94,6 +94,10 @@
 		},
 
 		methods: {
+      getBeachText(i) {
+        if (i % 10 > 1 && i % 10 < 5) return 'пляжа';
+        return (i % 10 == 1 && i % 100 != 11) ? 'пляж' : 'пляжей';
+      },
 			onResize() {
 				if (window.innerWidth < 1150) {
 					this.showArrows = false;
