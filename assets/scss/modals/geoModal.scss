@@ -33,7 +33,7 @@
       z-index: 1;
       width: auto;
       min-width: 1070px;
-      min-height: 760px;
+      min-height: 660px;
       padding: 28px 0;
 
       &__top {
@@ -224,6 +224,10 @@
 
 //mobile
 @media (max-width: 414px) {
+  .modal-geo__modal__body__bottom__right {
+    display: flex;
+    flex-direction: column-reverse;
+  }
 
   .modal-geo__modal__body {
     padding: 0;
@@ -251,7 +255,8 @@
     height: 40px;
   }
   .modal-geo__modal__body__bottom__right__clean {
-    display: none;
+    margin-right: 0 !important;
+    margin-top: 5px !important;
   }
   #map-modal {
     height: 59vh !important;
@@ -284,7 +289,7 @@
 #map-modal {
   width: 100%;
   max-width: 100%;
-  min-height: 650px;
+  min-height: 500px;
 }
 
 @media (min-width: 415px) and (min-height: 760px) and (max-height: 855px) {
