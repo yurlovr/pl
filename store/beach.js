@@ -300,7 +300,7 @@ export const getters = {
                 date: state.events.data.list[i].ACTIVE_FROM,
                 beach: state.events.data.list[i].BEACH ? state.events.data.list[i].BEACH.NAME : null,
                 mainLink: `event/${state.events.data.list[i].ID}`,
-                beachLink: state.events.data.list[i].BEACH ? `beach/${state.events.data.list[i].BEACH.ID}` : null,
+                beachLink: state.events.data.list[i].BEACH ? `beach/${state.events.data.list[i].BEACH.CODE}` : null,
                 humanLink: state.events.data.list[i].CODE ? `event/${state.events.data.list[i].CODE}` : null,
                 location: state.events.data.list[i].BEACH ? state.events.data.list[i].BEACH.CITY.NAME : null,
                 locationId: state.events.data.list[i].BEACH ? state.events.data.list[i].BEACH.CITY.ID : null,

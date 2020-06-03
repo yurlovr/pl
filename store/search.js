@@ -286,7 +286,7 @@ export const mutations = {
         state.autocompleteResults.push({
           title: payload.list[i].TITLE,
           type: payload.list[i].TYPE == 'beach' ? 'Пляж' : 'Мероприятие',
-          link: `/${payload.list[i].TYPE}/${payload.list[i].ID}`,
+          link: payload.list[i].URL && payload.list[i].URL.length ? payload.list[i].URL : `/${payload.list[i].TYPE}/${payload.list[i].ID}`,
           hover: false,
         });
       }
