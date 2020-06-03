@@ -128,7 +128,6 @@ export default {
 }
 @media (max-width: 768px) {
     .swiper-bar-display {
-        display: none;
         &_mobile {
             display: flex;
             justify-content: space-between;
@@ -144,7 +143,6 @@ export default {
 }
 @media (max-width: 680px) {
     .swiper-bar-display {
-        display: none;
         &_mobile {
             display: block;
             a {
