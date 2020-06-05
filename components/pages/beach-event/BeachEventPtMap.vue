@@ -24,7 +24,7 @@
           safe: true
         }).then(() => {
           this.map.setZoom(23);
-          this.map.geoObjects.get(0).objects.balloon.open(1)
+          this.map.geoObjects.get(0).objects.balloon.open(i)
         })
       },
       initMap() {

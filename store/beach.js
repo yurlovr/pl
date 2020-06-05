@@ -272,7 +272,8 @@ export const getters = {
                 title: filteredInfra[i].NAME,
                 pic: filteredInfra[i].ICON ? filteredInfra[i].ICON : filteredInfra[i].ICON,
                 pos: filteredInfra[i].COORDINATES ? filteredInfra[i].COORDINATES.split(',') : null,
-                id: filteredInfra[i].ID
+                id: filteredInfra[i].ID,
+                description: filteredInfra[i].DESCRIPTION,
             })
         }
 
@@ -283,6 +284,7 @@ export const getters = {
                 pic: state.beach.data.item.SERVICES[i].ICON ? state.beach.data.item.SERVICES[i].ICON : state.beach.data.item.SERVICES[i].ICON,
                 pos: state.beach.data.item.SERVICES[i].COORDINATES ? state.beach.data.item.SERVICES[i].COORDINATES.split(',') : null,
                 id: state.beach.data.item.SERVICES[i].ID,
+                description: state.beach.data.item.SERVICES[i].DESCRIPTION,
             })
         }
 

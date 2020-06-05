@@ -11,7 +11,7 @@
               <h5 class="beach-page__quick-data__popup__heading">{{item.title}}</h5>
               <h5 class="beach-page__quick-data__popup__heading" v-show="item.time">Время проката</h5>
               <span class="beach-page__quick-data__popup__time" v-show="item.time">{{ item.time }}</span>
-              <span class="beach-page__quick-date__popup__comment" v-show="item.comment">{{ item.comment }}</span>
+              <span class="beach-page__quick-date__popup__comment" v-show="item.description">{{ item.description }}</span>
               <span class="beach-page__quick-date__popup__comment" v-show="item.comment2">{{ item.comment2 }}</span>
             </div>
             <div class="beach-page__quick-data__popup__section" v-show="item.prices">
