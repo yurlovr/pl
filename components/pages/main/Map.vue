@@ -89,10 +89,11 @@
                         let goToStep2 = id => {
                             this.$bus.$emit("changeStep", 2);
                             step1ObjectManager.setFilter('id < 0'); // hide step-1 markers
-                            step2ObjectManager.setFilter(''); // show step-2 markers
-                            setTimeout(this.onResize, 100);
+                            // show step-2 markers
                             this.zoom = 12;
                             this.map.setCenter(this.data.addressBeaches[id].clusterCenter, this.zoom);
+                            // setTimeout(this.onResize, 100);
+                            step2ObjectManager.setFilter('');
                             this.step = 2;
                         }
 
