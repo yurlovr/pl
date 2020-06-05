@@ -1,7 +1,7 @@
 <template>
   <div id="content">
-    <PageTransitioner />
-    <Preloader />
+<!--    <PageTransitioner />-->
+<!--    <Preloader />-->
     <Header />
     <transition
       @afterEnter="transitionEnd()"
