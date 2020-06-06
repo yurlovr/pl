@@ -14,8 +14,7 @@
           </div>
           <BeachAvgRating :data="beachData.avgRating" v-if="beachData.avgRating.ratings.length > 0"
                           class="beach-page__avg-rating__mobile"/>
-          <BeachQuickData id="infra" :title="'Инфраструктура пляжа'" :data="beachData.infraData" action="service"
-                          :href="true"
+          <BeachQuickData id="infra" :title="'Инфраструктура пляжа'" :data="beachData.infraData" action="service" :href="true"
                           v-if="beachData.infraData.length > 0"/>
           <BeachEventMapWeather :data="beachData.sideMapWeatherData" class="beach-event__map-weather__tablet"/>
           <BeachEventAbout id="about" :data="beachData.about" v-if="beachData.about && beachData.about.length > 1"
@@ -34,47 +33,13 @@
           <BeachBarsNRestos id="barsNRestos" :data="beachData.barsNRestos" v-if="beachData.barsNRestos.length > 0"
                             class="beach-page__cardless-area"/>
           <BeachOpinions id="opinions" :data="beachData.opinions" v-if="beachData.opinions.length > 0"/>
-          <BeachEventReviews id="reviews" :typeId="beachData.mainData.beachId"
-                             :data="[...beachData.reviews, ...beachData.reviews, ...beachData.reviews, ...beachData.reviews, ...beachData.reviews,...beachData.reviews,...beachData.reviews,...beachData.reviews,...beachData.reviews,...beachData.reviews,...beachData.reviews,...beachData.reviews,...beachData.reviews,...beachData.reviews,...beachData.reviews,...beachData.reviews,...beachData.reviews,...beachData.reviews,...beachData.reviews,
-                             ...beachData.reviews,
-                             ...beachData.reviews,
-                              ...beachData.reviews,...beachData.reviews,...beachData.reviews,...beachData.reviews,...beachData.reviews,
-                               ...beachData.reviews,...beachData.reviews,...beachData.reviews,...beachData.reviews,...beachData.reviews,
-                                ...beachData.reviews,...beachData.reviews,...beachData.reviews,...beachData.reviews,...beachData.reviews,
-                                 ...beachData.reviews,...beachData.reviews,...beachData.reviews,...beachData.reviews,...beachData.reviews,
-                                  ...beachData.reviews,...beachData.reviews,...beachData.reviews,...beachData.reviews,...beachData.reviews,
-                                   ...beachData.reviews,...beachData.reviews,...beachData.reviews,...beachData.reviews,...beachData.reviews,
-                                    ...beachData.reviews,...beachData.reviews,...beachData.reviews,...beachData.reviews,...beachData.reviews,
-                                     ...beachData.reviews,...beachData.reviews,...beachData.reviews,...beachData.reviews,...beachData.reviews,
-                                      ...beachData.reviews,...beachData.reviews,...beachData.reviews,...beachData.reviews,...beachData.reviews,
-                                       ...beachData.reviews,...beachData.reviews,...beachData.reviews,...beachData.reviews,...beachData.reviews,
-                                        ...beachData.reviews,...beachData.reviews,...beachData.reviews,...beachData.reviews,...beachData.reviews,
-                                         ...beachData.reviews,...beachData.reviews,...beachData.reviews,...beachData.reviews,...beachData.reviews,
-                                          ...beachData.reviews,...beachData.reviews,...beachData.reviews,...beachData.reviews,...beachData.reviews,
-                                           ...beachData.reviews,...beachData.reviews,...beachData.reviews,...beachData.reviews,...beachData.reviews,
-                                            ...beachData.reviews,...beachData.reviews,...beachData.reviews,...beachData.reviews,...beachData.reviews,
-                                             ...beachData.reviews,...beachData.reviews,...beachData.reviews,...beachData.reviews,...beachData.reviews,
-                                              ...beachData.reviews,...beachData.reviews,...beachData.reviews,...beachData.reviews,...beachData.reviews,
-                                               ...beachData.reviews,...beachData.reviews,...beachData.reviews,...beachData.reviews,...beachData.reviews,
-                                                ...beachData.reviews,...beachData.reviews,...beachData.reviews,...beachData.reviews,...beachData.reviews,
-                                                 ...beachData.reviews,...beachData.reviews,...beachData.reviews,...beachData.reviews,...beachData.reviews,
-                                                  ...beachData.reviews,...beachData.reviews,...beachData.reviews,...beachData.reviews,...beachData.reviews,
-                                                   ...beachData.reviews,...beachData.reviews,...beachData.reviews,...beachData.reviews,...beachData.reviews,
-                                                    ...beachData.reviews,...beachData.reviews,...beachData.reviews,...beachData.reviews,...beachData.reviews,
-                                                     ...beachData.reviews,...beachData.reviews,...beachData.reviews,...beachData.reviews,...beachData.reviews,
-                                                      ...beachData.reviews,...beachData.reviews,...beachData.reviews,...beachData.reviews,...beachData.reviews,
-                                                       ...beachData.reviews,...beachData.reviews,...beachData.reviews,...beachData.reviews,...beachData.reviews,
-                                                        ...beachData.reviews,...beachData.reviews,...beachData.reviews,...beachData.reviews,...beachData.reviews,
-                                                         ...beachData.reviews,...beachData.reviews,...beachData.reviews,...beachData.reviews,...beachData.reviews,
-                             ...beachData.reviews,...beachData.reviews,...beachData.reviews,...beachData.reviews,...beachData.reviews,
-                             ...beachData.reviews,...beachData.reviews,...beachData.reviews,...beachData.reviews,...beachData.reviews,...beachData.reviews, ...beachData.reviews,]"
-                             :type="'beach'"
+          <BeachEventReviews id="reviews" :typeId="beachData.mainData.beachId" :data="beachData.reviews" :type="'beach'"
                              class="beach-page__cardless-area"/>
         </main>
         <aside class="two-part-layout__right">
-          <div class="distance-right" v-if="distance">
-            <p class="m-0">Расстояние до пляжа <span>{{distance.toString().replace(/\./, ',')}} км</span></p>
-          </div>
+            <div class="distance-right" v-if="distance">
+              <p class="m-0">Расстояние до пляжа <span>{{distance.toString().replace(/\./, ',')}} км</span></p>
+            </div>
           <BeachAvgRating :data="beachData.avgRating" class="beach-page__avg-rating__desktop"/>
           <BeachEventMapWeather :data="beachData.sideMapWeatherData" v-if="beachData.sideMapWeatherData.pos.length > 0"
                                 class="beach-event__map-weather__desktop"/>
@@ -144,8 +109,8 @@
       }
     },
 
-    head() {
-      const stable = 'ПЛЯЖИ.РУ'
+    head(){
+    const stable = 'ПЛЯЖИ.РУ'
       return {
         title: this.meta.title || stable,
         meta: [
@@ -167,9 +132,9 @@
 
     computed: {
       ...mapGetters('beach', ['beachData']),
-      distance() {
-        let {sideMapWeatherData: {pos}} = this.beachData;
-        if (Object.values(this.last_coordinates).length && pos && pos.length) {
+      distance(){
+        let {sideMapWeatherData:{pos}} = this.beachData;
+        if (Object.values(this.last_coordinates).length && pos && pos.length){
           let lat2 = pos[0], lng2 = pos[1],
             {lat, lng} = this.last_coordinates;
           return Number(getDistanceFromLatLonInKm(lat, lng, Number(lat2), Number(lng2)).toFixed(1))
@@ -182,8 +147,8 @@
         this.show_pano = !this.show_pano;
       }
     },
-    async created() {
-      await this.$axios.$get('seo/meta?url=/beach/' + this.beachData.mainData.beachId).then(res => {
+   async created() {
+      await this.$axios.$get('seo/meta?url=/beach/'+ this.beachData.mainData.beachId).then(res => {
         this.meta = res.data
       })
     }
