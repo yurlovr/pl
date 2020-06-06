@@ -26,7 +26,7 @@
       </a>
     </transition>
     <transition name="bounce" v-if="data.pos">
-      <a target="_blank" :href="`yandexnavi://build_route_on_map?` + yandexTransform(data.pos, true) " v-show="showPave"
+      <a :href="`yandexnavi://build_route_on_map?` + yandexTransform(data.pos, true) " v-show="showPave"
          class="btn-display">
         <img src="~/static/pics/global/svg/yandex.svg">
       </a>
