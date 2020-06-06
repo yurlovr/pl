@@ -1,6 +1,7 @@
 <template>
   <div class="beach-event__side-buttons">
     <a href="yandexnavi://build_route_on_map?lat_from=55.74&lon_from=37.60&lat_to=55.76&lon_to=37.64">Строю маршрут</a>
+    <a href="yandexnavi://build_route_on_map?lat_from=52.9989632&lon_from=36.0644608&lan_to=44.394529552559&lon_to=33.937252335228">Строю маршрут вввв</a>
     <transition name="bounce">
       <a :href="`mailto:?subject=Ссылка%20на%20пляж%20|%20Наш%20пляж&body=${link}`" v-show="showShare">
         <img src="~/static/pics/global/svg/mail.svg">
