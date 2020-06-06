@@ -40,9 +40,8 @@
                     <p class="beach-page__barsNrestos__description">
                         {{ item.description }}
                     </p>
-                    <a
-                        href="/online-service"
-                        @click.prevent="$bus.goTo('/online-service', $router)"
+                    <a v-if="item.telegram"
+                        :href="item.telegram"
                         class="beach-page__barsNrestos__online-service swiper-bar-display"
                     >
                         <img src="~/static/pics/beach/online_service.svg">
