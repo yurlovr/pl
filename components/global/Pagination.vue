@@ -22,7 +22,7 @@
 
 <script>
 export default {
-  props: [ 'perPage', 'totalElems' ],
+  props: [ 'perPage', 'totalElems', 'scrollId' ],
 
   model: {
     prop: 'page',
@@ -53,6 +53,12 @@ export default {
         this.$emit('change', p);
         this.$bus.$emit('pageChanged', p)
         this.generatePagination(p);
+        if (this.scrollId){
+          this.$nextTick(()=>{
+            let offset_top = document.getElementById(this.scrollId).offsetTop
+            window.scrollTo(0, offset_top);
+          })
+        }
       }
     },
 

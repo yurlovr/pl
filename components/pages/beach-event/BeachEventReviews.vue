@@ -4,7 +4,7 @@
 		<div class="beach-event__reviews__desktop" v-if="data">
 			<BeachEventReview :data="review" v-for="(review, i) in data.slice((page-1)*perPage, Math.min(page*perPage, data.length))" :key="i" v-show="i < 6" :lines="4" />
 			<div class="pagination-num-wrapper beach-event__reviews__pagination custom-container" v-if="data.length > perPage">
-				<Pagination :perPage="perPage" :totalElems="data.length" v-model="page" />
+				<Pagination :perPage="perPage" :totalElems="data.length" v-model="page" scrollId="reviews"/>
 			</div>
 		</div>
 		<div class="beach-event__reviews__mobile" v-if="data">
