@@ -1,5 +1,6 @@
 <template>
   <div class="beach-event__side-buttons">
+    <a href="yandexnavi://build_route_on_map?lat_from=55.74&lon_from=37.60&lat_to=55.76&lon_to=37.64">Строю маршрут</a>
     <transition name="bounce">
       <a :href="`mailto:?subject=Ссылка%20на%20пляж%20|%20Наш%20пляж&body=${link}`" v-show="showShare">
         <img src="~/static/pics/global/svg/mail.svg">
@@ -63,6 +64,7 @@
           return '?rtext=' + user_pos + '~' + beach_pos + '&rtt=auto&z=12'
         }
         const user_pos = Object.values(this.last_coordinates)
+        console.log(`lat_from=${user_pos[0]}&lon_from=${user_pos[1]}&lan_to=${pos[0]}&lon_to=${pos[1]}`, 'ffff')
         return `lat_from=${user_pos[0]}&lon_from=${user_pos[1]}&lan_to=${pos[0]}&lon_to=${pos[1]}`;
       }
     },
