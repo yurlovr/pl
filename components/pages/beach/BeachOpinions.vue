@@ -9,11 +9,13 @@
                :class="{ active: activeIndex == i }" @click="changeSlide(i)">
             <div class="beach-page__opinions__people__pic-area flex-shrink-1">
               <img v-lazy-load :data-src="person.pic" class="beach-page__opinions__people__pic">
-              <a :href="person.social" target="_blank" class="beach-page__opinions__people__vk" v-if="person.social"><img
+              <a :href="person.social" target="_blank" class="beach-page__opinions__people__vk"
+                 v-if="person.social"><img
                 src="~/static/pics/beach/vk.svg"></a>
             </div>
             <span class="span-16-px cut-text flex-shrink-0"
-                  v-html="person.name.length <=18 ?  person.name.replace(' ', '<br>') : (person.name.slice(0,18)+'...').replace(' ', '<br>')"></span>
+                  v-html="person.name.length <=20 &&  person.name.includes(' ')?  person.name.replace(' ', '<br>') :
+                  (person.name.slice(0,11)+'...').replace(' ', '<br>')"></span>
           </div>
         </div>
       </div>
@@ -75,11 +77,11 @@
               slidesPerView: 3
             },
             500: {
-              loop:true,
+              loop: true,
               slidesPerView: 2
             },
             400: {
-              loop:true,
+              loop: true,
               slidesPerView: 1
             }
           }
