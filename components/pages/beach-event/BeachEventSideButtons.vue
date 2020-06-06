@@ -25,7 +25,7 @@
       </a>
     </transition>
     <transition name="bounce" v-if="data.pos">
-      <a target="_blank" :href="`yandexnavi://build_route_on_map?` + yandexTransform(data.pos, true) " v-show="showPave"
+      <a :href="`yandexnavi://build_route_on_map?` + yandexTransform(data.pos, true) " v-show="showPave"
          class="btn-display">
         <img src="~/static/pics/global/svg/yandex.svg">
       </a>
@@ -63,7 +63,8 @@
           return '?rtext=' + user_pos + '~' + beach_pos + '&rtt=auto&z=12'
         }
         const user_pos = Object.values(this.last_coordinates)
-        return `lat_from=${user_pos[0]}&lon_from=${user_pos[1]}&lan_to=${pos[0]}&lon_to=${pos[1]}`;
+        console.log(`lat_from=${user_pos[0]}&lon_from=${user_pos[1]}&lan_to=${pos[0]}&lon_to=${pos[1]}`, 'ffff')
+        return `lat_from=${user_pos[0]}&lon_from=${user_pos[1]}&lat_to=${pos[0]}&lon_to=${pos[1]}`;
       }
     },
     mounted() {
