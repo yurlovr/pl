@@ -63,42 +63,46 @@
               this.map.geoObjects.add(busStopsObjectManager);
               this.map.geoObjects.add(additionalObjectManager);
 
-             let features = [];
-             if (this.additional && this.additional.length){
-               this.additional.forEach((el, i) =>{
-                 let {pos, id, title, pic} = el;
-                 let icon = maps.templateLayoutFactory.createClass(
-                   `<div class="map__beach-icon">
+              let features = [];
+              if (this.additional && this.additional.length) {
+                this.additional.forEach((el, i) => {
+                  let {pos, id, title, pic, description} = el;
+                  let icon = maps.templateLayoutFactory.createClass(
+                    `<div class="map__beach-icon">
                     <div class="map__beach-caption">${title}</div>
                   </div>`
-                 );
-                 features.push({
-                   type: "Feature",
-                   id: id,
-                   geometry: {
-                     type: "Point",
-                     coordinates: pos
-                   },
-                   options: {
-                     iconLayout: 'default#imageWithContent',
-                     iconImageHref:  pic || '/pics/global/svg/map_beach_blue.svg',
-                     // iconContentLayout: icon,
-                     iconImageSize: [30, 43],
-                     iconImageOffset: [-18, -50],
-                     hintLayout: maps.templateLayoutFactory.createClass("<div class='my-hint'>" +
-                       `<b>${title}</b><br />` +
-                       "</div>"
-                     ),
-                   },
-                   properties: {
-                     balloonContentBody: "<div class='my-balloon'>" +
-                       `<b>${title}</b><br />` +
-                       "</div>"
-                   }
-                 })
-               })
-             }
-            console.log(features, 'features')
+                  );
+                  features.push({
+                    type: "Feature",
+                    id: id,
+                    geometry: {
+                      type: "Point",
+                      coordinates: pos
+                    },
+                    options: {
+                      iconLayout: 'default#imageWithContent',
+                      iconImageHref: pic || '/pics/global/svg/map_beach_blue.svg',
+                      // iconContentLayout: icon,
+                      iconImageSize: [30, 43],
+                      minWidth: 200,
+                      minHeight: 50,
+                      iconImageOffset: [-18, -50],
+                      hintLayout: maps.templateLayoutFactory.createClass("<div class='my-hint'>" +
+                        `<div class='header'>${title}</div><br />` +
+                        `<div class='description'>${description}</div>` +
+                        "</div>"
+                      ),
+                    },
+                    properties: {
+                      balloonContentBody: "<div class='my-balloon'>" +
+                        `<div class='header'>${title}</div><br />` +
+                        `<div class='description'>${description}</div>` +
+                        "</div>"
+                    }
+                  })
+                })
+              }
+              console.log(features, 'features')
               additionalObjectManager.add({
                 type: "FeatureCollection",
                 features: features
@@ -293,21 +297,21 @@
                       type: "Point",
                       coordinates: this.data.parkings.bus[i] ? this.data.parkings.bus[i].pos : [0, 0]
                     },
-                     options: {
-                         iconLayout: 'default#imageWithContent',
-                         iconImageHref: '/pics/global/svg/bus_stop_small.svg',
-                         iconContentLayout: parkingIcon,
-                         iconImageSize: [27,40],
-                         iconImageOffset: [-18, -50],
-                         hideIconOnBalloonOpen: false,
-                         balloonShadow: false,
-                         balloonLayout: balloonLayout,
-                         balloonContentLayout: '',
-                         balloonOffset: [-155, -5],
-                         balloonPane: 'balloon',
-                         balloonAutoPan: true,
-                         balloonPanelMaxMapArea: 0
-                     }
+                    options: {
+                      iconLayout: 'default#imageWithContent',
+                      iconImageHref: '/pics/global/svg/bus_stop_small.svg',
+                      iconContentLayout: parkingIcon,
+                      iconImageSize: [27, 40],
+                      iconImageOffset: [-18, -50],
+                      hideIconOnBalloonOpen: false,
+                      balloonShadow: false,
+                      balloonLayout: balloonLayout,
+                      balloonContentLayout: '',
+                      balloonOffset: [-155, -5],
+                      balloonPane: 'balloon',
+                      balloonAutoPan: true,
+                      balloonPanelMaxMapArea: 0
+                    }
                   }]
                 });
               }
