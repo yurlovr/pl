@@ -77,7 +77,7 @@
                     <c-select :value="searchParams.selects.searchBeachLengthTo.value"
                               :param="searchParams.selects.searchBeachLengthTo.param"
                               :class="{ default : searchParams.selects.searchBeachLengthTo.value.id == searchParams.selects.searchBeachLengthTo.options[0].id }"
-                              :options="searchParams.selects.searchBeachLengthTo.options"
+                              :options="searchParams.selects.searchBeachLengthTo.options.filter(x => x.title > 0)"
                               :opposite="searchParams.selects.searchBeachLengthFrom">
                     </c-select>
                   </div>
@@ -136,8 +136,9 @@
            @mouseover="mouseOnAutoComplete = true" @mouseleave="mouseOnAutoComplete = false">
         <div class="search__autocomplete__inner">
           <span class="search__autocomplete__empty" v-show="autocompleteResults.length == 0">Ничего не найдено</span>
-          <a :href="result.link" @click.prevent="$bus.goTo(result.link, $router)" v-for="(result, _key) in autocompleteResults"
-          @mouseover="hoverAutocomplete([_key, true])" @mouseleave="hoverAutocomplete([_key, false])"
+          <a :href="result.link" @click.prevent="$bus.goTo(result.link, $router)"
+             v-for="(result, _key) in autocompleteResults"
+             @mouseover="hoverAutocomplete([_key, true])" @mouseleave="hoverAutocomplete([_key, false])"
           >
             <span>{{ result.title }}</span>
             <span :class="[{'autocomplete-line': result.hover}, 'orange']">{{ result.type }}</span>
@@ -285,7 +286,7 @@
       ...mapMutations('search',
         ['updateSearchQuery', 'updateSearchSecondRowParam', 'updateInput', 'updateSearchParam', 'emptySearchParams',
           'updateSearchInput', 'updateParamsShown', 'set_coords', 'set_radius',
-        'hoverAutocomplete']),
+          'hoverAutocomplete']),
 
       showParams() {
         // check, if not the main search (the search in the header) (has labelId), then
