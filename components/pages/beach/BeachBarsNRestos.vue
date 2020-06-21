@@ -2,14 +2,14 @@
     <section class="beach-page__barsNrestos">
         <div class="swiper-bar-display_mobile">
             <h2 class="two-part-layout__card__title beach-page__barsNrestos__title">Бары и рестораны</h2>
-            <a
+            <!--<a
                 href="/online-service"
                 @click.prevent="$bus.goTo('/online-service', $router)"
                 class="beach-page__barsNrestos__online-service"
             >
                 <img src="~/static/pics/beach/online_service.svg">
                 <span>Онлайн обслуживание</span>
-            </a>
+            </a>-->
         </div>
         <div v-swiper:mySwiper="swiperOption">
             <div class="swiper-wrapper">
@@ -40,12 +40,12 @@
                     <p class="beach-page__barsNrestos__description">
                         {{ item.description }}
                     </p>
-                    <a v-if="item.telegram"
+                    <a
                         :href="item.telegram"
                         class="beach-page__barsNrestos__online-service swiper-bar-display"
                     >
                         <img src="~/static/pics/beach/online_service.svg">
-                        <span>Онлайн <br>обслуживание</span>
+                        <span>Онлайн обслуживание</span>
                     </a>
                     <SliderBeachBarsNRestos :data="item.pics" />
                 </div>
