@@ -50,6 +50,11 @@ export default {
     DynamicSliderArea,
     Banner
   },
+  data (){
+    return{
+      meta: {}
+    }
+  },
 
   mounted() {
     this.$bus.$emit('dontShowSearch');
@@ -60,12 +65,30 @@ export default {
     this.onResize();
   },
 
-  created() {
+ async created() {
     this.setGeoLocating(this.$cookies.get('geo_locating'));
     this.getMainPageData(() => {
       this.$bus.$emit('mainPageReady');
       this.$bus.$emit('hidePageTransitioner');
     });
+   await this.$axios.$get('seo/meta?url='+this.$route.fullPath).then(res => {
+     this.meta = res.data
+   })
+  },
+
+  head(){
+    const stable = 'ПЛЯЖИ.РУ'
+    return {
+      title: this.meta.title || stable,
+      meta: [
+        {
+          hid: 'description-beach',
+          name: 'description',
+          content: this.meta.description || stable
+        },
+        {hid: 'keywords-beach', name: 'keywords', content: this.meta.keywords || stable},
+      ]
+    }
   },
 
   computed: {

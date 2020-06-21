@@ -39,11 +39,29 @@ export default {
 	data() {
 		return {
 			showCardsOrMap: false, // cards: false, map: true
-			mapShownForTheFirstTime: false
+			mapShownForTheFirstTime: false,
+      meta: {}
 		}
 	},
+  head() {
+    const stable = 'ПЛЯЖИ.РУ'
+    return {
+      title: this.meta.title || stable,
+      meta: [
+        {
+          hid: 'description-beach',
+          name: 'description',
+          content: this.meta.description || stable
+        },
+        {hid: 'keywords-beach', name: 'keywords', content: this.meta.keywords || stable},
+      ]
+    }
+  },
 
-	created() {
+ async created() {
+   await this.$axios.$get('seo/meta?url=' + this.$route.fullPath).then(res => {
+     this.meta = res.data
+   })
 		this.setType(this.type);
 		this.setQuery(this.$router.currentRoute.query);
 	},
