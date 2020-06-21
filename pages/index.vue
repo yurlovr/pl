@@ -17,6 +17,9 @@
     <div class="main-page__white-wrapper">
       <WeatherSliderArea :data="mainData.weather" v-if="mainData.weather" />
     </div>
+    <div class="main-page__white-wrapper" v-if="mainData.another_places">
+      <BeachSliderArea :data="mainData.another_places" class="main-page__family-rest" />
+    </div>
     <Banner :data="mainData.banners[0]" v-if="mainData.banners && mainData.banners[0]" class="banner-2" />
     <BeachType :data="mainData.chooseToYourWishes" v-if="mainData.chooseToYourWishes" />
     <Banner :data="mainData.banners[1]" :lastWordYellow="true" v-if="mainData.banners && mainData.banners[1]" class="banner-3" />

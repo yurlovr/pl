@@ -8,11 +8,16 @@ export const state = () => ({
     banners: {},
     map: {},
     geo: {},
+    any_places: [],
 })
 
 export const mutations = {
     SET_POPULAR_BEACH: (state, payload) => {
        state.beachesTop = payload;
+    },
+
+    SET_ANY_PLACES: (state, data) => {
+      state.any_places = data
     },
 
     SET_CITIES: (state, payload) => {
@@ -65,6 +70,7 @@ export const actions = {
         commit('SET_COLLECTION_LIST', await this.$axios.$get('/collectionList/list/'));
         commit('SET_BANNERS', await this.$axios.$get('/banner/list/'));
         commit('SET_MAP', await this.$axios.$get('/beach/clusters/'));
+        commit('SET_ANY_PLACES', await this.$axios.$get('/hotel/list?count=9999'));
         callback();
     }
 }
@@ -261,6 +267,40 @@ export const getters = {
                 }
             } else {
                 ret.familyRest = null;
+            }
+
+            if (state.any_places.data){
+              console.log(state.any_places.data , 'state.any_places.data')
+              let another_places = state.any_places.data.list
+
+              ret.another_places = {
+                title: 'Где остановиться в Крыму',
+                subtitle: 'Пологий берег, плавный вход в воду, безопасность  и современная инфраструктура',
+                beachNumber: another_places.length,
+                showMore: {
+                  type: 'beach',
+                  query: '?another'
+                },
+                beachSliderData: {
+                  slideNumber: 6,
+                  cardData: []
+                }
+              }
+
+              for (let i = 0; i < another_places.length; i++) {
+                ret.another_places.beachSliderData.cardData.push({
+                  rating: another_places[i].RATING,
+                  title: another_places[i].NAME,
+                  pic: another_places[i].PICTURE,
+                  mainLink: `beach/${another_places[i].ID}`,
+                  beachLink: `beach/${another_places[i].ID}`,
+                  beachId: another_places[i].ID,
+                  show_distance: true,
+                  country: another_places[i].COUNTRY,
+                  internal_url: another_places[i].URL
+                });
+              }
+
             }
 
         // Ближайшие мероприятия
