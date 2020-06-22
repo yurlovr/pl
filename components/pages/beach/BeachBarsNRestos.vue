@@ -43,11 +43,13 @@
           </p>
           <a
             v-if="item.contact && item.contact.TYPE"
-            :href="transformToSpecificLink(item.contact)"
+            :href="item.contact.LINK"
             class="beach-page__barsNrestos__online-service swiper-bar-display"
           >
             <span>Начать чат с рестораном</span>
-            <img :src="`~/static/pics/messengers/${item.contact.type}Icon`">
+            <img v-if="item.contact.TYPE === 'telegram'" src="~/static/pics/global/messengers/telegramIcon.png">
+            <img v-else-if="item.contact.TYPE === 'viber'" src="~/static/pics/global/messengers/viberIcon.png">
+            <img v-else src="~/static/pics/global/messengers/whatsappIcon.png">
           </a>
           <SliderBeachBarsNRestos :data="item.pics"/>
         </div>
@@ -102,24 +104,6 @@
       };
     },
     methods: {
-      transformToSpecificLink(contact) {
-        if (contact) {
-          let {TYPE, LINK} = contact;
-          if (TYPE && LINK) {
-            switch (TYPE) {
-              case 'telegram':
-                return `https://telegram.me/${LINK}`
-              case 'viber':
-                return `viber://chat?number=${LINK}`
-              case 'whatsapp':
-                return `whatsapp://send?phone=${LINK}`
-            }
-          }
-          return null
-        }
-        return null
-      },
-
       getDistance(d = []) {
         if (d.length) {
           if (d && d.length == 2 && Object.keys(this.last_coordinates).length) {
