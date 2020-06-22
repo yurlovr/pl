@@ -361,6 +361,7 @@ export const getters = {
             for (let i = 0; i < state.similarBeaches.data.list.length; i++) {
                 if (state.beach.data.item.ID != state.similarBeaches.data.list[i].ID) {
                     ret.similarBeaches.beachSliderData.cardData.push({
+                        access: state.similarBeaches.data.list[i] || null,
                         tempWater: state.similarBeaches.data.list[i].WEATHER.TEMP ? state.similarBeaches.data.list[i].WEATHER.TEMP.WATER : 0,
                         paid: state.similarBeaches.data.list[i].PAID,
                         rating: parseFloat(state.similarBeaches.data.list[i].AVERAGE_RATING),

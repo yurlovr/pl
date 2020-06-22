@@ -486,6 +486,7 @@ export const getters = {
     // adding formatted beaches
     for (let i = 0; i < state.searchPageResult.data.list.length; i++) {
       ret.push({
+        access: state.searchPageResult.data.list[i].ACCESS || null,
         tempWater: state.searchPageResult.data.list[i].WEATHER ? state.searchPageResult.data.list[i].WEATHER.TEMP.WATER : (state.searchPageResult.data.list[i].BEACH ? state.searchPageResult.data.list[i].BEACH.WEATHER.TEMP.WATER : null),
         showFavorite: true,
         beachId: state.searchPageResult.data.list[i].ID,

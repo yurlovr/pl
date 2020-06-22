@@ -3,7 +3,8 @@
     <div class="custom-card__pic-area">
       <a :href="data.humanLink ? data.humanLink : ( data.mainLink ? data.mainLink : '#')" class="custom-card__link"
          @click.prevent="$bus.goTo( data.humanLink ? data.humanLink : ( data.mainLink ? data.mainLink : '#'), $router)">
-        <img v-lazy-load :data-src="data.pic" v-show="this.picLoaded" alt="Фото" class="custom-card__pic" @load="picLoaded = true">
+        <img v-lazy-load :data-src="data.pic" v-show="this.picLoaded" alt="Фото" class="custom-card__pic"
+             @load="picLoaded = true">
         <img v-show="!this.picLoaded" class="custom-card__pic"
              src="~/static/pics/global/pics/slider_beh_placeholder.png">
       </a>
@@ -15,7 +16,8 @@
         <span class="custom-card__temp-C">C</span>
       </div>
       <AddToFavorites :data="data"/>
-      <img class="custom-card__paid" v-if="data.paid" src="~/static/pics/global/svg/paid.svg" alt="Платный">
+      <img class="custom-card__paid cursor-pointer" v-if="data.paid" src="~/static/pics/global/svg/diamond.svg"
+           alt="Платный" :title="data.access  && data.access.DESCRIPTION ? data.access.DESCRIPTION : ''">
       <button class="custom-card__visited" @click="updateVisited()" v-if="this.data && this.data.eventId"
               v-show="showIfEventIsPast(data.date)">
         <div class="custom-card__visited__round">
@@ -36,7 +38,8 @@
         <img src="~/static/pics/global/svg/calendar.svg" alt="Дата">
         <span>{{ formattedDate(data.date) }}</span>
       </div>
-      <div><a :href="data.humanLink ? data.humanLink : ( data.mainLink ? data.mainLink : '#')" class="custom-card__title"
+      <div><a :href="data.humanLink ? data.humanLink : ( data.mainLink ? data.mainLink : '#')"
+              class="custom-card__title"
               @click.prevent="$bus.goTo( data.humanLink ? data.humanLink : ( data.mainLink ? data.mainLink : '#'), $router)"
               :style="{ 'font-size': data.beach ? '18px' : '20px' }">
         <v-clamp autoresize :max-lines="max">{{ data.title }}</v-clamp>

@@ -100,6 +100,7 @@ export const getters = {
                 ret.beachesTop.showMore.query = ret.beachesTop.showMore.query.slice(0, -1); // get rid of last &
                 for (let i = 0; i < Math.min(state.beachesTop.data.list.length, 10); i++) {
                     ret.beachesTop.beachSliderData.cardData.push({
+                        access: state.beachesTop.data.list[i].ACCESS || null,
                         tempWater: state.beachesTop.data.list[i].WEATHER ? state.beachesTop.data.list[i].WEATHER.TEMP.WATER : null,
                         showFavorite: true,
                         paid: state.beachesTop.data.list[i].PAID,
@@ -113,7 +114,7 @@ export const getters = {
                         locationId: state.beachesTop.data.list[i].CITY ? state.beachesTop.data.list[i].CITY.ID : -1,
                         beachId: state.beachesTop.data.list[i].ID,
                         coordinates: state.beachesTop.data.list[i].COORDINATES.length ? state.beachesTop.data.list[i].COORDINATES.split(',') : [],
-                        show_distance: true
+                        show_distance: true,
                     });
                 }
             } else {
