@@ -1,8 +1,15 @@
 <template>
   <div class="custom-card" v-if="data">
     <div class="custom-card__pic-area">
-      <a :href="data.humanLink ? data.humanLink : ( data.mainLink ? data.mainLink : '#')" class="custom-card__link"
+      <a v-if="!data.another_place" :href="data.humanLink ? data.humanLink : ( data.mainLink ? data.mainLink : '#')"
+         class="custom-card__link"
          @click.prevent="$bus.goTo( data.humanLink ? data.humanLink : ( data.mainLink ? data.mainLink : '#'), $router)">
+        <img v-lazy-load :data-src="data.pic" v-show="this.picLoaded" alt="Фото" class="custom-card__pic"
+             @load="picLoaded = true">
+        <img v-show="!this.picLoaded" class="custom-card__pic"
+             src="~/static/pics/global/pics/slider_beh_placeholder.png">
+      </a>
+      <a v-else :href="data.internal_url" class="custom-card__link" target="_blank">
         <img v-lazy-load :data-src="data.pic" v-show="this.picLoaded" alt="Фото" class="custom-card__pic"
              @load="picLoaded = true">
         <img v-show="!this.picLoaded" class="custom-card__pic"
@@ -38,26 +45,51 @@
         <img src="~/static/pics/global/svg/calendar.svg" alt="Дата">
         <span>{{ formattedDate(data.date) }}</span>
       </div>
-      <div><a :href="data.humanLink ? data.humanLink : ( data.mainLink ? data.mainLink : '#')"
-              class="custom-card__title"
-              @click.prevent="$bus.goTo( data.humanLink ? data.humanLink : ( data.mainLink ? data.mainLink : '#'), $router)"
-              :style="{ 'font-size': data.beach ? '18px' : '20px' }">
-        <v-clamp autoresize :max-lines="max">{{ data.title }}</v-clamp>
-      </a></div>
+      <div>
+        <a v-if="!data.another_place" :href="data.humanLink ? data.humanLink : ( data.mainLink ? data.mainLink : '#')"
+           class="custom-card__title"
+           @click.prevent="$bus.goTo( data.humanLink ? data.humanLink : ( data.mainLink ? data.mainLink : '#'), $router)"
+           :style="{ 'font-size': data.beach ? '18px' : '20px' }">
+          <v-clamp autoresize :max-lines="max">{{ data.title }}</v-clamp>
+        </a>
+        <a v-else :href="data.internal_url"
+           target="_blank"
+           class="custom-card__title"
+           :style="{ 'font-size': data.beach ? '18px' : '20px' }">
+          <v-clamp autoresize :max-lines="max">{{ data.title }}</v-clamp>
+        </a>
+      </div>
       <div class="custom-card__subtitle-area">
         <a :href="data.beachLink ? data.beachLink : '#'"
            @click.prevent="$bus.goTo(data.beachLink ? data.beachLink : '#', $router)" class="custom-card__beach"
            v-if="data.beach">{{ data.beach }}</a>
-        <a :href="`/search?city=${data.locationId}`" @click.prevent="searchCity()" class="custom-card__location"
+        <a v-if="!data.another_place" :href="`/search?city=${data.locationId}`" @click.prevent="searchCity()"
+           class="custom-card__location"
            :style="{ 'font-size': data.beach ? '10px' : '12px' }">{{ data.location }}</a>
-        <a :href="data.beachLink ? data.beachLink : '#'"
-           @click.prevent="$bus.goTo(data.beachLink ? data.beachLink : '#', $router)" class="custom-card__price"
-           :style="{ 'font-size': data.beach ? '10px' : '12px' }" v-if="data.price">от {{ data.price }}
-          <span>
+        <a v-else class="custom-card__location"
+           :style="{ 'font-size': data.beach ? '10px' : '12px' }">{{ data.geo_string }}</a>
+        <div v-if="!data.another_place">
+          <a
+            :href="data.beachLink ? data.beachLink : '#'"
+            @click.prevent="$bus.goTo(data.beachLink ? data.beachLink : '#', $router)" class="custom-card__price"
+            :style="{ 'font-size': data.beach ? '10px' : '12px' }" v-if="data.price">от {{ data.price }}
+            <span>
             <img :style="{ 'height': data.beach ? '9px' : '11px', 'margin-bottom': '3px' }"
                  src="~/static/pics/global/svg/ruble.svg" alt="руб">
           </span>/сутки
-        </a>
+          </a>
+        </div>
+        <div v-else>
+          <a :href="data.internal_url"
+             target="_blank"
+             class="custom-card__price"
+             :style="{ 'font-size': data.beach ? '10px' : '12px' }" v-if="data.price">от {{ data.price }}
+            <span>
+            <img :style="{ 'height': data.beach ? '9px' : '11px', 'margin-bottom': '3px' }"
+                 src="~/static/pics/global/svg/ruble.svg" alt="руб">
+          </span>/сутки
+          </a>
+        </div>
       </div>
     </div>
   </div>

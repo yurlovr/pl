@@ -271,7 +271,6 @@ export const getters = {
             }
 
             if (state.any_places.data){
-              console.log(state.any_places.data , 'state.any_places.data')
               let another_places = state.any_places.data.list
 
               ret.another_places = {
@@ -293,12 +292,14 @@ export const getters = {
                   rating: another_places[i].RATING,
                   title: another_places[i].NAME,
                   pic: another_places[i].PICTURE,
-                  mainLink: `beach/${another_places[i].ID}`,
-                  beachLink: `beach/${another_places[i].ID}`,
+                  mainLink: another_places[i].URL,
+                  beachLink: another_places[i].URL,
                   beachId: another_places[i].ID,
                   show_distance: true,
-                  country: another_places[i].COUNTRY,
-                  internal_url: another_places[i].URL
+                  geo_string: another_places[i].COUNTRY + ', ' + another_places[i].CITY,
+                  internal_url: another_places[i].URL,
+                  another_place: true,
+                  price: another_places[i].PRICE,
                 });
               }
 
