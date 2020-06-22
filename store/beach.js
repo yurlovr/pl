@@ -319,7 +319,7 @@ export const getters = {
                 description: state.barsNRestos.data.list[i].DESCRIPTION,
                 pics: state.barsNRestos.data.list[i].PHOTOS.map(v => v ? v : null),
                 coordinates: state.barsNRestos.data.list[i].COORDINATES ? state.barsNRestos.data.list[i].COORDINATES : [],
-                telegram: state.barsNRestos.data.list[i].CONTACT_TELEGRAM,
+                contact: state.barsNRestos.data.list[i].CONTACT || null,
             });
         }
 
