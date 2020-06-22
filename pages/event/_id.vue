@@ -30,6 +30,9 @@
 			<BeachEventVisitorPics id="visitor-pics" :data="eventData.visitorPics" :type="'event'" :typeId="eventData.mainData.eventId" />
 		</div>
 		<BeachSliderArea id="other-events" class="beach-event__similar-beaches" :data="eventData.otherEvents" v-if="eventData.otherEvents.beachNumber > 0" />
+    <div class="main-page__white-wrapper" v-if="eventData.another_places">
+      <BeachSliderArea :data="eventData.another_places" class="main-page__family-rest" />
+    </div>
 	</div>
 </template>
 

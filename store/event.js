@@ -6,9 +6,13 @@ export const state = () => ({
     reviews: [],
     visitorPics: [],
     announcementData: null,
+    any_places: [],
 })
 
 export const mutations = {
+    SET_ANY_PLACES: (state, data) => {
+    state.any_places = data
+  },
     SET_EVENT: (state, payload) => {
         state.event = payload;
     },
@@ -40,6 +44,7 @@ export const actions = {
         commit('SET_REVIEWS', await this.$axios.$get(`/review/list?entityId=${event_id}&count=9999`));
         commit('SET_VISITOR_PICS', await this.$axios.$get(`/socialPhoto/list?entityId=${event_id}&count=10`));
         commit('SET_ANNOUNCEMENT_DATA', await this.$axios.$get(`/banner/list?page=/event`));
+        commit('SET_ANY_PLACES', await this.$axios.$get('/hotel/list?count=9999'));
     }
 }
 
@@ -194,6 +199,42 @@ export const getters = {
                 })
             }
         }
+
+      console.log(state.any_places, 'state.any_places.data')
+      if (state.any_places.data){
+        let another_places = state.any_places.data.list
+
+        ret.another_places = {
+          title: 'Где остановиться в Крыму',
+          subtitle: 'Пологий берег, плавный вход в воду, безопасность  и современная инфраструктура',
+          beachNumber: another_places.length,
+          showMore: {
+            type: 'beach',
+            query: '?another'
+          },
+          beachSliderData: {
+            slideNumber: 6,
+            cardData: []
+          }
+        }
+
+        for (let i = 0; i < another_places.length; i++) {
+          ret.another_places.beachSliderData.cardData.push({
+            rating: another_places[i].RATING,
+            title: another_places[i].NAME,
+            pic: another_places[i].PICTURE,
+            mainLink: another_places[i].URL,
+            beachLink: another_places[i].URL,
+            beachId: another_places[i].ID,
+            show_distance: true,
+            geo_string: another_places[i].COUNTRY + ', ' + another_places[i].CITY,
+            internal_url: another_places[i].URL,
+            another_place: true,
+            price: another_places[i].PRICE,
+          });
+        }
+
+      }
 
         // adding formatted visitor pics
         for (let i = 0; i < state.visitorPics.data.list.length; i++) {
