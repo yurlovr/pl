@@ -8,13 +8,17 @@ export const state = () => ({
     similarBeaches: null,
     visitorPics: null,
     announcementData: null,
-    tags: null
+    tags: null,
+    any_places: [],
 })
 
 export const mutations = {
     SET_BEACH: (state, payload) => {
         state.beach = payload;
     },
+    SET_ANY_PLACES: (state, data) => {
+    state.any_places = data
+  },
 
     SET_TEMPERATURES: (state, payload) => {
         state.temperatures = payload;
@@ -69,6 +73,7 @@ export const actions = {
         commit('SET_REVIEWS', await this.$axios.$get(`/review/list?entityId=${beach_id}&count=9999`));
         commit('SET_VISITOR_PICS', await this.$axios.$get(`/socialPhoto/list?entityId=${beach_id}&count=10`));
         commit('SET_ANNOUNCEMENT_DATA', await this.$axios.$get(`/banner/list?page=/beach`));
+        commit('SET_ANY_PLACES', await this.$axios.$get('/hotel/list?count=9999'));
 
         let tagsCount = 0, tags;
         if (state.beach.data.item.TAGS)
@@ -229,6 +234,41 @@ export const getters = {
             announcementData: {}
         };
 
+      if (state.any_places.data){
+        let another_places = state.any_places.data.list
+
+        ret.another_places = {
+          title: 'Где остановиться в Крыму',
+          subtitle: 'Пологий берег, плавный вход в воду, безопасность  и современная инфраструктура',
+          beachNumber: another_places.length,
+          showMore: {
+            type: 'beach',
+            query: '?another'
+          },
+          beachSliderData: {
+            slideNumber: 6,
+            cardData: []
+          }
+        }
+
+        for (let i = 0; i < another_places.length; i++) {
+          ret.another_places.beachSliderData.cardData.push({
+            rating: another_places[i].RATING,
+            title: another_places[i].NAME,
+            pic: another_places[i].PICTURE,
+            mainLink: another_places[i].URL,
+            beachLink: another_places[i].URL,
+            beachId: another_places[i].ID,
+            show_distance: true,
+            geo_string: another_places[i].COUNTRY + ', ' + another_places[i].CITY,
+            internal_url: another_places[i].URL,
+            another_place: true,
+            price: another_places[i].PRICE,
+          });
+        }
+
+      }
+
         // adding formatted and random announcement
         if (state.announcementData && state.announcementData.data) {
             let announcement = state.announcementData.data.list[Math.floor(Math.random() * state.announcementData.data.list.length)]; // getting a random announcement
@@ -319,7 +359,7 @@ export const getters = {
                 description: state.barsNRestos.data.list[i].DESCRIPTION,
                 pics: state.barsNRestos.data.list[i].PHOTOS.map(v => v ? v : null),
                 coordinates: state.barsNRestos.data.list[i].COORDINATES ? state.barsNRestos.data.list[i].COORDINATES : [],
-                telegram: state.barsNRestos.data.list[i].CONTACT_TELEGRAM,
+                contact: state.barsNRestos.data.list[i].CONTACT || null,
             });
         }
 
@@ -361,6 +401,7 @@ export const getters = {
             for (let i = 0; i < state.similarBeaches.data.list.length; i++) {
                 if (state.beach.data.item.ID != state.similarBeaches.data.list[i].ID) {
                     ret.similarBeaches.beachSliderData.cardData.push({
+                        access: state.similarBeaches.data.list[i] || null,
                         tempWater: state.similarBeaches.data.list[i].WEATHER.TEMP ? state.similarBeaches.data.list[i].WEATHER.TEMP.WATER : 0,
                         paid: state.similarBeaches.data.list[i].PAID,
                         rating: parseFloat(state.similarBeaches.data.list[i].AVERAGE_RATING),

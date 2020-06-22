@@ -1,18 +1,42 @@
 .my-hint, .my-balloon {
-  display: inline-block;
   position: relative;
-  left: -10px;
-  font-size: 11px;
-  width: 200px;
-  line-height: 17px;
-  color: black;
-  text-align: center;
-  vertical-align: middle;
   background-color: #fff;
   border-radius: 4px;
+
+  .header {
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 120%;
+    color: #393E48;
+  }
+
+  .description {
+    font-style: normal;
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 120%;
+    color: #393E48;
+  }
+}
+
+.my-balloon {
+  width: 100%;
+  height: 100%;
   padding: 10px;
 }
 
 .my-hint {
   border: 1px solid #CDB7B5;
+  position: relative;
+  font-size: 11px;
+  min-width: 400px;
+  line-height: 17px;
+  color: black;
+  text-align: left;
+  background-color: #fff;
+  border-radius: 4px;
+  min-height: 50px;
+  width: auto;
+  height: auto;
+  padding: 15px 22px;
 }

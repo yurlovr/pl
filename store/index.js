@@ -53,6 +53,7 @@ export const getters = {
 
     for (let i = 0; i < state.beaches.data.list.length; i++) {
       ret.push({
+        access: state.beaches.data.list[i].ACCESS || null,
         tempWater: state.beaches.data.list[i].WEATHER && state.beaches.data.list[i].WEATHER.TEMP ? state.beaches.data.list[i].WEATHER.TEMP.WATER : null,
         showFavorite: true,
         paid: state.beaches.data.list[i].PAID,

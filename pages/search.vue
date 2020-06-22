@@ -75,6 +75,21 @@
       }
     },
 
+    head() {
+      const stable = 'ПЛЯЖИ.РУ'
+      return {
+        title: this.meta.title || stable,
+        meta: [
+          {
+            hid: 'description-beach',
+            name: 'description',
+            content: this.meta.description || stable
+          },
+          {hid: 'keywords-beach', name: 'keywords', content: this.meta.keywords || stable},
+        ]
+      }
+    },
+
     data() {
       return {
         showCardsOrMap: false, // cards: false, map: true
@@ -84,7 +99,14 @@
         showBeachesOrEvents: false, // beaches: false, events: true,
         last_coordinates: this.$cookies.get('last_coordinates') || {},
         geo_locating: this.$cookies.get('geo_locating') || -1,
+        meta: {}
       }
+    },
+
+    async created() {
+      await this.$axios.$get('seo/meta?url=' + this.$route.fullPath).then(res => {
+        this.meta = res.data
+      })
     },
 
     mounted() {

@@ -8,11 +8,16 @@ export const state = () => ({
     banners: {},
     map: {},
     geo: {},
+    any_places: [],
 })
 
 export const mutations = {
     SET_POPULAR_BEACH: (state, payload) => {
        state.beachesTop = payload;
+    },
+
+    SET_ANY_PLACES: (state, data) => {
+      state.any_places = data
     },
 
     SET_CITIES: (state, payload) => {
@@ -65,6 +70,7 @@ export const actions = {
         commit('SET_COLLECTION_LIST', await this.$axios.$get('/collectionList/list/'));
         commit('SET_BANNERS', await this.$axios.$get('/banner/list/'));
         commit('SET_MAP', await this.$axios.$get('/beach/clusters/'));
+        commit('SET_ANY_PLACES', await this.$axios.$get('/hotel/list?count=9999'));
         callback();
     }
 }
@@ -94,6 +100,7 @@ export const getters = {
                 ret.beachesTop.showMore.query = ret.beachesTop.showMore.query.slice(0, -1); // get rid of last &
                 for (let i = 0; i < Math.min(state.beachesTop.data.list.length, 10); i++) {
                     ret.beachesTop.beachSliderData.cardData.push({
+                        access: state.beachesTop.data.list[i].ACCESS || null,
                         tempWater: state.beachesTop.data.list[i].WEATHER ? state.beachesTop.data.list[i].WEATHER.TEMP.WATER : null,
                         showFavorite: true,
                         paid: state.beachesTop.data.list[i].PAID,
@@ -107,7 +114,7 @@ export const getters = {
                         locationId: state.beachesTop.data.list[i].CITY ? state.beachesTop.data.list[i].CITY.ID : -1,
                         beachId: state.beachesTop.data.list[i].ID,
                         coordinates: state.beachesTop.data.list[i].COORDINATES.length ? state.beachesTop.data.list[i].COORDINATES.split(',') : [],
-                        show_distance: true
+                        show_distance: true,
                     });
                 }
             } else {
@@ -261,6 +268,41 @@ export const getters = {
                 }
             } else {
                 ret.familyRest = null;
+            }
+
+            if (state.any_places.data){
+              let another_places = state.any_places.data.list
+
+              ret.another_places = {
+                title: 'Где остановиться в Крыму',
+                subtitle: 'Пологий берег, плавный вход в воду, безопасность  и современная инфраструктура',
+                beachNumber: another_places.length,
+                showMore: {
+                  type: 'beach',
+                  query: '?another'
+                },
+                beachSliderData: {
+                  slideNumber: 6,
+                  cardData: []
+                }
+              }
+
+              for (let i = 0; i < another_places.length; i++) {
+                ret.another_places.beachSliderData.cardData.push({
+                  rating: another_places[i].RATING,
+                  title: another_places[i].NAME,
+                  pic: another_places[i].PICTURE,
+                  mainLink: another_places[i].URL,
+                  beachLink: another_places[i].URL,
+                  beachId: another_places[i].ID,
+                  show_distance: true,
+                  geo_string: another_places[i].COUNTRY + ', ' + another_places[i].CITY,
+                  internal_url: another_places[i].URL,
+                  another_place: true,
+                  price: another_places[i].PRICE,
+                });
+              }
+
             }
 
         // Ближайшие мероприятия

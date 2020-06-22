@@ -17,6 +17,9 @@
     <div class="main-page__white-wrapper">
       <WeatherSliderArea :data="mainData.weather" v-if="mainData.weather" />
     </div>
+    <div class="main-page__white-wrapper" v-if="mainData.another_places">
+      <BeachSliderArea :data="mainData.another_places" class="main-page__family-rest" />
+    </div>
     <Banner :data="mainData.banners[0]" v-if="mainData.banners && mainData.banners[0]" class="banner-2" />
     <BeachType :data="mainData.chooseToYourWishes" v-if="mainData.chooseToYourWishes" />
     <Banner :data="mainData.banners[1]" :lastWordYellow="true" v-if="mainData.banners && mainData.banners[1]" class="banner-3" />
@@ -50,6 +53,11 @@ export default {
     DynamicSliderArea,
     Banner
   },
+  data (){
+    return{
+      meta: {}
+    }
+  },
 
   mounted() {
     this.$bus.$emit('dontShowSearch');
@@ -60,12 +68,30 @@ export default {
     this.onResize();
   },
 
-  created() {
+ async created() {
     this.setGeoLocating(this.$cookies.get('geo_locating'));
     this.getMainPageData(() => {
       this.$bus.$emit('mainPageReady');
       this.$bus.$emit('hidePageTransitioner');
     });
+   await this.$axios.$get('seo/meta?url='+this.$route.fullPath).then(res => {
+     this.meta = res.data
+   })
+  },
+
+  head(){
+    const stable = 'ПЛЯЖИ.РУ'
+    return {
+      title: this.meta.title || stable,
+      meta: [
+        {
+          hid: 'description-beach',
+          name: 'description',
+          content: this.meta.description || stable
+        },
+        {hid: 'keywords-beach', name: 'keywords', content: this.meta.keywords || stable},
+      ]
+    }
   },
 
   computed: {
