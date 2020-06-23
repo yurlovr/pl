@@ -206,7 +206,7 @@ export const getters = {
 
         ret.another_places = {
           title: 'Где остановиться в Крыму',
-          subtitle: 'Пологий берег, плавный вход в воду, безопасность  и современная инфраструктура',
+          subtitle: 'Наша подборка отелей, основанная на ваших отзывах',
           beachNumber: another_places.length,
           showMore: {
             type: 'beach',
