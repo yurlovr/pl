@@ -4,14 +4,21 @@
       <h3 class="main-page__section-title" style="margin-bottom: 10px;">{{ data.title }}</h3>
       <div class="main-page__section-subtitle-area">
         <span class="main-page__section-subtitle">{{ data.subtitle }}</span>
-        <a :href="link" @click.prevent="$bus.goTo(link, $router)" class="main-page__section__subtitle-area__see-all">
+        <a v-if="!outlink" :href="link" @click.prevent="$bus.goTo(link, $router)"
+           class="main-page__section__subtitle-area__see-all">
+          <span>Смотреть все ({{ data.beachNumber }})</span>
+        </a>
+        <a v-else :href="outlink" target="_blank" class="main-page__section__subtitle-area__see-all">
           <span>Смотреть все ({{ data.beachNumber }})</span>
         </a>
       </div>
     </div>
-    <SliderBeachEventHotel :data="data.beachSliderData" />
+    <SliderBeachEventHotel :data="data.beachSliderData"/>
     <div class="main-page__beach-slider-area__see-all-bottom">
-      <a :href="link" @click.prevent="$bus.goTo(link, $router)" class="main-page__see-all">
+      <a v-if="!outlink" :href="link" @click.prevent="$bus.goTo(link, $router)" class="main-page__see-all">
+        <span>Смотреть все ({{ data.beachNumber }})</span>
+      </a>
+      <a v-else :href="outlink" target="_blank" class="main-page__see-all">
         <span>Смотреть все ({{ data.beachNumber }})</span>
       </a>
     </div>
@@ -20,8 +27,9 @@
 
 <script>
   import SliderBeachEventHotel from '~/components/global/sliders/SliderBeachEventHotel';
+
   export default {
-    props: ['data'],
+    props: ['data', 'outlink'],
 
     components: {
       SliderBeachEventHotel

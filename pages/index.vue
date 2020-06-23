@@ -18,7 +18,7 @@
       <WeatherSliderArea :data="mainData.weather" v-if="mainData.weather" />
     </div>
     <div class="main-page__white-wrapper" v-if="mainData.another_places">
-      <BeachSliderArea :data="mainData.another_places" class="main-page__family-rest" />
+      <BeachSliderArea :data="mainData.another_places" class="main-page__family-rest" outlink="https://nash.travel/hotel" />
     </div>
     <Banner :data="mainData.banners[0]" v-if="mainData.banners && mainData.banners[0]" class="banner-2" />
     <BeachType :data="mainData.chooseToYourWishes" v-if="mainData.chooseToYourWishes" />
