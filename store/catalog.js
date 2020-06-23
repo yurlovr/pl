@@ -84,7 +84,7 @@ export const getters = {
             if (state.query.city) {
                 ret.grid = ret.grid.filter(v => v.locationId == state.query.city);
             }
-            ret.grid = ret.grid.slice(0, 45); // max 45 items if there's a query (why? client knows)
+            // ret.grid = ret.grid.slice(0, 45); // max 45 items if there's a query (why? client knows)
         }
 
         return ret;
