@@ -29,14 +29,23 @@
           </div>
         </div>-->
         <div class="position-absolute d-flex icon-group">
-          <div class="orange-cont"  v-if="!isEvent">
+          <div class="orange-cont bem-is-a-dead-methodology"  v-if="!isEvent">
             <img src="~/static/pics/global/svg/sert_beach.svg" alt="">
+            <div class="right-tooltip text-center">
+              <span>Аккредитация</span>
+            </div>
           </div>
-          <div class="orange-cont" v-if="data.beautySunrise">
+          <div class="orange-cont bem-is-a-dead-methodology" v-if="data.beautySunrise">
             <img src="~/static/pics/global/svg/sunrise-icon.svg" alt="">
+            <div class="right-tooltip text-center">
+              <span>Красивый рассвет</span>
+            </div>
           </div>
-          <div class="orange-cont" v-if="data.beautySunset">
+          <div class="orange-cont bem-is-a-dead-methodology" v-if="data.beautySunset">
             <img src="~/static/pics/global/svg/sunset-icon.svg" alt="">
+            <div class="right-tooltip text-center">
+              <span>Красивый закат</span>
+            </div>
           </div>
         </div>
         <div class="slider-beach-event__blue">
@@ -139,7 +148,7 @@
       </button>
       <div class="slider-beach-event__modal__inner">
         <div class="slider-beach-event__modal__title-area">
-          <h2 class="slider-beach-event__modal__title">{{ data.title }}</h2>
+          <h2 class="slider-beach-event__modal__title" v-html="data.title"></h2>
           <span class="slider-beach-event__modal__count"><span class="orange">{{ activeIndex+1 }}</span>/{{ data.pics.length }}</span>
         </div>
         <div class="slider-beach-event__modal__sides">
