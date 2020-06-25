@@ -1,7 +1,8 @@
 <template>
   <div class="beach-event__side-buttons">
     <transition name="bounce">
-      <a :href="`mailto:?subject=Ссылка%20на%20пляж%20|%20Наш%20пляж&body=${link}`" v-show="showShare">
+      <a :href="`mailto:${data.email || ''}?subject=Ссылка%20на%20пляж%20|%20Наш%20пляж&body=${link}`"
+         v-show="showShare">
         <img src="~/static/pics/global/svg/mail.svg">
       </a>
     </transition>
