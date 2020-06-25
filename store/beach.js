@@ -265,6 +265,7 @@ export const getters = {
             internal_url: another_places[i].URL,
             another_place: true,
             price: another_places[i].PRICE,
+            coordinates: another_places[i].COORDINATES ? another_places[i].COORDINATES.split(',').map(Number) : [],
           });
         }
 
