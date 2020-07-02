@@ -144,6 +144,7 @@ export const getters = {
         // Карта пляжей
             if (state.map.data) {
                 let clusterCenters = [], curCluster;
+                console.log(state.map.data.list, 'state.map.data.list')
                 let clusters = Object.keys(state.map.data.list).map((k) => state.map.data.list[k]);
                 for (let i = 0; i < clusters.length; i++) {
                     curCluster = clusters[i].filter(v => v.COORDINATES != '');
@@ -189,7 +190,8 @@ export const getters = {
                             beachId: clusters[i][j].ID,
                             pics: clusters[i][j].PHOTOS ? [ ...clusters[i][j].PHOTOS ] : null,
                             showFavorite: true,
-                            paid: clusters[i][j].PAID
+                            paid: clusters[i][j].PAID,
+                            humanLink: clusters[i][j].CODE || clusters[i][j].ID
                         });
                     }
                     if (clusterCenters[i] && clusterCenters[i].length > 0) {
