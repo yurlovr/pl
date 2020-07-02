@@ -93,7 +93,6 @@ export const actions = {
 export const getters = {
     beachData: (state) => {
         if (!state.beach.data) return null;
-console.log('11111', state.beach.data.item)
         let ret = {
             avgRating: {
                 rating: parseFloat(state.beach.data.item.RATING.RATING),
