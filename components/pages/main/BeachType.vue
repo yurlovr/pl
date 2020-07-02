@@ -35,8 +35,12 @@
 			},
 
 			getBeachText(i) {
-				if (i % 10 > 1 && i % 10 < 5) return 'пляжа';
-				return (i % 10 == 1 && i % 100 != 11) ? 'пляж' : 'пляжей';
+        let num = i % 100;
+        if (num >= 5 && num % 100 <= 20) return 'пляжей';
+        num %= 10;
+        if (num % 10 == 1) return 'пляж';
+        if (num >= 2 && num <= 4) return 'пляжа';
+        return 'пляжей';
 			},
 
 			getLink(type) {

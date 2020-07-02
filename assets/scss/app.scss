@@ -300,8 +300,8 @@ input {
     padding: 5px 0;
     max-height: 200px;
     overflow-y: auto;
-    -webkit-transform: translate3d(0, 100%, 0);
-    -webkit-overflow-scrolling: touch;
+    //-webkit-transform: translate3d(0, 100%, 0);
+    //-webkit-overflow-scrolling: touch;
 
     &__item {
       padding: 5px 20px;
@@ -6647,7 +6647,7 @@ input {
   }
 
   .custom-page {
-    padding-top: 82px;
+    padding-top: 115px;
 
     &__title {
       font-size: 20px;
@@ -8294,7 +8294,7 @@ input {
   }
 
   .custom-page {
-    padding-top: 87px;
+    padding-top: 115px;
 
     &__title {
       font-size: 18px;
