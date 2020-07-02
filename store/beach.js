@@ -170,7 +170,8 @@ export const getters = {
                 pos: (state.beach.data.item.COORDINATES != '') ? state.beach.data.item.COORDINATES.split(',').map(v => parseFloat(v)) : [],
                 waterTemp: state.beach.data.item.WEATHER.TEMP.WATER,
                 airTemp: state.beach.data.item.WEATHER.TEMP.AIR,
-                email: state.beach.data.item.CONTACT && state.beach.data.item.CONTACT.EMAIL ? state.beach.data.item.CONTACT.EMAIL : null
+                email: state.beach.data.item.CONTACT && state.beach.data.item.CONTACT.EMAIL ? state.beach.data.item.CONTACT.EMAIL : null,
+                telegram: state.beach.data.item.CONTACT && state.beach.data.item.CONTACT.TELEGRAM ? state.beach.data.item.CONTACT.TELEGRAM : null,
             },
 
             ptData: {
