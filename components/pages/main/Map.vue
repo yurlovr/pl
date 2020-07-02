@@ -204,7 +204,7 @@
                                                 <img src="/pics/global/svg/star.svg" alt="Рейтинг">
                                                 <span>${this.data.addressBeaches[i].beaches[j].rating.toFixed(1)}</span>
                                             </span>
-                                            <a href="/beach/${this.data.addressBeaches[i].beaches[j].beachId}" class="map-popup__title">${this.data.addressBeaches[i].beaches[j].title}</a>
+                                            <a href="/beach/${this.data.addressBeaches[i].beaches[j].humanLink||this.data.addressBeaches[i].beaches[j].beachId}" class="map-popup__title">${this.data.addressBeaches[i].beaches[j].title}</a>
                                             <h5 class="map-popup__location">${this.data.addressBeaches[i].beaches[j].location}</h5>
                                         </div>
                                     </div>
