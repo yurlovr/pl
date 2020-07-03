@@ -362,6 +362,7 @@ export const getters = {
                 pics: state.barsNRestos.data.list[i].PHOTOS.map(v => v ? v : null),
                 coordinates: state.barsNRestos.data.list[i].COORDINATES ? state.barsNRestos.data.list[i].COORDINATES : [],
                 contact: state.barsNRestos.data.list[i].CONTACT || null,
+                contact_telegram: state.barsNRestos.data.list[i].CONTACT_TELEGRAM || null,
             });
         }
 

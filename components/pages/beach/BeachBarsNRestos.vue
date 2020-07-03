@@ -43,7 +43,7 @@
           </p>
           <a
             v-if="item.contact && item.contact.TYPE"
-            :href="item.contact.LINK"
+            :href="item.contact.TYPE === 'telegram' ? `tg://resolve?domain=${item.contact_telegram.split('/').slice(-1)[0]}` : item.contact.LINK"
             class="beach-page__barsNrestos__online-service swiper-bar-display"
           >
             <span>Начать чат с рестораном</span>
