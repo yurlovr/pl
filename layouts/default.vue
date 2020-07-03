@@ -59,7 +59,7 @@
 
     mounted() {
       if (process.client && window) {
-        window.history.scrollRestoration = 'auto';
+        window.history.scrollRestoration = 'manual';
       }
 
       function watchForHover() {
