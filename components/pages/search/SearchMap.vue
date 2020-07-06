@@ -78,10 +78,11 @@
 
 
                         let unchoose = () => {
-                            objectManager.objects.setObjectOptions(this.chosen, {
-                                iconImageHref: '/pics/global/svg/map_beach_blue.svg'
-                            });
+                            // objectManager.objects.setObjectOptions(this.chosen, {
+                            //     iconImageHref: '/pics/global/svg/map_beach_blue.svg'
+                            // });
                             this.chosen = -1;
+                            console.log('unchoose')
                             this.map.balloon.close();
                         }
 
@@ -100,7 +101,9 @@
                                 }
                             }
                             if (window.innerWidth > 800) {
+
                                 if (e.get('type') == 'mousedown') {
+                                  console.log('click')
                                     objectManager.objects.setObjectOptions(objectId, {
                                         iconImageHref: '/pics/global/svg/map_beach_gold.svg'
                                     });
@@ -108,12 +111,13 @@
                                     this.chosen = objectId;
                                 }
                                 if (e.get('type') == 'mouseup') {
+                                  console.log('done unchoose')
                                     this.$bus.$emit('closeModalAndUnscrollToCard');
-                                    objectManager.objects.setObjectOptions(objectId, {
-                                        iconImageHref: '/pics/global/svg/map_beach_blue.svg'
-                                    });
-                                    setTimeout(() => {this.map.balloon.close();}, 1);
-                                    this.chosen = -1;
+                                    // objectManager.objects.setObjectOptions(objectId, {
+                                    //     iconImageHref: '/pics/global/svg/map_beach_blue.svg'
+                                    // });
+                                    // setTimeout(() => {this.map.balloon.close();}, 1);
+                                    // this.chosen = -1;
                                     return;
                                 }
                             }
@@ -125,11 +129,11 @@
                                         return;
                                     }
 
-                                    if (this.chosen != -1) {
-                                        objectManager.objects.setObjectOptions(this.chosen, {
-                                            iconImageHref: '/pics/global/svg/map_beach_blue.svg'
-                                        });
-                                    }
+                                    // if (this.chosen != -1) {
+                                    //     objectManager.objects.setObjectOptions(this.chosen, {
+                                    //         iconImageHref: '/pics/global/svg/map_beach_blue.svg'
+                                    //     });
+                                    // }
                                     this.chosen = objectId;
                                     objectManager.objects.setObjectOptions(this.chosen, {
                                         iconImageHref: '/pics/global/svg/map_beach_gold.svg'
@@ -166,9 +170,27 @@
                             // placing the markers
                             for (let i = 0; i < filteredBeaches.length; i++) {
                                 balloonLayout = maps.templateLayoutFactory.createClass(`
-                                    <div class="map__sidename">
-                                        <span>${filteredBeaches[i].title}</span>
+                                      <div class="map-popup map-popup--bottom">
+                                        <div class="map-popup__pic-area">
+                                            <div class="map-popup__slider">
+                                                <div class="swiper-container" id="balloon-swiper">
+                                                    <div class="swiper-wrapper">
+                                                       <img class="map__img" src="${filteredBeaches[i].pic}" alt="">
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                        <div class="map-popup__info-area">
+                                            <span class="map-popup__rating">
+                                                <img src="/pics/global/svg/star.svg" alt="Рейтинг">
+                                                <span>${filteredBeaches[i].rating.toFixed(1)}</span>
+                                            </span>
+                                            <a href="/beach/${filteredBeaches[i].humanLink||  filteredBeaches[i].beachId}" class="map-popup__title">${filteredBeaches[i].title}</a>
+                                            <h5 class="map-popup__location">${filteredBeaches[i].location}</h5>
+                                        </div>
                                     </div>
+
                                 `, {
                                     build() {
                                         this.constructor.superclass.build.call(this);
@@ -211,7 +233,7 @@
                                             hideIconOnBalloonOpen: false,
                                             balloonShadow: false,
                                             balloonPane: 'balloon',
-                                            balloonOffset: [25, -20]
+                                          balloonOffset: [-151, -345],
                                         }
                                     }]
                                 });

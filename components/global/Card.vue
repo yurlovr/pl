@@ -51,13 +51,13 @@
            class="custom-card__title"
            @click.prevent="$bus.goTo( data.humanLink ? data.humanLink : ( data.mainLink ? data.mainLink : '#'), $router)"
            :style="{ 'font-size': data.beach ? '18px' : '20px' }">
-          <v-clamp autoresize :max-lines="max">{{ data.title }}</v-clamp>
+          <v-clamp autoresize :max-lines="max" v-html="data.title"></v-clamp>
         </a>
         <a v-else :href="data.internal_url"
            target="_blank"
            class="custom-card__title"
            :style="{ 'font-size': data.beach ? '18px' : '20px' }">
-          <v-clamp autoresize :max-lines="max">{{ data.title }}</v-clamp>
+          <v-clamp autoresize :max-lines="max" v-html="data.title"></v-clamp>
         </a>
       </div>
       <div class="custom-card__subtitle-area">

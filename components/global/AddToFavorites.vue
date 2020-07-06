@@ -40,7 +40,7 @@
 					this.favorite = false;
 			});
 			this.$bus.$on('updateFavorite', () => {
-				this.favorite = this.data && this.data.beachId && this.$cookies.get(`favorites.beaches.${this.data.beachId}`) || this.data && this.data.eventId && this.$cookies.get(`favorites.events.${this.data.eventId}`);
+				this.favorite = this.data && this.data.beachId && !this.data.eventId && this.$cookies.get(`favorites.beaches.${this.data.beachId}`) || this.data && this.data.eventId && this.$cookies.get(`favorites.events.${this.data.eventId}`);
 			});
 		},
 

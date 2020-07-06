@@ -1,3 +1,3 @@
 export default function({ $gtm, route }) {
-  $gtm.init('GTM-T7SKSV7')
+  $gtm.init('UA-163797304-1')
 }

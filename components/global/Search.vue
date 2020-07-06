@@ -140,7 +140,7 @@
              v-for="(result, _key) in autocompleteResults"
              @mouseover="hoverAutocomplete([_key, true])" @mouseleave="hoverAutocomplete([_key, false])"
           >
-            <span>{{ result.title }}</span>
+            <span v-html="result.title"></span>
             <span :class="[{'autocomplete-line': result.hover}, 'orange']">{{ result.type }}</span>
           </a>
         </div>

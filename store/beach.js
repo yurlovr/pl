@@ -93,7 +93,6 @@ export const actions = {
 export const getters = {
     beachData: (state) => {
         if (!state.beach.data) return null;
-
         let ret = {
             avgRating: {
                 rating: parseFloat(state.beach.data.item.RATING.RATING),
@@ -170,7 +169,8 @@ export const getters = {
                 pos: (state.beach.data.item.COORDINATES != '') ? state.beach.data.item.COORDINATES.split(',').map(v => parseFloat(v)) : [],
                 waterTemp: state.beach.data.item.WEATHER.TEMP.WATER,
                 airTemp: state.beach.data.item.WEATHER.TEMP.AIR,
-                email: state.beach.data.item.CONTACT && state.beach.data.item.CONTACT.EMAIL ? state.beach.data.item.CONTACT.EMAIL : null
+                email: state.beach.data.item.CONTACT && state.beach.data.item.CONTACT.EMAIL ? state.beach.data.item.CONTACT.EMAIL : null,
+                telegram: state.beach.data.item.CONTACT && state.beach.data.item.CONTACT.TELEGRAM ? state.beach.data.item.CONTACT.TELEGRAM : null,
             },
 
             ptData: {
@@ -362,6 +362,7 @@ export const getters = {
                 pics: state.barsNRestos.data.list[i].PHOTOS.map(v => v ? v : null),
                 coordinates: state.barsNRestos.data.list[i].COORDINATES ? state.barsNRestos.data.list[i].COORDINATES : [],
                 contact: state.barsNRestos.data.list[i].CONTACT || null,
+                contact_telegram: state.barsNRestos.data.list[i].CONTACT_TELEGRAM || null,
             });
         }
 
@@ -371,7 +372,8 @@ export const getters = {
                 pic: state.opinions.data.list[i].PICTURE,
                 name: state.opinions.data.list[i].NAME,
                 opinion: state.opinions.data.list[i].DESCRIPTION,
-                social: state.opinions.data.list[i].SOCIAL_LINK
+                social: state.opinions.data.list[i].SOCIAL_LINK,
+                icon: state.opinions.data.list[i].SOCIAL
             });
         }
 
