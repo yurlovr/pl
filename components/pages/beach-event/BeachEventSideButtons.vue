@@ -6,8 +6,8 @@
         <img src="~/static/pics/global/svg/mail.svg">
       </a>
     </transition>
-    <transition name="bounce">
-      <a :href="`tg://msg_url?url=${link}/`" v-show="showShare">
+    <transition name="bounce" v-if="data.telegram">
+      <a :href="`tg://resolve?domain=${data.telegram.split('/').slice(-1)[0]}`" v-show="showShare">
         <img src="~/static/pics/global/svg/telegram-side.svg">
       </a>
     </transition>
@@ -19,13 +19,13 @@
       <img src="~/static/pics/global/svg/cross.svg" v-show="showPave">
       <img src="~/static/pics/global/svg/pave_way.svg" v-show="!showPave">
     </button>
-    <transition name="bounce" v-if="data.pos">
+    <transition name="bounce" v-if="data.pos && yandexTransform(data.pos)">
       <a target="_blank" :href="'https://yandex.ru/maps/' + yandexTransform(data.pos)" v-show="showPave"
          class="btn-ymaps">
         <img src="~/static/pics/global/svg/ymaps.svg">
       </a>
     </transition>
-    <transition name="bounce" v-if="data.pos">
+    <transition name="bounce" v-if="data.pos && yandexTransform(data.pos, true)">
       <a :href="`yandexnavi://build_route_on_map?` + yandexTransform(data.pos, true) " v-show="showPave"
          class="btn-display">
         <img src="~/static/pics/global/svg/yandex.svg">

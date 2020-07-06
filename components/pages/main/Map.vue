@@ -181,7 +181,7 @@
                                     `);
                                 }
 
-                                balloonLayout = maps.templateLayoutFactory.createClass(`
+                              balloonLayout = maps.templateLayoutFactory.createClass(`
                                     <div class="map-popup map-popup--bottom">
                                         <div class="map-popup__pic-area">
                                             <div class="map-popup__slider">
