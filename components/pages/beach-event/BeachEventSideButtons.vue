@@ -7,7 +7,7 @@
       </a>
     </transition>
     <transition name="bounce">
-      <a :href="`tg://msg_url?url=${link}/`" v-show="showShare">
+      <a :href="`tg://resolve?domain=${data.telegram.split('/').slice(-1)[0]}`" v-show="showShare" v-if="data.telegram">
         <img src="~/static/pics/global/svg/telegram-side.svg">
       </a>
     </transition>

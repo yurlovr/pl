@@ -51,6 +51,10 @@
   font-display: swap;
 }
 
+body {
+  -webkit-overflow-scrolling: touch;
+}
+
 html,
 body,
 #__nuxt,
@@ -289,7 +293,7 @@ input {
 
   &__bottom {
     position: absolute;
-    bottom: 0;
+    top: 100%;
     background: white;
     border: 1px solid #228596;
     border-top: none;
@@ -301,7 +305,7 @@ input {
     max-height: 200px;
     overflow-y: auto;
     //-webkit-transform: translate3d(0, 100%, 0);
-    //-webkit-overflow-scrolling: touch;
+
 
     &__item {
       padding: 5px 20px;
@@ -5461,6 +5465,14 @@ input {
     }
   }
 }
+
+.map__img {
+  width: 292px;
+  height: 180px;
+  object-fit: cover;
+  border-radius: 12px;
+}
+
 
 // after 1230px
 // beh is breaking, so making it smaller just like in the TABLET version

@@ -11,7 +11,7 @@
               <img v-lazy-load :data-src="person.pic" class="beach-page__opinions__people__pic">
               <a :href="person.social" target="_blank" class="beach-page__opinions__people__vk"
                  v-if="person.social"><img
-                src="~/static/pics/beach/vk.svg"></a>
+                :src="require(`~/static/pics/beach/${person.icon}.svg`)"></a>
             </div>
             <span class="span-16-px cut-text flex-shrink-0"
                   v-html="person.name.length <=20 &&  person.name.includes(' ')?  person.name.replace(' ', '<br>') :
@@ -56,6 +56,7 @@
     props: ['data'],
 
     beforeMount() {
+      console.log('ddddd', this.data);
       if (process.browser) {
         require('swiper/dist/css/swiper.css');
         const VueAwesomeSwiper = require('vue-awesome-swiper/dist/ssr');
