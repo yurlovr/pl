@@ -51,6 +51,10 @@
   font-display: swap;
 }
 
+body {
+  -webkit-overflow-scrolling: touch;
+}
+
 html,
 body,
 #__nuxt,
@@ -289,7 +293,7 @@ input {
 
   &__bottom {
     position: absolute;
-    bottom: 0;
+    top: 100%;
     background: white;
     border: 1px solid #228596;
     border-top: none;
@@ -300,8 +304,8 @@ input {
     padding: 5px 0;
     max-height: 200px;
     overflow-y: auto;
-    -webkit-transform: translate3d(0, 100%, 0);
-    //-webkit-overflow-scrolling: touch;
+    //-webkit-transform: translate3d(0, 100%, 0);
+
 
     &__item {
       padding: 5px 20px;
