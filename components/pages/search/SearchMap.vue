@@ -81,7 +81,7 @@
                             // objectManager.objects.setObjectOptions(this.chosen, {
                             //     iconImageHref: '/pics/global/svg/map_beach_blue.svg'
                             // });
-                            this.chosen = -1;
+                            // this.chosen = -1;
                             console.log('unchoose')
                             this.map.balloon.close();
                         }
@@ -100,47 +100,28 @@
                                     });
                                 }
                             }
-                            if (window.innerWidth > 800) {
 
-                                if (e.get('type') == 'mousedown') {
-                                  console.log('click')
-                                    objectManager.objects.setObjectOptions(objectId, {
-                                        iconImageHref: '/pics/global/svg/map_beach_gold.svg'
-                                    });
-                                    this.$bus.$emit('scrollToCard', objectId);
-                                    this.chosen = objectId;
-                                }
-                                if (e.get('type') == 'mouseup') {
-                                  console.log('done unchoose')
-                                    this.$bus.$emit('closeModalAndUnscrollToCard');
-                                    // objectManager.objects.setObjectOptions(objectId, {
-                                    //     iconImageHref: '/pics/global/svg/map_beach_blue.svg'
-                                    // });
-                                    // setTimeout(() => {this.map.balloon.close();}, 1);
-                                    // this.chosen = -1;
-                                    return;
-                                }
-                            }
                             if (e.get('type') == 'click') {
-                                if (window.innerWidth <= 800) {
+                              console.warn('true click')
+                                // if (window.innerWidth <= 800) {
                                     if (this.chosen == objectId) {
                                         this.$bus.$emit('closeModalAndUnscrollToCard');
                                         setTimeout(() => {this.map.balloon.close();}, 1);
-                                        return;
                                     }
-
-                                    // if (this.chosen != -1) {
-                                    //     objectManager.objects.setObjectOptions(this.chosen, {
-                                    //         iconImageHref: '/pics/global/svg/map_beach_blue.svg'
-                                    //     });
-                                    // }
+                                    console.warn(this.chosen, 'this.chosen', objectId)
+                                    if (this.chosen != -1) {
+                                        objectManager.objects.setObjectOptions(this.chosen, {
+                                            iconImageHref: '/pics/global/svg/map_beach_blue.svg'
+                                        });
+                                    }
                                     this.chosen = objectId;
+                              console.warn(this.chosen, 'this.chosen after')
                                     objectManager.objects.setObjectOptions(this.chosen, {
                                         iconImageHref: '/pics/global/svg/map_beach_gold.svg'
                                     });
                                     this.$bus.$emit('scrollToCard', this.chosen);
                                     this.$bus.$emit('openModal', this.chosen);
-                                }
+                                // }
                             }
                         }
                         objectManager.objects.events.add(['mouseenter', 'mouseleave', 'mouseup', 'mousedown', 'click'], objectEvent);
