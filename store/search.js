@@ -58,14 +58,6 @@ export const state = () => ({
             title: 'Стоимость',
             id: -1
           },
-          {
-            title: 'Платно',
-            id: 'paid'
-          },
-          {
-            title: 'Бесплатно',
-            id: 'free'
-          }
         ]
       },
       searchBeachLengthFrom: {
@@ -154,8 +146,16 @@ export const mutations = {
     if (state.init)
       return;
     state.init = true;
-
+    console.log(state.searchParams.selects.prices, 'payload')
     state.searchConfig = payload;
+    state.searchParams.selects.price.options = state.searchParams.selects.price.options.concat(payload.data.prices)
+
+    state.searchParams.selects.price.options.map(e => {
+      if (!e.title) {
+        e.title = e.name;
+      }
+      return e;
+    })
     // initializing the first row
     for (let i = 0; i < payload.data.cities.length; i++) {
       state.searchParams.selects.cities.options.push({
@@ -293,7 +293,7 @@ export const mutations = {
     }
   },
 
-  hoverAutocomplete(state, [index, value, field = 'hover']){
+  hoverAutocomplete(state, [index, value, field = 'hover']) {
     console.log(index, value, 'index, value', state.autocompleteResults)
     state.autocompleteResults[index][field] = value;
   },
@@ -328,7 +328,7 @@ export const mutations = {
       state.query += `mode=${state.searchParams.selects.modes.value.id}&`;
     }
     if (state.searchParams.selects.price.value.id != -1) {
-      state.query += `paid=${state.searchParams.selects.price.value.id}&`;
+      state.query += `price=${state.searchParams.selects.price.value.id}&`;
     }
     if (state.searchParams.selects.searchBeachLengthFrom.value.id != -1) {
       state.query += `lengthFrom=${state.searchParams.selects.searchBeachLengthFrom.value.id}&`;
