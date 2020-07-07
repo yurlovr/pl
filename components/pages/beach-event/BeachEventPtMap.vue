@@ -37,7 +37,7 @@
                 zoom: this.zoom,
                 controls: []
               });
-
+              this.map.behaviors.disable('scrollZoom');
               let beachIcon = maps.templateLayoutFactory.createClass(
                 `<div class="map__beach-icon">
                 <div class="map__beach-caption">${this.data.title}</div>
