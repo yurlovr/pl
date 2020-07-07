@@ -1,5 +1,5 @@
 <template>
-	<a :href="data.beachLink" @click.prevent="$bus.goTo(data.beachLink, $router)" class="search-page__map-area__card" v-if="data">
+	<a :href="data.humanLink || data.beachLink" @click.prevent="$bus.goTo(data.humanLink || data.beachLink, $router)" class="search-page__map-area__card" v-if="data">
 		<div class="search-page__map-area__card__pic-area">
 			<img v-lazy-load :data-src="data.pic">
 		</div>
