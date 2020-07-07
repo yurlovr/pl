@@ -79,7 +79,7 @@
                 zoom: this.data.pos ? 18 : 8,
                 controls: []
               });
-
+              this.map.behaviors.disable('scrollZoom');
               if (this.data.pos) {
                 // this.map.behaviors.disable('drag');
 
