@@ -35,7 +35,7 @@
               this.map = new maps.Map(document.getElementById('map-2'), {
                 center: this.data && this.data.pos ? this.data.pos : [44.50465522867475, 34.21493291965433],
                 zoom: this.zoom,
-                controls: []
+                controls: ['typeSelector'],
               });
               this.map.behaviors.disable('scrollZoom');
               let beachIcon = maps.templateLayoutFactory.createClass(
