@@ -1,5 +1,16 @@
 <template>
-  <div class="map" id="map-2"></div>
+  <div class="position-relative">
+    <div class="map__zoom-wrapper">
+      <button class="map__zoom map__zoom-plus">
+        <img  src="~/static/pics/global/svg/plus.svg">
+      </button>
+      <button class="map__zoom map__zoom-minus">
+        <img  src="~/static/pics/global/svg/minus.svg">
+      </button>
+    </div>
+    <div class="map" id="map-2"></div>
+  </div>
+
 </template>
 
 <script>
@@ -35,7 +46,21 @@
               this.map = new maps.Map(document.getElementById('map-2'), {
                 center: this.data && this.data.pos ? this.data.pos : [44.50465522867475, 34.21493291965433],
                 zoom: this.zoom,
-                controls: []
+                controls: ['typeSelector'],
+              });
+              this.map.behaviors.disable('scrollZoom');
+              this.$el.querySelector('.map__zoom-plus').addEventListener('click', () => {
+                if (this.zoom < 15) {
+                  this.zoom++;
+                  this.map.setZoom(this.zoom);
+                }
+              });
+
+              this.$el.querySelector('.map__zoom-minus').addEventListener('click', () => {
+                if (this.zoom > 0) {
+                  this.zoom--;
+                  this.map.setZoom(this.zoom);
+                }
               });
 
               let beachIcon = maps.templateLayoutFactory.createClass(

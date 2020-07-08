@@ -29,7 +29,7 @@
           </div>
         </div>-->
         <div class="position-absolute d-flex icon-group">
-          <div class="orange-cont bem-is-a-dead-methodology"  v-if="!isEvent">
+          <div class="orange-cont bem-is-a-dead-methodology" v-if="!isEvent">
             <img src="~/static/pics/global/svg/sert_beach.svg" alt="">
             <div class="right-tooltip text-center">
               <span>Аккредитация</span>
@@ -152,16 +152,27 @@
           <span class="slider-beach-event__modal__count"><span class="orange">{{ activeIndex+1 }}</span>/{{ data.pics.length }}</span>
         </div>
         <div class="slider-beach-event__modal__sides">
+          <CoolLightBox
+            :items="data.pics"
+            :index="index"
+            @close="index = null">
+          </CoolLightBox>
           <div class="slider-beach-event__modal__left">
             <div v-swiper:mySwiperModal="swiperOption">
               <div class="swiper-wrapper">
                 <div class="swiper-slide" v-for="(pic, i) in data.pics" :key="i">
-                  <img v-lazy-load :data-src="pic" v-if="!pic.includes('youtube')">
-                  <div v-else class="w-100 h-100 y-block">
-                    <!--                    active in modal-->
-                    <no-ssr>
-                      <video-youtube :key="i+'gui-modal'" :url="pic" :reference="'model'+i" :modal="true"/>
-                    </no-ssr>
+                  <div class="position-relative">
+                    <button class="position-absolute full-size-btn" @click="index = i" v-if="!pic.includes('youtube')"
+                    >
+                      <img src="~/static/pics/global/svg/zoom.svg">
+                    </button>
+                    <img v-lazy-load :data-src="pic" v-if="!pic.includes('youtube')">
+                    <div v-else class="w-100 h-100 y-block">
+                      <!--                    active in modal-->
+                      <no-ssr>
+                        <video-youtube :key="i+'gui-modal'" :url="pic" :reference="'model'+i" :modal="true"/>
+                      </no-ssr>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -200,6 +211,7 @@
                 </div>
               </div>
             </div>
+
             <button class="slider__arrow-left" :style="{ display: showLeft ? '' : 'none' }"
                     @click="mySwiperModal.slidePrev()">
               <img src="~/static/pics/global/svg/slider_arrow_left.svg" alt="Налево">
@@ -210,6 +222,7 @@
             </button>
           </div>
         </div>
+
       </div>
     </div>
   </div>
@@ -219,11 +232,14 @@
   import Vue from 'vue';
   import VideoYoutube from '../beach/video-tube'
   import {getIdFromUrl} from 'vue-youtube';
+  import CoolLightBox from 'vue-cool-lightbox'
+  import 'vue-cool-lightbox/dist/vue-cool-lightbox.min.css'
 
   export default {
     props: ['data'],
     components: {
-      VideoYoutube
+      VideoYoutube,
+      CoolLightBox,
     },
 
     beforeMount() {
@@ -250,6 +266,7 @@
 
     data() {
       return {
+        index: null,
         mobile: 1024,
         swiperOption: {
           spaceBetween: 20,
@@ -317,6 +334,13 @@
     },
 
     methods: {
+      showPhotoSwipe(index) {
+        this.isOpen = true
+        this.$set(this.optionsGallery, 'index', index)
+      },
+      hidePhotoSwipe() {
+        this.isOpen = false
+      },
       openCamera(url) {
         window.open(url, '_blank');
       },

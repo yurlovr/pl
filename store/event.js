@@ -60,8 +60,8 @@ export const getters = {
         let dataAndTimeTransform = (from, to, part = 'date') =>{
           let result = null
           if (part === 'date'){
-            let _from = from ?  moment(from, 'YYYY-MM-DD HH:mm:ss').format('D MMMM') : null,
-              _to = to ? moment(to, 'YYYY-MM-DD HH:mm:ss').format('D MMMM') : null;
+            let _from = from ?  moment(from, 'DD-MM-YYYY HH:mm:ss').format('D MMMM') : null,
+              _to = to ? moment(to, 'DD-MM-YYYY HH:mm:ss').format('D MMMM') : null;
             result = to && from ? (_from + ' - ' + _to) : (_to || _from);
           } else {
             let _from = from ?  moment(from, 'YYYY-MM-DD HH:mm:ss').format('HH:mm') : null,

@@ -18,7 +18,7 @@
       <div class="custom-card__temp-area" v-if="data.tempWater != undefined && showTemp != false">
         <img src="~/static/pics/global/svg/temper_big.svg" alt="Температура" class="big">
         <img src="~/static/pics/global/svg/temper_small.svg" alt="Температура" class="small">
-        <span class="custom-card__temp">{{ (data.tempWater > 0 ? '+ ' : '') + (data.tempWater < 0 ? '- ' : '' ) + data.tempWater }}</span>
+        <span class="custom-card__temp">{{ (data.tempWater > 0 ? '+ ' : '') + (data.tempWater < 0 ? '' : '' ) + data.tempWater }}</span>
         <span class="custom-card__temp-o"><span>o</span></span>
         <span class="custom-card__temp-C">C</span>
       </div>
@@ -51,13 +51,17 @@
            class="custom-card__title"
            @click.prevent="$bus.goTo( data.humanLink ? data.humanLink : ( data.mainLink ? data.mainLink : '#'), $router)"
            :style="{ 'font-size': data.beach ? '18px' : '20px' }">
-          <v-clamp autoresize :max-lines="max" v-html="data.title"></v-clamp>
+          <no-ssr>
+            <v-clamp autoresize :max-lines="max" v-html="data.title"></v-clamp>
+          </no-ssr>
         </a>
         <a v-else :href="data.internal_url"
            target="_blank"
            class="custom-card__title"
            :style="{ 'font-size': data.beach ? '18px' : '20px' }">
-          <v-clamp autoresize :max-lines="max">{{data.title}}</v-clamp>
+          <no-ssr>
+            <v-clamp autoresize :max-lines="max" v-html="data.title"></v-clamp>
+          </no-ssr>
         </a>
       </div>
       <div class="custom-card__subtitle-area">
