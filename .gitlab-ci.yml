@@ -48,7 +48,6 @@ stages:
     
     
 build develop:
-  extends: 
   extends:
     - .build_template
     - .develop_environment
@@ -63,9 +62,9 @@ deploy develop:
     PORT: 3000
   only:
     - develop
-
+  needs: ["build_develop"]
+  
 build master:
-  extends: 
   extends:
     - .build_template
     - .master_environment
@@ -80,3 +79,4 @@ deploy master:
     PORT: 3001
   only:
     - master
+  needs: ["build_master"]
