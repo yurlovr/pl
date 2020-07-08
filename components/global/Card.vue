@@ -18,7 +18,7 @@
       <div class="custom-card__temp-area" v-if="data.tempWater != undefined && showTemp != false">
         <img src="~/static/pics/global/svg/temper_big.svg" alt="Температура" class="big">
         <img src="~/static/pics/global/svg/temper_small.svg" alt="Температура" class="small">
-        <span class="custom-card__temp">{{ (data.tempWater > 0 ? '+ ' : '') + (data.tempWater < 0 ? '- ' : '' ) + data.tempWater }}</span>
+        <span class="custom-card__temp">{{ (data.tempWater > 0 ? '+ ' : '') + (data.tempWater < 0 ? '' : '' ) + data.tempWater }}</span>
         <span class="custom-card__temp-o"><span>o</span></span>
         <span class="custom-card__temp-C">C</span>
       </div>
