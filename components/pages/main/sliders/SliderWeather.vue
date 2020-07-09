@@ -65,9 +65,11 @@
 					init: false,
 					breakpoints: {
 						900: {
-							slidesPerView: 5,
+              spaceBetween: 20,
+							slidesPerView: 5
 						},
 						780: {
+              spaceBetween: 30,
 							slidesPerView: 4
 						},
 						660: {
