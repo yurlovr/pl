@@ -65,11 +65,11 @@
 					init: false,
 					breakpoints: {
 						900: {
-              spaceBetween: 20,
+              spaceBetween: 50,
 							slidesPerView: 5
 						},
 						780: {
-              spaceBetween: 30,
+              spaceBetween: 70,
 							slidesPerView: 4
 						},
 						660: {
