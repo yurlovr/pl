@@ -162,10 +162,10 @@
               <div class="swiper-wrapper">
                 <div class="swiper-slide" v-for="(pic, i) in data.pics" :key="i">
                   <div class="position-relative">
-                    <button class="position-absolute full-size-btn" @click="index = i" v-if="!pic.includes('youtube')"
-                    >
-                      <img src="~/static/pics/global/svg/zoom.svg">
-                    </button>
+<!--                    <button class="position-absolute full-size-btn" @click="index = i" v-if="!pic.includes('youtube')"-->
+<!--                    >-->
+<!--                      <img src="~/static/pics/global/svg/zoom.svg">-->
+<!--                    </button>-->
                     <img v-lazy-load :data-src="pic" v-if="!pic.includes('youtube')">
                     <div v-else class="w-100 h-100 y-block">
                       <!--                    active in modal-->
