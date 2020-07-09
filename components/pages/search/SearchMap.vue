@@ -167,7 +167,7 @@
                                                 <img src="/pics/global/svg/star.svg" alt="Рейтинг">
                                                 <span>${filteredBeaches[i].rating.toFixed(1)}</span>
                                             </span>
-                                            <a href="/beach/${filteredBeaches[i].humanLink||  filteredBeaches[i].beachId}" class="map-popup__title">${filteredBeaches[i].title}</a>
+                                            <a href="${filteredBeaches[i].humanLink||  filteredBeaches[i].beachId}" class="map-popup__title">${filteredBeaches[i].title}</a>
                                             <h5 class="map-popup__location">${filteredBeaches[i].location}</h5>
                                         </div>
                                     </div>

@@ -2,82 +2,82 @@ import moment from 'moment';
 moment.locale('ru');
 
 export const state = () => ({
-    event: [],
-    reviews: [],
-    visitorPics: [],
-    announcementData: null,
-    any_places: [],
+  event: [],
+  reviews: [],
+  visitorPics: [],
+  announcementData: null,
+  any_places: [],
 })
 
 export const mutations = {
-    SET_ANY_PLACES: (state, data) => {
+  SET_ANY_PLACES: (state, data) => {
     state.any_places = data
   },
-    SET_EVENT: (state, payload) => {
-        state.event = payload;
-    },
+  SET_EVENT: (state, payload) => {
+    state.event = payload;
+  },
 
-    SET_REVIEWS: (state, payload) => {
-        state.reviews = payload;
-    },
+  SET_REVIEWS: (state, payload) => {
+    state.reviews = payload;
+  },
 
-    SET_VISITOR_PICS: (state, payload) => {
-        state.visitorPics = payload;
-    },
+  SET_VISITOR_PICS: (state, payload) => {
+    state.visitorPics = payload;
+  },
 
-    SET_ANNOUNCEMENT_DATA: (state, payload) => {
-        state.announcementData = payload;
-    }
+  SET_ANNOUNCEMENT_DATA: (state, payload) => {
+    state.announcementData = payload;
+  }
 }
 
 export const actions = {
-    async getEvent({commit, state}, id) {
-        let error;
-        commit('SET_EVENT', await this.$axios.$get(`/event/item?id=${id}`).catch(e => {
-            console.error(e);
-            error = 404;
-            return {};
-        }));
-        if (error) return error;
+  async getEvent({commit, state}, id) {
+    let error;
+    commit('SET_EVENT', await this.$axios.$get(`/event/item?id=${id}`).catch(e => {
+      console.error(e);
+      error = 404;
+      return {};
+    }));
+    if (error) return error;
 
-        let event_id = state.event.data.item.ID
-        commit('SET_REVIEWS', await this.$axios.$get(`/review/list?entityId=${event_id}&count=9999`));
-        commit('SET_VISITOR_PICS', await this.$axios.$get(`/socialPhoto/list?entityId=${event_id}&count=10`));
-        commit('SET_ANNOUNCEMENT_DATA', await this.$axios.$get(`/banner/list?page=/event`));
-        commit('SET_ANY_PLACES', await this.$axios.$get('/hotel/list?count=9999'));
-    }
+    let event_id = state.event.data.item.ID
+    commit('SET_REVIEWS', await this.$axios.$get(`/review/list?entityId=${event_id}&count=9999`));
+    commit('SET_VISITOR_PICS', await this.$axios.$get(`/socialPhoto/list?entityId=${event_id}&count=10`));
+    commit('SET_ANNOUNCEMENT_DATA', await this.$axios.$get(`/banner/list?page=/event`));
+    commit('SET_ANY_PLACES', await this.$axios.$get('/hotel/list?count=9999'));
+  }
 }
 
 export const getters = {
-    eventData: (state, getters, rootState) => {
-        if (!state.event.data) return {
-            hugeSliderData: {},
-            mainData: {},
-            about: [],
-            sideMapData: {},
-            ptData: {}
-        };
-        let dataAndTimeTransform = (from, to, part = 'date') =>{
-          let result = null
-          if (part === 'date'){
-            let _from = from ?  moment(from, 'DD-MM-YYYY HH:mm:ss').format('D MMMM') : null,
-              _to = to ? moment(to, 'DD-MM-YYYY HH:mm:ss').format('D MMMM') : null;
-            result = to && from ? (_from + ' - ' + _to) : (_to || _from);
-          } else {
-            let _from = from ?  moment(from, 'YYYY-MM-DD HH:mm:ss').format('HH:mm') : null,
-              _to = to ? moment(to, 'YYYY-MM-DD HH:mm:ss').format('HH:mm') : null;
-            result = to && from ? (_from + ' - ' + _to) : (_to || _from);
-          }
-          return result;
-        }
-        let ret = {
-        	hugeSliderData: {
-        		title: state.event.data.item.NAME,
-                isBeachClosed: false,
-                pics: state.event.data.item.PHOTOS,
-                goldMedal: null,
-                blueMedal: null
-        	},
+  eventData: (state, getters, rootState) => {
+    if (!state.event.data) return {
+      hugeSliderData: {},
+      mainData: {},
+      about: [],
+      sideMapData: {},
+      ptData: {}
+    };
+    let dataAndTimeTransform = (from, to, part = 'date') =>{
+      let result = null
+      if (part === 'date'){
+        let _from = from ?  moment(from, 'DD-MM-YYYY HH:mm:ss').format('D MMMM') : null,
+          _to = to ? moment(to, 'DD-MM-YYYY HH:mm:ss').format('D MMMM') : null;
+        result = to && from ? (_from + ' - ' + _to) : (_to || _from);
+      } else {
+        let _from = from ?  moment(from, 'YYYY-MM-DD HH:mm:ss').format('HH:mm') : null,
+          _to = to ? moment(to, 'YYYY-MM-DD HH:mm:ss').format('HH:mm') : null;
+        result = to && from ? (_from + ' - ' + _to) : (_to || _from);
+      }
+      return result;
+    }
+    let ret = {
+      hugeSliderData: {
+        title: state.event.data.item.NAME,
+        isBeachClosed: false,
+        pics: state.event.data.item.PHOTOS,
+        goldMedal: null,
+        blueMedal: null
+      },
 
         	mainData: {
                 title: state.event.data.item.NAME,

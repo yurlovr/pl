@@ -161,9 +161,7 @@
               for (let i = 0; i < this.data.parkings.auto.length; i++) {
                 balloonLayout = maps.templateLayoutFactory.createClass(`
                   <div class="map-popup map-popup--top map-pt__popup">
-                    <h3 class="map-pt__popup__title">
                       ${this.data.parkings.auto[i].title}
-                    </h3>
                     <span class="map-pt__popup__info">
                       ${this.data.parkings.auto[i].type}
                     </span>
@@ -277,9 +275,9 @@
               for (let i = 0; i < this.data.parkings.bus.length; i++) {
                 balloonLayout = maps.templateLayoutFactory.createClass(`
                   <div class="map-popup map-popup--top map-pt__popup">
-                    <h3 class="map-pt__popup__title">
+                    <div>
                       Остановка общественного транспорта
-                    </h3>
+                    </div>
                     <span class="map-pt__popup__info">
                       Автобусы:
                     </span>
