@@ -1,6 +1,14 @@
 <template>
   <div class="beach-event__map-weather">
     <div class="beach-event__map-weather__map-card">
+      <div class="map__zoom-wrapper">
+        <button class="map__zoom map__zoom-plus">
+          <img  src="~/static/pics/global/svg/plus.svg">
+        </button>
+        <button class="map__zoom map__zoom-minus">
+          <img  src="~/static/pics/global/svg/minus.svg">
+        </button>
+      </div>
       <div class="map"></div>
       <div class="beach-event__map-weather__map-card__button-area" v-if="data.pos">
         <a target="_blank" :href="`https://yandex.ru/maps/?pt=${data.pos[1]}%2C${data.pos[0]}&z=18`"
@@ -56,7 +64,8 @@
 
     data() {
       return {
-        map: null
+        map: null,
+        zoom: null,
       }
     },
 
@@ -70,16 +79,31 @@
         })
       },
       initMap() {
+            this.zoom = this.data.pos ? 18 : 8
         setTimeout(() => {
           ymaps
             .load()
             .then(maps => {
               this.map = new maps.Map(this.$el.getElementsByClassName('map')[0], {
                 center: this.data.pos || [44.50465522867475, 34.21493291965433],
-                zoom: this.data.pos ? 18 : 8,
+                zoom:  this.zoom,
                 controls: []
               });
               this.map.behaviors.disable('scrollZoom');
+
+              this.$el.querySelector('.map__zoom-plus').addEventListener('click', () => {
+                if (this.zoom < 15) {
+                  this.zoom++;
+                  this.map.setZoom(this.zoom);
+                }
+              });
+
+              this.$el.querySelector('.map__zoom-minus').addEventListener('click', () => {
+                if (this.zoom > 0) {
+                  this.zoom--;
+                  this.map.setZoom(this.zoom);
+                }
+              });
               if (this.data.pos) {
                 // this.map.behaviors.disable('drag');
 

@@ -14,12 +14,12 @@
 					</div>
 					<div class="slider-weather__slide__info-area">
 						<div class="slider-weather__slide__temp slider-weather__part__info">
-							<span class="slider-weather__slide__temp-number">{{ (slide.airTemperature > 0 ? '+ ' : '') + (slide.airTemperature < 0 ? '- ' : '') + slide.airTemperature }}</span>
+							<span class="slider-weather__slide__temp-number">{{ (slide.airTemperature > 0 ? '+ ' : '') + slide.airTemperature }}</span>
 							<span class="slider-weather__slide__temp-o"><span>o</span></span>
 							<span class="slider-weather__slide__temp-C">C</span>
 						</div>
 						<div class="slider-weather__slide__temp slider-weather__part__info">
-							<span class="slider-weather__slide__temp-number">{{ (slide.waterTemperature > 0 ? '+ ' : '') + (slide.waterTemperature < 0 ? '- ' : '') + slide.waterTemperature }}</span>
+							<span class="slider-weather__slide__temp-number">{{ (slide.waterTemperature > 0 ? '+ ' : '') + slide.waterTemperature }}</span>
 							<span class="slider-weather__slide__temp-o"><span>o</span></span>
 							<span class="slider-weather__slide__temp-C">C</span>
 						</div>
@@ -65,9 +65,11 @@
 					init: false,
 					breakpoints: {
 						900: {
-							slidesPerView: 5,
+              spaceBetween: 50,
+							slidesPerView: 5
 						},
 						780: {
+              spaceBetween: 70,
 							slidesPerView: 4
 						},
 						660: {

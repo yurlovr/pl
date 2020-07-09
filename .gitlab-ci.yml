@@ -47,15 +47,14 @@ stages:
     # - ssh_run $SSH_PARAMS "$SSH_PRIVATE_KEY" "docker image prune -f" || true   
     
     
-build develop:
-  extends: 
+build_develop:
   extends:
     - .build_template
     - .develop_environment
   only:
     - develop
 
-deploy develop:
+deploy_develop:
   extends: 
     - .deploy_template
     - .develop_environment
@@ -63,16 +62,16 @@ deploy develop:
     PORT: 3000
   only:
     - develop
+  needs: ["build_develop"]
 
-build master:
-  extends: 
+build_master:
   extends:
     - .build_template
     - .master_environment
   only:
     - master
 
-deploy master:
+deploy_master:
   extends: 
     - .deploy_template
     - .master_environment
@@ -80,3 +79,4 @@ deploy master:
     PORT: 3001
   only:
     - master
+  needs: ["build_master"]

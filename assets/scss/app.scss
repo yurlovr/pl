@@ -1517,7 +1517,7 @@ input {
 
     .custom-card {
       &__pic {
-        height: 300px;
+        height: 340px;
       }
     }
 
@@ -2206,7 +2206,7 @@ input {
 
     &__item {
       display: flex;
-      align-items: flex-start;
+      align-items: center;
       flex-direction: column;
       padding-right: 20px;
       width: 20%;
@@ -2236,6 +2236,7 @@ input {
         font-size: 14px;
         line-height: 120%;
         color: #242934;
+        text-align: center;
       }
 
       &s {
@@ -3715,7 +3716,7 @@ input {
   &__price {
     margin-top: 5px;
     font-size: 14px !important;
-    font-weight: 700;
+    font-weight: 500;
     line-height: 17px;
     color: #115c91 !important;
   }
@@ -9680,4 +9681,18 @@ body.touch {
   width: 20px !important;
   height: 20px !important;
   margin: 0 9px !important;
+}
+.full-size-btn {
+  bottom: 20px;
+  right: 20px;
+  background: transparent;
+  box-shadow: none;
+  border: unset;
+}
+.see-all--orange {
+  color: #FCAB2D !important;
+
+  &:hover {
+    color: #9ea6ae !important;
+  }
 }
