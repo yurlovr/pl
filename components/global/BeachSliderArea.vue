@@ -8,7 +8,7 @@
            class="main-page__section__subtitle-area__see-all">
           <span>Смотреть все ({{ data.beachNumber }})</span>
         </a>
-        <a v-else :href="outlink" target="_blank" class="main-page__section__subtitle-area__see-all">
+        <a v-else :href="outlink" target="_blank" class="main-page__section__subtitle-area__see-all see-all--orange">
           <span>Смотреть все ({{ data.beachNumber }})</span>
         </a>
       </div>
