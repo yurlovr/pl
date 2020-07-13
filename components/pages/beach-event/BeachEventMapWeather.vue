@@ -87,7 +87,7 @@
               this.map = new maps.Map(this.$el.getElementsByClassName('map')[0], {
                 center: this.data.pos || [44.50465522867475, 34.21493291965433],
                 zoom:  this.zoom,
-                controls: []
+                controls: ['typeSelector']
               });
               this.map.behaviors.disable('scrollZoom');
 

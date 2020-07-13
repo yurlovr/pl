@@ -40,7 +40,7 @@
                         this.map = new maps.Map(document.getElementById('map'), {
                           center: this.data.center[0],
                           zoom: this.zoom,
-                          controls: []
+                          controls: ['typeSelector']
                         });
                         this.map.behaviors.disable('scrollZoom');
 
