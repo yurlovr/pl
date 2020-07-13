@@ -74,7 +74,7 @@ export default {
   gtm: {
     dev: true,
 
-    id: 'GTM-T7SKSV7',
+    id: 'UA-163797304-1',
     layer: 'dataLayer',
     variables: {},
 
