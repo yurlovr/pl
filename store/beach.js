@@ -80,6 +80,7 @@ export const actions = {
             tagsCount += state.beach.data.item.TAGS.length;
         if (state.beach.data.item.ADD_TAGS)
             tagsCount += state.beach.data.item.ADD_TAGS.length;
+
         if (tagsCount >= 3) {
             tags = '&';
             for (let i = 0; i < state.beach.data.item.TAGS.length; i++)
