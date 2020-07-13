@@ -80,12 +80,13 @@ export const actions = {
             tagsCount += state.beach.data.item.TAGS.length;
         if (state.beach.data.item.ADD_TAGS)
             tagsCount += state.beach.data.item.ADD_TAGS.length;
+
         if (tagsCount >= 3) {
             tags = '&';
             for (let i = 0; i < state.beach.data.item.TAGS.length; i++)
                 tags += `tags[]=${state.beach.data.item.TAGS[i].ID}&`;
             commit('SET_TAGS', tags);
-            // commit('SET_SIMILAR_BEACHES', await this.$axios.$get(`/beach/list?city=${state.beach.data.item.CITY.ID}${state.tags.slice(0, -1)}`));
+            commit('SET_SIMILAR_BEACHES', await this.$axios.$get(`/beach/list?city=${state.beach.data.item.CITY.ID}${state.tags.slice(0, -1)}`));
         }
     }
 }

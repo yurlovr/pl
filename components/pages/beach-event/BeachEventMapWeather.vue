@@ -32,7 +32,7 @@
             <span>Температура<br>воздуха</span>
           </div>
           <div class="beach-event__map-weather__weather-card__temp-area__item__right">
-            <span class="slider-weather__slide__temp-number">{{ (data.airTemp > 0 ? '+ ' : '') + (data.airTemp < 0 ? '- ' : '') + data.airTemp }}</span>
+            <span class="slider-weather__slide__temp-number">{{ (data.airTemp > 0 ? '+ ' : '') + (data.airTemp < 0 ? '' : '') + data.airTemp }}</span>
             <span class="slider-weather__slide__temp-o beach-event__map-weather__weather-card__temp-area__temp-o"><span>o</span></span>
             <span
               class="slider-weather__slide__temp-C beach-event__map-weather__weather-card__temp-area__temp-C">C</span>
@@ -45,7 +45,7 @@
           </div>
           <div class="beach-event__map-weather__weather-card__temp-area__item__right">
             <span
-              class="slider-weather__slide__temp-number beach-event__map-weather__weather-card__temp-area__temp-number">{{ (data.waterTemp > 0 ? '+ ' : '') + (data.waterTemp < 0 ? '- ' : '') + data.waterTemp }}</span>
+              class="slider-weather__slide__temp-number beach-event__map-weather__weather-card__temp-area__temp-number">{{ (data.waterTemp > 0 ? '+ ' : '') + (data.waterTemp < 0 ? '' : '') + data.waterTemp }}</span>
             <span class="slider-weather__slide__temp-o beach-event__map-weather__weather-card__temp-area__temp-o"><span>o</span></span>
             <span
               class="slider-weather__slide__temp-C beach-event__map-weather__weather-card__temp-area__temp-C">C</span>
