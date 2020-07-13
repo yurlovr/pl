@@ -1,5 +1,10 @@
 <template>
   <div id="content">
+    <script type="text/javascript">!function(){var t=document.createElement("script");t.type="text/javascript",t.async=!0,t.src="https://vk.com/js/api/openapi.js?168",t.onload=function()
+
+    {VK.Retargeting.Init("VK-RTRG-505686-cbKtO"),VK.Retargeting.Hit()}
+      ,document.head.appendChild(t)}();</script><noscript><img src="https://vk.com/rtrg?p=VK-RTRG-505686-cbKtO" style="position:fixed; left:-999px;" alt=""/></noscript>
+
     <PageTransitioner />
     <Preloader />
     <Header />
@@ -55,9 +60,22 @@
         this.last_coordinates = coords
         this.choose_position = state
       })
+
     },
 
     mounted() {
+      // let scr = document.createElement('script')
+      // scr.type = 'text/javascript';
+      // scr.innerHTML ='!function(){var t=document.createElement("script");t.type="text/javascript",t.async=!0,t.src="https://vk.com/js/api/openapi.js?168",t.onload=function()\n' +
+      //   '\n' +
+      //   '{VK.Retargeting.Init("VK-RTRG-505686-cbKtO"),VK.Retargeting.Hit()}\n' +
+      //   ',document.head.appendChild(t)}();';
+      // let noscr = document.createElement('noscript')
+      // noscr.innerHTML = '<img src="https://vk.com/rtrg?p=VK-RTRG-505686-cbKtO" style="position:fixed; left:-999px;" alt=""/>'
+      // document.head.appendChild(scr);
+      // document.head.appendChild(noscr);
+
+
       if (process.client && window) {
         window.history.scrollRestoration = 'manual';
       }
