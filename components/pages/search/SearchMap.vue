@@ -47,7 +47,7 @@
                                 }) / filteredBeaches.length
                           ]) : filteredBeaches[0].pos,
                           zoom: this.zoom,
-                          controls: []
+                          controls: ['typeSelector']
                         });
                         this.map.behaviors.disable('scrollZoom');
 
