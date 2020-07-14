@@ -23,6 +23,8 @@
     <Banner :data="mainData.banners[0]" v-if="mainData.banners && mainData.banners[0]" class="banner-2" />
     <BeachType :data="mainData.chooseToYourWishes" v-if="mainData.chooseToYourWishes" />
     <Banner :data="mainData.banners[1]" :lastWordYellow="true" v-if="mainData.banners && mainData.banners[1]" class="banner-3" />
+    <MobileSettingsModal v-if="open_app && mainData.mobile_settings && mainData.mobile_settings.length > 0"
+                         :data="mainData.mobile_settings" @closeModal="(v) => {this.open_app = v}"/>
   </div>
 </template>
 
@@ -37,6 +39,7 @@ import BeachType from '~/components/pages/main/BeachType';
 import WeatherSliderArea from '~/components/pages/main/WeatherSliderArea';
 import DynamicSliderArea from '~/components/pages/main/DynamicSliderArea';
 import MapArea from '~/components/pages/main/MapArea';
+import MobileSettingsModal from '~/components/global/MobileSettingsModal';
 
 import { mapActions, mapGetters, mapMutations } from 'vuex';
 
@@ -51,11 +54,13 @@ export default {
     BeachType,
     WeatherSliderArea,
     DynamicSliderArea,
-    Banner
+    Banner,
+    MobileSettingsModal
   },
   data (){
     return{
-      meta: {}
+      meta: {},
+      open_app: false
     }
   },
 
@@ -77,6 +82,7 @@ export default {
    await this.$axios.$get('seo/meta?url='+this.$route.fullPath).then(res => {
      this.meta = res.data
    })
+   console.log('12345', this.mainData.mobile_settings)
   },
 
   head(){
@@ -121,8 +127,10 @@ export default {
     onResize() {
       // correct the text for the mobile
       if (window.innerWidth <= 650) {
+        this.open_app = true;
         this.$bus.$emit('showCorrectSelectText');
       } else {
+        this.open_app = false;
         this.$bus.$emit('dontShowCorrectSelectText');
       }
     }
