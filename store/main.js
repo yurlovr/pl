@@ -188,7 +188,7 @@ export const getters = {
                             location: clusters[i][j].CITY ? clusters[i][j].CITY.NAME : null,
                             locationId: clusters[i][j].CITY ? clusters[i][j].CITY.ID : -1,
                             beachId: clusters[i][j].ID,
-                            pics: clusters[i][j].PHOTOS ? [ ...clusters[i][j].PHOTOS ] : null,
+                            pics: clusters[i][j].PHOTOS && clusters[i][j].PHOTOS.medium ? [ ...clusters[i][j].PHOTOS.medium ] : null,
                             showFavorite: true,
                             paid: clusters[i][j].PAID,
                             humanLink: clusters[i][j].CODE || clusters[i][j].ID
