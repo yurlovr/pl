@@ -1,9 +1,12 @@
 <template>
-	<div class="custom-new-select" :class="{ open: dropdownOpen }" v-on-clickaway="onBlur" v-if="options">
+	<div class="custom-new-select" :class="[{ open: dropdownOpen }, {'native-select' : city}]" v-on-clickaway="onBlur" v-if="options">
 		<div class="custom-new-select__top" @click="dropdownOpen = !dropdownOpen">
 			<span>{{ filteredTitle(title) }}</span>
 			<img  src="~/static/pics/global/svg/dropdown.svg">
 		</div>
+    <select name="citySelect" id="city-native" v-if="city" @change="x => choose(x.target.value)">
+      <option :value="i" v-for="(option, i) in options">{{filteredTitle(option.title)}}</option>
+    </select>
 		<div class="custom-new-select__bottom" v-show="dropdownOpen">
 			<div class="custom-new-select__bottom__item" v-for="(option, i) in options" @click="choose(i)">
 				<span>{{ filteredTitle(option.title) }}</span>
@@ -16,7 +19,7 @@
 import { directive as onClickaway } from 'vue-clickaway';
 
 export default {
-	props: ['options', 'value', 'param', 'opposite'],
+	props: ['options', 'value', 'param', 'opposite', 'city'],
 
 	directives: {
 		onClickaway: onClickaway,
@@ -45,6 +48,7 @@ export default {
 
 	methods: {
 		choose(i) {
+		  console.log(i, 'ooooo')
 			this.chosenIndex = i;
 			this.dropdownOpen = false;
 			this.$bus.$emit('updateSearchParam', { param: this.param, value: { title: this.options[i].title, id: this.options[i].id } });
