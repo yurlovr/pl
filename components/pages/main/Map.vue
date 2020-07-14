@@ -79,7 +79,7 @@
 
                         const closeBalloon = () => {
                             step2ObjectManager.objects.setObjectOptions(this.chosen, {
-                                iconImageHref: '/pics/global/svg/map_beach_blue.svg'
+                                iconImageHref: '/pics/global/svg/map_beach_72dpi.svg'
                             });
                             this.chosen = -1;
                             this.map.balloon.close();
@@ -115,7 +115,7 @@
                             } else if (e.get('type') == 'mouseleave') {
                                 if (objectId != this.chosen) {
                                     step2ObjectManager.objects.setObjectOptions(objectId, {
-                                        iconImageHref: '/pics/global/svg/map_beach_blue.svg'
+                                        iconImageHref: '/pics/global/svg/map_beach_72dpi.svg'
                                     });
                                 }
                             } else if (e.get('type') == 'click') {
@@ -123,7 +123,7 @@
                                 if (this.chosen != objectId) {
                                     if (this.chosen != -1) {
                                         step2ObjectManager.objects.setObjectOptions(this.chosen, {
-                                            iconImageHref: '/pics/global/svg/map_beach_blue.svg'
+                                            iconImageHref: '/pics/global/svg/map_beach_72dpi.svg'
                                         });
                                     }
                                     this.chosen = objectId;
@@ -256,7 +256,7 @@
                                         },
                                         options: {
                                             iconLayout: 'default#imageWithContent',
-                                            iconImageHref: '/pics/global/svg/map_beach_blue.svg',
+                                            iconImageHref: '/pics/global/svg/map_beach_72dpi.svg',
                                             iconContentLayout: iconStep2,
                                             iconImageSize: [40,53],
                                             iconImageOffset: [-18, -50],
@@ -289,7 +289,7 @@
                             this.step = 1;
                             setTimeout(() => this.onResize(), 1);
                             step2ObjectManager.objects.setObjectOptions(this.chosen, {
-                                iconImageHref: '/pics/global/svg/map_beach_blue.svg'
+                                iconImageHref: '/pics/global/svg/map_beach_72dpi.svg'
                             });
                             this.chosen = -1;
                             if (this.swiper)

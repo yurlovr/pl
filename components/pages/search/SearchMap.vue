@@ -96,7 +96,7 @@
                             if (e.get('type') == 'mouseleave') {
                                 if (objectId != this.chosen) {
                                     objectManager.objects.setObjectOptions(objectId, {
-                                        iconImageHref: '/pics/global/svg/map_beach_blue.svg'
+                                        iconImageHref: '/pics/global/svg/map_beach_72dpi.svg'
                                     });
                                 }
                             }
@@ -111,7 +111,7 @@
                                     console.warn(this.chosen, 'this.chosen', objectId)
                                     if (this.chosen != -1) {
                                         objectManager.objects.setObjectOptions(this.chosen, {
-                                            iconImageHref: '/pics/global/svg/map_beach_blue.svg'
+                                            iconImageHref: '/pics/global/svg/map_beach_72dpi.svg'
                                         });
                                     }
                                     this.chosen = objectId;
@@ -203,7 +203,7 @@
                                         },
                                         options: {
                                             iconLayout: 'default#imageWithContent',
-                                            iconImageHref: '/pics/global/svg/map_beach_blue.svg',
+                                            iconImageHref: '/pics/global/svg/map_beach_72dpi.svg',
                                             iconContentLayout: icon,
                                             iconImageSize: [40,53],
                                             iconImageOffset: [-18, -50],
