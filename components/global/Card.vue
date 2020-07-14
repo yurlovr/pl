@@ -67,7 +67,7 @@
       <div class="custom-card__subtitle-area">
         <a :href="data.beachLink ? data.beachLink : '#'"
            @click.prevent="$bus.goTo(data.beachLink ? data.beachLink : '#', $router)" class="custom-card__beach"
-           v-if="data.beach">{{ data.beach }}</a>
+           v-if="data.beach" v-html="data.beach"></a>
         <a v-if="!data.another_place" :href="`/search?city=${data.locationId}`" @click.prevent="searchCity()"
            class="custom-card__location"
            :style="{ 'font-size': data.beach ? '10px' : '12px' }">{{ data.location }}</a>

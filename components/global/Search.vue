@@ -37,7 +37,7 @@
               <div class="search__params__part__dropdowns-row" v-if="searchParams">
                 <div class="search__params__part__dropdowns">
                   <div class="search__params__part--dropdown search__params__part--dropdown--wider">
-                    <c-select :value="searchParams.selects.cities.value" :param="searchParams.selects.cities.param"
+                    <c-select :city="true" :value="searchParams.selects.cities.value" :param="searchParams.selects.cities.param"
                               :class="{ default : searchParams.selects.cities.value.id == searchParams.selects.cities.options[0].id }"
                               :options="searchParams.selects.cities.options">
                     </c-select>

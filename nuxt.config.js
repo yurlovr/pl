@@ -22,7 +22,7 @@ export default {
       rel: 'icon',
       type: 'image/x-icon',
       href: '/favicon.ico'
-    }]
+    }],
   },
   router: {
     base: '/',
@@ -74,7 +74,7 @@ export default {
   gtm: {
     dev: true,
 
-    id: 'GTM-T7SKSV7',
+    id: 'UA-163797304-1',
     layer: 'dataLayer',
     variables: {},
 

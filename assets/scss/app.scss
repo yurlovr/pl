@@ -9696,3 +9696,25 @@ body.touch {
     color: #9ea6ae !important;
   }
 }
+.native-select {
+  select {
+    display: none;
+  }
+   @media (max-width: 767px) {
+     .custom-new-select__bottom {
+       display: none;
+       opacity: 0;
+       visibility: hidden;
+     }
+     select {
+      position: absolute;
+       width: 100%;
+       top: 0;
+       bottom: 0;
+       right: 0;
+       left: 0;
+       opacity: .001;
+       display: block;
+     }
+   }
+}
