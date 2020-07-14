@@ -18,20 +18,33 @@
 						<img v-lazy-load :data-src="file == null ? 'pics/beach/upload.svg' : fileName">
 					</div>
 				</div>
-				<div class="beach-event__leave-review__modal__input-name-area">
+				<div class="beach-event__leave-review__modal__input-name-area input-name-area--20 ">
 					<span class="beach-event__leave-review__modal__part-title">Представьтесь</span>
 					<input class="beach-event__leave-review__modal__part-title" type="text" name="name" placeholder="Фамилия, имя, отчество" v-model="name">
 				</div>
+        <div class="beach-event__leave-review__modal__review-area">
+          <span class="beach-event__leave-review__modal__part-title">Оставьте отзыв</span>
+          <textarea maxlength="10000" placeholder="Введите текст" v-model="review"></textarea>
+        </div>
 				<div class="beach-event__leave-review__modal__ratings-area">
-					<span class="beach-event__leave-review__modal__part-title">Ваша оценка</span>
+					<span class="beach-event__leave-review__modal__part-title photo">Ваша оценка</span>
 					<div class="beach-event__leave-review__modal__ratings">
 						<Rating5Star class="beach-event__leave-review__modal__rating" v-model="rating.rating" :data="rating" v-for="(rating, i) in ratings" :key="i" />
 					</div>
 				</div>
-				<div class="beach-event__leave-review__modal__review-area">
-					<span class="beach-event__leave-review__modal__part-title">Оставьте отзыв</span>
-					<textarea maxlength="10000" placeholder="Введите текст" v-model="review"></textarea>
-				</div>
+        <div class="beach-event__leave-review__modal__ratings-area">
+          <span class="beach-event__leave-review__modal__part-title photo">Ваши фото</span>
+          <div class="beach-event__leave-review__modal__photos">
+              <div class="add-photo card-grid-photo" @click="choosePhotos">
+                <img src="~/static/pics/beach/plus.svg" alt="">
+              </div>
+            <div class="card-grid-photo card-photo">
+
+            </div>
+            <div class="card-grid-photo card-photo">
+            </div>
+          </div>
+        </div>
 				<div class="beach-event__leave-review__modal__send-button-area">
 					<button class="banner__card__info-area__button" @click="sendReview()" :disabled="error == false">
 						<span v-show="error == null && !addPic && !ratingsNotFilled && !noName && !noDescription">Отправить</span>
@@ -47,6 +60,7 @@
 			</div>
 		</div>
 		<input v-show="false" type="file" accept="image" name="image" @change="uploadImage" ref="imageLoader">
+		<input v-show="false" type="file" accept="image" name="image" multiple @change="uploadPhotos" ref="photoLoader">
 	</div>
 </template>
 
@@ -106,7 +120,19 @@
 			chooseImg() {
 				this.$refs.imageLoader.click();
 			},
-
+      choosePhotos() {
+        this.$refs.photoLoader.click();
+      },
+      uploadPhotos() {
+        if (this.$refs.photoLoader){
+          this.file = this.$refs.photoLoader.files;
+          const reader = new FileReader();
+          // reader.onload = (e) => {
+          //   this.fileName = e.target.result;
+          // }
+          // reader.readAsDataURL(this.$refs.imageLoader.files[0]);
+        } else console.error('Cannot find image loader (BeachEventLeaveReview)');
+      },
 			uploadImage() {
 				if (this.$refs.imageLoader){
 					this.file = this.$refs.imageLoader.files[0];

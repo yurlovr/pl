@@ -9718,3 +9718,35 @@ body.touch {
      }
    }
 }
+.input-name-area--20 {
+  margin-bottom: 20px;
+}
+.beach-event__leave-review__modal__part-title.photo {
+  font-style: normal;
+  font-weight: bold;
+  font-size: 24px;
+  line-height: 29px;
+  color: #393E48;
+}
+
+.card-grid-photo {
+  width: 90px;
+  height: 90px;
+  border-radius: 6px;
+  position: relative;
+  margin-right: 20px;
+}
+.add-photo {
+  border: 1px solid rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+.card-photo {
+  background: #115c91;
+}
+.beach-event__leave-review__modal__photos {
+  margin-top: 20px;
+  display: flex;
+}
