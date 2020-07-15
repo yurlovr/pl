@@ -6,7 +6,7 @@
     <Search class="main-page__welcome__search" labelId="1" />
     <BeachSliderArea class="main-page__popular-beaches" :data="mainData.beachesTop" v-if="mainData.beachesTop" />
     <Cities :data="mainData.citiesTop" v-if="mainData.citiesTop" />
-    <MapArea :data="mainData.map" v-if="mainData.map" />
+    <MapArea :data="mainData.map" :mapData="mainData.map_entity" v-if="mainData.map" />
     <Banner :data="mainData.banners[2]" v-if="mainData.banners && mainData.banners[2]" class="banner-1" />
     <div class="main-page__white-wrapper" v-if="mainData.familyRest">
       <BeachSliderArea :data="mainData.familyRest" class="main-page__family-rest" />
@@ -74,6 +74,7 @@ export default {
   },
 
  async created() {
+    this.mainData.map_entity = this.mapEntity;
     this.setGeoLocating(this.$cookies.get('geo_locating'));
     this.getMainPageData(() => {
       this.$bus.$emit('mainPageReady');
@@ -82,7 +83,6 @@ export default {
    await this.$axios.$get('seo/meta?url='+this.$route.fullPath).then(res => {
      this.meta = res.data
    })
-   console.log('12345', this.mainData.mobile_settings)
   },
 
   head(){
@@ -101,7 +101,8 @@ export default {
   },
 
   computed: {
-    ...mapGetters('main', ['mainData'])
+    ...mapGetters('main', ['mainData']),
+    ...mapGetters(['mapEntity']),
   },
 
   methods: {
