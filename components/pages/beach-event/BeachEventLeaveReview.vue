@@ -38,10 +38,15 @@
               <div class="add-photo card-grid-photo" @click="choosePhotos">
                 <img src="~/static/pics/beach/plus.svg" alt="">
               </div>
-            <div class="card-grid-photo card-photo">
+            <div class="card-grid-photo card-photo"
+                 :style="`background-image: url(${item})`"
+                 v-for="(item, index) in photoNames"
+                 :key="index + 'photo'"
+            >
+              <div class="delete-cross" @click="deletePhoto(index)">
+                <img src="~/static/pics/beach/cross.svg" alt="cross">
+              </div>
 
-            </div>
-            <div class="card-grid-photo card-photo">
             </div>
           </div>
         </div>
@@ -87,6 +92,8 @@
 				fileName: '',
 				name: '',
 				review: '',
+        photo: [],
+        photoNames: [],
 				ratings: [
 					{
 						title: 'Природа',
@@ -123,14 +130,29 @@
       choosePhotos() {
         this.$refs.photoLoader.click();
       },
-      uploadPhotos() {
+      deletePhoto(index) {
+			  this.photoNames.splice(index, 1)
+			  this.photo.splice(index, 1)
+      },
+      uploadPhotos(e) {
         if (this.$refs.photoLoader){
-          this.file = this.$refs.photoLoader.files;
-          const reader = new FileReader();
+          let loc_photo = this.$refs.photoLoader.files
+          for (let i=0; i < loc_photo.length; i++){
+            this.photo.push(loc_photo[i]);
+          }
           // reader.onload = (e) => {
-          //   this.fileName = e.target.result;
+          //   this.photoNames.push(e.target.result);
           // }
-          // reader.readAsDataURL(this.$refs.imageLoader.files[0]);
+          // console.log('this.$refs.imageLoader', e.target.files)
+          for( let i=0; i < this.$refs.photoLoader.files.length; i++ ) {
+            const reader = new FileReader();
+            reader.onload = (e) => {
+              this.$refs.photoLoader.files[i].src = e.result;
+              this.photoNames.push(e.target.result);
+            }
+            reader.readAsDataURL(this.photo[i]);
+          }
+
         } else console.error('Cannot find image loader (BeachEventLeaveReview)');
       },
 			uploadImage() {
@@ -179,6 +201,7 @@
 				data.set('rating[availability]', this.ratings[5].rating);
 				data.set('description', this.review);
 				data.append('photo', this.file);
+				data.append('photo[]', this.photo);
 
 				await this.$axios({
 					method: 'post',
