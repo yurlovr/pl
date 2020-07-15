@@ -16,15 +16,17 @@
                           class="beach-page__avg-rating__mobile"/>
           <BeachQuickData id="infra" :title="'Инфраструктура пляжа'" :data="beachData.infraData" action="service" :href="true"
                           v-if="beachData.infraData.length > 0"/>
-          <BeachEventMapWeather :data="beachData.sideMapWeatherData" class="beach-event__map-weather__tablet"/>
+          <BeachEventMapWeather :data="beachData.sideMapWeatherData" :mapData="beachData.map_entity" class="beach-event__map-weather__tablet"/>
           <BeachEventAbout id="about" :data="beachData.about" v-if="beachData.about && beachData.about.length > 1"
                            :title="'О пляже'"/>
-          <BeachEventMapWeather :data="beachData.sideMapWeatherData" v-if="beachData.sideMapWeatherData.pos.length > 0"
+          <BeachEventMapWeather :data="beachData.sideMapWeatherData" :mapData="beachData.map_entity"
+                                v-if="beachData.sideMapWeatherData.pos.length > 0"
                                 class="beach-event__map-weather__mobile"/>
           <BeachQuickData id="services" :title="'Услуги и аренда'" :data="beachData.servicesData" action="service"
                           v-if="beachData.servicesData.length > 0"/>
           <BeachEventParkingsTransport id="pt" :data="beachData.ptData"
                                        :additional="[...beachData.servicesData.filter(e => Array.isArray(e.pos)), ...beachData.infraData.filter(e => Array.isArray(e.pos))]"
+                                       :mapData="beachData.map_entity"
                                        v-if="beachData.ptData.parkings.auto.length > 0 || beachData.ptData.parkings.bus.length > 0"/>
           <BeachWaterTemperatureHistogram id="water-temp" v-if="beachData.waterHistogramData.length > 0"
                                           :data="beachData.waterHistogramData"/>
@@ -41,7 +43,8 @@
               <p class="m-0">Расстояние до пляжа <span>{{distance.toString().replace(/\./, ',')}} км</span></p>
             </div>
           <BeachAvgRating :data="beachData.avgRating" class="beach-page__avg-rating__desktop"/>
-          <BeachEventMapWeather :data="beachData.sideMapWeatherData" v-if="beachData.sideMapWeatherData.pos.length > 0"
+          <BeachEventMapWeather :data="beachData.sideMapWeatherData" :mapData="beachData.map_entity"
+                                v-if="beachData.sideMapWeatherData.pos.length > 0"
                                 class="beach-event__map-weather__desktop"/>
           <AnnouncementCard :data="beachData.announcementData" class="beach-page__announcement"/>
         </aside>
@@ -135,6 +138,7 @@
 
     computed: {
       ...mapGetters('beach', ['beachData']),
+      ...mapGetters(['mapEntity']),
       distance(){
         let {sideMapWeatherData:{pos}} = this.beachData;
         if (Object.values(this.last_coordinates).length && pos && pos.length){
@@ -151,6 +155,7 @@
       }
     },
    async created() {
+      this.beachData.map_entity = this.mapEntity;
       await this.$axios.$get('seo/meta?url=/beach/'+ this.beachData.mainData.beachId).then(res => {
         this.meta = res.data
       })
