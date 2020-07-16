@@ -51,6 +51,78 @@
               class="slider-weather__slide__temp-C beach-event__map-weather__weather-card__temp-area__temp-C">C</span>
           </div>
         </div>
+        <div class="beach-event__map-weather__weather-card__temp-area__item">
+          <div class="beach-event__map-weather__weather-card__temp-area__item__left">
+            <img src="~/static/pics/global/svg/cloudy-day.svg">
+            <span>Пасмурные<br>дни</span>
+          </div>
+          <div class="beach-event__map-weather__weather-card__temp-area__item__right">
+            <span
+              class="slider-weather__slide__temp-number beach-event__map-weather__weather-card__temp-area__temp-number">{{ (data.waterTemp > 0 ? '+ ' : '') + (data.waterTemp < 0 ? '' : '') + data.waterTemp }}</span>
+            <span class="slider-weather__slide__temp-o beach-event__map-weather__weather-card__temp-area__temp-o"><span>o</span></span>
+            <span
+              class="slider-weather__slide__temp-C beach-event__map-weather__weather-card__temp-area__temp-C">C</span>
+          </div>
+        </div>
+        <div class="beach-event__map-weather__weather-card__temp-area__item">
+          <div class="beach-event__map-weather__weather-card__temp-area__item__left">
+            <img src="~/static/pics/global/svg/wind-speed.svg">
+            <span>Скорость<br>ветра</span>
+          </div>
+          <div class="beach-event__map-weather__weather-card__temp-area__item__right">
+            <span
+              class="slider-weather__slide__temp-number beach-event__map-weather__weather-card__temp-area__temp-number">{{ (data.waterTemp > 0 ? '+ ' : '') + (data.waterTemp < 0 ? '' : '') + data.waterTemp }}</span>
+            <span class="slider-weather__slide__temp-o beach-event__map-weather__weather-card__temp-area__temp-o"><span>o</span></span>
+            <span
+              class="slider-weather__slide__temp-C beach-event__map-weather__weather-card__temp-area__temp-C">C</span>
+          </div>
+        </div>
+        <div class="beach-event__map-weather__weather-card__temp-area__item">
+          <div class="beach-event__map-weather__weather-card__temp-area__item__left">
+            <img src="~/static/pics/global/svg/precipitation-type.svg">
+            <span>Тип<br>осадков</span>
+          </div>
+          <div class="beach-event__map-weather__weather-card__temp-area__item__right">
+            <span
+              class="slider-weather__slide__temp-number beach-event__map-weather__weather-card__temp-area__temp-number">{{ (data.waterTemp > 0 ? '+ ' : '') + (data.waterTemp < 0 ? '' : '') + data.waterTemp }}</span>
+            <span class="slider-weather__slide__temp-o beach-event__map-weather__weather-card__temp-area__temp-o"><span>o</span></span>
+            <span
+              class="slider-weather__slide__temp-C beach-event__map-weather__weather-card__temp-area__temp-C">C</span>
+          </div>
+        </div>
+        <div class="beach-event__map-weather__weather-card__temp-area__item">
+          <div class="beach-event__map-weather__weather-card__temp-area__item__left">
+            <img src="~/static/pics/global/svg/wet.svg">
+            <span>Влажность<br>воздуха</span>
+          </div>
+          <div class="beach-event__map-weather__weather-card__temp-area__item__right">
+            <span
+              class="slider-weather__slide__temp-number beach-event__map-weather__weather-card__temp-area__temp-number">{{ (data.waterTemp > 0 ? '+ ' : '') + (data.waterTemp < 0 ? '' : '') + data.waterTemp }}</span>
+            <span class="slider-weather__slide__temp-o beach-event__map-weather__weather-card__temp-area__temp-o"><span>o</span></span>
+            <span
+              class="slider-weather__slide__temp-C beach-event__map-weather__weather-card__temp-area__temp-C">C</span>
+          </div>
+        </div>
+        <div class="beach-event__map-weather__weather-card__temp-area__item">
+          <div class="beach-event__map-weather__weather-card__temp-area__item__left">
+            <img src="~/static/pics/global/svg/sunrise-weather.svg">
+            <span>Время<br>рассвета</span>
+          </div>
+          <div class="beach-event__map-weather__weather-card__temp-area__item__right">
+        <span
+          class="slider-weather__slide__temp-number beach-event__map-weather__weather-card__temp-area__temp-number">{{data.sunriseTime}}</span>
+          </div>
+        </div>
+        <div class="beach-event__map-weather__weather-card__temp-area__item">
+          <div class="beach-event__map-weather__weather-card__temp-area__item__left">
+            <img src="~/static/pics/global/svg/sunset-weather.svg">
+            <span>Время<br>заката</span>
+          </div>
+          <div class="beach-event__map-weather__weather-card__temp-area__item__right">
+            <span
+              class="slider-weather__slide__temp-number beach-event__map-weather__weather-card__temp-area__temp-number">{{data.sunsetTime}}</span>
+          </div>
+        </div>
       </div>
     </div>
   </div>
