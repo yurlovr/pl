@@ -106,7 +106,7 @@
                     },
                     options: {
                       iconLayout: 'default#imageWithContent',
-                      iconImageHref: pic || '/pics/global/svg/map_beach_blue.svg',
+                      iconImageHref: pic || '/pics/global/svg/map_beach_72dpi.svg',
                       // iconContentLayout: icon,
                       iconImageSize: [30, 43],
                       minWidth: 200,
@@ -146,7 +146,7 @@
                   },
                   options: {
                     iconLayout: 'default#imageWithContent',
-                    iconImageHref: '/pics/global/svg/map_beach_blue.svg',
+                    iconImageHref: '/pics/global/svg/map_beach_72dpi.svg',
                     iconContentLayout: beachIcon,
                     iconImageSize: [30, 43],
                     iconImageOffset: [-18, -50]

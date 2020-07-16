@@ -15,7 +15,7 @@
 							<span>{{ beach.rating.toFixed(1) }}</span>
 						</div>
 						<a :href="`/beach/${beach.humanLink || beach.beachId}`" @click.prevent="$bus.goTo(`/beach/${beach.humanLink || beach.beachId}`, $router)">
-							<h3 class="map-beaches-main__card__title">{{ beach.title }}</h3>
+							<h3 class="map-beaches-main__card__title" v-html="beach.title"></h3>
 						</a>
 						<a :href="`/search?city=${beach.locationId}`" @click.prevent="searchCity(beach)">
 							<h5 class="map-beaches-main__card__location">{{ beach.location }}</h5>
@@ -40,7 +40,7 @@
 								<span>{{ beach.rating.toFixed(1) }}</span>
 							</div>
 							<a href="/" @click.prevent="$bus.goTo('/', $router)">
-								<h3 class="map-beaches-main__card__title">{{ beach.title }}</h3>
+								<h3 class="map-beaches-main__card__title" v-html="beach.title"></h3>
 							</a>
 							<a :href="`/search?city=${beach.locationId}`" @click.prevent="searchCity(beach)">
 								<h5 class="map-beaches-main__card__location">{{ beach.location }}</h5>
