@@ -216,7 +216,6 @@ export const getters = {
                 },
                 beachNumber: state.similarBeaches && state.similarBeaches.data ? Math.min(state.similarBeaches.data.list.filter(v => {
                   let count = 0;
-
                     if (v.TAGS) {
                       count += v.TAGS.length
                     }
