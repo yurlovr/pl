@@ -215,12 +215,16 @@ export const getters = {
                         state.beach.data.item.CITY.ID : -1}&fromBeach=${state.beach && state.beach.data && state.beach.data.item ? state.beach.data.item.ID : -1}`
                 },
                 beachNumber: state.similarBeaches && state.similarBeaches.data ? Math.min(state.similarBeaches.data.list.filter(v => {
+                  let count = 0;
+
                     if (v.TAGS) {
-                        if (v.TAGS.length < 3) return false;
+                      count += v.TAGS.length
                     }
+
                     if (v.ADD_TAGS) {
-                        if (v.ADD_TAGS.length < 3) return false;
+                      count += v.ADD_TAGS.length
                     }
+                    if (count < 3) return  false;
                     if (!v.TAGS && !v.ADD_TAGS) return false;
                     if (v.ID == state.beach.data.item.ID) return false;
                     return true;
