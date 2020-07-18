@@ -1,20 +1,18 @@
 <template>
   <div id="content">
-    <script type="text/javascript">!function(){var t=document.createElement("script");t.type="text/javascript",t.async=!0,t.src="https://vk.com/js/api/openapi.js?168",t.onload=function()
-
-    {VK.Retargeting.Init("VK-RTRG-505686-cbKtO"),VK.Retargeting.Hit()}
-      ,document.head.appendChild(t)}();</script><noscript><img src="https://vk.com/rtrg?p=VK-RTRG-505686-cbKtO" style="position:fixed; left:-999px;" alt=""/></noscript>
-
-    <PageTransitioner />
-    <Preloader />
-    <Header />
+    <PageTransitioner/>
+    <Preloader/>
+    <Header/>
     <transition
       @afterEnter="transitionEnd()"
-      >
-      <nuxt class="full-screen" />
+    >
+      <nuxt class="full-screen"/>
     </transition>
-    <div class="main-page__white-wrapper"><Footer /></div>
-    <search-popup v-if="choose_position" @close="choose_position = false" :coords="last_coordinates" @clean="last_coordinates = {}"></search-popup>
+    <div class="main-page__white-wrapper">
+      <Footer/>
+    </div>
+    <search-popup v-if="choose_position" @close="choose_position = false" :coords="last_coordinates"
+                  @clean="last_coordinates = {}"></search-popup>
   </div>
 </template>
 
@@ -25,7 +23,7 @@
   import Footer from '~/components/global/Footer';
   import SearchPopup from '~/components/global/search/SearchPopup';
 
-  import { mapState } from 'vuex';
+  import {mapState} from 'vuex';
 
   export default {
     middleware: 'error',
@@ -37,8 +35,8 @@
       Footer,
       SearchPopup
     },
-    data(){
-      return{
+    data() {
+      return {
         choose_position: false,
         last_coordinates: this.$cookies.get('last_coordinates') || {}
       }
@@ -56,7 +54,7 @@
     },
 
     created() {
-      this.$bus.$on('position-modal', (state, coords)=>{
+      this.$bus.$on('position-modal', (state, coords) => {
         this.last_coordinates = coords
         this.choose_position = state
       })
@@ -64,15 +62,18 @@
     },
 
     mounted() {
-      // let scr = document.createElement('script')
-      // scr.type = 'text/javascript';
-      // scr.innerHTML ='!function(){var t=document.createElement("script");t.type="text/javascript",t.async=!0,t.src="https://vk.com/js/api/openapi.js?168",t.onload=function()\n' +
-      //   '\n' +
-      //   '{VK.Retargeting.Init("VK-RTRG-505686-cbKtO"),VK.Retargeting.Hit()}\n' +
-      //   ',document.head.appendChild(t)}();';
-      // let noscr = document.createElement('noscript')
-      // noscr.innerHTML = '<img src="https://vk.com/rtrg?p=VK-RTRG-505686-cbKtO" style="position:fixed; left:-999px;" alt=""/>'
-      // document.head.appendChild(scr);
+      if (process.browser) {
+
+        let scr = document.createElement('script')
+        scr.type = 'text/javascript';
+        scr.innerHTML = '!function(){var t=document.createElement("script");t.type="text/javascript",t.async=!0,t.src="https://vk.com/js/api/openapi.js?168",t.onload=function()\n' +
+          '\n' +
+          '{VK.Retargeting.Init("VK-RTRG-505686-cbKtO"),VK.Retargeting.Hit()}\n' +
+          ',document.head.appendChild(t)}();';
+        // let noscr = document.createElement('noscript')
+        // noscr.innerHTML = '<img src="https://vk.com/rtrg?p=VK-RTRG-505686-cbKtO" style="position:fixed; left:-999px;" alt=""/>'
+        document.head.appendChild(scr);
+      }
       // document.head.appendChild(noscr);
 
 
@@ -86,23 +87,23 @@
         let lastTouchTime = 0;
 
         function enableHover() {
-            // discard emulated mouseMove events coming from touch events
-            if (new Date() - lastTouchTime < 500) return;
-            if (hasHoverClass) return;
+          // discard emulated mouseMove events coming from touch events
+          if (new Date() - lastTouchTime < 500) return;
+          if (hasHoverClass) return;
 
-            container.className = container.className.replace('touch', '');
-            hasHoverClass = true;
+          container.className = container.className.replace('touch', '');
+          hasHoverClass = true;
         }
 
         function disableHover() {
-            if (!hasHoverClass) return;
+          if (!hasHoverClass) return;
 
-            container.className += 'touch';
-            hasHoverClass = false;
+          container.className += 'touch';
+          hasHoverClass = false;
         }
 
         function updateLastTouchTime() {
-            lastTouchTime = new Date();
+          lastTouchTime = new Date();
         }
 
         document.addEventListener('touchstart', updateLastTouchTime, true);
@@ -117,7 +118,9 @@
 
     beforeRouteLeave(to, from, next) {
       this.$bus.$emit('transition');
-      setTimeout(() => { next() }, 500);
+      setTimeout(() => {
+        next()
+      }, 500);
     }
   }
 </script>
