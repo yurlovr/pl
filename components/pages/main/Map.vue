@@ -124,7 +124,7 @@
                             if (e.get('type') == 'mouseenter') {
                                 // The setObjectOptions method allows you to set object options "on the fly".
                                 step2ObjectManager.objects.setObjectOptions(objectId, {
-                                    iconImageHref: '/pics/global/svg/map_beach_gold.svg'
+                                    iconImageHref: '/pics/global/svg/pin_active.svg'
                                 });
                             } else if (e.get('type') == 'mouseleave') {
                                 if (objectId != this.chosen) {
@@ -142,7 +142,7 @@
                                     }
                                     this.chosen = objectId;
                                     step2ObjectManager.objects.setObjectOptions(this.chosen, {
-                                        iconImageHref: '/pics/global/svg/map_beach_gold.svg'
+                                        iconImageHref: '/pics/global/svg/pin_active.svg'
                                     });
                                     this.$bus.$emit('goToCard', this.chosen);
                                 // close the balloon

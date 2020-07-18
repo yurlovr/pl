@@ -98,7 +98,7 @@
                             const objectId = e.get('objectId');
                             if (e.get('type') == 'mouseenter') {
                                 objectManager.objects.setObjectOptions(objectId, {
-                                    iconImageHref: '/pics/global/svg/map_beach_gold.svg'
+                                    iconImageHref: '/pics/global/svg/pin_active.svg'
                                 });
                             }
                             if (e.get('type') == 'mouseleave') {
@@ -125,7 +125,7 @@
                                     this.chosen = objectId;
                               console.warn(this.chosen, 'this.chosen after')
                                     objectManager.objects.setObjectOptions(this.chosen, {
-                                        iconImageHref: '/pics/global/svg/map_beach_gold.svg'
+                                        iconImageHref: '/pics/global/svg/pin_active.svg'
                                     });
                                     this.$bus.$emit('scrollToCard', this.chosen);
                                     this.$bus.$emit('openModal', this.chosen);
