@@ -175,6 +175,9 @@ export const getters = {
                 telegram: state.beach.data.item.CONTACT && state.beach.data.item.CONTACT.TELEGRAM ? state.beach.data.item.CONTACT.TELEGRAM : null,
                 sunriseTime: state.beach.data.item.WEATHER.SUNRISE,
                 sunsetTime: state.beach.data.item.WEATHER.SUNSET,
+                windSpeed: state.beach.data.item.WEATHER.WIND,
+                humidity: state.beach.data.item.WEATHER.HUMIDITY,
+                precipitation: state.beach.data.item.WEATHER.PRECIPITATION,
             },
 
             ptData: {

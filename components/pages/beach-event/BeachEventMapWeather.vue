@@ -51,30 +51,26 @@
               class="slider-weather__slide__temp-C beach-event__map-weather__weather-card__temp-area__temp-C">C</span>
           </div>
         </div>
-        <div class="beach-event__map-weather__weather-card__temp-area__item">
-          <div class="beach-event__map-weather__weather-card__temp-area__item__left">
-            <img src="~/static/pics/global/svg/cloudy-day.svg">
-            <span>Пасмурные<br>дни</span>
-          </div>
-          <div class="beach-event__map-weather__weather-card__temp-area__item__right">
-            <span
-              class="slider-weather__slide__temp-number beach-event__map-weather__weather-card__temp-area__temp-number">{{ (data.waterTemp > 0 ? '+ ' : '') + (data.waterTemp < 0 ? '' : '') + data.waterTemp }}</span>
-            <span class="slider-weather__slide__temp-o beach-event__map-weather__weather-card__temp-area__temp-o"><span>o</span></span>
-            <span
-              class="slider-weather__slide__temp-C beach-event__map-weather__weather-card__temp-area__temp-C">C</span>
-          </div>
-        </div>
-        <div class="beach-event__map-weather__weather-card__temp-area__item">
+<!--        <div class="beach-event__map-weather__weather-card__temp-area__item">-->
+<!--          <div class="beach-event__map-weather__weather-card__temp-area__item__left">-->
+<!--            <img src="~/static/pics/global/svg/cloudy-day.svg">-->
+<!--            <span>Пасмурные<br>дни</span>-->
+<!--          </div>-->
+<!--          <div class="beach-event__map-weather__weather-card__temp-area__item__right">-->
+<!--            <span-->
+<!--              class="slider-weather__slide__temp-C beach-event__map-weather__weather-card__temp-area__temp-C">{{precipitationText(data.precipitation)}}</span>-->
+<!--          </div>-->
+<!--        </div>-->
+        <div class="beach-event__map-weather__weather-card__temp-area__item" v-if="data.windSpeed >=0">
           <div class="beach-event__map-weather__weather-card__temp-area__item__left">
             <img src="~/static/pics/global/svg/wind-speed.svg">
             <span>Скорость<br>ветра</span>
           </div>
           <div class="beach-event__map-weather__weather-card__temp-area__item__right">
             <span
-              class="slider-weather__slide__temp-number beach-event__map-weather__weather-card__temp-area__temp-number">{{ (data.waterTemp > 0 ? '+ ' : '') + (data.waterTemp < 0 ? '' : '') + data.waterTemp }}</span>
-            <span class="slider-weather__slide__temp-o beach-event__map-weather__weather-card__temp-area__temp-o"><span>o</span></span>
+              class="slider-weather__slide__temp-number beach-event__map-weather__weather-card__temp-area__temp-number">{{ data.windSpeed}}&nbsp;</span>
             <span
-              class="slider-weather__slide__temp-C beach-event__map-weather__weather-card__temp-area__temp-C">C</span>
+              class="slider-weather__slide__temp-C beach-event__map-weather__weather-card__temp-area__temp-C"> м/с</span>
           </div>
         </div>
         <div class="beach-event__map-weather__weather-card__temp-area__item">
@@ -84,23 +80,19 @@
           </div>
           <div class="beach-event__map-weather__weather-card__temp-area__item__right">
             <span
-              class="slider-weather__slide__temp-number beach-event__map-weather__weather-card__temp-area__temp-number">{{ (data.waterTemp > 0 ? '+ ' : '') + (data.waterTemp < 0 ? '' : '') + data.waterTemp }}</span>
-            <span class="slider-weather__slide__temp-o beach-event__map-weather__weather-card__temp-area__temp-o"><span>o</span></span>
-            <span
-              class="slider-weather__slide__temp-C beach-event__map-weather__weather-card__temp-area__temp-C">C</span>
+              class="slider-weather__slide__temp-C beach-event__map-weather__weather-card__temp-area__temp-C">{{precipitationText(data.precipitation)}}</span>
           </div>
         </div>
-        <div class="beach-event__map-weather__weather-card__temp-area__item">
+        <div class="beach-event__map-weather__weather-card__temp-area__item" v-if="data.humidity >=0">
           <div class="beach-event__map-weather__weather-card__temp-area__item__left">
             <img src="~/static/pics/global/svg/wet.svg">
             <span>Влажность<br>воздуха</span>
           </div>
           <div class="beach-event__map-weather__weather-card__temp-area__item__right">
             <span
-              class="slider-weather__slide__temp-number beach-event__map-weather__weather-card__temp-area__temp-number">{{ (data.waterTemp > 0 ? '+ ' : '') + (data.waterTemp < 0 ? '' : '') + data.waterTemp }}</span>
-            <span class="slider-weather__slide__temp-o beach-event__map-weather__weather-card__temp-area__temp-o"><span>o</span></span>
+              class="slider-weather__slide__temp-number beach-event__map-weather__weather-card__temp-area__temp-number">{{ data.humidity}}</span>
             <span
-              class="slider-weather__slide__temp-C beach-event__map-weather__weather-card__temp-area__temp-C">C</span>
+              class="slider-weather__slide__temp-C beach-event__map-weather__weather-card__temp-area__temp-C">%</span>
           </div>
         </div>
         <div class="beach-event__map-weather__weather-card__temp-area__item">
@@ -143,6 +135,31 @@
     },
 
     methods: {
+      precipitationText(type) {
+        let text_type = '';
+        switch (type) {
+          case 0 :
+            text_type = 'Без осадков'
+            break;
+
+          case 0.25 :
+            text_type = 'Слабый дождь/снег'
+            break;
+
+          case 0.5 :
+            text_type = 'Дождь/снег'
+            break;
+          case 0.75 :
+            text_type = 'Сильный дождь/снег'
+            break;
+
+          case 0.75 :
+            text_type = 'Сильный ливень/снегопад'
+            break;
+
+        }
+        return text_type
+      },
       goto(i, coords = [45.32, 33.03]) {
         console.warn(this.map, i, coords, 'fsdsdfsfdfsdsfddfs')
         this.map.panTo(coords, {
