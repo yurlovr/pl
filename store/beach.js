@@ -94,6 +94,7 @@ export const actions = {
 export const getters = {
     beachData: (state) => {
         if (!state.beach.data) return null;
+
         let ret = {
             avgRating: {
                 rating: parseFloat(state.beach.data.item.RATING.RATING),
@@ -146,8 +147,8 @@ export const getters = {
                 isBeachClosed: state.beach.data.item.LABEL.TEXT != '',
                 goldMedal: state.beach.data.item.CERTIFICATION,
                 blueMedal: state.beach.data.item.WEBCAMERA,
-                pics: !state.beach.data.item.VIDEO.LINK ?  state.beach.data.item.PHOTOS
-                  : [...state.beach.data.item.PHOTOS, state.beach.data.item.VIDEO.LINK],
+                pics: !state.beach.data.item.VIDEO.LINK ?  state.beach.data.item.PHOTOS.medium
+                  : [...state.beach.data.item.PHOTOS.medium.map(e => e.path), state.beach.data.item.VIDEO.LINK],
                 beachClosedText: state.beach.data.item.LABEL.TEXT,
                 beachClosedColor: state.beach.data.item.LABEL.COLOR,
                 beachClosedTooltip: state.beach.data.item.LABEL.DESCRIPTION,
@@ -172,6 +173,11 @@ export const getters = {
                 airTemp: state.beach.data.item.WEATHER.TEMP.AIR,
                 email: state.beach.data.item.CONTACT && state.beach.data.item.CONTACT.EMAIL ? state.beach.data.item.CONTACT.EMAIL : null,
                 telegram: state.beach.data.item.CONTACT && state.beach.data.item.CONTACT.TELEGRAM ? state.beach.data.item.CONTACT.TELEGRAM : null,
+                sunriseTime: state.beach.data.item.WEATHER.SUNRISE,
+                sunsetTime: state.beach.data.item.WEATHER.SUNSET,
+                windSpeed: state.beach.data.item.WEATHER.WIND,
+                humidity: state.beach.data.item.WEATHER.HUMIDITY,
+                precipitation: state.beach.data.item.WEATHER.PRECIPITATION,
             },
 
             ptData: {
@@ -215,12 +221,15 @@ export const getters = {
                         state.beach.data.item.CITY.ID : -1}&fromBeach=${state.beach && state.beach.data && state.beach.data.item ? state.beach.data.item.ID : -1}`
                 },
                 beachNumber: state.similarBeaches && state.similarBeaches.data ? Math.min(state.similarBeaches.data.list.filter(v => {
+                  let count = 0;
                     if (v.TAGS) {
-                        if (v.TAGS.length < 3) return false;
+                      count += v.TAGS.length
                     }
+
                     if (v.ADD_TAGS) {
-                        if (v.ADD_TAGS.length < 3) return false;
+                      count += v.ADD_TAGS.length
                     }
+                    if (count < 3) return  false;
                     if (!v.TAGS && !v.ADD_TAGS) return false;
                     if (v.ID == state.beach.data.item.ID) return false;
                     return true;
@@ -360,7 +369,7 @@ export const getters = {
             ret.barsNRestos.push({
                 title: state.barsNRestos.data.list[i].NAME,
                 description: state.barsNRestos.data.list[i].DESCRIPTION,
-                pics: state.barsNRestos.data.list[i].PHOTOS.map(v => v ? v : null),
+                pics: state.barsNRestos.data.list[i].PHOTOS.medium.map(v => v ? v.path : null),
                 coordinates: state.barsNRestos.data.list[i].COORDINATES ? state.barsNRestos.data.list[i].COORDINATES.split(',') : [],
                 contact: state.barsNRestos.data.list[i].CONTACT || null,
                 contact_telegram: state.barsNRestos.data.list[i].CONTACT_TELEGRAM || null,

@@ -8,6 +8,7 @@ export default {
    */
   head: {
     title: 'ПЛЯЖИ.РУ',
+    noscript: [{innerHTML: '<img src="https://vk.com/rtrg?p=VK-RTRG-505686-cbKtO" style="position:fixed; left:-999px;" alt=""/>'}],
     meta: [{
       charset: 'utf-8'
     }, {
@@ -66,6 +67,7 @@ export default {
   ],
   /*
    ** Nuxt.js dev-modules
+   *
    */
   buildModules: [
     '@nuxtjs/gtm'

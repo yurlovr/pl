@@ -5,7 +5,7 @@
         </div>
         <div class="main-page__map-inner">
             <MapBeaches v-if="data" :data="data.addressBeaches" v-show="step == 2"/>
-            <Map v-if="data" :data="data" />
+            <Map v-if="data" :data="data" :mapData="mapData" />
         </div>
     </section>
 </template>
@@ -15,7 +15,7 @@
     import Map from '~/components/pages/main/Map';
 
     export default {
-        props: ['data'],
+        props: ['data', 'mapData'],
 
         data() {
             return {
