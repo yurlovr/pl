@@ -4,19 +4,25 @@
       <h3 class="main-page__section-title">Результаты поиска {{radius ? `(в радиусе
         ${radius} км)`: ''}}</h3>
       <div class="search-page__title-area__buttons" v-if="getSearchResult && getSearchResult.length > 1">
-        <button class="search-page__title-area__button" :class="{ active: !showCardsOrMap }"
-                @click="showCardsOrMap = false">
-          <img src="~/static/pics/search/cards_orange.svg" alt="Вид: Карточки" v-show="!showCardsOrMap">
-          <img src="~/static/pics/search/cards_gray.svg" alt="Вид: Карточки" v-show="showCardsOrMap">
+        <button class="search-page__title-area__button" :class="{ active: mode_option == 'list' }"
+                @click="showHorizontal()">
+          <img src="~/static/pics/search/list_orange.svg" alt="Вид: Горизонтальные карточки" v-show="mode_option == 'list'">
+
+          <img src="~/static/pics/search/list_grey.svg" alt="Вид: Горизонтальные карточки" v-show="mode_option != 'list'">
         </button>
-        <button class="search-page__title-area__button" :class="{ active: showCardsOrMap }" @click="showMap()"
+        <button class="search-page__title-area__button" :class="{ active: mode_option == 'card' }"
+                @click="showCards()">
+          <img src="~/static/pics/search/cards_orange.svg" alt="Вид: Карточки" v-show="mode_option == 'card'">
+          <img src="~/static/pics/search/cards_gray.svg" alt="Вид: Карточки" v-show="mode_option != 'card'">
+        </button>
+        <button class="search-page__title-area__button" :class="{ active: mode_option == 'map' }" @click="showMap()"
                 v-if="showBeachesOrEvents == false">
-          <img src="~/static/pics/search/map_orange.svg" alt="Вид: Карта" v-show="showCardsOrMap">
-          <img src="~/static/pics/search/map_gray.svg" alt="Вид: Карта" v-show="!showCardsOrMap">
+          <img src="~/static/pics/search/map_orange.svg" alt="Вид: Карта" v-show="mode_option == 'map'">
+          <img src="~/static/pics/search/map_gray.svg" alt="Вид: Карта" v-show="mode_option != 'map'">
         </button>
       </div>
     </div>
-    <SearchTags :tags="tags" v-if="tags.length > 0"/>
+    <SearchTags :tags="tags" v-if=" tags && tags.length > 0"/>
     <div class="favorites-page__favorites-types custom-container"
          v-show="searchPageResultEventBackup.data && searchPageResultEventBackup.data.list.length > 0">
       <button class="favorites-page__favorites-type" @click="showOnlyBeaches()"
@@ -31,9 +37,14 @@
       <div class="favorites-page__visited-empty">К сожалению по Вашему запросу ничего не найдено.<br>Попробуйте изменить
         запрос, или начните <a href="/" @click.prevent="$bus.goTo('/', $router)">сначала</a></div>
     </div>
-    <CardGrid :perPage="20" :data="getSearchResult.slice(0, -1)" v-show="!showCardsOrMap"
+    <CardGrid :perPage="20" :data="getSearchResult.slice(0, -1)" v-show="mode_option == 'card'"
               v-if="getSearchResult && getSearchResult.length > 1"/>
-    <SearchMapArea :data="getSearchResult.slice(0, -1)" :mapData="mapEntity" v-show="showCardsOrMap"
+    <search-horizontal-view :perPage="20"
+                            :data="getSearchResult.slice(0, -1)"
+                            v-show="mode_option == 'list'"
+                            v-if="getSearchResult && getSearchResult.length > 1"
+    />
+    <SearchMapArea :data="getSearchResult.slice(0, -1)" :mapData="mapEntity" v-show="mode_option == 'map'"
                    v-if="getSearchResult && getSearchResult.length > 1"/>
   </div>
 </template>
@@ -44,10 +55,12 @@
   import CardGrid from '~/components/global/CardGrid';
 
   import {mapGetters, mapMutations, mapState, mapActions} from 'vuex';
+  import SearchHorizontalView from "../components/pages/search/SearchHorizontalView";
 
   export default {
     name: 'main-search',
     components: {
+      SearchHorizontalView,
       SearchTags,
       CardGrid,
       SearchMapArea
@@ -93,6 +106,8 @@
 
     data() {
       return {
+        showHorizontalView: true,
+        mode_option: 'list',
         showCardsOrMap: false, // cards: false, map: true
         mapShownForTheFirstTime: false,
         tags: [],
@@ -128,9 +143,15 @@
       ...mapMutations('search', ['updateSearchParam', 'updateInput', 'showBeaches', 'showEvents']),
       ...mapActions('search', ['search', 'searchQuery']),
 
+      showHorizontal() {
+        this.mode_option = "list"
+      },
+      showCards() {
+        this.mode_option = 'card'
+      },
 
       showMap() {
-        this.showCardsOrMap = true;
+        this.mode_option = 'map';
         if (!this.mapShownForTheFirstTime) {
           this.mapShownForTheFirstTime = true;
           this.$bus.$emit('updateScrollbar');
@@ -143,7 +164,7 @@
       },
 
       showOnlyEvents() {
-        this.showCardsOrMap = false;
+        this.mode_option = 'card';
         this.showBeachesOrEvents = true;
         this.showEvents();
       },
