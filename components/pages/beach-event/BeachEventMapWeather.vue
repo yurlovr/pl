@@ -51,6 +51,70 @@
               class="slider-weather__slide__temp-C beach-event__map-weather__weather-card__temp-area__temp-C">C</span>
           </div>
         </div>
+<!--        <div class="beach-event__map-weather__weather-card__temp-area__item">-->
+<!--          <div class="beach-event__map-weather__weather-card__temp-area__item__left">-->
+<!--            <img src="~/static/pics/global/svg/cloudy-day.svg">-->
+<!--            <span>Пасмурные<br>дни</span>-->
+<!--          </div>-->
+<!--          <div class="beach-event__map-weather__weather-card__temp-area__item__right">-->
+<!--            <span-->
+<!--              class="slider-weather__slide__temp-C beach-event__map-weather__weather-card__temp-area__temp-C">{{precipitationText(data.precipitation)}}</span>-->
+<!--          </div>-->
+<!--        </div>-->
+        <div class="beach-event__map-weather__weather-card__temp-area__item" v-if="data.windSpeed >=0">
+          <div class="beach-event__map-weather__weather-card__temp-area__item__left">
+            <img src="~/static/pics/global/svg/wind-speed.svg">
+            <span>Скорость<br>ветра</span>
+          </div>
+          <div class="beach-event__map-weather__weather-card__temp-area__item__right">
+            <span
+              class="slider-weather__slide__temp-number beach-event__map-weather__weather-card__temp-area__temp-number">{{ data.windSpeed}}&nbsp;</span>
+            <span
+              class="slider-weather__slide__temp-C beach-event__map-weather__weather-card__temp-area__temp-C"> м/с</span>
+          </div>
+        </div>
+        <div class="beach-event__map-weather__weather-card__temp-area__item">
+          <div class="beach-event__map-weather__weather-card__temp-area__item__left">
+            <img src="~/static/pics/global/svg/precipitation-type.svg">
+            <span>Тип<br>осадков</span>
+          </div>
+          <div class="beach-event__map-weather__weather-card__temp-area__item__right">
+            <span
+              class="slider-weather__slide__temp-C beach-event__map-weather__weather-card__temp-area__temp-C">{{precipitationText(data.precipitation)}}</span>
+          </div>
+        </div>
+        <div class="beach-event__map-weather__weather-card__temp-area__item" v-if="data.humidity >=0">
+          <div class="beach-event__map-weather__weather-card__temp-area__item__left">
+            <img src="~/static/pics/global/svg/wet.svg">
+            <span>Влажность<br>воздуха</span>
+          </div>
+          <div class="beach-event__map-weather__weather-card__temp-area__item__right">
+            <span
+              class="slider-weather__slide__temp-number beach-event__map-weather__weather-card__temp-area__temp-number">{{ data.humidity}}</span>
+            <span
+              class="slider-weather__slide__temp-C beach-event__map-weather__weather-card__temp-area__temp-C">%</span>
+          </div>
+        </div>
+        <div class="beach-event__map-weather__weather-card__temp-area__item">
+          <div class="beach-event__map-weather__weather-card__temp-area__item__left">
+            <img src="~/static/pics/global/svg/sunrise-weather.svg">
+            <span>Время<br>рассвета</span>
+          </div>
+          <div class="beach-event__map-weather__weather-card__temp-area__item__right">
+        <span
+          class="slider-weather__slide__temp-number beach-event__map-weather__weather-card__temp-area__temp-number">{{data.sunriseTime}}</span>
+          </div>
+        </div>
+        <div class="beach-event__map-weather__weather-card__temp-area__item">
+          <div class="beach-event__map-weather__weather-card__temp-area__item__left">
+            <img src="~/static/pics/global/svg/sunset-weather.svg">
+            <span>Время<br>заката</span>
+          </div>
+          <div class="beach-event__map-weather__weather-card__temp-area__item__right">
+            <span
+              class="slider-weather__slide__temp-number beach-event__map-weather__weather-card__temp-area__temp-number">{{data.sunsetTime}}</span>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -60,16 +124,42 @@
   import ymaps from "ymaps";
 
   export default {
-    props: ['data', 'additional'],
+    props: ['data', 'additional', 'mapData'],
 
     data() {
       return {
         map: null,
         zoom: null,
+        chosenObject: -1
       }
     },
 
     methods: {
+      precipitationText(type) {
+        let text_type = '';
+        switch (type) {
+          case 0 :
+            text_type = 'Без осадков'
+            break;
+
+          case 0.25 :
+            text_type = 'Слабый дождь/снег'
+            break;
+
+          case 0.5 :
+            text_type = 'Дождь/снег'
+            break;
+          case 0.75 :
+            text_type = 'Сильный дождь/снег'
+            break;
+
+          case 0.75 :
+            text_type = 'Сильный ливень/снегопад'
+            break;
+
+        }
+        return text_type
+      },
       goto(i, coords = [45.32, 33.03]) {
         console.warn(this.map, i, coords, 'fsdsdfsfdfsdsfddfs')
         this.map.panTo(coords, {
@@ -207,6 +297,141 @@
                   features: features
                 })
               }
+
+// adding customs
+                let parkingIcon = maps.templateLayoutFactory.createClass(
+                    `<div class="map__beach-parking-icon"></div>`
+                  ),
+                  customObjectManager = new maps.ObjectManager({
+                    geoObjectOpenBalloonOnClick: true
+                  });
+                this.map.geoObjects.add(customObjectManager);
+
+                for (let i = 0; i < this.mapData.length; i++) {
+                  let balloonLayout = maps.templateLayoutFactory.createClass(`
+                      <div class="map-popup map-popup--bottom">
+                      <div class="map-popup__pic-area">
+                          <div class="map-popup__slider">
+                              <div class="swiper-container" id="balloon-swiper">
+                                  <div class="swiper-wrapper">
+                                     <img class="map__img" src="${this.mapData[i].preview}" alt="">
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                      <div class="map-popup__info-area">
+                          <a href="${this.mapData[i].url}" class="map-popup__title">${this.mapData[i].name}</a>
+                          <p>${this.mapData[i].type.NAME}</p>
+                          <p>${this.mapData[i].type.DESCRIPTION}</p>
+                      </div>
+                  </div>
+              `, {
+                    build() {
+                      this.constructor.superclass.build.call(this);
+                    },
+
+                    clear() {
+                      this.constructor.superclass.clear.call(this);
+                    },
+
+                    getShape() {
+                      return new maps.shape.Rectangle(new maps.geometry.pixel.Rectangle([
+                        [25, 0], [275, 0] // balloon's width is always 300 and -25 for the margin
+                      ]));
+                    },
+
+                    _isElement(element) {
+                      return element && element[0];
+                    }
+                  });
+
+                  customObjectManager.add({
+                    type: "FeatureCollection",
+                    features: [{
+                      type: "Feature",
+                      id: i,
+                      geometry: {
+                        type: "Point",
+                        coordinates: this.mapData[i] ? this.mapData[i].coordinates : [0, 0]
+                      },
+                      options: {
+                        iconLayout: 'default#imageWithContent',
+                        iconImageHref: '/pics/global/svg/beach_blue.svg',
+                        iconContentLayout: parkingIcon,
+                        iconImageSize: [27, 40],
+                        iconImageOffset: [-18, -50],
+                        hideIconOnBalloonOpen: false,
+                        balloonShadow: false,
+                        balloonLayout: balloonLayout,
+                        balloonContentLayout: '',
+                        balloonOffset: [-155, -345],
+                        balloonPane: 'balloon',
+                        balloonAutoPan: true,
+                        balloonPanelMaxMapArea: 0,
+                        hintLayout: maps.templateLayoutFactory.createClass("<div class='my-hint'>" +
+                          `<b>${this.mapData[i].name}</b><br />` +
+                          "</div>"
+                        )
+                      },
+                    }]
+                  });
+                }
+                const customObjectEvent = (e) => {
+                  const objectId = e.get('objectId');
+                  if (e.get('type') == 'mouseenter') {
+                    if (objectId != this.chosenObject) {
+                      customObjectManager.objects.setObjectOptions(objectId, {
+                        iconImageHref: '/pics/global/svg/beach_blue.svg',
+                        iconImageOffset: [-22, -60],
+                        iconImageSize: [35, 48]
+                      });
+                    }
+                  } else if (e.get('type') == 'mouseleave') {
+                    if (objectId != this.chosenObject) {
+                      customObjectManager.objects.setObjectOptions(objectId, {
+                        iconImageHref: '/pics/global/svg/beach_blue.svg',
+                        iconImageOffset: [-18, -50],
+                        iconImageSize: [27, 40]
+                      });
+                    }
+                  } else if (e.get('type') == 'click') {
+                    // open the balloon
+                    if (this.chosenObject != objectId) {
+                      if (this.chosenObject != -1) {
+                        customObjectManager.objects.setObjectOptions(this.chosenObject, {
+                          iconImageHref: '/pics/global/svg/beach_blue.svg',
+                          iconImageOffset: [-18, -50],
+                          iconImageSize: [27, 40]
+                        });
+                      }
+                      this.chosenObject = objectId;
+                      customObjectManager.objects.setObjectOptions(this.chosenObject, {
+                        iconImageHref: '/pics/global/svg/beach_blue.svg',
+                        iconImageOffset: [-22, -60],
+                        iconImageSize: [35, 48]
+                      });
+                      // close the balloon
+                    } else {
+                      closeBalloon();
+                    }
+                  }
+                };
+                customObjectManager.objects.events.add(['mouseenter', 'mouseleave', 'click'], customObjectEvent);
+                const closeBalloon = () => {
+                  customObjectManager.objects.setObjectOptions(this.chosenObject, {
+                    iconImageHref: '/pics/global/svg/beach_blue.svg',
+                    iconImageOffset: [-18, -50],
+                    iconImageSize: [27, 40]
+                  });
+                  this.chosenObject = -1;
+                  this.map.balloon.close();
+                };
+              // closing balloon on map click
+              this.map.events.add('click', (e) => {
+                if (e.get('target') === this.map) {
+                  closeBalloon();
+                }
+              });
             })
             .catch(error => console.error('Failed to load Yandex Maps, ', error))
         }, 1);

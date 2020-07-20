@@ -33,7 +33,7 @@
     </div>
     <CardGrid :perPage="20" :data="getSearchResult.slice(0, -1)" v-show="!showCardsOrMap"
               v-if="getSearchResult && getSearchResult.length > 1"/>
-    <SearchMapArea :data="getSearchResult.slice(0, -1)" v-show="showCardsOrMap"
+    <SearchMapArea :data="getSearchResult.slice(0, -1)" :mapData="mapEntity" v-show="showCardsOrMap"
                    v-if="getSearchResult && getSearchResult.length > 1"/>
   </div>
 </template>
@@ -56,6 +56,7 @@
     computed: {
       ...mapGetters('search', ['getSearchResult', 'getRadiusIfCityExists']),
       ...mapState('search', ['searchParams', 'searchPageResultEventBackup', 'query']),
+      ...mapGetters(['mapEntity']),
 
       radius() {
         return this.$route.query && this.$route.query.diameter ? this.$route.query.diameter : null;

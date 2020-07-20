@@ -19,7 +19,7 @@
 	import ymaps from "ymaps";
 
 	export default {
-		props: ['data'],
+		props: ['data', 'mapData'],
 
 		data() {
 			return {
@@ -27,7 +27,8 @@
                 chosen: -1,
                 curSwiper: null,
                 map: null,
-                step: 1
+                step: 1,
+                chosenObject: -1,
 			}
 		},
 
@@ -65,7 +66,10 @@
                         ),
                             iconStep2 = maps.templateLayoutFactory.createClass(
                             `<div class="map__beach-icon step-2"></div>`
-                        );
+                        ),
+                          parkingIcon = maps.templateLayoutFactory.createClass(
+                            `<div class="map__beach-parking-icon"></div>`
+                          );
 
                         let step1CounterForChosen = 0, step2CounterForChosen = 0, balloonLayout,
                         step1ObjectManager = new maps.ObjectManager({
@@ -73,14 +77,24 @@
                         }),
                         step2ObjectManager = new maps.ObjectManager({
                             geoObjectOpenBalloonOnClick: true
-                        });
+                        }),
+                          customObjectManager = new maps.ObjectManager({
+                            geoObjectOpenBalloonOnClick: true
+                          });
                         this.map.geoObjects.add(step1ObjectManager);
                         this.map.geoObjects.add(step2ObjectManager);
+                        this.map.geoObjects.add(customObjectManager);
 
                         const closeBalloon = () => {
                             step2ObjectManager.objects.setObjectOptions(this.chosen, {
                                 iconImageHref: '/pics/global/svg/map_beach_72dpi.svg'
                             });
+                            customObjectManager.objects.setObjectOptions(this.chosenObject, {
+                              iconImageHref: '/pics/global/svg/beach_blue.svg',
+                              iconImageOffset: [-18, -50],
+                              iconImageSize: [27, 40]
+                            });
+                            this.chosenObject = -1;
                             this.chosen = -1;
                             this.map.balloon.close();
                             this.$bus.$emit('releaseSelection');
@@ -110,7 +124,7 @@
                             if (e.get('type') == 'mouseenter') {
                                 // The setObjectOptions method allows you to set object options "on the fly".
                                 step2ObjectManager.objects.setObjectOptions(objectId, {
-                                    iconImageHref: '/pics/global/svg/map_beach_gold.svg'
+                                    iconImageHref: '/pics/global/svg/pin_active.svg'
                                 });
                             } else if (e.get('type') == 'mouseleave') {
                                 if (objectId != this.chosen) {
@@ -128,7 +142,7 @@
                                     }
                                     this.chosen = objectId;
                                     step2ObjectManager.objects.setObjectOptions(this.chosen, {
-                                        iconImageHref: '/pics/global/svg/map_beach_gold.svg'
+                                        iconImageHref: '/pics/global/svg/pin_active.svg'
                                     });
                                     this.$bus.$emit('goToCard', this.chosen);
                                 // close the balloon
@@ -275,6 +289,120 @@
                                 step2CounterForChosen++;
                             }
                         }
+
+                        // adding customs
+
+                        for (let i = 0; i < this.mapData.length; i++) {
+                          balloonLayout = maps.templateLayoutFactory.createClass(`
+                      <div class="map-popup map-popup--bottom">
+                      <div class="map-popup__pic-area">
+                          <div class="map-popup__slider">
+                              <div class="swiper-container" id="balloon-swiper">
+                                  <div class="swiper-wrapper">
+                                     <img class="map__img" src="${this.mapData[i].preview}" alt="">
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                      <div class="map-popup__info-area">
+                          <a href="${this.mapData[i].url}" class="map-popup__title">${this.mapData[i].name}</a>
+                          <p>${this.mapData[i].type.NAME}</p>
+                          <p>${this.mapData[i].type.DESCRIPTION}</p>
+                      </div>
+                  </div>
+              `, {
+                            build() {
+                              this.constructor.superclass.build.call(this);
+                            },
+
+                            clear() {
+                              this.constructor.superclass.clear.call(this);
+                            },
+
+                            getShape() {
+                              return new maps.shape.Rectangle(new maps.geometry.pixel.Rectangle([
+                                [25, 0], [275, 0] // balloon's width is always 300 and -25 for the margin
+                              ]));
+                            },
+
+                            _isElement(element) {
+                              return element && element[0];
+                            }
+                          });
+
+                          customObjectManager.add({
+                            type: "FeatureCollection",
+                            features: [{
+                              type: "Feature",
+                              id: i,
+                              geometry: {
+                                type: "Point",
+                                coordinates: this.mapData[i] ? this.mapData[i].coordinates : [0, 0]
+                              },
+                              options: {
+                                iconLayout: 'default#imageWithContent',
+                                iconImageHref: '/pics/global/svg/beach_blue.svg',
+                                iconContentLayout: parkingIcon,
+                                iconImageSize: [27, 40],
+                                iconImageOffset: [-18, -50],
+                                hideIconOnBalloonOpen: false,
+                                balloonShadow: false,
+                                balloonLayout: balloonLayout,
+                                balloonContentLayout: '',
+                                balloonOffset: [-155, -345],
+                                balloonPane: 'balloon',
+                                balloonAutoPan: true,
+                                balloonPanelMaxMapArea: 0,
+                                hintLayout: maps.templateLayoutFactory.createClass("<div class='my-hint'>" +
+                                  `<b>${this.mapData[i].name}</b><br />` +
+                                  "</div>"
+                                )
+                              },
+                            }]
+                          });
+                        }
+                        const customObjectEvent = (e) => {
+                          const objectId = e.get('objectId');
+                          if (e.get('type') == 'mouseenter') {
+                            if (objectId != this.chosenObject) {
+                              customObjectManager.objects.setObjectOptions(objectId, {
+                                iconImageHref: '/pics/global/svg/beach_blue.svg',
+                                iconImageOffset: [-22, -60],
+                                iconImageSize: [35, 48]
+                              });
+                            }
+                          } else if (e.get('type') == 'mouseleave') {
+                            if (objectId != this.chosenObject) {
+                              customObjectManager.objects.setObjectOptions(objectId, {
+                                iconImageHref: '/pics/global/svg/beach_blue.svg',
+                                iconImageOffset: [-18, -50],
+                                iconImageSize: [27, 40]
+                              });
+                            }
+                          } else if (e.get('type') == 'click') {
+                            // open the balloon
+                            if (this.chosenObject != objectId) {
+                              if (this.chosenObject != -1) {
+                                customObjectManager.objects.setObjectOptions(this.chosenObject, {
+                                  iconImageHref: '/pics/global/svg/beach_blue.svg',
+                                  iconImageOffset: [-18, -50],
+                                  iconImageSize: [27, 40]
+                                });
+                              }
+                              this.chosenObject = objectId;
+                              customObjectManager.objects.setObjectOptions(this.chosenObject, {
+                                iconImageHref: '/pics/global/svg/beach_blue.svg',
+                                iconImageOffset: [-22, -60],
+                                iconImageSize: [35, 48]
+                              });
+                              // close the balloon
+                            } else {
+                              closeBalloon();
+                            }
+                          }
+                        }
+                        customObjectManager.objects.events.add(['mouseenter', 'mouseleave', 'click'], customObjectEvent);
+
 
                         if (this.data.geo) {
                             goToStep2(this.data.geo.id);

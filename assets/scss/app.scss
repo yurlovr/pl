@@ -3,6 +3,7 @@
 @import "yandexMap/yandex.scss";
 @import "modals/geoModal.scss";
 @import "sliders/slider.scss";
+@import "modals/mobileSettingsModal.scss";
 
 @font-face {
   font-family: Museo Sans Cyrl;
@@ -9717,4 +9718,10 @@ body.touch {
        display: block;
      }
    }
+}
+
+.logo-360 {
+  position: absolute;
+  left: 10px;
+  top: 14px;
 }
