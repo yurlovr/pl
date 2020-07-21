@@ -318,17 +318,18 @@ export const getters = {
       })
     }
 
-    // adding formatted infrastructures
-    let filteredInfra = state.beach.data.item.INFRASTRUCTURES.filter(v => v.CODE != 'parkovka' && v.CODE != 'ostanovki-obshchestvennogo-transporta');
-    for (let i = 0; i < filteredInfra.length; i++) {
-      ret.infraData.push({
-        title: filteredInfra[i].NAME,
-        pic: filteredInfra[i].ICON ? filteredInfra[i].ICON : filteredInfra[i].ICON,
-        pos: filteredInfra[i].COORDINATES ? filteredInfra[i].COORDINATES.split(',') : null,
-        id: filteredInfra[i].ID,
-        description: filteredInfra[i].DESCRIPTION,
-      })
-    }
+        // adding formatted infrastructures
+        let filteredInfra = state.beach.data.item.INFRASTRUCTURES.filter(v => v.CODE != 'parkovka' && v.CODE != 'ostanovki-obshchestvennogo-transporta');
+        for (let i = 0; i < filteredInfra.length; i++) {
+            ret.infraData.push({
+                title: filteredInfra[i].NAME,
+                pic: filteredInfra[i].ICON ? filteredInfra[i].ICON : filteredInfra[i].ICON,
+                pos: filteredInfra[i].COORDINATES ? filteredInfra[i].COORDINATES.split(',') : null,
+                id: filteredInfra[i].ID,
+                description: filteredInfra[i].DESCRIPTION,
+                pictures: filteredInfra[i].PICTURES
+            })
+        }
 
     // adding formatted services
     for (let i = 0; i < state.beach.data.item.SERVICES.length; i++) {
