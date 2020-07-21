@@ -53,7 +53,6 @@
 }
 
 
-
 html,
 body,
 #__nuxt,
@@ -303,7 +302,7 @@ input {
     padding: 5px 0;
     max-height: 200px;
     overflow-y: auto;
-    transform: translate3d(0,0,0);
+    transform: translate3d(0, 0, 0);
     //-webkit-transform: translate3d(0, 100%, 0);
 
 
@@ -9675,14 +9674,17 @@ body.touch {
   text-align: right;
   color: #73767D;
 }
+
 .slider-beach-event .swiper-slide img {
   border-radius: 0 !important;
 }
+
 .three-dots {
   width: 20px !important;
   height: 20px !important;
   margin: 0 9px !important;
 }
+
 .full-size-btn {
   bottom: 20px;
   right: 20px;
@@ -9690,6 +9692,7 @@ body.touch {
   box-shadow: none;
   border: unset;
 }
+
 .see-all--orange {
   color: #FCAB2D !important;
 
@@ -9697,31 +9700,225 @@ body.touch {
     color: #9ea6ae !important;
   }
 }
+
 .native-select {
   select {
     display: none;
   }
-   @media (max-width: 767px) {
-     .custom-new-select__bottom {
-       display: none;
-       opacity: 0;
-       visibility: hidden;
-     }
-     select {
+
+  @media (max-width: 767px) {
+    .custom-new-select__bottom {
+      display: none;
+      opacity: 0;
+      visibility: hidden;
+    }
+    select {
       position: absolute;
-       width: 100%;
-       top: 0;
-       bottom: 0;
-       right: 0;
-       left: 0;
-       opacity: .001;
-       display: block;
-     }
-   }
+      width: 100%;
+      top: 0;
+      bottom: 0;
+      right: 0;
+      left: 0;
+      opacity: .001;
+      display: block;
+    }
+  }
 }
 
 .logo-360 {
   position: absolute;
   left: 10px;
   top: 14px;
+}
+
+.search-card-list {
+  width: 100%;
+  background: #fff;
+  border-radius: 12px;
+  height: 315px;
+  margin-bottom: 24px;
+  display: flex;
+  align-items: stretch;
+  overflow: hidden;
+
+  .img_area {
+    max-width: 523px;
+    width: 100%;
+    flex-shrink: 0;
+    position: relative;
+
+    .heart {
+      top: 24px;
+      right: 24px;
+    }
+
+    .custom-card__paid {
+      width: 30px;
+      height: 30px;
+      bottom: 24px;
+      left: 24px;
+    }
+
+    .custom-card__temp-area {
+      top: 24px;
+      left: 24px;
+
+      img {
+        width: 27px;
+      }
+    }
+
+    img {
+      object-fit: cover;
+      width: 100%;
+      height: 100%;
+    }
+  }
+  .info-area {
+    width: 100%;
+  }
+
+  .info_area {
+    padding: 24px 26px 31px 26px;
+
+    .heading-area {
+      margin-bottom: 20px;
+      align-items: center;
+      display: flex;
+    }
+
+    h4 {
+      margin-bottom: 0;
+      color: #393E48;
+      font-family: Museo Sans Cyrl;
+      font-style: normal;
+      font-weight: 600;
+      font-size: 20px;
+      margin-right: 20px;
+    }
+
+    p {
+      font-family: Museo Sans Cyrl;
+      font-style: normal;
+      font-weight: 300;
+      font-size: 16px;
+      line-height: 27px;
+      color: #73767D;
+    }
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1299px) {
+  .search-card-list {
+    height: 252px;
+
+    .img_area {
+      max-width: 280px;
+
+      .heart {
+        top: 12px;
+        right: 12px;
+      }
+
+
+      .custom-card__paid {
+        width: 30px;
+        height: 30px;
+        bottom: 12px;
+        left: 12px;
+      }
+
+      .custom-card__temp-area {
+        top: 12px;
+        left: 12px;
+        padding: 3px 10px;
+
+        img {
+          width: 29px;
+        }
+      }
+    }
+
+    .info_area {
+      padding: 16px 16px 14px 20px;
+
+      .heading-area {
+        display: block;
+      }
+      .info-area {
+        margin-bottom: 17px;
+        flex-direction: row-reverse;
+        justify-content: flex-end !important;
+
+        .custom-card__location {
+          margin-right: 24px;
+        }
+      }
+
+      h4 {
+        font-size: 20px;
+        margin-bottom: 10px;
+      }
+    }
+  }
+
+
+}
+.mobile-rating {
+  display: none;
+}
+@media (max-width: 767px) {
+  .search-card-list {
+    flex-direction: column;
+    height: auto;
+    margin-bottom: 8px;
+    border-radius: unset;
+
+
+    .img_area .custom-card__pic{
+      border-radius: 12px;
+    }
+    .img_area {
+      .heart {
+        top: 12px;
+        right: 12px;
+      }
+
+
+      .custom-card__paid {
+        width: 22px;
+        height: 22px;
+        bottom: 12px;
+        left: 12px;
+      }
+
+      .custom-card__temp-area {
+        top: 12px;
+        left: 12px;
+        padding: 3px 10px;
+
+        img {
+          width: 35px;
+        }
+      }
+    }
+    .mobile-rating {
+      display: block;
+    }
+    .heading-area {
+      display: block !important;
+      margin-bottom: 11px;
+    }
+    .info_area {
+      padding: 16px 0;
+    }
+    .info-area {
+      .custom-card__rating-area {
+        display: none !important;
+      }
+      .custom-card__location {
+        margin-top: 10px;
+      }
+    }
+  }
 }
