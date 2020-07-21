@@ -59,6 +59,8 @@
     <div class="main-page__white-wrapper" v-if="beachData.another_places && beachData.another_places.length > 0">
       <BeachSliderArea :data="beachData.another_places" class="main-page__family-rest" outlink="https://nash.travel/hotel" />
     </div>
+<!--    <BeachSliderArea id="near-beaches-hotel" class="beach-event__similar-beaches" :data="beachData.near_beach"-->
+<!--                     v-if="beachData.near_beach.length"/>-->
     <iframe360 v-if="show_pano" @close-modal="changeModalState" :url="beachData.hugeSliderData.panorama"></iframe360>
   </div>
 </template>
