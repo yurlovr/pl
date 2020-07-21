@@ -323,6 +323,7 @@ export const getters = {
                 pos: filteredInfra[i].COORDINATES ? filteredInfra[i].COORDINATES.split(',') : null,
                 id: filteredInfra[i].ID,
                 description: filteredInfra[i].DESCRIPTION,
+                pictures: filteredInfra[i].PICTURES
             })
         }
 

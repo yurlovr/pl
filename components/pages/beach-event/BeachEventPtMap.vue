@@ -96,7 +96,15 @@
               let features = [];
               if (this.additional && this.additional.length) {
                 this.additional.forEach((el, i) => {
-                  let {pos, id, title, pic, description} = el;
+                  let {pos, id, title, pic, description, pictures} = el;
+                  let slides = [];
+                  for (let k = 0; k < pictures.length; k++) {
+                    slides.push(`
+                      <div class="swiper-slide map-popup__slide">
+                        <img  src="${pictures[k]}">
+                      </div>
+                    `);
+                  };
                   let icon = maps.templateLayoutFactory.createClass(
                     `<div class="map__beach-icon">
                     <div class="map__beach-caption">${title}</div>
@@ -120,13 +128,53 @@
                       hintLayout: maps.templateLayoutFactory.createClass("<div class='my-hint'>" +
                         `<div class='header'>${title}</div><br />` +
                         `<div class='description'>${description}</div>` +
-                        "</div>"
+                        `<div class="map-popup__pic-area">
+                            <div class="map-popup__slider">
+                              <div class="swiper-container" id="balloon-swiper">
+                                <div class="swiper-wrapper">
+                                  ${slides.join('')}
+                                </div>
+                              </div>
+                              <div class="pagination-wrapper"><div class="swiper-pagination"></div></div>
+                              <button class="slider__arrow-left slider__arrow-left-balloon">
+                                  <img  src="/pics/global/svg/arrow_next_map.svg" alt="Налево">
+                              </button>
+                              <button class="slider__arrow-right slider__arrow-right-balloon">
+                                  <img  src="/pics/global/svg/arrow_next_map.svg" alt="Направо">
+                              </button>
+                            </div>
+                        </div>` +
+                        "</div>",{
+                        build() {
+                          this.constructor.superclass.build.call(this);
+
+                          // init the swiper
+                          this.swiper = new Swiper(`#balloon-swiper`, {
+                            slidePerView: 1,
+                            spaceBetween: 20,
+                            pagination: {
+                              el: '.swiper-pagination',
+                              type: 'bullets',
+                              clickable: true
+                            }
+                          });
+
+                          // init the arrows
+                          document.querySelector(`.slider__arrow-left-balloon`).addEventListener('click', () => this.swiper.slidePrev());
+                          document.querySelector(`.slider__arrow-right-balloon`).addEventListener('click', () => this.swiper.slideNext());
+                        },
+                          clear() {
+                            this.swiper.destroy();
+
+                            this.constructor.superclass.clear.call(this);
+                          },
+                      }
                       ),
                     },
                     properties: {
                       balloonContentBody: "<div class='my-balloon'>" +
                         `<div class='header'>${title}</div><br />` +
-                        `<div class='description'>${description}</div>` +
+                        `<div class='description'>${description}</div>`+
                         "</div>"
                     }
                   })
@@ -553,7 +601,9 @@
       }
     },
 
-    mounted() {
+    async mounted() {
+      // requiring the Swiper
+      require('~/plugins/swiper.min').__proto__;
       this.initMap();
 
       window.addEventListener('resize', this.onResize);
