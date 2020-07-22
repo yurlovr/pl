@@ -10,6 +10,7 @@ export const state = () => ({
     announcementData: null,
     tags: null,
     any_places: [],
+    hotels: []
 })
 
 export const mutations = {
@@ -52,7 +53,11 @@ export const mutations = {
         state.announcementData = payload;
     },
 
-    SET_TAGS: (state, payload) => state.tags = payload
+    SET_TAGS: (state, payload) => state.tags = payload,
+
+    SET_HOTELS: (state, data) => {
+      state.hotels = data
+    },
 }
 
 export const actions = {
@@ -74,6 +79,7 @@ export const actions = {
         commit('SET_VISITOR_PICS', await this.$axios.$get(`/socialPhoto/list?entityId=${beach_id}&count=10`));
         commit('SET_ANNOUNCEMENT_DATA', await this.$axios.$get(`/banner/list?page=/beach`));
         commit('SET_ANY_PLACES', await this.$axios.$get('/hotel/list?count=9999'));
+        commit('SET_HOTELS', await this.$axios.$get('/hotel/beachList'));
 
         let tagsCount = 0, tags;
         if (state.beach.data.item.TAGS)
@@ -273,6 +279,42 @@ export const getters = {
             another_place: true,
             price: another_places[i].PRICE,
             coordinates: another_places[i].COORDINATES ? another_places[i].COORDINATES.split(',').map(Number) : [],
+          });
+        }
+
+      }
+
+      if (state.hotels.data){
+        let hotels = state.hotels.data.list
+
+        ret.hotels = {
+          title: 'Забронируй номер рядом с пляжем',
+          subtitle: 'Наша подборка отелей, основанная на ваших отзывах',
+          beachNumber: hotels.length,
+          /*showMore: {
+            type: 'beach',
+            query: '?another'
+          },*/
+          beachSliderData: {
+            slideNumber: 6,
+            cardData: []
+          }
+        }
+
+        for (let i = 0; i < hotels.length; i++) {
+          ret.hotels.beachSliderData.cardData.push({
+            rating: hotels[i].RATING,
+            title: hotels[i].NAME,
+            pic: hotels[i].PICTURE,
+            mainLink: hotels[i].URL,
+            beachLink: hotels[i].URL,
+            beachId: hotels[i].ID,
+            show_distance: true,
+            geo_string: hotels[i].COUNTRY + ', ' + hotels[i].CITY,
+            internal_url: hotels[i].URL,
+            another_place: true,
+            price: hotels[i].PRICE,
+            coordinates: hotels[i].COORDINATES ? hotels[i].COORDINATES.split(',').map(Number) : [],
           });
         }
 
