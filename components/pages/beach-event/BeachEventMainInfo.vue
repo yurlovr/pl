@@ -3,7 +3,7 @@
     <div class="beach-event__main-info">
       <div class="search-page__map-area__card__title-area beach-event__main-info__title-area">
         <div class="beach-event__main-info__title-area__left">
-          <h1 class="search-page__map-area__card__title beach-event__main-info__title " v-html="data.title"></h1>
+          <h2 class="search-page__map-area__card__title beach-event__main-info__title " v-html="data.title"></h2>
           <a :href="getLink" @click.prevent="$bus.goTo(getLink, $router)"
              class="search-page__map-area__card__subtitle beach-event__main-info__subtitle">{{ data.location }}</a>
         </div>

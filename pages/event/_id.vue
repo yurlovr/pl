@@ -32,8 +32,11 @@
 			<BeachEventVisitorPics id="visitor-pics" :data="eventData.visitorPics" :type="'event'" :typeId="eventData.mainData.eventId" />
 		</div>
 		<BeachSliderArea id="other-events" class="beach-event__similar-beaches" :data="eventData.otherEvents" v-if="eventData.otherEvents.beachNumber > 0" />
-    <div class="main-page__white-wrapper" v-if="eventData.another_places && eventData.another_places.length > 0">
+    <div class="main-page__white-wrapper" v-if="eventData.another_places && eventData.another_places.beachNumber > 0">
       <BeachSliderArea :data="eventData.another_places" class="main-page__family-rest" outlink="https://nash.travel/hotel" />
+    </div>
+    <div class="main-page__white-wrapper" v-if="eventData.hotels && eventData.hotels.beachNumber > 0">
+      <BeachSliderArea :data="eventData.hotels" class="main-page__family-rest" outlink="https://nash.travel/hotel" />
     </div>
 	</div>
 </template>

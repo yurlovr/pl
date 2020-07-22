@@ -1,6 +1,6 @@
 <template>
 	<section class="main-page__choose-beach custom-container" v-if="data">
-		<h1 class="main-page__section-title">Выберите свой пляж</h1>
+		<h3 class="main-page__section-title">Выберите свой пляж</h3>
 		<div class="main-page__choose-beach__cards">
 			<a :href="`/search?typeBeach=${data[0].id}`" @click.prevent="search(data[0])" class="main-page__choose-beach__card">
 				<img  src="~/static/pics/main/section6_beach_type1.svg">
