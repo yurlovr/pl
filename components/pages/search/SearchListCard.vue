@@ -4,10 +4,10 @@
       <a :href="data.humanLink ? data.humanLink : ( data.mainLink ? data.mainLink : '#')"
          @click.prevent="$bus.goTo( data.humanLink ? data.humanLink : ( data.mainLink ? data.mainLink : '#'), $router)"
       >
-      <img v-lazy-load :data-src="data.pic" v-show="this.picLoaded" alt="Фото" class="custom-card__pic"
-           @load="picLoaded = true">
-      <img v-show="!this.picLoaded" class="custom-card__pic"
-           src="~/static/pics/global/pics/slider_beh_placeholder.png">
+        <img v-lazy-load :data-src="data.pic" v-show="this.picLoaded" alt="Фото" class="custom-card__pic"
+             @load="picLoaded = true">
+        <img v-show="!this.picLoaded" class="custom-card__pic"
+             src="~/static/pics/global/pics/slider_beh_placeholder.png">
       </a>
       <div class="custom-card__temp-area" v-if="data.tempWater != undefined && showTemp != false">
         <img src="~/static/pics/global/svg/temper_big.svg" alt="Температура" class="big">
@@ -21,7 +21,10 @@
            alt="Платный" :title="data.access  && data.access.DESCRIPTION ? data.access.DESCRIPTION : ''">
     </div>
     <div class="info_area w-100">
-      <div class=" heading-area">
+
+
+      <div class="d-flex flex-column justify-content-between">
+        <div class=" heading-area">
         <div class="custom-card__rating-area mobile-rating" v-if="data.rating">
           <img src="~/static/pics/global/svg/star.svg" alt="Рейтинг">
           <span>{{ data.rating.toFixed(1) }}</span>
@@ -45,8 +48,15 @@
              :style="{ 'font-size': data.beach ? '10px' : '12px' }">{{ data.geo_string }}</a>
         </div>
       </div>
-      <div class="description-area">
-       <p></p>
+        <div class="description-area">
+          <p>Пляж был основан в 1983 году. Самый большой пляж на полуострове является домом для невероятной флоры и фауны.
+            Особого внимания заслуживают черепахи из кожи. Залив является одним из самых важных мест, где черепахи
+            откладывают яйца. Каждый год в июне они приезжают в Баия-де-лас-Агилас, чтобы отложить яйца. Помимо черепах,
+            вы также можете встретить исчезающих игуан носорогов или сыт по горло розовыми колониями ...</p>
+        </div>
+      </div>
+      <div class="button-area">
+        <a href="" class="banner__card__info-area__button">Подробнее</a>
       </div>
     </div>
   </div>
@@ -55,6 +65,7 @@
 <script>
   import AddToFavorites from "../../global/AddToFavorites";
   import VClamp from 'vue-clamp';
+
   export default {
     name: "SearchListCard",
     components: {AddToFavorites, VClamp},
