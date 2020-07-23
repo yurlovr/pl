@@ -4,10 +4,10 @@
       <a :href="data.humanLink ? data.humanLink : ( data.mainLink ? data.mainLink : '#')"
          @click.prevent="$bus.goTo( data.humanLink ? data.humanLink : ( data.mainLink ? data.mainLink : '#'), $router)"
       >
-      <img v-lazy-load :data-src="data.pic" v-show="this.picLoaded" alt="Фото" class="custom-card__pic"
-           @load="picLoaded = true">
-      <img v-show="!this.picLoaded" class="custom-card__pic"
-           src="~/static/pics/global/pics/slider_beh_placeholder.png">
+        <img v-lazy-load :data-src="data.pic" v-show="this.picLoaded" alt="Фото" class="custom-card__pic"
+             @load="picLoaded = true">
+        <img v-show="!this.picLoaded" class="custom-card__pic"
+             src="~/static/pics/global/pics/slider_beh_placeholder.png">
       </a>
       <div class="custom-card__temp-area" v-if="data.tempWater != undefined && showTemp != false">
         <img src="~/static/pics/global/svg/temper_big.svg" alt="Температура" class="big">
@@ -45,8 +45,8 @@
              :style="{ 'font-size': data.beach ? '10px' : '12px' }">{{ data.geo_string }}</a>
         </div>
       </div>
-      <div class="description-area">
-       <p></p>
+      <div class="description-area line-variant" v-if="data.desc">
+        <v-clamp autoresize :max-lines="max">{{htmlKiller(data.desc)}}</v-clamp>
       </div>
     </div>
   </div>
@@ -55,6 +55,7 @@
 <script>
   import AddToFavorites from "../../global/AddToFavorites";
   import VClamp from 'vue-clamp';
+
   export default {
     name: "SearchListCard",
     components: {AddToFavorites, VClamp},
@@ -65,6 +66,27 @@
         max: 5,
       }
     },
+    methods: {
+      htmlKiller(s){
+        return s ? s.trim().replace(/<[^>]*>?/gm, '').replace(/&nbsp;/g, ' ') : ''
+      },
+      onResize() {
+        const size = window.innerWidth
+        if (size >= 1440){
+          this.max = 5;
+        } else {
+          if (size < 1440 && size >=768){
+            this.max = 3;
+          } else {
+            this.max = 4;
+          }
+        }
+      },
+    },
+    mounted() {
+      window.addEventListener('resize', this.onResize, false);
+      this.onResize();
+    }
   }
 </script>
 
