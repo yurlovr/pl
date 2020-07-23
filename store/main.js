@@ -59,18 +59,18 @@ export const mutations = {
 export const actions = {
     async getMainPageData({commit, state}, callback) {
         if (state.geo.id) {
-            commit('SET_POPULAR_BEACH', await this.$axios.$get(`/beach/list?city=${state.geo.id}&count=45`));
+            commit('SET_POPULAR_BEACH', await this.$axios.$get(`/beach/list?city=${state.geo.id}&count=10`));
             commit('SET_GEO_COUNT', state.beachesTop.data ? state.beachesTop.data.list.length : 0)
         }
         if (!state.geo.id || !state.geo.count)
-            commit('SET_POPULAR_BEACH', await this.$axios.$get('/beach/top?count=45'));
+            commit('SET_POPULAR_BEACH', await this.$axios.$get('/beach/top?count=10'));
         commit('SET_CITIES', await this.$axios.$get('/city/top?count=9999'));
         commit('SET_WEATHER', await this.$axios.$get('/weather/list'));
         commit('SET_COLLECTION', await this.$axios.$get('/collection/list/'));
         commit('SET_COLLECTION_LIST', await this.$axios.$get('/collectionList/list/'));
         commit('SET_BANNERS', await this.$axios.$get('/banner/list/'));
         commit('SET_MAP', await this.$axios.$get('/beach/clusters/'));
-        commit('SET_ANY_PLACES', await this.$axios.$get('/hotel/list?count=9999'));
+        commit('SET_ANY_PLACES', await this.$axios.$get('/hotel/list?count=10'));
         callback();
     }
 }
@@ -84,7 +84,7 @@ export const getters = {
                 ret.beachesTop = {
                     title: 'Самые популярные пляжи' + (state.geo.id && state.geo.count && state.geo.count != 0 && state.state.beachesTop.data.list[0] && state.state.beachesTop.data.list[0].CITY ? ' ' + state.state.beachesTop.data.list[0].CITY.NAME : ''),
                     subtitle: 'Пологий берег, плавный вход в воду, безопасность и современная инфраструктура',
-                    beachNumber: Math.min(state.beachesTop.data.list.length, 45),
+                    beachNumber: Math.min(state.beachesTop.data.pagination.countElements, 45),
                     showMore: {
                         type: 'beach',
                         query: '?popular&'
@@ -236,7 +236,7 @@ export const getters = {
                     ret.familyRest = {
                         title: 'Отдых для всей семьи',
                         subtitle: 'Пологий берег, плавный вход в воду, безопасность и современная инфраструктура',
-                        beachNumber: Math.min(family.BEACHES.length, 45),
+                        beachNumber: Math.min(family.COUNT_BEACHES, 45),
                         showMore: {
                             type: 'beach',
                             query: '?family'
@@ -278,7 +278,7 @@ export const getters = {
               ret.another_places = {
                 title: 'Где остановиться в Крыму',
                 subtitle: 'Наша подборка отелей, основанная на ваших отзывах',
-                beachNumber: another_places.length,
+                beachNumber: state.any_places.data.pagination.countElements,
                 showMore: {
                   type: 'beach',
                   query: '?another'
@@ -360,7 +360,7 @@ export const getters = {
                         ret.activeRest.push({
                             title: activeRest.COLLECTIONS[i].NAME,
                             pic: activeRest.COLLECTIONS[i].PREVIEW_PICTURE ? (activeRest.COLLECTIONS[i].PREVIEW_PICTURE) : null,
-                            beachNumber: activeRest.COLLECTIONS[i].BEACHES ? activeRest.COLLECTIONS[i].BEACHES.length : 0,
+                            beachNumber: activeRest.COLLECTIONS[i].COUNT_BEACHES ? activeRest.COLLECTIONS[i].COUNT_BEACHES : 0,
                             filter: []
                         });
 
@@ -427,7 +427,7 @@ export const getters = {
                         ret.chooseToYourWishes.cards.push({
                             title: beachType.COLLECTIONS[i].NAME,
                             pic: beachType.COLLECTIONS[i].PREVIEW_PICTURE ? (beachType.COLLECTIONS[i].PREVIEW_PICTURE) : null,
-                            beachNumber: beachType.COLLECTIONS[i].BEACHES ? beachType.COLLECTIONS[i].BEACHES.length : 0,
+                            beachNumber: beachType.COLLECTIONS[i].COUNT_BEACHES ? beachType.COLLECTIONS[i].COUNT_BEACHES : 0,
                             description: beachType.COLLECTIONS[i].DESCRIPTION,
                             filter: []
                         });
