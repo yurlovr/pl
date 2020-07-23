@@ -9780,7 +9780,7 @@ body.touch {
   }
 
   .info_area {
-    padding: 24px 26px 31px 26px;
+    padding: 24px 26px;
 
     .heading-area {
       margin-bottom: 20px;
@@ -9964,6 +9964,24 @@ body.touch {
   flex-wrap: wrap;
   margin-left: -10px;
   margin-right: -10px;
+}
+.button-area {
+  a {
+    width: fit-content;
+    color: #fff;
+    line-height: 1;
+
+
+    @media (max-width: 767px){
+      width: 100%;
+    }
+    &:hover {
+      color: #FF8C00;
+    }
+    &:after {
+      margin-left: 4px;
+    }
+  }
 }
 
 .line-variant span {

@@ -159,7 +159,6 @@
     },
    async created() {
       this.beachData.map_entity = this.mapEntity;
-      console.log('33333', this.beachData)
       await this.$axios.$get('seo/meta?url=/beach/'+ this.beachData.mainData.beachId).then(res => {
         this.meta = res.data
       })
