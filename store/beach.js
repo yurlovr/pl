@@ -78,7 +78,8 @@ export const actions = {
         commit('SET_REVIEWS', await this.$axios.$get(`/review/list?entityId=${beach_id}&count=9999`));
         commit('SET_VISITOR_PICS', await this.$axios.$get(`/socialPhoto/list?entityId=${beach_id}&count=10`));
         commit('SET_ANNOUNCEMENT_DATA', await this.$axios.$get(`/banner/list?page=/beach`));
-        commit('SET_ANY_PLACES', await this.$axios.$get('/hotel/list?count=9999'));
+
+        commit('SET_ANY_PLACES', await this.$axios.$get('/hotel/list?count=10'));
         commit('SET_HOTELS', await this.$axios.$get('/hotel/beachList'));
 
         let tagsCount = 0, tags;
@@ -254,7 +255,7 @@ export const getters = {
         ret.another_places = {
           title: 'Где остановиться в Крыму',
           subtitle: 'Наша подборка отелей, основанная на ваших отзывах',
-          beachNumber: another_places.length,
+          beachNumber: state.any_places.data.pagination.countElements,
           showMore: {
             type: 'beach',
             query: '?another'
