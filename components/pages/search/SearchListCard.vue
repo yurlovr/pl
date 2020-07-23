@@ -48,7 +48,7 @@
              :style="{ 'font-size': data.beach ? '10px' : '12px' }">{{ data.geo_string }}</a>
         </div>
       </div>
-        <div class="description-area">
+        <div class="description-area line-variant">
           <v-clamp autoresize :max-lines="max">{{htmlKiller(data.desc)}}</v-clamp>
         </div>
       </div>
