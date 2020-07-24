@@ -9982,6 +9982,10 @@ body.touch {
       margin-left: 4px;
     }
   }
+  @media (max-width: 767px){
+    margin-top: 16px;
+  }
+
 }
 
 .line-variant span {

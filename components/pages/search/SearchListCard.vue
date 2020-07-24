@@ -23,37 +23,40 @@
     <div class="info_area w-100">
 
 
-      <div class="d-flex flex-column justify-content-between">
-        <div class=" heading-area">
-        <div class="custom-card__rating-area mobile-rating" v-if="data.rating">
-          <img src="~/static/pics/global/svg/star.svg" alt="Рейтинг">
-          <span>{{ data.rating.toFixed(1) }}</span>
-        </div>
-        <div class="d-flex align-items-center flex-shrink-0">
-          <a :href="data.humanLink ? data.humanLink : ( data.mainLink ? data.mainLink : '#')"
-             @click.prevent="$bus.goTo( data.humanLink ? data.humanLink : ( data.mainLink ? data.mainLink : '#'), $router)"
-          >
-            <h4 v-html="data.title"></h4>
-          </a>
-        </div>
-        <div class="d-flex align-items-center info-area justify-content-between">
-          <div class="custom-card__rating-area" v-if="data.rating">
-            <img src="~/static/pics/global/svg/star.svg" alt="Рейтинг">
-            <span>{{ data.rating.toFixed(1) }}</span>
+      <div class="d-flex flex-column justify-content-between h-100">
+        <div>
+          <div class=" heading-area">
+            <div class="custom-card__rating-area mobile-rating" v-if="data.rating">
+              <img src="~/static/pics/global/svg/star.svg" alt="Рейтинг">
+              <span>{{ data.rating.toFixed(1) }}</span>
+            </div>
+            <div class="d-flex align-items-center flex-shrink-0">
+              <a :href="data.humanLink ? data.humanLink : ( data.mainLink ? data.mainLink : '#')"
+                 @click.prevent="$bus.goTo( data.humanLink ? data.humanLink : ( data.mainLink ? data.mainLink : '#'), $router)"
+              >
+                <h4 v-html="data.title"></h4>
+              </a>
+            </div>
+            <div class="d-flex align-items-center info-area justify-content-between">
+              <div class="custom-card__rating-area" v-if="data.rating">
+                <img src="~/static/pics/global/svg/star.svg" alt="Рейтинг">
+                <span>{{ data.rating.toFixed(1) }}</span>
+              </div>
+              <a v-if="!data.another_place" :href="`/search?city=${data.locationId}`" @click.prevent="searchCity()"
+                 class="custom-card__location"
+                 :style="{ 'font-size': data.beach ? '10px' : '12px' }">{{ data.location }}</a>
+              <a v-else class="custom-card__location"
+                 :style="{ 'font-size': data.beach ? '10px' : '12px' }">{{ data.geo_string }}</a>
+            </div>
           </div>
-          <a v-if="!data.another_place" :href="`/search?city=${data.locationId}`" @click.prevent="searchCity()"
-             class="custom-card__location"
-             :style="{ 'font-size': data.beach ? '10px' : '12px' }">{{ data.location }}</a>
-          <a v-else class="custom-card__location"
-             :style="{ 'font-size': data.beach ? '10px' : '12px' }">{{ data.geo_string }}</a>
+          <div class="description-area line-variant">
+            <v-clamp autoresize :max-lines="max">{{htmlKiller(data.desc)}}</v-clamp>
+          </div>
         </div>
-      </div>
-        <div class="description-area line-variant">
-          <v-clamp autoresize :max-lines="max">{{htmlKiller(data.desc)}}</v-clamp>
+
+        <div class="button-area">
+          <a href="" class="banner__card__info-area__button">Подробнее</a>
         </div>
-      </div>
-      <div class="button-area">
-        <a href="" class="banner__card__info-area__button">Подробнее</a>
       </div>
     </div>
   </div>
@@ -74,15 +77,15 @@
       }
     },
     methods: {
-      htmlKiller(s){
+      htmlKiller(s) {
         return s ? s.trim().replace(/<[^>]*>?/gm, '').replace(/&nbsp;/g, ' ') : ''
       },
       onResize() {
         const size = window.innerWidth
-        if (size >= 1440){
+        if (size >= 1440) {
           this.max = 5;
         } else {
-          if (size < 1440 && size >=768){
+          if (size < 1440 && size >= 768) {
             this.max = 3;
           } else {
             this.max = 4;
