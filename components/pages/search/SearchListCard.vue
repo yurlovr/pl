@@ -55,7 +55,9 @@
         </div>
 
         <div class="button-area">
-          <a href="" class="banner__card__info-area__button">Подробнее</a>
+          <a :href="data.humanLink ? data.humanLink : ( data.mainLink ? data.mainLink : '#')"
+             @click.prevent="$bus.goTo( data.humanLink ? data.humanLink : ( data.mainLink ? data.mainLink : '#'), $router)"
+             class="banner__card__info-area__button">Подробнее</a>
         </div>
       </div>
     </div>
