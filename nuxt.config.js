@@ -1,5 +1,5 @@
 import axios from 'axios';
-import {url_api} from './.env.js';
+import {url_api, prom_host, prom_port} from './.env.js';
 
 export default {
   mode: "universal",
@@ -133,7 +133,22 @@ export default {
       images: true,
       directiveOnly: true,
       defaultImage: '/pics/global/pics/slider_beh_placeholder.png'
-    }]
+    }],
+    '@qonfucius/nuxt-prometheus-module',
+
+    // With options
+    [
+      '@qonfucius/nuxt-prometheus-module',
+      {
+        port: prom_port,
+        host: prom_host,
+        metrics: {
+          collectDefault: true,
+          requestDuration: false,
+        },
+      },
+    ],
+
   ],
   axios: {
     baseURL: url_api
