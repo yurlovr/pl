@@ -185,14 +185,16 @@
                             // step 2 markers
                             for (let j = 0; j < this.data.addressBeaches[i].beaches.length; j++) {
                                 // adding the balloon
-                                let slides = [];
-
-                                for (let k = 0; k < this.data.addressBeaches[i].beaches[j].pics.length; k++) {
+                                let slides = [],
+                                  pics = this.data.addressBeaches[i].beaches[j].pics
+                                if (pics && pics.length){
+                                  for (let k = 0; k < this.data.addressBeaches[i].beaches[j].pics.length; k++) {
                                     slides.push(`
                                         <div class="swiper-slide map-popup__slide">
                                             <img  src="${this.data.addressBeaches[i].beaches[j].pics[k]}">
                                         </div>
                                     `);
+                                  }
                                 }
 
                               balloonLayout = maps.templateLayoutFactory.createClass(`
