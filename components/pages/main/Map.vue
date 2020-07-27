@@ -187,6 +187,7 @@
                                 // adding the balloon
                                 let slides = [],
                                   pics = this.data.addressBeaches[i].beaches[j].pics
+
                                 if (pics && pics.length){
                                   for (let k = 0; k < this.data.addressBeaches[i].beaches[j].pics.length; k++) {
                                     slides.push(`
