@@ -6,7 +6,7 @@
     <Search class="main-page__welcome__search" labelId="1" />
     <BeachSliderArea class="main-page__popular-beaches" :data="mainData.beachesTop" v-if="mainData.beachesTop" />
     <Cities :data="mainData.citiesTop" v-if="mainData.citiesTop" />
-    <MapArea :data="mainData.map" :mapData="mainData.map_entity" v-if="mainData.map" />
+    <MapArea :data="mainData.map" :mapData="mapEntity" v-if="mainData.map" />
     <Banner :data="mainData.banners[2]" v-if="mainData.banners && mainData.banners[2]" class="banner-1" />
     <div class="main-page__white-wrapper" v-if="mainData.familyRest">
       <BeachSliderArea :data="mainData.familyRest" class="main-page__family-rest" />
