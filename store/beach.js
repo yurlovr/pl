@@ -399,7 +399,7 @@ export const getters = {
                 humanLink: state.events.data.list[i].CODE ? `event/${state.events.data.list[i].CODE}` : null,
                 location: state.events.data.list[i].BEACH ? state.events.data.list[i].BEACH.CITY.NAME : null,
                 locationId: state.events.data.list[i].BEACH ? state.events.data.list[i].BEACH.CITY.ID : null,
-                pic: state.events.data.list[i].PHOTOS ? state.events.data.list[i].PHOTOS[0] : null,
+                pic: state.events.data.list[i].PHOTOS ? state.events.data.list[i].PHOTOS.medium[0].path : null,
                 eventId: state.events.data.list[i].ID,
                 showFavorite: true
             });
