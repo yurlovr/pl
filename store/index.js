@@ -112,7 +112,7 @@ export const getters = {
         paid: state.events.data.list[i].PAID,
         title: state.events.data.list[i].NAME,
         location: state.events.data.list[i].BEACH && state.events.data.list[i].BEACH.CITY ? state.events.data.list[i].BEACH.CITY.NAME : null,
-        pic: state.events.data.list[i].PHOTOS ? state.events.data.list[i].PHOTOS[0] : null,
+        pic: state.events.data.list[i].PHOTOS ? state.events.data.list[i].PHOTOS.medium[0].path : null,
         mainLink: `event/${state.events.data.list[i].ID}`,
         humanLink: state.events.data.list[i].CODE ? `event/${state.events.data.list[i].CODE}`: null,
         beachLink: state.events.data.list[i].BEACH ? `beach/${state.events.data.list[i].BEACH.CODE}` : null,
