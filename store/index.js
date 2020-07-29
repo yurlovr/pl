@@ -66,7 +66,7 @@ export const getters = {
         rating: parseFloat(state.beaches.data.list[i].AVERAGE_RATING),
         title: state.beaches.data.list[i].NAME,
         location: state.beaches.data.list[i].CITY ? state.beaches.data.list[i].CITY.NAME : null,
-        pic: state.beaches.data.list[i].PHOTOS ? state.beaches.data.list[i].PHOTOS[0] : null,
+        pic: state.beaches.data.list[i].PHOTOS ? state.beaches.data.list[i].PHOTOS.medium[0].path : null,
         mainLink: `beach/${state.beaches.data.list[i].ID}`,
         beachLink: `beach/${state.beaches.data.list[i].ID}`,
         humanLink: state.beaches.data.list[i].CODE ? `beach/${state.beaches.data.list[i].CODE}` : null,
