@@ -399,7 +399,7 @@ export const getters = {
                 humanLink: state.events.data.list[i].CODE ? `event/${state.events.data.list[i].CODE}` : null,
                 location: state.events.data.list[i].BEACH ? state.events.data.list[i].BEACH.CITY.NAME : null,
                 locationId: state.events.data.list[i].BEACH ? state.events.data.list[i].BEACH.CITY.ID : null,
-                pic: state.events.data.list[i].PHOTOS ? state.events.data.list[i].PHOTOS[0] : null,
+                pic: state.events.data.list[i].PHOTOS ? state.events.data.list[i].PHOTOS.medium[0].path : null,
                 eventId: state.events.data.list[i].ID,
                 showFavorite: true
             });
@@ -463,7 +463,7 @@ export const getters = {
                         title: state.similarBeaches.data.list[i].NAME,
                         location: state.similarBeaches.data.list[i].CITY ? state.similarBeaches.data.list[i].CITY.NAME : 'Не указан',
                         locationId: state.similarBeaches.data.list[i].CITY ? state.similarBeaches.data.list[i].CITY.ID : null,
-                        pic: state.similarBeaches.data.list[i].PHOTOS ? state.similarBeaches.data.list[i].PHOTOS[0] : null,
+                        pic: state.similarBeaches.data.list[i].PHOTOS ? state.similarBeaches.data.list[i].PHOTOS.medium[0].path : null,
                         mainLink: `beach/${state.similarBeaches.data.list[i].ID}`,
                         beachLink: `beach/${state.similarBeaches.data.list[i].ID}`,
                         humanLink: state.similarBeaches.data.list[i].CODE ? `beach/${state.similarBeaches.data.list[i].CODE}`: null,
