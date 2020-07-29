@@ -77,11 +77,12 @@ export const getters = {
       }
       return result;
     }
+
     let ret = {
       hugeSliderData: {
         title: state.event.data.item.NAME,
         isBeachClosed: false,
-        pics: state.event.data.item.PHOTOS,
+        pics: state.event.data.item.PHOTOS.medium.map(e => e.path),
         goldMedal: null,
         blueMedal: null
       },
