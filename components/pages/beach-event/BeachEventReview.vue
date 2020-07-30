@@ -15,6 +15,12 @@
 				</template>
 			</div>
 		</div>
+    <div class="review-photo-container" v-if="data.photos.length">
+      <div class="review-photo" v-for="img in data.photos.slice(0, 2)">
+        <img :src="img" alt="">
+      </div>
+
+    </div>
 		<p class="beach-event__review__comment not-expanded" v-show="!expanded && maxLines > 0" v-html="data.comment.slice(0, 300) + '...'"></p>
 		<p class="beach-event__review__comment expanded" v-show="expanded || maxLines == 0" v-html="data.comment"></p>
 		<button class="beach-event__review__comment__button" @click="expanded = !expanded" v-show="maxLines > 0">

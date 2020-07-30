@@ -435,7 +435,8 @@ export const getters = {
                 name: state.reviews.data.list[i].FIO,
                 date: state.reviews.data.list[i].CREATED_DATE,
                 rating: state.reviews.data.list[i].AVERAGE_RATING,
-                comment: state.reviews.data.list[i].DESCRIPTION
+                comment: state.reviews.data.list[i].DESCRIPTION,
+                photos: state.reviews.data.list[i].PHOTOS
             });
         }
 
