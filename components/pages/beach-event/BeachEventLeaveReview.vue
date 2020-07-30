@@ -200,7 +200,7 @@
 				data.set('rating[security]', this.ratings[4].rating);
 				data.set('rating[availability]', this.ratings[5].rating);
 				data.set('description', this.review);
-				data.append('photo', this.file);
+				data.append('userPhoto', this.file);
 				data.append('photo[]', this.photo);
 
 				await this.$axios({
