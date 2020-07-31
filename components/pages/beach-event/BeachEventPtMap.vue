@@ -25,7 +25,7 @@
         chosenAuto: -1,
         chosenBus: -1,
         chosenObject: -1,
-        map: null
+        map: null,
       }
     },
 
@@ -100,8 +100,10 @@
                   let slides = [];
                   for (let k = 0; k < pictures.length; k++) {
                     slides.push(`
-                      <div class="swiper-slide map-popup__slide">
-                        <img  src="${pictures[k]}">
+                      <div class="swiper-slide">
+                        <div class="beach-event__visitor-pics__pic-area" style="height: 100px; width: 100px;">
+                          <img src="${pictures[k]}" style="border-radius: 12px;">
+                        </div>
                       </div>
                     `);
                   };
@@ -128,21 +130,20 @@
                       hintLayout: maps.templateLayoutFactory.createClass("<div class='my-hint'>" +
                         `<div class='header'>${title}</div><br />` +
                         `<div class='description'>${description}</div>` +
-                        `<div class="map-popup__pic-area">
-                            <div class="map-popup__slider">
-                              <div class="swiper-container" id="balloon-swiper">
-                                <div class="swiper-wrapper">
-                                  ${slides.join('')}
-                                </div>
-                              </div>
-                              <div class="pagination-wrapper"><div class="swiper-pagination"></div></div>
-                              <button class="slider__arrow-left slider__arrow-left-balloon">
-                                  <img  src="/pics/global/svg/arrow_next_map.svg" alt="Налево">
-                              </button>
-                              <button class="slider__arrow-right slider__arrow-right-balloon">
-                                  <img  src="/pics/global/svg/arrow_next_map.svg" alt="Направо">
-                              </button>
+                        `<div class="beach-event__visitor-pics__slider" style='height: 100%'>
+                          <div class="swiper-container" id='balloon-swiper'>
+                            <div class="swiper-wrapper">
+                               ${slides.join('')}
                             </div>
+                          </div>
+                          <button class="slider__arrow-left slider__arrow-left-balloon"
+                                  style="transform: translate(-50%, -50%); top: 50%">
+                            <img src="/pics/global/svg/slider_arrow_left.svg" alt="Налево">
+                          </button>
+                          <button class="slider__arrow-right slider__arrow-right-balloon"
+                                  style="transform: translate(50%, -50%); top: 50%">
+                            <img src="/pics/global/svg/slider_arrow_right.svg" alt="Направо">
+                          </button>
                         </div>` +
                         "</div>",{
                         build() {
@@ -150,13 +151,21 @@
 
                           // init the swiper
                           this.swiper = new Swiper(`#balloon-swiper`, {
-                            slidePerView: 1,
-                            spaceBetween: 20,
-                            pagination: {
-                              el: '.swiper-pagination',
-                              type: 'bullets',
-                              clickable: true
-                            }
+                            slidesPerView: 3,
+                          });
+
+                          this.swiper.on('imagesReady', () => {
+                            let left = document.querySelector(`.slider__arrow-left-balloon`);
+                            let right = document.querySelector(`.slider__arrow-right-balloon`);
+                            this.swiper.isBeginning === false ? left.style.display = '' : left.style.display = 'none';
+                            this.swiper.isEnd === false ? right.style.display = '' : right.style.display = 'none'
+                          });
+
+                          this.swiper.on('slideChange', () => {
+                            let left = document.querySelector(`.slider__arrow-left-balloon`);
+                            let right = document.querySelector(`.slider__arrow-right-balloon`);
+                            this.swiper.isBeginning === false ? left.style.display = '' : left.style.display = 'none';
+                            this.swiper.isEnd === false ? right.style.display = '' : right.style.display = 'none'
                           });
 
                           // init the arrows
@@ -174,7 +183,21 @@
                     properties: {
                       balloonContentBody: "<div class='my-balloon'>" +
                         `<div class='header'>${title}</div><br />` +
-                        `<div class='description'>${description}</div>`+
+                        `<div class='description'>${description} ${slides.join('')}</div>`+
+                        `<div class="swiper-container" id='balloon-swiper'>
+                            <div class="swiper-wrapper">
+                               ${slides.join('')}
+                            </div>
+                          </div>
+                          <button class="slider__arrow-left slider__arrow-left-balloon"
+                                  style="transform: translate(-50%, -50%); top: 0">
+                            <img src="/pics/global/svg/slider_arrow_left.svg" alt="Налево">
+                          </button>
+                          <button class="slider__arrow-right slider__arrow-right-balloon"
+                                  style="transform: translate(50%, -50%); top: 0}">
+                            <img src="/pics/global/svg/slider_arrow_right.svg" alt="Направо">
+                          </button>
+                        </div>` +
                         "</div>"
                     }
                   })
@@ -598,7 +621,7 @@
       onResize() {
         if (this.map)
           this.map.container.fitToViewport();
-      }
+      },
     },
 
     async mounted() {
