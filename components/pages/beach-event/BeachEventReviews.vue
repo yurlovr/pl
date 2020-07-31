@@ -26,67 +26,51 @@
       <button class="slider-beach-event__modal__close-button" @click="closePhotoModal">
         <img src="~/static/pics/global/svg/cross_blue.svg">
       </button>
-      {{activeReviewIndex}}
-      <div class="slider-beach-event__modal__inner" v-if="activeReviewIndex >=0">
+      <div class="slider-beach-event__modal__inner">
         <div class="slider-beach-event__modal__sides">
           <div class="slider-beach-event__modal__left">
-            <div v-swiper:mySwiperModal="swiperOption">
-              <div class="swiper-wrapper">
-                <div class="swiper-slide" v-for="(pic, i) in data[activeReviewIndex].photos" :key="i">
+            <div v-swiper:mySwiperModalPhoto="swiperOption_double">
+              <div class="swiper-wrapper" v-if="activeReviewIndex >=0">
+                <div class="swiper-slide" style="max-height: 600px" v-for="(pic, i) in data[activeReviewIndex].photos" :key="i + 'review'">
                   <div class="position-relative">
+                    {{pic}}
                     <img v-lazy-load :data-src="pic">
                   </div>
                 </div>
               </div>
             </div>
-<!--            <button class="slider__arrow-left" :style="{ display: showLeft ? '' : 'none' }"-->
-<!--                    @click="mySwiperModal.slidePrev()">-->
-<!--              <img src="~/static/pics/global/svg/slider_arrow_left.svg" alt="Налево">-->
-<!--            </button>-->
-<!--            <button class="slider__arrow-right" :style="{ display: showRight ? '' : 'none' }"-->
-<!--                    @click="mySwiperModal.slideNext();">-->
-<!--              <img src="~/static/pics/global/svg/slider_arrow_right.svg" alt="Направо">-->
-<!--            </button>-->
+            <button class="slider__arrow-left" :style="{ display: showLeft ? '' : 'none' }"
+                    @click="mySwiperModalPhoto.slidePrev()">
+              <img src="~/static/pics/global/svg/slider_arrow_left.svg" alt="Налево">
+            </button>
+            <button class="slider__arrow-right" :style="{ display: showRight ? '' : 'none' }"
+                    @click="mySwiperModalPhoto.slideNext();">
+              <img src="~/static/pics/global/svg/slider_arrow_right.svg" alt="Направо">
+            </button>
           </div>
-<!--          <div class="slider-beach-event__modal__right">-->
-<!--            <div v-swiper:mySwiperModalSmall="swiperModalSmallOption">-->
-<!--              <div class="swiper-wrapper">-->
-<!--                <div class="swiper-slide" v-for="(pic, i) in data.pics" :key="i" :class="{ active: activeIndex == i }"-->
-<!--                     @click="mySwiperModal.slideTo(i)">-->
-<!--                  <img v-lazy-load :data-src="pic" v-if="!pic.includes('youtube')">-->
-<!--                  &lt;!&ndash;                  modal true&ndash;&gt;-->
-<!--                  <div v-else class="w-100 h-100">-->
-<!--                    <div class="slider-beach-event__right__item__inner" @click="openModal(i)">-->
-<!--                      <div class="w-100 h-100 overflow-hidden position-relative">-->
-<!--                        <div-->
-<!--                          class="my-flex justify-content-center align-items-center w-100 h-100 position-absolute z-index-preview">-->
-<!--                          <img style="width: 48px; height: 48px; opacity: .9"-->
-<!--                               src="~/static/pics/global/pics/play.png"-->
-<!--                               alt="play"-->
-<!--                          />-->
-<!--                        </div>-->
-<!--                        <img v-lazy-load :data-src="`https://img.youtube.com/vi/${transformUrl(pic)}/0.jpg`"-->
-<!--                             alt="Youtube is failed">-->
-<!--                      </div>-->
-<!--                    </div>-->
-<!--                  </div>-->
-<!--                </div>-->
-<!--              </div>-->
-<!--            </div>-->
+          <div class="slider-beach-event__modal__right">
+            <div v-swiper:mySwiperModalSmallPhoto="swiperModalSmallOption">
+              <div class="swiper-wrapper" v-if="activeReviewIndex >=0">
+                <div class="swiper-slide" v-for="(pic, i) in data[activeReviewIndex].photos" :key="i" :class="{ active: activeIndexPhotos == i }"
+                     @click="mySwiperModalPhoto.slideTo(i)">
+                  <img v-lazy-load :data-src="pic">
+                </div>
+              </div>
+            </div>
 
-<!--            <button class="slider__arrow-left" :style="{ display: showLeft ? '' : 'none' }"-->
-<!--                    @click="mySwiperModal.slidePrev()">-->
-<!--              <img src="~/static/pics/global/svg/slider_arrow_left.svg" alt="Налево">-->
-<!--            </button>-->
-<!--            <button class="slider__arrow-right" :style="{ display: showRight ? '' : 'none' }"-->
-<!--                    @click="mySwiperModal.slideNext();">-->
-<!--              <img src="~/static/pics/global/svg/slider_arrow_right.svg" alt="Направо">-->
-<!--            </button>-->
-<!--          </div>-->
+                <button class="slider__arrow-left" :style="{ display: showLeft ? '' : 'none' }"
+                        @click="mySwiperModalPhoto.slidePrev()">
+                  <img src="~/static/pics/global/svg/slider_arrow_left.svg" alt="Налево">
+                </button>
+                <button class="slider__arrow-right" :style="{ display: showRight ? '' : 'none' }"
+                        @click="mySwiperModalPhoto.slideNext();">
+                  <img src="~/static/pics/global/svg/slider_arrow_right.svg" alt="Направо">
+                </button>
+              </div>
+            </div>
+
+          </div>
         </div>
-
-      </div>
-    </div>
 	</section>
 </template>
 
@@ -110,12 +94,18 @@
 		components: {
 			BeachEventReview,
 			BeachEventLeaveReview,
-			Pagination
+			Pagination,
 		},
 
 		data() {
 			return {
         swiperOption: {
+          autoHeight: true,
+          spaceBetween: 70,
+          slidesPerView: 1,
+          init: false
+        },
+        swiperOption_double: {
           spaceBetween: 20,
           slidesPerView: 1,
           observer: true,
@@ -134,49 +124,78 @@
         showLeft: false,
         showRight: true,
 				activeIndex: 0,
+				activeIndexPhotos: 0,
 				max: 10,
 				page: 1,
 				perPage: 5,
         photoOpen: false,
-        activeReviewIndex: -1,
+        activeReviewIndex: 0,
+        swiperModalSmallOption: {
+          slidesPerView: 'auto',
+          spaceBetween: 15,
+          direction: 'vertical',
+          mousewheel: true,
+          init: false,
+          breakpoints: {
+            600: {
+              direction: 'horizontal',
+              spaceBetween: 10
+            }
+          }
+        }
 			}
 		},
 
 		mounted() {
-			// if (this.data) {
-      //   this.mySwiper.on('slideChange', () => {
-      //     if (!this.modalOpen)
-      //       this.mySwiperModal.slideTo(this.mySwiper.activeIndex);
-      //     // this.mySwiperModalSmall.slideTo(this.mySwiper.activeIndex);
-      //     this.updateArrows();
-      //     this.activeIndex = this.mySwiper.activeIndex;
-      //   });
-      //
-      //   this.mySwiperModal.on('slideChange', () => {
-      //     if (this.modalOpen)
-      //       this.mySwiper.slideTo(this.mySwiperModal.activeIndex);
-      //   });
-      //
-      //   this.mySwiper.init(this.swiperOption);
-      //   this.mySwiperModal.init(this.swiperOption);
-      //   // this.mySwiperModalSmall.init(this.swiperOption);
-      //
-      //   this.updateArrows();
-      //
-			// 	// setTimeout(()=> { this.mySwiper.init(this.swiperOption) }, 1);
-			// }
+      this.initSwiper()
+      if (this.data) {
+        console.warn(this.mySwiper, 'this.mySwiper')
+        this.mySwiper.on('slideNextTransitionEnd', () => {
+          if (this.activeIndex < 8)
+            this.activeIndex++;
+        });
+
+        this.mySwiper.on('slidePrevTransitionEnd', () => {
+          if (this.activeIndex > 1)
+            this.activeIndex--;
+        });
+
+        this.mySwiper.on('reachEnd', () => {
+          this.activeIndex = this.max - 1;
+        });
+
+        this.mySwiper.on('reachBeginning', () => {
+          this.activeIndex = 0;
+        });
+
+        setTimeout(()=> { this.mySwiper.init(this.swiperOption) }, 1);
+      }
+
 		},
     methods: {
-      // updateArrows() {
-      //   this.showLeft = !this.mySwiper.isBeginning;
-      //   this.showRight = !this.mySwiper.isEnd;
-      // },
+		  initSwiper(){
+          this.mySwiperModalPhoto.on('slideChange', () => {
+              // this.mySwiperModalPhoto.slideTo(this.mySwiperModalPhoto.activeIndexPhotos);
+            this.mySwiperModalSmallPhoto.slideTo(this.mySwiper.activeIndex);
+              this.updateArrows();
+          });
+
+          this.mySwiperModalPhoto.init(this.swiperOption_double);
+          this.mySwiperModalSmallPhoto.init(this.swiperOption_double);
+
+          // this.updateArrows();
+
+          // setTimeout(()=> { this.mySwiper.init(this.swiperOption) }, 1);
+      },
+      updateArrows() {
+        this.showLeft = !this.mySwiperModalPhoto.isBeginning;
+        this.showRight = !this.mySwiperModalPhoto.isEnd;
+      },
       openPhotosModal(val) {
         this.photoOpen = true
         this.activeReviewIndex = val
       },
       closePhotoModal() {
-        this.activeReviewIndex = -1
         this.photoOpen = false
       },
     }
