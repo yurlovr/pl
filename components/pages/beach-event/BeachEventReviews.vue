@@ -26,13 +26,12 @@
       <button class="slider-beach-event__modal__close-button" @click="closePhotoModal">
         <img src="~/static/pics/global/svg/cross_blue.svg">
       </button>
-      {{activeReviewIndex}}
-      <div class="slider-beach-event__modal__inner" v-if="activeReviewIndex >=0">
+      <div class="slider-beach-event__modal__inner">
         <div class="slider-beach-event__modal__sides">
           <div class="slider-beach-event__modal__left">
             <div v-swiper:mySwiperModal="swiperOption">
-              <div class="swiper-wrapper">
-                <div class="swiper-slide" v-for="(pic, i) in data[activeReviewIndex].photos" :key="i">
+              <div class="swiper-wrapper" v-if="activeReviewIndex >=0">
+                <div class="swiper-slide" v-for="(pic, i) in data[activeReviewIndex].photos" :key="i + 'review'">
                   <div class="position-relative">
                     <img v-lazy-load :data-src="pic">
                   </div>
@@ -176,7 +175,6 @@
         this.activeReviewIndex = val
       },
       closePhotoModal() {
-        this.activeReviewIndex = -1
         this.photoOpen = false
       },
     }
