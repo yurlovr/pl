@@ -51,6 +51,7 @@ export default {
   plugins: [
     '~/plugins/bus',
     '~/plugins/gtm',
+    '~/plugins/sentry',
     {
       src: '~/plugins/scroll-lock',
       ssr: false
