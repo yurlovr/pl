@@ -31,8 +31,9 @@
           <div class="slider-beach-event__modal__left">
             <div v-swiper:mySwiperModalPhoto="swiperOption_double">
               <div class="swiper-wrapper" v-if="activeReviewIndex >=0">
-                <div class="swiper-slide" style="max-height: 600px" v-for="(pic, i) in data[0].photos" :key="i + 'review'">
+                <div class="swiper-slide" style="max-height: 600px" v-for="(pic, i) in data[activeReviewIndex].photos" :key="i + 'review'">
                   <div class="position-relative">
+                    {{pic}}
                     <img v-lazy-load :data-src="pic">
                   </div>
                 </div>
@@ -50,7 +51,7 @@
           <div class="slider-beach-event__modal__right">
             <div v-swiper:mySwiperModalSmallPhoto="swiperModalSmallOption">
               <div class="swiper-wrapper" v-if="activeReviewIndex >=0">
-                <div class="swiper-slide" v-for="(pic, i) in data[0].photos" :key="i" :class="{ active: activeIndexPhotos == i }"
+                <div class="swiper-slide" v-for="(pic, i) in data[activeReviewIndex].photos" :key="i" :class="{ active: activeIndexPhotos == i }"
                      @click="mySwiperModalPhoto.slideTo(i)">
                   <img v-lazy-load :data-src="pic">
                 </div>
@@ -128,7 +129,7 @@
 				page: 1,
 				perPage: 5,
         photoOpen: false,
-        activeReviewIndex: -1,
+        activeReviewIndex: 0,
         swiperModalSmallOption: {
           slidesPerView: 'auto',
           spaceBetween: 15,
@@ -148,6 +149,7 @@
 		mounted() {
       this.initSwiper()
       if (this.data) {
+        console.warn(this.mySwiper, 'this.mySwiper')
         this.mySwiper.on('slideNextTransitionEnd', () => {
           if (this.activeIndex < 8)
             this.activeIndex++;
@@ -172,18 +174,9 @@
 		},
     methods: {
 		  initSwiper(){
-        if (this.activeReviewIndex >= 0) {
-          // this.mySwiper.on('slideChange', () => {
-          //   if (!this.photoOpen)
-          //     this.mySwiperModal.slideTo(this.mySwiper.activeIndex);
-          //   // this.mySwiperModalSmall.slideTo(this.mySwiper.activeIndex);
-          //   this.updateArrows();
-          //   this.activeIndex = this.mySwiperModal.activeIndex;
-          // });
-
           this.mySwiperModalPhoto.on('slideChange', () => {
-            if (this.photoOpen)
-              this.mySwiperModalPhoto.slideTo(this.mySwiperModalPhoto.activeIndexPhotos);
+              // this.mySwiperModalPhoto.slideTo(this.mySwiperModalPhoto.activeIndexPhotos);
+            this.mySwiperModalSmallPhoto.slideTo(this.mySwiper.activeIndex);
               this.updateArrows();
           });
 
@@ -193,7 +186,6 @@
           // this.updateArrows();
 
           // setTimeout(()=> { this.mySwiper.init(this.swiperOption) }, 1);
-        }
       },
       updateArrows() {
         this.showLeft = !this.mySwiperModalPhoto.isBeginning;
@@ -204,7 +196,6 @@
         this.activeReviewIndex = val
       },
       closePhotoModal() {
-        this.activeReviewIndex = -1
         this.photoOpen = false
       },
     }
