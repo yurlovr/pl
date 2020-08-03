@@ -136,7 +136,7 @@ export default {
                 this.mySwiper.slideNext();
                 this.mySwiper.slidePrev();
             }
-        } 
+        }
     },
 
     beforeRouteLeave(to, from, next) {
