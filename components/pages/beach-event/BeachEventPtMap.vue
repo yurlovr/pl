@@ -183,21 +183,7 @@
                     properties: {
                       balloonContentBody: "<div class='my-balloon'>" +
                         `<div class='header'>${title}</div><br />` +
-                        `<div class='description'>${description} ${slides.join('')}</div>`+
-                        `<div class="swiper-container" id='balloon-swiper'>
-                            <div class="swiper-wrapper">
-                               ${slides.join('')}
-                            </div>
-                          </div>
-                          <button class="slider__arrow-left slider__arrow-left-balloon"
-                                  style="transform: translate(-50%, -50%); top: 0">
-                            <img src="/pics/global/svg/slider_arrow_left.svg" alt="Налево">
-                          </button>
-                          <button class="slider__arrow-right slider__arrow-right-balloon"
-                                  style="transform: translate(50%, -50%); top: 0}">
-                            <img src="/pics/global/svg/slider_arrow_right.svg" alt="Направо">
-                          </button>
-                        </div>` +
+                        `<div class='description'>${description}</div>`+
                         "</div>"
                     }
                   })
