@@ -1,5 +1,5 @@
 <template>
-  <div class="custom-card despondency" v-if="data" v-show="data.id !== 'fake'">
+  <div class="custom-card" v-if="data">
     <div class="custom-card__pic-area">
       <a v-if="!data.another_place" :href="data.humanLink ? data.humanLink : ( data.mainLink ? data.mainLink : '#')"
          class="custom-card__link"

@@ -154,7 +154,7 @@ export const getters = {
         }
       }
     if (cities.length){
-      // ret.citiesTop = truth_cities
+      ret.citiesTop = truth_cities
     }
     } else {
       ret.citiesTop = null;
@@ -184,7 +184,6 @@ export const getters = {
       }
       ret.map = {
         addressBeaches: [],
-        center: [[44.74967024742491,34.313266012968434]]
       };
       if (clusterCenters && clusterCenters.length > 0) {
         ret.map.center = [
@@ -255,7 +254,7 @@ export const getters = {
         });
       }
       if (state.banners.data.list.length){
-      ret.banners = truth_banners;
+          ret.banners = truth_banners;
       }
     } else {
       ret.banners = null;

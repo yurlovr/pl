@@ -10098,3 +10098,7 @@ body.touch {
     background-position: right 100%;
   }
 }
+
+.minus-zoom {
+  z-index: -1 !important;
+}

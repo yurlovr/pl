@@ -1,101 +1,20 @@
 <template>
   <div class="custom-card despondency" v-if="data">
-    <div class="custom-card__pic-area">
+    <div class="custom-card__pic-area minus-zoom">
       <a v-if="!data.another_place" :href="data.humanLink ? data.humanLink : ( data.mainLink ? data.mainLink : '#')"
          class="custom-card__link"
          @click.prevent="$bus.goTo( data.humanLink ? data.humanLink : ( data.mainLink ? data.mainLink : '#'), $router)">
         <img v-lazy-load :data-src="data.pic" v-show="this.picLoaded" alt="Фото" class="custom-card__pic"
              @load="picLoaded = true">
-        <img v-show="!this.picLoaded" class="custom-card__pic"
+        <img v-show="!this.picLoaded" class="custom-card__pic minus-zoom"
              src="~/static/pics/global/pics/slider_beh_placeholder.png">
       </a>
       <a v-else :href="data.internal_url" class="custom-card__link" target="_blank">
         <img v-lazy-load :data-src="data.pic" v-show="this.picLoaded" alt="Фото" class="custom-card__pic"
              @load="picLoaded = true">
-        <img v-show="!this.picLoaded" class="custom-card__pic"
+        <img v-show="!this.picLoaded" class="custom-card__pic minus-zoom"
              src="~/static/pics/global/pics/slider_beh_placeholder.png">
       </a>
-      <div class="custom-card__temp-area" v-if="data.tempWater != undefined && showTemp != false">
-        <img src="~/static/pics/global/svg/temper_big.svg" alt="Температура" class="big">
-        <img src="~/static/pics/global/svg/temper_small.svg" alt="Температура" class="small">
-        <span class="custom-card__temp">{{ (data.tempWater > 0 ? '+ ' : '') + (data.tempWater < 0 ? '' : '' ) + data.tempWater }}</span>
-        <span class="custom-card__temp-o"><span>o</span></span>
-        <span class="custom-card__temp-C">C</span>
-      </div>
-      <AddToFavorites :data="data"/>
-      <img class="custom-card__paid cursor-pointer" v-if="data.paid" src="~/static/pics/global/svg/diamond.svg"
-           alt="Платный" :title="data.access  && data.access.DESCRIPTION ? data.access.DESCRIPTION : ''">
-      <button class="custom-card__visited" @click="updateVisited()" v-if="this.data && this.data.eventId"
-              v-show="showIfEventIsPast(data.date)">
-        <div class="custom-card__visited__round">
-          <img src="~/static/pics/global/svg/tick.svg" v-show="visited">
-        </div>
-        <span class="custom-card__visited__text">посетил</span>
-      </button>
-    </div>
-    <div class="custom-card__info-area position-relative" :class="{ event: data.beach }">
-      <p class="distance" v-if="data.show_distance" v-show="distanceValue(data.coordinates)"
-         :style="{position: !data.rating && (data.another_place || data.hotels) ? 'relative !important' : 'absolute'}">
-        {{distanceValue(data.coordinates)}} км</p>
-      <!--      <div class="mobile-distance"><span v-if="data.show_distance" v-show="distanceValue(data.coordinates)">{{distanceValue(data.coordinates)}} км</span></div>-->
-      <div class="custom-card__rating-area" v-if="data.rating">
-        <img src="~/static/pics/global/svg/star.svg" alt="Рейтинг">
-        <span>{{ data.rating.toFixed(1) }}</span>
-      </div>
-      <div class="custom-card__date-area" v-if="data.date">
-        <img src="~/static/pics/global/svg/calendar.svg" alt="Дата">
-        <span>{{ formattedDate(data.date) }}</span>
-      </div>
-      <div>
-        <a v-if="!data.another_place" :href="data.humanLink ? data.humanLink : ( data.mainLink ? data.mainLink : '#')"
-           class="custom-card__title"
-           @click.prevent="$bus.goTo( data.humanLink ? data.humanLink : ( data.mainLink ? data.mainLink : '#'), $router)"
-           :style="{ 'font-size': data.beach ? '18px' : '20px' }">
-          <no-ssr>
-            <v-clamp autoresize :max-lines="max" v-html="data.title"></v-clamp>
-          </no-ssr>
-        </a>
-        <a v-else :href="data.internal_url"
-           target="_blank"
-           class="custom-card__title"
-           :style="{ 'font-size': data.beach ? '18px' : '20px' }">
-          <no-ssr>
-            <v-clamp autoresize :max-lines="max" v-html="data.title"></v-clamp>
-          </no-ssr>
-        </a>
-      </div>
-      <div class="custom-card__subtitle-area">
-        <a :href="data.beachLink ? data.beachLink : '#'"
-           @click.prevent="$bus.goTo(data.beachLink ? data.beachLink : '#', $router)" class="custom-card__beach"
-           v-if="data.beach" v-html="data.beach"></a>
-        <a v-if="!data.another_place" :href="`/search?city=${data.locationId}`" @click.prevent="searchCity()"
-           class="custom-card__location"
-           :style="{ 'font-size': data.beach ? '10px' : '12px' }">{{ data.location }}</a>
-        <a v-else class="custom-card__location"
-           :style="{ 'font-size': data.beach ? '10px' : '12px' }">{{ data.geo_string }}</a>
-        <div v-if="!data.another_place">
-          <a
-            :href="data.beachLink ? data.beachLink : '#'"
-            @click.prevent="$bus.goTo(data.beachLink ? data.beachLink : '#', $router)" class="custom-card__price"
-            :style="{ 'font-size': data.beach ? '10px' : '12px' }" v-if="data.price">от {{ data.price }}
-            <span>
-            <img :style="{ 'height': data.beach ? '9px' : '11px', 'margin-bottom': '3px' }"
-                 src="~/static/pics/global/svg/ruble.svg" alt="руб">
-          </span>/сутки
-          </a>
-        </div>
-        <div v-else>
-          <a :href="data.internal_url"
-             target="_blank"
-             class="custom-card__price"
-             :style="{ 'font-size': data.beach ? '10px' : '12px' }" v-if="data.price">от {{ data.price }}
-            <span>
-            <img :style="{ 'height': data.beach ? '9px' : '11px', 'margin-bottom': '3px' }"
-                 src="~/static/pics/global/svg/ruble.svg" alt="руб">
-          </span>/сутки
-          </a>
-        </div>
-      </div>
     </div>
   </div>
 </template>
