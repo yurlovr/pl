@@ -1,7 +1,8 @@
 import Vue from 'vue'
 import * as Sentry from '@sentry/browser';
 import { Vue as VueIntegration } from '@sentry/integrations';
+import {sentry_dsn} from '../.env.js'
 Sentry.init({
-  dsn: 'https://db85ef48d8304df3a03e890e6cdfa091@o399681.ingest.sentry.io/5371935',
+  dsn: sentry_dsn,
   integrations: [new VueIntegration({Vue, attachProps: true})],
 });
