@@ -33,7 +33,6 @@
               <div class="swiper-wrapper" v-if="activeReviewIndex >=0">
                 <div class="swiper-slide" style="max-height: 600px" v-for="(pic, i) in data[activeReviewIndex].photos" :key="i + 'review'">
                   <div class="position-relative">
-                    {{pic}}
                     <img v-lazy-load :data-src="pic">
                   </div>
                 </div>
@@ -51,7 +50,7 @@
           <div class="slider-beach-event__modal__right">
             <div v-swiper:mySwiperModalSmallPhoto="swiperModalSmallOption">
               <div class="swiper-wrapper" v-if="activeReviewIndex >=0">
-                <div class="swiper-slide" v-for="(pic, i) in data[activeReviewIndex].photos" :key="i" :class="{ active: activeIndexPhotos == i }"
+                <div class="swiper-slide" v-for="(pic, i) in data[activeReviewIndex].photos" :key="i" :class="{ active: activeIndexPhotosSlider == i }"
                      @click="mySwiperModalPhoto.slideTo(i)">
                   <img v-lazy-load :data-src="pic">
                 </div>
@@ -125,6 +124,7 @@
         showRight: true,
 				activeIndex: 0,
 				activeIndexPhotos: 0,
+        activeIndexPhotosSlider: 0,
 				max: 10,
 				page: 1,
 				perPage: 5,
@@ -176,9 +176,11 @@
 		  initSwiper(){
           this.mySwiperModalPhoto.on('slideChange', () => {
               // this.mySwiperModalPhoto.slideTo(this.mySwiperModalPhoto.activeIndexPhotos);
-            this.mySwiperModalSmallPhoto.slideTo(this.mySwiper.activeIndex);
+            this.mySwiperModalSmallPhoto.slideTo(this.mySwiper.activeIndexPhotosSlider);
               this.updateArrows();
+            this.activeIndexPhotosSlider = this.mySwiperModalPhoto.activeIndex;
           });
+
 
           this.mySwiperModalPhoto.init(this.swiperOption_double);
           this.mySwiperModalSmallPhoto.init(this.swiperOption_double);
