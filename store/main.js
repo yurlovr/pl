@@ -382,55 +382,51 @@ export const getters = {
                 ret.chooseYourBeach = null;
             }
 
-        // Активный отдых
-            if (state.collectionList.data) {
-                let activeRest = state.collectionList.data.list.find(v => v.CODE == 'active-leisure');
+// Активный отдых
+      if (state.collectionList.data) {
+        let activeRest = state.collectionList.data.list.find(v => v.CODE == 'active-leisure');
 
-                if (activeRest) {
-                    let curFilters, curFilter;
+        if (activeRest) {
+          let curFilters, curFilter;
 
-                  ret.activeRest = [
-                    {"title":"Серфинг","pic":google_pic,"beachNumber":2,"filter":[{"type":"addTags","id":"fake","value":true}]},
-                    {"title":"Яхты и катера","pic":google_pic,"beachNumber":4,"filter":[{"type":"addTags","id":"fake","value":true}]},
-                    {"title":"Вечеринки","pic":google_pic,"beachNumber":9,"filter":[{"type":"tags","id":"fake","value":true}]}
-                  ]
+          ret.activeRest = [
+            {"title":"Серфинг","pic":google_pic,"beachNumber":2,"filter":[{"type":"addTags","id":"fake","value":true}]},
+            {"title":"Яхты и катера","pic":google_pic,"beachNumber":4,"filter":[{"type":"addTags","id":"fake","value":true}]},
+            {"title":"Вечеринки","pic":google_pic,"beachNumber":9,"filter":[{"type":"tags","id":"fake","value":true}]}
+          ]
+          let truth_activeRest = [];
+          for (let i = 0; i < activeRest.COLLECTIONS.length; i++) {
+            truth_activeRest.push({
+              title: activeRest.COLLECTIONS[i].NAME,
+              pic: activeRest.COLLECTIONS[i].PREVIEW_PICTURE ? (activeRest.COLLECTIONS[i].PREVIEW_PICTURE) : null,
+              beachNumber: activeRest.COLLECTIONS[i].COUNT_BEACHES ? activeRest.COLLECTIONS[i].COUNT_BEACHES : 0,
+              filter: []
+            });
 
-                  let truth_activeRest = [];
-
-                  for (let i = 0; i < activeRest.COLLECTIONS.length; i++) {
-                    truth_activeRest.push({
-                            title: activeRest.COLLECTIONS[i].NAME,
-                            pic: activeRest.COLLECTIONS[i].PREVIEW_PICTURE ? (activeRest.COLLECTIONS[i].PREVIEW_PICTURE) : null,
-                            beachNumber: activeRest.COLLECTIONS[i].COUNT_BEACHES ? activeRest.COLLECTIONS[i].COUNT_BEACHES : 0,
-                            filter: []
-                        });
-
-                        curFilters = Object.entries(activeRest.COLLECTIONS[i].SEARCH_FILTER)[0]
-                        if(curFilters[1]) {
-                            for (let j = 0; j < curFilters[1].length; j++) {
-                                curFilter = curFilters[0].toLowerCase().split('_');
-                                for (let k = 1; k < curFilter.length; k++) { // don't touch the first value
-                                    curFilter[k] = curFilter[k].charAt(0).toUpperCase() + curFilter[k].slice(1);
-                                }
-                                ret.activeRest[i].filter.push({
-                                    type: curFilter.join(''),
-                                    id: curFilters[1][j],
-                                    value: true
-                                });
-                            }
-                        }
-                    }
-                  if (truth_activeRest.length){
-                    ret.activeRest = truth_activeRest
-                  }
-                } else {
-                    ret.activeRest = null;
+            curFilters = Object.entries(activeRest.COLLECTIONS[i].SEARCH_FILTER)[0]
+            if(curFilters[1]) {
+              for (let j = 0; j < curFilters[1].length; j++) {
+                curFilter = curFilters[0].toLowerCase().split('_');
+                for (let k = 1; k < curFilter.length; k++) { // don't touch the first value
+                  curFilter[k] = curFilter[k].charAt(0).toUpperCase() + curFilter[k].slice(1);
                 }
-            } else {
-                ret.activeRest = null;
+                truth_activeRest[i].filter.push({
+                  type: curFilter.join(''),
+                  id: curFilters[1][j],
+                  value: true
+                });
+              }
             }
+          }
+          ret.activeRest = truth_activeRest
+        } else {
+          ret.activeRest = null;
+        }
+      } else {
+        ret.activeRest = null;
+      }
 
-        // Погода
+      // Погода
             if (state.weather.data) {
                 let curCluster,
                     weatherData = Object.keys(state.weather.data.list).map((k) => state.weather.data.list[k]);
