@@ -475,20 +475,21 @@
               for (let i = 0; i < this.mapData.length; i++) {
                 balloonLayout = maps.templateLayoutFactory.createClass(`
                       <div class="map-popup map-popup--bottom">
-                      <div class="map-popup__pic-area">
-                          <div class="map-popup__slider">
-                              <div class="swiper-container" id="balloon-swiper">
-                                  <div class="swiper-wrapper">
-                                     <img class="map__img" src="${this.mapData[i].preview}" alt="">
+                        <a href="${this.mapData[i].url}" style="color: #393e48">
+                          <div class="map-popup__pic-area">
+                              <div class="map-popup__slider">
+                                  <div class="swiper-container" id="balloon-swiper">
+                                      <div class="swiper-wrapper">
+                                         <img class="map__img" src="${this.mapData[i].preview}" alt="">
+                                      </div>
                                   </div>
                               </div>
                           </div>
-                      </div>
-                      <div class="map-popup__info-area">
-                          <a href="${this.mapData[i].url}" class="map-popup__title">${this.mapData[i].name}</a>
-                          <p>${this.mapData[i].type.NAME}</p>
-                          <p>${this.mapData[i].type.DESCRIPTION}</p>
-                      </div>
+                          <div class="map-popup__info-area">
+                              <div class="map-popup__title">${this.mapData[i].name}</div>
+                              <p>${this.mapData[i].type.DESCRIPTION}</p>
+                          </div>
+                        </a>
                   </div>
               `, {
                   build() {
