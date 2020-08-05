@@ -98,15 +98,17 @@
                 this.additional.forEach((el, i) => {
                   let {pos, id, title, pic, description, pictures} = el;
                   let slides = [];
-                  for (let k = 0; k < pictures.length; k++) {
-                    slides.push(`
+                  if (pictures) {
+                    for (let k = 0; k < pictures.length; k++) {
+                      slides.push(`
                       <div class="swiper-slide">
                         <div class="beach-event__visitor-pics__pic-area" style="height: 100px; width: 100px;">
                           <img src="${pictures[k]}" style="border-radius: 12px;">
                         </div>
                       </div>
                     `);
-                  };
+                    };
+                  }
                   let icon = maps.templateLayoutFactory.createClass(
                     `<div class="map__beach-icon">
                     <div class="map__beach-caption">${title}</div>
@@ -148,6 +150,10 @@
                         "</div>",{
                         build() {
                           this.constructor.superclass.build.call(this);
+
+                          if (!pictures || pictures.length <= 0) {
+                            document.querySelector(`.beach-event__visitor-pics__slider`).style.display = 'none'
+                          }
 
                           // init the swiper
                           this.swiper = new Swiper(`#balloon-swiper`, {
