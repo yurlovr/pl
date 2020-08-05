@@ -9873,8 +9873,9 @@ body.touch {
   .search-card-list {
     flex-direction: column;
     height: auto;
-    margin-bottom: 8px;
+    margin-bottom: 16px;
     border-radius: unset;
+    padding: 16px 20px;
 
 
     .img_area .custom-card__pic{
@@ -9909,10 +9910,10 @@ body.touch {
     }
     .heading-area {
       display: block !important;
-      margin-bottom: 11px;
+      margin-bottom: 11px !important;
     }
     .info_area {
-      padding: 16px 0;
+      padding: 16px 0 0;
     }
     .info-area {
       .custom-card__rating-area {
@@ -9994,6 +9995,7 @@ body.touch {
   font-size: 16px;
   line-height: 170%;
   color: #73767D;
+  word-break: break-word;
 }
 .review-photo-container {
   display: flex;
