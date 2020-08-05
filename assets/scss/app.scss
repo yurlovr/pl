@@ -7799,7 +7799,7 @@ input {
           .beach-page {
             &__quick-data {
               &__popup {
-                transform: translate(-50%, 100%);
+                transform: translate(-30%, 100%);
 
                 &:before {
                   left: 50%;
@@ -7856,6 +7856,7 @@ input {
 
       &__popup {
         z-index: 1;
+        transform: translate(-30%, 105%);
       }
 
       &__accordion-button {
