@@ -183,6 +183,11 @@
 
                             this.constructor.superclass.clear.call(this);
                           },
+                          getShape() {
+                            return new maps.shape.Rectangle(new maps.geometry.pixel.Rectangle([
+                              [0, 0], [1000, 350] // balloon's width is always 300 and -25 for the margin
+                            ]));
+                          },
                       }
                       ),
                     },
