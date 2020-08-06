@@ -115,14 +115,13 @@
         showBeachesOrEvents: false, // beaches: false, events: true,
         last_coordinates: this.$cookies.get('last_coordinates') || {},
         geo_locating: this.$cookies.get('geo_locating') || -1,
-        meta: {}
       }
     },
-
-    async created() {
-      await this.$axios.$get('seo/meta?url=' + this.$route.fullPath).then(res => {
-        this.meta = res.data
-      })
+    async asyncData( {$axios, route}){
+      const {data} = await $axios.$get('seo/meta?url=' + route.fullPath)
+      return {
+        meta: data
+      }
     },
 
     mounted() {

@@ -40,9 +40,14 @@ export default {
 		return {
 			showCardsOrMap: false, // cards: false, map: true
 			mapShownForTheFirstTime: false,
-      meta: {}
 		}
 	},
+  async asyncData( {$axios, route}){
+    const {data} = await $axios.$get('seo/meta?url=' + route.fullPath)
+    return {
+      meta: data
+    }
+  },
   head() {
     const stable = 'ПЛЯЖИ.РУ'
     return {
@@ -57,14 +62,6 @@ export default {
       ]
     }
   },
-
- async created() {
-   await this.$axios.$get('seo/meta?url=' + this.$route.fullPath).then(res => {
-     this.meta = res.data
-   })
-		this.setType(this.type);
-		this.setQuery(this.$router.currentRoute.query);
-	},
 
 	methods: {
 		...mapMutations('catalog', ['setType', 'setQuery']),

@@ -59,8 +59,14 @@ export default {
   },
   data (){
     return{
-      meta: {},
       open_app: false
+    }
+  },
+
+  async asyncData( {$axios, route}){
+    const {data} = await $axios.$get('seo/meta?url=' + route.fullPath)
+    return {
+      meta: data
     }
   },
 
@@ -80,9 +86,6 @@ export default {
       this.$bus.$emit('mainPageReady');
       this.$bus.$emit('hidePageTransitioner');
     });
-   await this.$axios.$get('seo/meta?url='+this.$route.fullPath).then(res => {
-     this.meta = res.data
-   })
   },
 
   head(){

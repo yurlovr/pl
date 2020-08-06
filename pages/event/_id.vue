@@ -56,6 +56,7 @@
 	import BeachSliderArea from '~/components/global/BeachSliderArea';
 
 	import { mapGetters } from 'vuex';
+  // import axios from "@nuxtjs/axios";
 
 	export default {
 		components: {
@@ -72,13 +73,17 @@
 			BeachEventSideButtons,
 			// BeachQuickData
 		},
-
-		data() {
+    data() {
 			return {
 				favorite: false,
-        meta: {}
 			}
 		},
+    async asyncData({$axios, route}){
+      const {data} = await $axios.$get('seo/meta?url=/event/'+ route.params.id)
+      return {
+        meta: data
+      }
+    },
     head(){
       const stable = 'ПЛЯЖИ.РУ'
       return {
@@ -121,9 +126,6 @@
 		},
     async created(){
       this.eventData.map_entity = this.mapEntity;
-      await this.$axios.$get('seo/meta?url=/event/'+ this.eventData.mainData.eventId).then(res => {
-        this.meta = res.data
-      })
     }
 	}
 </script>

@@ -44,7 +44,13 @@
         visited: [],
         beachesToShow: [],
         eventsToShow: [],
-        meta: {}
+      }
+    },
+
+    async asyncData( {$axios, route}){
+      const {data} = await $axios.$get('seo/meta?url=' + route.fullPath)
+      return {
+        meta: data
       }
     },
     head() {
@@ -62,11 +68,6 @@
       }
     },
 
-    async created() {
-      await this.$axios.$get('seo/meta?url=' + this.$route.fullPath).then(res => {
-        this.meta = res.data
-      })
-    },
     mounted() {
       this.$bus.$on('visitedAdd', id => {
         this.visited.push(this.eventsToShow[this.eventsToShow.map(v => v.eventId).indexOf(id)]);
