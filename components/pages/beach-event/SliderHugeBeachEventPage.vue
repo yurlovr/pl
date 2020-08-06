@@ -152,21 +152,35 @@
           <span class="slider-beach-event__modal__count"><span class="orange">{{ activeIndex+1 }}</span>/{{ data.pics.length }}</span>
         </div>
         <div class="slider-beach-event__modal__sides">
-          <CoolLightBox
-            :items="data.pics"
-            :index="index"
-            @close="index = null">
-          </CoolLightBox>
+          <!--          <CoolLightBox-->
+          <!--            :items="data.pics"-->
+          <!--            :index="index"-->
+          <!--            @close="index = null">-->
+          <!--          </CoolLightBox>-->
           <div class="slider-beach-event__modal__left">
+
             <div v-swiper:mySwiperModal="swiperOption">
               <div class="swiper-wrapper">
                 <div class="swiper-slide" v-for="(pic, i) in data.pics" :key="i">
                   <div class="position-relative">
-<!--                    <button class="position-absolute full-size-btn" @click="index = i" v-if="!pic.includes('youtube')"-->
-<!--                    >-->
-<!--                      <img src="~/static/pics/global/svg/zoom.svg">-->
-<!--                    </button>-->
-                    <img v-lazy-load :data-src="pic" v-if="!pic.includes('youtube')">
+                        <span class="zoom-img" @click="$refs.zoomer[i].zoomIn()">
+                             <img src="~/static/pics/search/loop_plus.svg">
+                        </span>
+                    <!--                    <button class="position-absolute full-size-btn" @click="index = i" v-if="!pic.includes('youtube')"-->
+                    <!--                    >-->
+                    <!--                      <img src="~/static/pics/global/svg/zoom.svg">-->
+                    <!--                    </button>-->
+                    <div v-if="!pic.includes('youtube')">
+                      <no-ssr>
+
+                        <v-zoomer :max-scale="10"
+                                  style="width: 100%; height: 100%"
+                                  ref="zoomer">
+                          <img v-lazy-load :data-src="pic">
+                        </v-zoomer>
+                      </no-ssr>
+                    </div>
+
                     <div v-else class="w-100 h-100 y-block">
                       <!--                    active in modal-->
                       <no-ssr>
@@ -234,12 +248,15 @@
   import {getIdFromUrl} from 'vue-youtube';
   import CoolLightBox from 'vue-cool-lightbox'
   import 'vue-cool-lightbox/dist/vue-cool-lightbox.min.css'
+  import VueZoomer from 'vue-zoomer'
+
 
   export default {
     props: ['data'],
     components: {
       VideoYoutube,
       CoolLightBox,
+
     },
 
     beforeMount() {
@@ -247,6 +264,7 @@
         require('swiper/dist/css/swiper.css');
         const VueAwesomeSwiper = require('vue-awesome-swiper/dist/ssr');
         Vue.use(VueAwesomeSwiper);
+        Vue.use(VueZoomer);
       }
     },
 
