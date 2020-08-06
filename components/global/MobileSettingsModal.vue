@@ -1,5 +1,5 @@
 <template>
-    <div class="mobile-modal">
+    <div v-if="showModal === true" class="mobile-modal">
       <div class="d-flex justify-content-end" @click="closeModal">
         <img src="~/static/pics/global/svg/close.svg" alt="Убрать">
       </div>
@@ -38,13 +38,33 @@
 </template>
 
 <script>
+    import moment from 'moment'
     export default {
         name: "MobileSettingsModal",
         props: ['data'],
+        data() {
+          return {
+            showModal: false
+          }
+        },
         methods: {
           closeModal() {
             this.$emit('closeModal', false)
           }
-        }
+        },
+        mounted() {
+          if (localStorage.getItem('mobileModalDate')) {
+            let date = JSON.parse(localStorage.getItem('mobileModalDate'));
+            if (moment(date).add(1, 'months').isSame(moment(), 'day')) {
+              this.showModal = true;
+              localStorage.setItem('mobileModalDate', JSON.stringify(moment()));
+            } else {
+              this.showModal = false;
+            }
+          } else {
+            this.showModal = true;
+            localStorage.setItem('mobileModalDate', JSON.stringify(moment()));
+          }
+        },
     }
 </script>
