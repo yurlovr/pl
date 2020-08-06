@@ -81,7 +81,7 @@ export const actions = {
         commit('SET_ANNOUNCEMENT_DATA', await this.$axios.$get(`/banner/list?page=/beach`));
 
         commit('SET_ANY_PLACES', await this.$axios.$get('/hotel/list?count=10'));
-        commit('SET_HOTELS', await this.$axios.$get('/hotel/beachList'));
+        commit('SET_HOTELS', await this.$axios.$get('/hotel/beachList?count=9999'));
 
         let tagsCount = 0, tags;
         if (state.beach.data.item.TAGS)
@@ -302,6 +302,7 @@ export const getters = {
             cardData: []
           }
         }
+
         let coordinat = rootState.user_coordinates
 
         let distance = (d, coord) => {
@@ -331,8 +332,7 @@ export const getters = {
           })
         }
 
-        ret.hotels.beachSliderData.cardData = ret.hotels.beachSliderData.cardData.sort((a,b) =>
-          (a.dist > b.dist) ? 1 : ((b.dist > a.dist) ? 1 : 0))
+        ret.hotels.beachSliderData.cardData.sort((a, b) => (a.dist > b.dist) ? 1 : (a.dist === b.dist) ? ((a.dist > b.dist) ? 1 : -1) : -1 )
 
       }
 
