@@ -299,14 +299,7 @@
               }
 
 // adding customs
-                let parkingIcon = maps.templateLayoutFactory.createClass(
-                    `<div class="map__beach-parking-icon"></div>`
-                  ),
-                  customObjectManager = new maps.ObjectManager({
-                    geoObjectOpenBalloonOnClick: true
-                  });
-                this.map.geoObjects.add(customObjectManager);
-
+              if (this.mapData && this.mapData.length) {
                 for (let i = 0; i < this.mapData.length; i++) {
                   let balloonLayout = maps.templateLayoutFactory.createClass(`
                       <div class="map-popup map-popup--bottom">
@@ -377,6 +370,16 @@
                     }]
                   });
                 }
+              }
+                let parkingIcon = maps.templateLayoutFactory.createClass(
+                    `<div class="map__beach-parking-icon"></div>`
+                  ),
+                  customObjectManager = new maps.ObjectManager({
+                    geoObjectOpenBalloonOnClick: true
+                  });
+                this.map.geoObjects.add(customObjectManager);
+
+
                 const customObjectEvent = (e) => {
                   const objectId = e.get('objectId');
                   if (e.get('type') == 'mouseenter') {

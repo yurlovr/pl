@@ -472,8 +472,9 @@
 
               // adding customs
 
-              for (let i = 0; i < this.mapData.length; i++) {
-                balloonLayout = maps.templateLayoutFactory.createClass(`
+              if (this.mapData && this.mapData.length) {
+                for (let i = 0; i < this.mapData.length; i++) {
+                  balloonLayout = maps.templateLayoutFactory.createClass(`
                       <div class="map-popup map-popup--bottom">
                         <a href="${this.mapData[i].url}" style="color: #393e48">
                           <div class="map-popup__pic-area">
@@ -492,56 +493,58 @@
                         </a>
                   </div>
               `, {
-                  build() {
-                    this.constructor.superclass.build.call(this);
-                  },
-
-                  clear() {
-                    this.constructor.superclass.clear.call(this);
-                  },
-
-                  getShape() {
-                    return new maps.shape.Rectangle(new maps.geometry.pixel.Rectangle([
-                      [25, 0], [275, 0] // balloon's width is always 300 and -25 for the margin
-                    ]));
-                  },
-
-                  _isElement(element) {
-                    return element && element[0];
-                  }
-                });
-
-                customObjectManager.add({
-                  type: "FeatureCollection",
-                  features: [{
-                    type: "Feature",
-                    id: i,
-                    geometry: {
-                      type: "Point",
-                      coordinates: this.mapData[i] ? this.mapData[i].coordinates : [0, 0]
+                    build() {
+                      this.constructor.superclass.build.call(this);
                     },
-                    options: {
-                      iconLayout: 'default#imageWithContent',
-                      iconImageHref: '/pics/global/svg/beach_blue.svg',
-                      iconContentLayout: parkingIcon,
-                      iconImageSize: [27, 40],
-                      iconImageOffset: [-18, -50],
-                      hideIconOnBalloonOpen: false,
-                      balloonShadow: false,
-                      balloonLayout: balloonLayout,
-                      balloonContentLayout: '',
-                      balloonOffset: [-155, -345],
-                      balloonPane: 'balloon',
-                      balloonAutoPan: true,
-                      balloonPanelMaxMapArea: 0,
-                      hintLayout: maps.templateLayoutFactory.createClass("<div class='my-hint'>" +
-                        `<b>${this.mapData[i].name}</b><br />` +
-                        "</div>"
-                      )
+
+                    clear() {
+                      this.constructor.superclass.clear.call(this);
                     },
-                  }]
-                });
+
+                    getShape() {
+                      return new maps.shape.Rectangle(new maps.geometry.pixel.Rectangle([
+                        [25, 0], [275, 0] // balloon's width is always 300 and -25 for the margin
+                      ]));
+                    },
+
+                    _isElement(element) {
+                      return element && element[0];
+                    }
+                  });
+
+                  customObjectManager.add({
+                    type: "FeatureCollection",
+                    features: [{
+                      type: "Feature",
+                      id: i,
+                      geometry: {
+                        type: "Point",
+                        coordinates: this.mapData[i] ? this.mapData[i].coordinates : [0, 0]
+                      },
+                      options: {
+                        iconLayout: 'default#imageWithContent',
+                        iconImageHref: '/pics/global/svg/beach_blue.svg',
+                        iconContentLayout: parkingIcon,
+                        iconImageSize: [27, 40],
+                        iconImageOffset: [-18, -50],
+                        hideIconOnBalloonOpen: false,
+                        balloonShadow: false,
+                        balloonLayout: balloonLayout,
+                        balloonContentLayout: '',
+                        balloonOffset: [-155, -345],
+                        balloonPane: 'balloon',
+                        balloonAutoPan: true,
+                        balloonPanelMaxMapArea: 0,
+                        hintLayout: maps.templateLayoutFactory.createClass("<div class='my-hint'>" +
+                          `<b>${this.mapData[i].name}</b><br />` +
+                          "</div>"
+                        )
+                      },
+                    }]
+                  });
+                }
               }
+
               const customObjectEvent = (e) => {
                 const objectId = e.get('objectId');
                 if (e.get('type') == 'mouseenter') {
