@@ -1,12 +1,12 @@
 <template>
   <div class="beach-event__review" v-if="data">
-    <div class="beach-event__review__pic" v-if="data.pic" :class="{'with-photos': data.photos.length}">
+    <div class="beach-event__review__pic" v-if="data.pic" :class="{'with-photos': data.photos && data.photos.length}">
       <img :data-src="data.pic" v-lazy-load>
     </div>
-    <div class="review-photo-wrap" v-if="data.photos.length">
+    <div class="review-photo-wrap" v-if="data.photos && data.photos.length">
       <div class="review-photo-container" v-if="winWidth > 767">
         <div class="review-photo" v-for="(img, index) in data.photos.slice(0, 3)" :key="index + 'photo'">
-          <div class="all-photos" @click="openPhotoModal" v-if="data.photos.length > 3 && index==2">
+          <div class="all-photos" @click="openPhotoModal" v-if="data.photos && data.photos.length > 3 && index==2">
             {{'+' + (data.photos.length - 2)}}
           </div>
           <img :src="img" alt="">
