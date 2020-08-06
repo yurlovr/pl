@@ -29,7 +29,7 @@
       <div class="slider-beach-event__modal__inner">
         <div class="slider-beach-event__modal__sides">
           <div class="slider-beach-event__modal__left">
-            <div v-swiper:mySwiperModalPhoto="swiperOption_double">
+            <div v-swiper:mySwiperModalPhoto="swiperOption_double" v-if="data.length">
               <div class="swiper-wrapper" v-if="activeReviewIndex >=0">
                 <div class="swiper-slide" style="max-height: 600px" v-for="(pic, i) in data[activeReviewIndex].photos" :key="i + 'review'">
                   <div class="position-relative">
@@ -48,8 +48,8 @@
             </button>
           </div>
           <div class="slider-beach-event__modal__right">
-            <div v-swiper:mySwiperModalSmallPhoto="swiperModalSmallOption">
-              <div class="swiper-wrapper" v-if="activeReviewIndex >=0">
+            <div v-swiper:mySwiperModalSmallPhoto="swiperModalSmallOption" v-if="data.length">
+              <div class="swiper-wrapper" v-if=" data.length && activeReviewIndex >=0">
                 <div class="swiper-slide" v-for="(pic, i) in data[activeReviewIndex].photos" :key="i" :class="{ active: activeIndexPhotosSlider == i }"
                      @click="mySwiperModalPhoto.slideTo(i)">
                   <img v-lazy-load :data-src="pic">
@@ -147,9 +147,8 @@
 		},
 
 		mounted() {
-      this.initSwiper()
-      if (this.data) {
-        console.warn(this.mySwiper, 'this.mySwiper')
+      if (this.data.length) {
+        this.initSwiper()
         this.mySwiper.on('slideNextTransitionEnd', () => {
           if (this.activeIndex < 8)
             this.activeIndex++;
