@@ -100,7 +100,7 @@ export const actions = {
 }
 
 export const getters = {
-    beachData: (state) => {
+    beachData: (state, getters, rootState, rootGetters) => {
         if (!state.beach.data) return null;
 
         let ret = {
@@ -302,7 +302,8 @@ export const getters = {
             cardData: []
           }
         }
-        let coordinat = this.$cookies.get('last_coordinates')
+        let coordinat = rootState.user_coordinates
+
         let distance = (d, coord) => {
           if (d && d.length == 2 && Object.keys(coord).length) {
             let lat2 = d[0], lng2 = d[1],
