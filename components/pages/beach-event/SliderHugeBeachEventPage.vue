@@ -162,25 +162,13 @@
             <div v-swiper:mySwiperModal="swiperOption">
               <div class="swiper-wrapper">
                 <div class="swiper-slide" v-for="(pic, i) in data.pics" :key="i">
-                  <div class="position-relative">
-                        <span class="zoom-img" @click="$refs.zoomer[i].zoomIn()">
+                  <div class="position-relative" >
+                        <span class="zoom-img" @click="$refs.beachZoomModal.showZoomModal(pic)" v-if="!pic.includes('youtube')">
                              <img src="~/static/pics/search/loop_plus.svg">
                         </span>
-                    <!--                    <button class="position-absolute full-size-btn" @click="index = i" v-if="!pic.includes('youtube')"-->
-                    <!--                    >-->
-                    <!--                      <img src="~/static/pics/global/svg/zoom.svg">-->
-                    <!--                    </button>-->
                     <div v-if="!pic.includes('youtube')">
-                      <no-ssr>
-
-                        <v-zoomer :max-scale="10"
-                                  style="width: 100%; height: 100%"
-                                  ref="zoomer">
                           <img v-lazy-load :data-src="pic">
-                        </v-zoomer>
-                      </no-ssr>
                     </div>
-
                     <div v-else class="w-100 h-100 y-block">
                       <!--                    active in modal-->
                       <no-ssr>
@@ -239,6 +227,7 @@
 
       </div>
     </div>
+    <beach-zoom-image ref="beachZoomModal"/>
   </div>
 </template>
 
@@ -249,11 +238,13 @@
   import CoolLightBox from 'vue-cool-lightbox'
   import 'vue-cool-lightbox/dist/vue-cool-lightbox.min.css'
   import VueZoomer from 'vue-zoomer'
+  import BeachZoomImage from "./BeachZoomImage";
 
 
   export default {
     props: ['data'],
     components: {
+      BeachZoomImage,
       VideoYoutube,
       CoolLightBox,
 
