@@ -6,7 +6,7 @@
     <Search class="main-page__welcome__search" labelId="1" />
     <BeachSliderArea class="main-page__popular-beaches" :data="mainData.beachesTop" v-if="mainData.beachesTop" />
     <Cities :data="mainData.citiesTop" v-if="mainData.citiesTop" />
-    <MapArea :data="mainData.map" v-if="mainData.map" />
+    <MapArea :data="mainData.map" :mapData="mainData.map_entity" v-if="mainData.map" />
     <Banner :data="mainData.banners[2]" v-if="mainData.banners && mainData.banners[2]" class="banner-1" />
     <div class="main-page__white-wrapper" v-if="mainData.familyRest">
       <BeachSliderArea :data="mainData.familyRest" class="main-page__family-rest" />
@@ -23,6 +23,8 @@
     <Banner :data="mainData.banners[0]" v-if="mainData.banners && mainData.banners[0]" class="banner-2" />
     <BeachType :data="mainData.chooseToYourWishes" v-if="mainData.chooseToYourWishes" />
     <Banner :data="mainData.banners[1]" :lastWordYellow="true" v-if="mainData.banners && mainData.banners[1]" class="banner-3" />
+    <MobileSettingsModal v-if="open_app && mainData.mobile_settings && mainData.mobile_settings.length > 0"
+                         :data="mainData.mobile_settings" @closeModal="(v) => {this.open_app = v}"/>
   </div>
 </template>
 
@@ -37,6 +39,7 @@ import BeachType from '~/components/pages/main/BeachType';
 import WeatherSliderArea from '~/components/pages/main/WeatherSliderArea';
 import DynamicSliderArea from '~/components/pages/main/DynamicSliderArea';
 import MapArea from '~/components/pages/main/MapArea';
+import MobileSettingsModal from '~/components/global/MobileSettingsModal';
 
 import { mapActions, mapGetters, mapMutations } from 'vuex';
 
@@ -51,11 +54,13 @@ export default {
     BeachType,
     WeatherSliderArea,
     DynamicSliderArea,
-    Banner
+    Banner,
+    MobileSettingsModal
   },
   data (){
     return{
-      meta: {}
+      meta: {},
+      open_app: false
     }
   },
 
@@ -69,6 +74,7 @@ export default {
   },
 
  async created() {
+    this.mainData.map_entity = this.mapEntity;
     this.setGeoLocating(this.$cookies.get('geo_locating'));
     this.getMainPageData(() => {
       this.$bus.$emit('mainPageReady');
@@ -95,7 +101,8 @@ export default {
   },
 
   computed: {
-    ...mapGetters('main', ['mainData'])
+    ...mapGetters('main', ['mainData']),
+    ...mapGetters(['mapEntity']),
   },
 
   methods: {
@@ -121,8 +128,10 @@ export default {
     onResize() {
       // correct the text for the mobile
       if (window.innerWidth <= 650) {
+        this.open_app = true;
         this.$bus.$emit('showCorrectSelectText');
       } else {
+        this.open_app = false;
         this.$bus.$emit('dontShowCorrectSelectText');
       }
     }

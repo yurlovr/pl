@@ -31,7 +31,7 @@
         <!--				<a :href="data ? (data[indexToShow == -1 ? 0 : indexToShow] ? data[indexToShow == -1 ? 0 : indexToShow].beachLink : '#') : '#'" @click.prevent="$bus.goTo(data ? (data[indexToShow == -1 ? 0 : indexToShow] ? data[indexToShow == -1 ? 0 : indexToShow].beachLink : '#') : '#', $router)" class="banner__card__info-area__button"><span>Подробнее</span></a>-->
       </div>
     </div>
-    <SearchMap :beaches="data"/>
+    <SearchMap :beaches="data" :mapData="mapData" />
   </section>
 </template>
 
@@ -40,7 +40,7 @@
   import SearchMapCard from '~/components/pages/search/SearchMapCard';
 
   export default {
-    props: ['data'],
+    props: ['data', 'mapData'],
 
     components: {
       SearchMap,

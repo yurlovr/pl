@@ -27,7 +27,7 @@
 				</div>
 			</div>
 		</section>
-		<BeachEventPtMap :data="data" :additional="additional"/>
+		<BeachEventPtMap :data="data" :additional="additional" :mapData="mapData"/>
 		<a v-if="data" :href="'https://yandex.ru/maps/' + yandexTransform(pos)" target="_blank" class="beach-event__pt__right__button banner__card__info-area__button bottom">
 			<span>Проложить маршрут</span>
 		</a>
@@ -38,7 +38,7 @@
 	import BeachEventPtMap from '~/components/pages/beach-event/BeachEventPtMap';
 
 	export default {
-		props: ['data', 'additional'],
+		props: ['data', 'additional', 'mapData'],
 
 		components: {
 			BeachEventPtMap

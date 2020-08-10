@@ -9,6 +9,7 @@ export const state = () => ({
     map: {},
     geo: {},
     any_places: [],
+    mobile_settings: []
 })
 
 export const mutations = {
@@ -53,6 +54,10 @@ export const mutations = {
 
     SET_GEO_COUNT: (state, payload) => {
         state.geo.count = payload;
+    },
+
+    SET_MOBILE_SETTINGS: (state, payload) => {
+      state.mobile_settings = payload;
     }
 }
 
@@ -71,6 +76,7 @@ export const actions = {
         commit('SET_BANNERS', await this.$axios.$get('/banner/list/'));
         commit('SET_MAP', await this.$axios.$get('/beach/clusters/'));
         commit('SET_ANY_PLACES', await this.$axios.$get('/hotel/list?count=9999'));
+        commit('SET_MOBILE_SETTINGS', await this.$axios.$get('/settings/list'));
         callback();
     }
 }
@@ -188,7 +194,7 @@ export const getters = {
                             location: clusters[i][j].CITY ? clusters[i][j].CITY.NAME : null,
                             locationId: clusters[i][j].CITY ? clusters[i][j].CITY.ID : -1,
                             beachId: clusters[i][j].ID,
-                            pics: clusters[i][j].PHOTOS ? [ ...clusters[i][j].PHOTOS ] : null,
+                            pics: clusters[i][j].PHOTOS && clusters[i][j].PHOTOS.medium ? [ ...clusters[i][j].PHOTOS.medium ] : null,
                             showFavorite: true,
                             paid: clusters[i][j].PAID,
                             humanLink: clusters[i][j].CODE || clusters[i][j].ID
@@ -452,6 +458,21 @@ export const getters = {
                 }
             } else {
                 ret.chooseToYourWishes = null;
+            }
+
+        // Mobile settings
+            ret.mobile_settings = [];
+            if (state.mobile_settings.data) {
+                for (let i = 0; i < state.mobile_settings.data.list.length; i++) {
+                    ret.mobile_settings.push({
+                        active: state.mobile_settings.data.list[i].ACTIVE,
+                        id: state.mobile_settings.data.list[i].ID,
+                        code: state.mobile_settings.data.list[i].CODE,
+                        value: state.mobile_settings.data.list[i].VALUE,
+                    });
+                }
+            } else {
+                ret.mobile_settings = null;
             }
 
         return ret;

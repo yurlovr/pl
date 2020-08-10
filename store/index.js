@@ -1,6 +1,7 @@
 export const state = () => ({
   beaches: [],
   events: [],
+  map_entity: []
 })
 
 export const mutations = {
@@ -10,6 +11,10 @@ export const mutations = {
 
   SET_ALL_EVENTS: (state, payload) => {
     state.events = payload;
+  },
+
+  SET_MAP_ENTITY: (state, payload) => {
+    state.map_entity = payload;
   }
 }
 
@@ -18,6 +23,7 @@ export const actions = {
     commit('SET_ALL_BEACHES', await this.$axios.$get('/beach/list?count=9999'));
     commit('SET_ALL_EVENTS', await this.$axios.$get('/event/list?count=9999'));
     commit('search/SET_SEARCH', await this.$axios.$get('search/config'));
+    commit('SET_MAP_ENTITY', await this.$axios.$get('/map-entity/list?count=9999'));
   }
 }
 
@@ -113,6 +119,26 @@ export const getters = {
         locationId: state.events.data.list[i].BEACH && state.events.data.list[i].BEACH.CITY ? state.events.data.list[i].BEACH.CITY.ID : null,
         eventId: state.events.data.list[i].ID,
         beachId: state.events.data.list[i].BEACH ? state.events.data.list[i].BEACH.ID : null
+      });
+    }
+
+    return ret;
+  },
+
+  mapEntity: (state) => {
+    if (!state.map_entity.data) return [];
+
+    let ret = [];
+
+    for (let i = 0; i < state.map_entity.data.list.length; i++) {
+      ret.push({
+        coordinates: state.map_entity.data.list[i].COORDINATES.length ? state.map_entity.data.list[i].COORDINATES.split(',') : [],
+        id: state.map_entity.data.list[i].ID,
+        name: state.map_entity.data.list[i].NAME,
+        preview: state.map_entity.data.list[i].PREVIEW,
+        url: state.map_entity.data.list[i].URL,
+        photos: state.map_entity.data.list[i].PHOTOS,
+        type: state.map_entity.data.list[i].TYPE
       });
     }
 
