@@ -40,7 +40,6 @@ import WeatherSliderArea from '~/components/pages/main/WeatherSliderArea';
 import DynamicSliderArea from '~/components/pages/main/DynamicSliderArea';
 import MapArea from '~/components/pages/main/MapArea';
 import MobileSettingsModal from '~/components/global/MobileSettingsModal';
-
 import { mapActions, mapGetters, mapMutations } from 'vuex';
 
 export default {
