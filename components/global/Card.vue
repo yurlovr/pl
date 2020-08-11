@@ -122,6 +122,7 @@
         visited: this.data && this.data.eventId && this.$cookies.get(`visited.events.${this.data.eventId}`),
         max: 2,
         picLoaded: false,
+        distance: false,
         // last_coordinates: this.$cookies.get('last_coordinates') || {}
       };
     },
@@ -153,6 +154,9 @@
       });
       this.$bus.$on('updateVisited', () => {
         this.visited = this.data && this.data.eventId && this.$cookies.get(`visited.events.${this.data.eventId}`);
+      });
+      this.$bus.$on('show_geo', value => {
+        this.distance = value
       });
     },
 
