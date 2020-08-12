@@ -9,7 +9,7 @@
         <img v-else v-lazy-load :data-src="data.pic" v-show="this.picLoaded" alt="Фото" class="custom-card__pic"
              @load="picLoaded = true">
         <img v-show="!this.picLoaded" class="custom-card__pic"
-             src="~/static/pics/global/pics/slider_beh_placeholder.png">
+             src="~/static/pics/global/pics/slider_height_placeholder.png">
       </a>
       <a v-else :href="data.internal_url" class="custom-card__link" target="_blank">
         <img v-if="data.custom_photo" :src="data.pic" v-show="this.picLoaded" alt="Фото" class="custom-card__pic"
@@ -17,7 +17,7 @@
         <img v-else v-lazy-load :data-src="data.pic" v-show="this.picLoaded" alt="Фото" class="custom-card__pic"
              @load="picLoaded = true">
         <img v-show="!this.picLoaded" class="custom-card__pic"
-             src="~/static/pics/global/pics/slider_beh_placeholder.png">
+             src="~/static/pics/global/pics/slider_height_placeholder.png">
       </a>
       <div class="custom-card__temp-area" v-if="data.tempWater != undefined && showTemp != false">
         <img src="~/static/pics/global/svg/temper_big.svg" alt="Температура" class="big">
