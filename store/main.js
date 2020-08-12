@@ -70,6 +70,7 @@ export const actions = {
     if (!state.geo.id || !state.geo.count)
       commit('SET_POPULAR_BEACH', await this.$axios.$get('/beach/top?count=10'));
     callback();
+    commit('SET_MOBILE_SETTINGS', await this.$axios.$get('/settings/list'));
     console.warn('after call back')
     commit('SET_CITIES', await this.$axios.$get('/city/top?count=9999'));
     commit('SET_WEATHER', await this.$axios.$get('/weather/list'));
@@ -79,7 +80,6 @@ export const actions = {
     commit('SET_MAP', await this.$axios.$get('/beach/clusters/'));
 
     commit('SET_ANY_PLACES', await this.$axios.$get('/hotel/list?count=10'));
-    commit('SET_MOBILE_SETTINGS', await this.$axios.$get('/settings/list'));
     console.warn('last callback')
   }
 }

@@ -40,7 +40,7 @@
         data() {
           return {
             showModal: false,
-            modalNumber: 1
+            modalNumber: 2
           }
         },
         methods: {
@@ -49,23 +49,10 @@
           }
         },
         mounted() {
-          if (localStorage.getItem('mobileModalDate')) {
-            let date = JSON.parse(localStorage.getItem('mobileModalDate'));
-            if (moment(date).add(1, 'months').isSame(moment(), 'day')) {
-              this.modalNumber += 1;
-              if (this.modalNumber > 3) this.modalNumber = 1;
-              this.showModal = true;
-              localStorage.setItem('mobileModalDate', JSON.stringify(moment()));
-              localStorage.setItem('mobileModalNumber', JSON.stringify(this.modalNumber));
-            } else {
-              this.modalNumber = JSON.parse(localStorage.getItem('mobileModalNumber'));
-              this.showModal = false;
-            }
-          } else {
-            this.modalNumber = 1;
+          if (!localStorage.getItem('krym-visited')) {
+            this.modalNumber = 2;
             this.showModal = true;
-            localStorage.setItem('mobileModalDate', JSON.stringify(moment()));
-            localStorage.setItem('mobileModalNumber', JSON.stringify(this.modalNumber));
+            localStorage.setItem('krym-visited', 1);
           }
         },
     }
