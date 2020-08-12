@@ -275,12 +275,12 @@ export const getters = {
           beachSliderData: {
             slideNumber: 6,
             cardData: [
-              {id: 'fake', "temperature":26,"showFavorite":true,"paid":false,"rating":4.7,"title":"Массандровский пляж","location":"Ялта","locationId":"47","pic":google_pic,"mainLink":"beach/1924","beachLink":"beach/1924","humanLink":"beach/massandrovskiy-plyazh","beachId":"1924","coordinates":["44.497041757352","34.171652423195"],"show_distance":true},
-              {id: 'fake', "temperature":26,"showFavorite":true,"paid":false,"rating":4.5,"title":"Форос","location":"Форос","locationId":"46","pic":google_pic,"mainLink":"beach/1925","beachLink":"beach/1925","humanLink":"beach/foros","beachId":"1925","coordinates":["44.392499007611","33.791695251465"],"show_distance":true},
-              {id: 'fake', "temperature":26,"showFavorite":true,"paid":true,"rating":4,"title":"ФГБУ &quot;Санаторий РОП РФ &quot;Электроника&quot;","location":"Форос","locationId":"46","pic":google_pic,"mainLink":"beach/2204","beachLink":"beach/2204","humanLink":"beach/tikhiy","beachId":"2204","coordinates":["44.3915298","33.792564098312"],"show_distance":true},
-              {id: 'fake', "temperature":26,"showFavorite":true,"paid":false,"rating":4,"title":"Зелёный пляж","location":"Форос","locationId":"46","pic":google_pic,"mainLink":"beach/2263","beachLink":"beach/2263","humanLink":"beach/zelyenyy-plyazh","beachId":"2263","coordinates":["44.3918298","33.792364098312"],"show_distance":true},
-              {id: 'fake', "temperature":26,"showFavorite":true,"paid":false,"rating":4,"title":"Холодный пляж","location":"Форос","locationId":"46","pic":google_pic,"mainLink":"beach/2273","beachLink":"beach/2273","humanLink":"beach/kholodnyy-plyazh","beachId":"2273","coordinates":["44.39314765","33.795542356502"],"show_distance":true},
-              {id: 'fake', "temperature":26,"showFavorite":true,"paid":false,"rating":4,"title":"Золотой пляж Курпаты черновик","location":"посёлок городского типа Курпаты","locationId":"91","pic":google_pic,"mainLink":"beach/2307","beachLink":"beach/2307","humanLink":"beach/zolotoy-plyazh-kurpaty","beachId":"2307","coordinates":["44.445287","34.134888"],"show_distance":true}]
+              {id: 'fake', "temperature":26,"showFavorite":true,"paid":false,"rating":4.7,"title":"Массандровский пляж","location":"Ялта","locationId":"47","pic":google_pic,"mainLink":"beach/1924","beachLink":"beach/1924","humanLink":"beach/massandrovskiy-plyazh","beachId":"1924","coordinates":["44.497041757352","34.171652423195"],"show_distance":true,"custom_photo":true},
+              {id: 'fake', "temperature":26,"showFavorite":true,"paid":false,"rating":4.5,"title":"Форос","location":"Форос","locationId":"46","pic":google_pic,"mainLink":"beach/1925","beachLink":"beach/1925","humanLink":"beach/foros","beachId":"1925","coordinates":["44.392499007611","33.791695251465"],"show_distance":true,"custom_photo":true},
+              {id: 'fake', "temperature":26,"showFavorite":true,"paid":true,"rating":4,"title":"ФГБУ &quot;Санаторий РОП РФ &quot;Электроника&quot;","location":"Форос","locationId":"46","pic":google_pic,"mainLink":"beach/2204","beachLink":"beach/2204","humanLink":"beach/tikhiy","beachId":"2204","coordinates":["44.3915298","33.792564098312"],"show_distance":true,"custom_photo":true},
+              {id: 'fake', "temperature":26,"showFavorite":true,"paid":false,"rating":4,"title":"Зелёный пляж","location":"Форос","locationId":"46","pic":google_pic,"mainLink":"beach/2263","beachLink":"beach/2263","humanLink":"beach/zelyenyy-plyazh","beachId":"2263","coordinates":["44.3918298","33.792364098312"],"show_distance":true,"custom_photo":true},
+              {id: 'fake', "temperature":26,"showFavorite":true,"paid":false,"rating":4,"title":"Холодный пляж","location":"Форос","locationId":"46","pic":google_pic,"mainLink":"beach/2273","beachLink":"beach/2273","humanLink":"beach/kholodnyy-plyazh","beachId":"2273","coordinates":["44.39314765","33.795542356502"],"show_distance":true,"custom_photo":true},
+              {id: 'fake', "temperature":26,"showFavorite":true,"paid":false,"rating":4,"title":"Золотой пляж Курпаты черновик","location":"посёлок городского типа Курпаты","locationId":"91","pic":google_pic,"mainLink":"beach/2307","beachLink":"beach/2307","humanLink":"beach/zolotoy-plyazh-kurpaty","beachId":"2307","coordinates":["44.445287","34.134888"],"show_distance":true,"custom_photo":true}]
           }
         }
 
@@ -300,7 +300,8 @@ export const getters = {
             humanLink: family.BEACHES[i].CODE ? `beach/${family.BEACHES[i].CODE}` : null,
             beachId: family.BEACHES[i].ID,
             coordinates: family.BEACHES[i].COORDINATES.length ? family.BEACHES[i].COORDINATES.split(',') : [],
-            show_distance: true
+            show_distance: true,
+            custom_photo: true
           });
         }
         if (Math.min(10, family.BEACHES.length) > 0){
@@ -344,6 +345,7 @@ export const getters = {
           another_place: true,
           price: another_places[i].PRICE,
           coordinates: another_places[i].COORDINATES ? another_places[i].COORDINATES.split(',').map(Number) : [],
+          custom_photo: true
         });
       }
 

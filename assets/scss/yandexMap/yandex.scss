@@ -9,6 +9,8 @@
     line-height: 120%;
     color: #393E48;
     width: auto;
+    position: relative !important;
+    height: auto;
   }
 
   .description {
@@ -22,11 +24,6 @@
 
 .my-balloon {
   padding: 10px;
-
-  .header {
-    position: relative !important;
-    height: auto;
-  }
 }
 
 .my-hint {
@@ -43,4 +40,10 @@
   width: auto;
   height: auto;
   padding: 15px 22px;
+
+  .close {
+    position: absolute;
+    right: 5px;
+    top: 1px;
+  }
 }

@@ -284,6 +284,7 @@ export const getters = {
             another_place: true,
             price: another_places[i].PRICE,
             coordinates: another_places[i].COORDINATES ? another_places[i].COORDINATES.split(',').map(Number) : [],
+            custom_photo: true
           });
         }
 
@@ -331,7 +332,8 @@ export const getters = {
             another_place: true,
             price: hotels[i].PRICE,
             coordinates: hotels[i].COORDINATES ? hotels[i].COORDINATES.split(',').map(Number) : [],
-            dist: distance(hotels[i].COORDINATES ? hotels[i].COORDINATES.split(',').map(Number) : [], coordinat)
+            dist: distance(hotels[i].COORDINATES ? hotels[i].COORDINATES.split(',').map(Number) : [], coordinat),
+            custom_photo: true
           })
         }
 
