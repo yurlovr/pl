@@ -1,7 +1,8 @@
 export const state = () => ({
   beaches: [],
   events: [],
-  map_entity: []
+  map_entity: [],
+  user_coordinates: {}
 })
 
 export const mutations = {
@@ -15,7 +16,8 @@ export const mutations = {
 
   SET_MAP_ENTITY: (state, payload) => {
     state.map_entity = payload;
-  }
+  },
+  setLastUserPos: (state, data) => state.user_coordinates = data,
 }
 
 export const actions = {
@@ -24,6 +26,7 @@ export const actions = {
     commit('SET_ALL_EVENTS', await this.$axios.$get('/event/list?count=9999'));
     commit('search/SET_SEARCH', await this.$axios.$get('search/config'));
     commit('SET_MAP_ENTITY', await this.$axios.$get('/map-entity/list?count=9999'));
+    commit('setLastUserPos', this.$cookies.get('last_coordinates') || {})
   }
 }
 

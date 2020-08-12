@@ -1,4 +1,5 @@
 import moment from 'moment';
+import {getDistanceFromLatLonInKm} from "../assets/calcDistance";
 moment.locale('ru');
 
 export const state = () => ({
@@ -51,7 +52,7 @@ export const actions = {
     commit('SET_ANNOUNCEMENT_DATA', await this.$axios.$get(`/banner/list?page=/event`));
 
     commit('SET_ANY_PLACES', await this.$axios.$get('/hotel/list?count=10'));
-    commit('SET_HOTELS', await this.$axios.$get('/hotel/beachList'));
+    commit('SET_HOTELS', await this.$axios.$get('/hotel/beachList?count=9999'));
   }
 }
 
@@ -240,6 +241,7 @@ export const getters = {
             another_place: true,
             price: another_places[i].PRICE,
             coordinates: another_places[i].COORDINATES ? another_places[i].COORDINATES.split(',').map(Number) : [],
+            custom_photo: true
           });
         }
 
@@ -262,6 +264,17 @@ export const getters = {
         }
       }
 
+      let coordinat = rootState.user_coordinates
+
+      let distance = (d, coord) => {
+        if (d && d.length == 2 && Object.keys(coord).length) {
+          let lat2 = d[0], lng2 = d[1],
+            {lat, lng} = coord;
+          return Number(getDistanceFromLatLonInKm(lat, lng, Number(lat2), Number(lng2)).toFixed(1)).toString().replace(/\./, ',')
+        }
+        return 0;
+      }
+
       for (let i = 0; i < hotels.length; i++) {
         ret.hotels.beachSliderData.cardData.push({
           rating: hotels[i].RATING,
@@ -276,8 +289,12 @@ export const getters = {
           another_place: true,
           price: hotels[i].PRICE,
           coordinates: hotels[i].COORDINATES ? hotels[i].COORDINATES.split(',').map(Number) : [],
+          dist: distance(hotels[i].COORDINATES ? hotels[i].COORDINATES.split(',').map(Number) : [], coordinat),
+          custom_photo: true
         });
       }
+
+      ret.hotels.beachSliderData.cardData.sort((a, b) => (a.dist > b.dist) ? 1 : (a.dist === b.dist) ? ((a.dist > b.dist) ? 1 : -1) : -1 )
 
     }
 

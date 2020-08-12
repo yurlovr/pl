@@ -71,7 +71,7 @@
 						{{ data.beachClosedText }}
 					</span>
         </div>
-        <button class="slider-beach-event__zoom-button" @click="modalOpen = !modalOpen">
+        <button class="slider-beach-event__zoom-button" @click="bigModalOpen">
           <img src="~/static/pics/global/svg/zoom.svg">
         </button>
         <div v-swiper:mySwiper="swiperOption">
@@ -162,8 +162,8 @@
             <div v-swiper:mySwiperModal="swiperOption">
               <div class="swiper-wrapper">
                 <div class="swiper-slide" v-for="(pic, i) in data.pics" :key="i">
-                  <div class="position-relative" >
-                        <span class="zoom-img" @click="$refs.beachZoomModal.showZoomModal(pic)" v-if="!pic.includes('youtube')">
+                  <div class="position-relative" @mousemove="movingInTheBigModal">
+                        <span class="zoom-img" @click="$refs.zoomer[i].zoomIn()" v-show="zoom_plus_show">
                              <img src="~/static/pics/search/loop_plus.svg">
                         </span>
                     <div v-if="!pic.includes('youtube')">
@@ -247,7 +247,6 @@
       BeachZoomImage,
       VideoYoutube,
       CoolLightBox,
-
     },
 
     beforeMount() {
@@ -275,6 +274,7 @@
 
     data() {
       return {
+        zoom_plus_show: true,
         index: null,
         mobile: 1024,
         swiperOption: {
@@ -343,6 +343,25 @@
     },
 
     methods: {
+      movingInTheBigModal(){
+        if (!this.zoom_plus_show){
+          this.zoom_plus_show = true;
+          this.$nextTick(()=>{
+            setTimeout(()=> {
+              this.zoom_plus_show = false;
+            }, 2000)
+          })
+        }
+      },
+      bigModalOpen(){
+        this.modalOpen = !this.modalOpen
+        this.zoom_plus_show = true;
+        this.$nextTick(()=>{
+          setTimeout(()=> {
+            this.zoom_plus_show = false;
+          }, 2000)
+        })
+      },
       showPhotoSwipe(index) {
         this.isOpen = true
         this.$set(this.optionsGallery, 'index', index)

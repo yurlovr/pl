@@ -4,13 +4,17 @@
       <a v-if="!data.another_place" :href="data.humanLink ? data.humanLink : ( data.mainLink ? data.mainLink : '#')"
          class="custom-card__link"
          @click.prevent="$bus.goTo( data.humanLink ? data.humanLink : ( data.mainLink ? data.mainLink : '#'), $router)">
-        <img v-lazy-load :data-src="data.pic" v-show="this.picLoaded" alt="Фото" class="custom-card__pic"
+        <img v-if="data.custom_photo" :src="data.pic" v-show="this.picLoaded" alt="Фото" class="custom-card__pic"
+             @load="picLoaded = true">
+        <img v-else v-lazy-load :data-src="data.pic" v-show="this.picLoaded" alt="Фото" class="custom-card__pic"
              @load="picLoaded = true">
         <img v-show="!this.picLoaded" class="custom-card__pic"
              src="~/static/pics/global/pics/slider_beh_placeholder.png">
       </a>
       <a v-else :href="data.internal_url" class="custom-card__link" target="_blank">
-        <img v-lazy-load :data-src="data.pic" v-show="this.picLoaded" alt="Фото" class="custom-card__pic"
+        <img v-if="data.custom_photo" :src="data.pic" v-show="this.picLoaded" alt="Фото" class="custom-card__pic"
+             @load="picLoaded = true">
+        <img v-else v-lazy-load :data-src="data.pic" v-show="this.picLoaded" alt="Фото" class="custom-card__pic"
              @load="picLoaded = true">
         <img v-show="!this.picLoaded" class="custom-card__pic"
              src="~/static/pics/global/pics/slider_beh_placeholder.png">
@@ -122,6 +126,7 @@
         visited: this.data && this.data.eventId && this.$cookies.get(`visited.events.${this.data.eventId}`),
         max: 2,
         picLoaded: false,
+        distance: false,
         // last_coordinates: this.$cookies.get('last_coordinates') || {}
       };
     },
@@ -153,6 +158,9 @@
       });
       this.$bus.$on('updateVisited', () => {
         this.visited = this.data && this.data.eventId && this.$cookies.get(`visited.events.${this.data.eventId}`);
+      });
+      this.$bus.$on('show_geo', value => {
+        this.distance = value
       });
     },
 

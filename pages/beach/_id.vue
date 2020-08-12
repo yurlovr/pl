@@ -114,7 +114,12 @@
       return {
         show_pano: false,
         last_coordinates: this.$cookies.get('last_coordinates') || {},
-        meta: {}
+      }
+    },
+    async asyncData( {$axios, route}){
+      const {data} = await $axios.$get('seo/meta?url=/beach/'+ route.params.id)
+      return {
+        meta: data
       }
     },
 
@@ -157,11 +162,5 @@
         this.show_pano = !this.show_pano;
       }
     },
-   async created() {
-      this.beachData.map_entity = this.mapEntity;
-      await this.$axios.$get('seo/meta?url=/beach/'+ this.beachData.mainData.beachId).then(res => {
-        this.meta = res.data
-      })
-    }
   }
 </script>

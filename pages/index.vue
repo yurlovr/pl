@@ -17,7 +17,7 @@
     <div class="main-page__white-wrapper">
       <WeatherSliderArea :data="mainData.weather" v-if="mainData.weather" />
     </div>
-    <div class="main-page__white-wrapper" v-if="mainData.another_places && mainData.another_places.length > 0">
+    <div class="main-page__white-wrapper" v-if="mainData.another_places && mainData.another_places.beachNumber > 0">
       <BeachSliderArea :data="mainData.another_places" class="main-page__family-rest" outlink="https://nash.travel/hotel" />
     </div>
     <Banner :data="mainData.banners[0]" v-if="mainData.banners && mainData.banners[0]" class="banner-2" />
@@ -40,7 +40,6 @@ import WeatherSliderArea from '~/components/pages/main/WeatherSliderArea';
 import DynamicSliderArea from '~/components/pages/main/DynamicSliderArea';
 import MapArea from '~/components/pages/main/MapArea';
 import MobileSettingsModal from '~/components/global/MobileSettingsModal';
-
 import { mapActions, mapGetters, mapMutations } from 'vuex';
 
 export default {
@@ -59,8 +58,14 @@ export default {
   },
   data (){
     return{
-      meta: {},
       open_app: false
+    }
+  },
+
+  async asyncData( {$axios, route}){
+    const {data} = await $axios.$get('seo/meta?url=' + route.fullPath)
+    return {
+      meta: data
     }
   },
 
@@ -80,9 +85,6 @@ export default {
       this.$bus.$emit('mainPageReady');
       this.$bus.$emit('hidePageTransitioner');
     });
-   await this.$axios.$get('seo/meta?url='+this.$route.fullPath).then(res => {
-     this.meta = res.data
-   })
   },
 
   head(){

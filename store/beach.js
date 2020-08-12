@@ -1,3 +1,4 @@
+import {getDistanceFromLatLonInKm} from "../assets/calcDistance";
 export const state = () => ({
     beach: null,
     temperatures: null,
@@ -75,12 +76,12 @@ export const actions = {
         commit('SET_BARS_N_RESTOS', await this.$axios.$get(`/restaurant/list?beachId=${beach_id}`));
         commit('SET_OPINIONS', await this.$axios.$get(`/opinion/list?entityId=${beach_id}`));
         commit('SET_TEMPERATURES', await this.$axios.$get(`/weather/list`));
-        commit('SET_REVIEWS', await this.$axios.$get(`/review/list?entityId=${beach_id}&count=9999`));
+        commit('SET_REVIEWS', await this.$axios.$get(`/review/list?entityId=${beach_id}`));
         commit('SET_VISITOR_PICS', await this.$axios.$get(`/socialPhoto/list?entityId=${beach_id}&count=10`));
         commit('SET_ANNOUNCEMENT_DATA', await this.$axios.$get(`/banner/list?page=/beach`));
 
         commit('SET_ANY_PLACES', await this.$axios.$get('/hotel/list?count=10'));
-        commit('SET_HOTELS', await this.$axios.$get('/hotel/beachList'));
+        commit('SET_HOTELS', await this.$axios.$get('/hotel/beachList?count=9999'));
 
         let tagsCount = 0, tags;
         if (state.beach.data.item.TAGS)
@@ -99,7 +100,7 @@ export const actions = {
 }
 
 export const getters = {
-    beachData: (state) => {
+    beachData: (state, getters, rootState, rootGetters) => {
         if (!state.beach.data) return null;
 
         let ret = {
@@ -154,7 +155,7 @@ export const getters = {
                 isBeachClosed: state.beach.data.item.LABEL.TEXT != '',
                 goldMedal: state.beach.data.item.CERTIFICATION,
                 blueMedal: state.beach.data.item.WEBCAMERA,
-                pics: !state.beach.data.item.VIDEO.LINK ?  state.beach.data.item.PHOTOS.medium
+                pics: !state.beach.data.item.VIDEO.LINK ?  state.beach.data.item.PHOTOS.medium.map(e => e.path)
                   : [...state.beach.data.item.PHOTOS.medium.map(e => e.path), state.beach.data.item.VIDEO.LINK],
                 beachClosedText: state.beach.data.item.LABEL.TEXT,
                 beachClosedColor: state.beach.data.item.LABEL.COLOR,
@@ -228,12 +229,15 @@ export const getters = {
                         state.beach.data.item.CITY.ID : -1}&fromBeach=${state.beach && state.beach.data && state.beach.data.item ? state.beach.data.item.ID : -1}`
                 },
                 beachNumber: state.similarBeaches && state.similarBeaches.data ? Math.min(state.similarBeaches.data.list.filter(v => {
+                  let count = 0;
                     if (v.TAGS) {
-                        if (v.TAGS.length < 3) return false;
+                      count += v.TAGS.length
                     }
+
                     if (v.ADD_TAGS) {
-                        if (v.ADD_TAGS.length < 3) return false;
+                      count += v.ADD_TAGS.length
                     }
+                    if (count < 3) return  false;
                     if (!v.TAGS && !v.ADD_TAGS) return false;
                     if (v.ID == state.beach.data.item.ID) return false;
                     return true;
@@ -280,6 +284,7 @@ export const getters = {
             another_place: true,
             price: another_places[i].PRICE,
             coordinates: another_places[i].COORDINATES ? another_places[i].COORDINATES.split(',').map(Number) : [],
+            custom_photo: true
           });
         }
 
@@ -302,6 +307,17 @@ export const getters = {
           }
         }
 
+        let coordinat = rootState.user_coordinates
+
+        let distance = (d, coord) => {
+          if (d && d.length == 2 && Object.keys(coord).length) {
+            let lat2 = d[0], lng2 = d[1],
+              {lat, lng} = coord;
+            return Number(getDistanceFromLatLonInKm(lat, lng, Number(lat2), Number(lng2)).toFixed(1)).toString().replace(/\./, ',')
+          }
+          return 0;
+        }
+
         for (let i = 0; i < hotels.length; i++) {
           ret.hotels.beachSliderData.cardData.push({
             rating: hotels[i].RATING,
@@ -316,8 +332,12 @@ export const getters = {
             another_place: true,
             price: hotels[i].PRICE,
             coordinates: hotels[i].COORDINATES ? hotels[i].COORDINATES.split(',').map(Number) : [],
-          });
+            dist: distance(hotels[i].COORDINATES ? hotels[i].COORDINATES.split(',').map(Number) : [], coordinat),
+            custom_photo: true
+          })
         }
+
+        ret.hotels.beachSliderData.cardData.sort((a, b) => (a.dist > b.dist) ? 1 : (a.dist === b.dist) ? ((a.dist > b.dist) ? 1 : -1) : -1 )
 
       }
 
@@ -435,7 +455,8 @@ export const getters = {
                 name: state.reviews.data.list[i].FIO,
                 date: state.reviews.data.list[i].CREATED_DATE,
                 rating: state.reviews.data.list[i].AVERAGE_RATING,
-                comment: state.reviews.data.list[i].DESCRIPTION
+                comment: state.reviews.data.list[i].DESCRIPTION,
+                photos: state.reviews.data.list[i].PHOTOS
             });
         }
 
@@ -463,7 +484,7 @@ export const getters = {
                         title: state.similarBeaches.data.list[i].NAME,
                         location: state.similarBeaches.data.list[i].CITY ? state.similarBeaches.data.list[i].CITY.NAME : 'Не указан',
                         locationId: state.similarBeaches.data.list[i].CITY ? state.similarBeaches.data.list[i].CITY.ID : null,
-                        pic: state.similarBeaches.data.list[i].PHOTOS ? state.similarBeaches.data.list[i].PHOTOS[0] : null,
+                        pic: state.similarBeaches.data.list[i].PHOTOS ? state.similarBeaches.data.list[i].PHOTOS.medium[0].path : null,
                         mainLink: `beach/${state.similarBeaches.data.list[i].ID}`,
                         beachLink: `beach/${state.similarBeaches.data.list[i].ID}`,
                         humanLink: state.similarBeaches.data.list[i].CODE ? `beach/${state.similarBeaches.data.list[i].CODE}`: null,

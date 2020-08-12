@@ -140,10 +140,7 @@
           for (let i=0; i < loc_photo.length; i++){
             this.photo.push(loc_photo[i]);
           }
-          // reader.onload = (e) => {
-          //   this.photoNames.push(e.target.result);
-          // }
-          // console.log('this.$refs.imageLoader', e.target.files)
+
           for( let i=0; i < this.$refs.photoLoader.files.length; i++ ) {
             const reader = new FileReader();
             reader.onload = (e) => {
@@ -200,8 +197,13 @@
 				data.set('rating[security]', this.ratings[4].rating);
 				data.set('rating[availability]', this.ratings[5].rating);
 				data.set('description', this.review);
-				data.append('photo', this.file);
-				data.append('photo[]', this.photo);
+				data.append('userPhoto', this.file);
+				for (let i=0; i < this.photo.length; i++) {
+          data.append('photo[]', this.photo[i]);
+        }
+
+
+				console.log(data, 'data')
 
 				await this.$axios({
 					method: 'post',
