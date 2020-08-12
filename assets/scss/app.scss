@@ -4679,7 +4679,7 @@ input {
       }
 
       &__right {
-        width: 86px;
+        width: 194px;
         margin-left: 130px;
         position: relative;
 
@@ -4688,7 +4688,7 @@ input {
           border-radius: 12px;
           overflow: hidden;
           cursor: pointer;
-          max-height: 87px;
+          max-height: 138px;
 
           &.active {
             border-color: #228596;
@@ -4707,8 +4707,8 @@ input {
           }
 
           img {
-            width: 87px;
-            height: 87px;
+            width: 194px;
+            height: 138px;
             transition: transform 0.2s ease;
           }
         }
@@ -5963,6 +5963,16 @@ input {
 
         &__right {
           margin-left: 40px;
+          width: 125px;
+
+          .swiper-slide {
+            max-height: 129px;
+
+            img {
+              width: 125px;
+              height: 129px;
+            }
+          }
         }
       }
     }
@@ -6093,7 +6103,7 @@ input {
         }
 
         &__left {
-          max-width: 600px;
+          max-width: 750px;
         }
       }
     }
@@ -6171,6 +6181,12 @@ input {
 
       &__right {
         display: none;
+      }
+
+      &__modal {
+        &__right {
+          display: none;
+        }
       }
     }
   }
@@ -6833,7 +6849,7 @@ input {
 
       &__modal {
         &__left {
-          max-width: 500px;
+          max-width: 650px;
         }
       }
     }
@@ -7571,7 +7587,7 @@ input {
         }
 
         &__left {
-          max-width: 400px;
+          max-width: 550px;
         }
       }
     }
