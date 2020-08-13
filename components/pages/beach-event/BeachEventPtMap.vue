@@ -185,12 +185,13 @@
                           },
                           getShape() {
                             return new maps.shape.Rectangle(new maps.geometry.pixel.Rectangle([
-                              [0, 0], [1000, 350] // balloon's width is always 300 and -25 for the margin
+                              [25, 0], [275, 0] // balloon's width is always 300 and -25 for the margin
                             ]));
                           },
                         }
                       ),
                       balloonContentLayout: '',
+                      balloonOffset: [-155, -5],
                       balloonPane: 'balloon',
                       balloonAutoPan: true,
                       balloonPanelMaxMapArea: 0,
@@ -256,69 +257,6 @@
                       }
                       ),
                     },
-                    /*properties: {
-                      balloonLayout: maps.templateLayoutFactory.createClass("<div class='my-balloon'>" +
-                        `<div class='header'>${title}</div><br />` +
-                        `<div class='description'>${description}</div>`+
-                      `<div class="beach-event__visitor-pics__slider" style='height: 100%'>
-                          <div class="swiper-container" id='balloon-swiper'>
-                            <div class="swiper-wrapper">
-                               ${slides.join('')}
-                            </div>
-                          </div>
-                          <button class="slider__arrow-left slider__arrow-left-balloon"
-                                  style="transform: translate(-50%, -50%); top: 50%">
-                            <img src="/pics/global/svg/slider_arrow_left.svg" alt="Налево">
-                          </button>
-                          <button class="slider__arrow-right slider__arrow-right-balloon"
-                                  style="transform: translate(50%, -50%); top: 50%">
-                            <img src="/pics/global/svg/slider_arrow_right.svg" alt="Направо">
-                          </button>
-                        </div>` +
-                        "</div>", {
-                          build() {
-                            this.constructor.superclass.build.call(this);
-
-                            if (!pictures || pictures.length <= 0) {
-                              document.querySelector(`.beach-event__visitor-pics__slider`).style.display = 'none'
-                            }
-
-                            // init the swiper
-                            this.swiper = new Swiper(`#balloon-swiper`, {
-                              slidesPerView: 3,
-                            });
-
-                            this.swiper.on('imagesReady', () => {
-                              let left = document.querySelector(`.slider__arrow-left-balloon`);
-                              let right = document.querySelector(`.slider__arrow-right-balloon`);
-                              this.swiper.isBeginning === false ? left.style.display = '' : left.style.display = 'none';
-                              this.swiper.isEnd === false ? right.style.display = '' : right.style.display = 'none'
-                            });
-
-                            this.swiper.on('slideChange', () => {
-                              let left = document.querySelector(`.slider__arrow-left-balloon`);
-                              let right = document.querySelector(`.slider__arrow-right-balloon`);
-                              this.swiper.isBeginning === false ? left.style.display = '' : left.style.display = 'none';
-                              this.swiper.isEnd === false ? right.style.display = '' : right.style.display = 'none'
-                            });
-
-                            // init the arrows
-                            document.querySelector(`.slider__arrow-left-balloon`).addEventListener('click', () => this.swiper.slidePrev());
-                            document.querySelector(`.slider__arrow-right-balloon`).addEventListener('click', () => this.swiper.slideNext());
-                          },
-                          clear() {
-                            this.swiper.destroy();
-
-                            this.constructor.superclass.clear.call(this);
-                          },
-                          getShape() {
-                            return new maps.shape.Rectangle(new maps.geometry.pixel.Rectangle([
-                              [0, 0], [1000, 350] // balloon's width is always 300 and -25 for the margin
-                            ]));
-                          },
-                        }
-                      ),
-                    }*/
                   })
                 })
               }
