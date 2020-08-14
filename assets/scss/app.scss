@@ -4640,6 +4640,7 @@ input {
         position: relative;
       }
 
+
       &__left {
         width: 100%;
         max-width: 850px;
@@ -10168,5 +10169,23 @@ body.touch {
     font-size: 12px;
     line-height: 14px;
     margin-left: 10px;
+  }
+}
+
+//.swiper-slide, .swiper-slide img { width: 1024px !important; }
+@media (min-width: 1440px) {
+  .big-modal {
+    width: 1093px !important;
+    max-width: 1093px !important;
+
+    .slider__arrow-right {
+      right: 24px;
+    }
+    .slider__arrow-left {
+      left: 24px;
+    }
+  }
+  .big-modal-right {
+    margin-left: 60px;
   }
 }

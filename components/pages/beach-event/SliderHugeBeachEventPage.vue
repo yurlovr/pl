@@ -157,7 +157,7 @@
           <!--            :index="index"-->
           <!--            @close="index = null">-->
           <!--          </CoolLightBox>-->
-          <div class="slider-beach-event__modal__left">
+          <div class="slider-beach-event__modal__left big-modal">
 
             <div v-swiper:mySwiperModal="swiperOption">
               <div class="swiper-wrapper">
@@ -206,7 +206,7 @@
               <img src="~/static/pics/global/svg/slider_arrow_right.svg" alt="Направо">
             </button>
           </div>
-          <div class="slider-beach-event__modal__right">
+          <div class="slider-beach-event__modal__right big-modal-right">
             <div v-swiper:mySwiperModalSmall="swiperModalSmallOption">
               <div class="swiper-wrapper">
                 <div class="swiper-slide" v-for="(pic, i) in data.pics" :key="i" :class="{ active: activeIndex == i }"
