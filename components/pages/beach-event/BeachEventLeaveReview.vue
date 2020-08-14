@@ -65,7 +65,7 @@
 			</div>
 		</div>
 		<input v-show="false" type="file" accept="image" name="image" @change="uploadImage" ref="imageLoader">
-		<input v-show="false" type="file" accept="image" name="image" multiple @change="uploadPhotos" ref="photoLoader">
+		<input v-if="hui" v-show="false" type="file" accept="image" name="media" multiple @change="uploadPhotos" :ref="'photoLoader'+dynamicRef">
 	</div>
 </template>
 
@@ -81,6 +81,8 @@
 
 		data() {
 			return {
+			  dynamicRef: 0,
+        hui: true,
 				modalOpen: false,
 				error: null,
 				addPic: false,
@@ -128,27 +130,28 @@
 				this.$refs.imageLoader.click();
 			},
       choosePhotos() {
-        this.$refs.photoLoader.click();
+        this.$refs["photoLoader" + this.dynamicRef].click();
       },
       deletePhoto(index) {
 			  this.photoNames.splice(index, 1)
 			  this.photo.splice(index, 1)
       },
       uploadPhotos(e) {
-        if (this.$refs.photoLoader){
-          let loc_photo = this.$refs.photoLoader.files
+        if (this.$refs["photoLoader" + this.dynamicRef]){
+          let loc_photo = this.$refs["photoLoader" + this.dynamicRef].files
           for (let i=0; i < loc_photo.length; i++){
             this.photo.push(loc_photo[i]);
           }
 
-          for( let i=0; i < this.$refs.photoLoader.files.length; i++ ) {
+          for( let i=0; i < loc_photo.length; i++ ) {
             const reader = new FileReader();
-            reader.onload = (e) => {
-              this.$refs.photoLoader.files[i].src = e.result;
-              this.photoNames.push(e.target.result);
+            console.warn(loc_photo[i], 'photo i')
+            reader.readAsDataURL(loc_photo[i]);
+            reader.onload = (q) => {
+              this.photoNames.push(q.target.result);
             }
-            reader.readAsDataURL(this.photo[i]);
           }
+          this.dynamicRef++;
 
         } else console.error('Cannot find image loader (BeachEventLeaveReview)');
       },
