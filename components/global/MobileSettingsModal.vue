@@ -1,5 +1,5 @@
 <template>
-    <div v-if="showModal === true" :class="`mobile-modal banner-mobile-${this.modalNumber}`"
+    <div v-if="show_mobile_preview" :class="`mobile-modal banner-mobile-${this.modalNumber}`"
          :style="{'background-image': 'url(' + require('~/static/pics/global/mobile/banner_' + this.modalNumber + '.png') + ')' }">
       <div class="content" :class="{'d-flex justify-content-between align-items-center': this.modalNumber === 1}">
         <div :class="{'d-flex justify-content-end': this.modalNumber > 1}" @click="closeModal">
@@ -33,27 +33,28 @@
 </template>
 
 <script>
-    import moment from 'moment'
+    import {mapState} from 'vuex'
     export default {
         name: "MobileSettingsModal",
         props: ['data'],
         data() {
           return {
-            showModal: false,
             modalNumber: 2
           }
         },
         methods: {
           closeModal() {
             this.$emit('closeModal', false)
+            this.$store.commit('main/setMobileState', false)
           }
         },
+        computed: {
+          ...mapState({
+            show_mobile_preview: state => state.main.show_mobile_preview
+          })
+        },
         mounted() {
-          if (!localStorage.getItem('krym-visited')) {
-            this.modalNumber = 2;
-            this.showModal = true;
-            localStorage.setItem('krym-visited', 1);
-          }
+          this.modalNumber = 2;
         },
     }
 </script>

@@ -9,10 +9,12 @@ export const state = () => ({
   map: {},
   geo: {},
   any_places: [],
-  mobile_settings: []
+  mobile_settings: [],
+  show_mobile_preview: true,
 })
 
 export const mutations = {
+  setMobileState: (state, data) => state.show_mobile_preview = data,
   SET_POPULAR_BEACH: (state, payload) => {
     state.beachesTop = payload;
   },
