@@ -10122,8 +10122,6 @@ body.touch {
   z-index: -1 !important;
 }
 .zoom-img {
-  opacity: 0;
-  visibility: hidden;
   transition: all .3s ease-in-out;
   position: absolute;
   left: 50%;
@@ -10132,12 +10130,6 @@ body.touch {
   margin-top: -30px;
   cursor: pointer;
   z-index: 12;
-}
-.swiper-wrapper:hover {
-  .zoom-img {
-    opacity: 1;
-    visibility: visible;
-  }
 }
 .zoom-modal-inner {
   max-width: 1133px;
@@ -10151,5 +10143,30 @@ body.touch {
     height: 100%;
     object-fit: cover;
     border-radius: 12px;
+  }
+}
+
+.size-stamp {
+  position: absolute;
+  width: 123px;
+  height: 44px;
+  background: #FFFFFF;
+  border-radius: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  top: 30px;
+  left: 30px;
+
+  img {
+    width: 21px !important;
+    height: 22px !important;
+  }
+  .stamp-text-size {
+    display: flex;
+    flex-direction: column;
+    font-size: 12px;
+    line-height: 14px;
+    margin-left: 10px;
   }
 }

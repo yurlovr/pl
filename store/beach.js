@@ -155,8 +155,9 @@ export const getters = {
                 isBeachClosed: state.beach.data.item.LABEL.TEXT != '',
                 goldMedal: state.beach.data.item.CERTIFICATION,
                 blueMedal: state.beach.data.item.WEBCAMERA,
-                pics: !state.beach.data.item.VIDEO.LINK ?  state.beach.data.item.PHOTOS.medium.map(e => e.path)
-                  : [...state.beach.data.item.PHOTOS.medium.map(e => e.path), state.beach.data.item.VIDEO.LINK],
+                pics: !state.beach.data.item.VIDEO.LINK ?  state.beach.data.item.PHOTOS.reference.map(e => e.path)
+                  : [...state.beach.data.item.PHOTOS.reference.map(e => e.path), state.beach.data.item.VIDEO.LINK],
+                sizes: state.beach.data.item.PHOTOS.reference.map(e => e.size),
                 beachClosedText: state.beach.data.item.LABEL.TEXT,
                 beachClosedColor: state.beach.data.item.LABEL.COLOR,
                 beachClosedTooltip: state.beach.data.item.LABEL.DESCRIPTION,

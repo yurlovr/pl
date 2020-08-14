@@ -162,11 +162,18 @@
             <div v-swiper:mySwiperModal="swiperOption">
               <div class="swiper-wrapper">
                 <div class="swiper-slide" v-for="(pic, i) in data.pics" :key="i">
-                  <div class="position-relative" @mousemove="movingInTheBigModal">
+                  <div class="position-relative">
                         <span class="zoom-img" @click="$refs.beachZoomModal.showZoomModal(pic)" v-show="zoom_plus_show">
                              <img src="~/static/pics/search/loop_plus.svg">
                         </span>
                     <div v-if="!pic.includes('youtube')">
+                      <div class="size-stamp">
+                        <img src="~/static/pics/beach/size.png">
+                        <div class="stamp-text-size">
+                          <span>ОРИГИНАЛ</span>
+                          <b>{{ (data.sizes[i]/1024/1024).toFixed(1)}} МБ</b>
+                        </div>
+                      </div>
                           <img v-lazy-load :data-src="pic">
                     </div>
                     <div v-else class="w-100 h-100 y-block">
@@ -180,11 +187,22 @@
               </div>
             </div>
             <button class="slider__arrow-left" :style="{ display: showLeft ? '' : 'none' }"
-                    @click="mySwiperModal.slidePrev()">
+                    @click=" () => {
+                      mySwiperModal.slidePrev();
+                      zoomController();
+                      $nextTick(() => {
+                        zoomController();
+                      })
+                    }">
               <img src="~/static/pics/global/svg/slider_arrow_left.svg" alt="Налево">
             </button>
             <button class="slider__arrow-right" :style="{ display: showRight ? '' : 'none' }"
-                    @click="mySwiperModal.slideNext();">
+                    @click="() => {
+                      mySwiperModal.slideNext();
+                      $nextTick(() => {
+                        zoomController();
+                      })
+                    }">
               <img src="~/static/pics/global/svg/slider_arrow_right.svg" alt="Направо">
             </button>
           </div>
@@ -343,24 +361,18 @@
     },
 
     methods: {
-      movingInTheBigModal(){
-        if (!this.zoom_plus_show){
-          this.zoom_plus_show = true;
-          this.$nextTick(()=>{
-            setTimeout(()=> {
-              this.zoom_plus_show = false;
-            }, 2000)
-          })
-        }
-      },
-      bigModalOpen(){
-        this.modalOpen = !this.modalOpen
+      zoomController(){
+        console.warn('zoom controller')
         this.zoom_plus_show = true;
         this.$nextTick(()=>{
           setTimeout(()=> {
             this.zoom_plus_show = false;
-          }, 2000)
+          }, 3000)
         })
+      },
+      bigModalOpen(){
+        this.modalOpen = !this.modalOpen;
+        this.zoomController();
       },
       showPhotoSwipe(index) {
         this.isOpen = true
