@@ -151,7 +151,7 @@
           <h2 class="slider-beach-event__modal__title" v-html="data.title"></h2>
           <span class="slider-beach-event__modal__count"><span class="orange">{{ activeIndex+1 }}</span>/{{ data.pics.length }}</span>
         </div>
-        <div class="slider-beach-event__modal__sides">
+        <div class="slider-beach-event__modal__sides big-big-big">
           <!--          <CoolLightBox-->
           <!--            :items="data.pics"-->
           <!--            :index="index"-->

@@ -8302,6 +8302,10 @@ input {
 // at 500px (MOBILE DEFAULT)
 // make the main-page search look like in the MOBILE version
 @media (max-width: 500px) {
+  .big-big-big {
+    width: 100% !important;
+    max-width: calc(100vw - 10px) !important;
+  }
   .custom-container {
     padding-left: 20px;
     padding-right: 20px;
