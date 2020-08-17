@@ -142,14 +142,14 @@
                                ${slides.join('')}
                             </div>
                           </div>
-                          ${slides && slides.length > 2 ? `<button class="slider__arrow-left slider__arrow-left-balloon"
+                          <button class="slider__arrow-left slider__arrow-left-balloon ${slides && slides.length > 2 ? 'd-none': ''}"
                                   style="transform: translate(-50%, -50%); top: 50%">
                             <img src="/pics/global/svg/slider_arrow_left.svg" alt="Налево">
                           </button>
-                          <button class="slider__arrow-right slider__arrow-right-balloon"
+                          <button class="slider__arrow-right slider__arrow-right-balloon ${slides && slides.length > 2 ? 'd-none': ''}"
                                   style="transform: translate(50%, -50%); top: 50%">
                             <img src="/pics/global/svg/slider_arrow_right.svg" alt="Направо">
-                          </button>`: ''}
+                          </button>
                         </div>` +
                         "</div>", {
                           build() {
@@ -208,14 +208,14 @@
                                ${slides.join('')}
                             </div>
                           </div>
-                          ${slides && slides.length > 2 ? `<button class="slider__arrow-left slider__arrow-left-balloon"
+                          <button class="slider__arrow-left slider__arrow-left-balloon ${slides && slides.length > 2 ? 'd-none': ''}"
                                   style="transform: translate(-50%, -50%); top: 50%">
                             <img src="/pics/global/svg/slider_arrow_left.svg" alt="Налево">
                           </button>
-                          <button class="slider__arrow-right slider__arrow-right-balloon"
+                          <button class="slider__arrow-right slider__arrow-right-balloon ${slides && slides.length > 2 ? 'd-none': ''}"
                                   style="transform: translate(50%, -50%); top: 50%">
                             <img src="/pics/global/svg/slider_arrow_right.svg" alt="Направо">
-                          </button>` : ``}
+                          </button>
                         </div>` +
                         "</div>",{
                         build() {
