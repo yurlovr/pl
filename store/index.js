@@ -141,7 +141,8 @@ export const getters = {
         preview: state.map_entity.data.list[i].PREVIEW,
         url: state.map_entity.data.list[i].URL,
         photos: state.map_entity.data.list[i].PHOTOS,
-        type: state.map_entity.data.list[i].TYPE
+        type: state.map_entity.data.list[i].TYPE,
+        description: state.map_entity.data.list[i].DESCRIPTION,
       });
     }
 
