@@ -101,7 +101,7 @@
                   if (pictures) {
                     for (let k = 0; k < pictures.length; k++) {
                       slides.push(`
-                      <div class="swiper-slide">
+                      <div class="swiper-slide map-swiper-d">
                         <div class="beach-event__visitor-pics__pic-area" style="height: 90px; width: 135px;">
                           <img src="${pictures[k]}" style="border-radius: 12px;">
                         </div>
@@ -142,14 +142,14 @@
                                ${slides.join('')}
                             </div>
                           </div>
-                          <button class="slider__arrow-left slider__arrow-left-balloon"
+                          ${slides && slides.length > 2 ? `<button class="slider__arrow-left slider__arrow-left-balloon"
                                   style="transform: translate(-50%, -50%); top: 50%">
                             <img src="/pics/global/svg/slider_arrow_left.svg" alt="Налево">
                           </button>
                           <button class="slider__arrow-right slider__arrow-right-balloon"
                                   style="transform: translate(50%, -50%); top: 50%">
                             <img src="/pics/global/svg/slider_arrow_right.svg" alt="Направо">
-                          </button>
+                          </button>`: ''}
                         </div>` +
                         "</div>", {
                           build() {
@@ -161,7 +161,7 @@
 
                             // init the swiper
                             this.swiper = new Swiper(`#balloon-swiper`, {
-                              slidesPerView: 3,
+                              slidesPerView: 2,
                             });
 
                             this.swiper.on('imagesReady', () => {
@@ -208,14 +208,14 @@
                                ${slides.join('')}
                             </div>
                           </div>
-                          <button class="slider__arrow-left slider__arrow-left-balloon"
+                          ${slides && slides.length > 2 ? `<button class="slider__arrow-left slider__arrow-left-balloon"
                                   style="transform: translate(-50%, -50%); top: 50%">
                             <img src="/pics/global/svg/slider_arrow_left.svg" alt="Налево">
                           </button>
                           <button class="slider__arrow-right slider__arrow-right-balloon"
                                   style="transform: translate(50%, -50%); top: 50%">
                             <img src="/pics/global/svg/slider_arrow_right.svg" alt="Направо">
-                          </button>
+                          </button>` : ``}
                         </div>` +
                         "</div>",{
                         build() {
