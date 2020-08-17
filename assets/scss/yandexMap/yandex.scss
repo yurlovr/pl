@@ -47,3 +47,9 @@
     top: 1px;
   }
 }
+
+@media (max-width: 600px) {
+  .my-hint {
+    min-width: 80vw;
+  }
+}

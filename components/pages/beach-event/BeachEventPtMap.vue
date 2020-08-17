@@ -35,7 +35,7 @@
         this.map.panTo(coords.map(e => Number(e)), {
           safe: true
         }).then(() => {
-          this.map.setZoom(23);
+          this.map.setZoom(20);
           this.map.geoObjects.get(0).objects.balloon.open(i)
         })
       },
@@ -128,6 +128,10 @@
                       iconImageSize: [30, 43],
                       minWidth: 200,
                       minHeight: 50,
+                      zIndexActive: 2000,
+                      zIndexDrag: 2000,
+                      zIndexHover: 2000,
+                      zIndex: 2000,
                       iconImageOffset: [-18, -50],
                       balloonLayout: maps.templateLayoutFactory.createClass("<div class='my-hint'>" +
                         `<div class='header'>${title}</div><br />` +
