@@ -10197,4 +10197,7 @@ body.touch {
 .map-swiper-d {
   width: 135px !important;
   margin: 0 3px;
+  &:first-child {
+    margin-left: 0 !important;
+  }
 }
