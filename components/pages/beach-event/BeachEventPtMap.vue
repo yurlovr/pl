@@ -102,7 +102,7 @@
                     for (let k = 0; k < pictures.length; k++) {
                       slides.push(`
                       <div class="swiper-slide">
-                        <div class="beach-event__visitor-pics__pic-area" style="height: 100px; width: 100px;">
+                        <div class="beach-event__visitor-pics__pic-area" style="height: 90px; width: 135px;">
                           <img src="${pictures[k]}" style="border-radius: 12px;">
                         </div>
                       </div>
