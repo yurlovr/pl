@@ -298,7 +298,7 @@
                         for (let i = 0; i < this.mapData.length; i++) {
                           balloonLayout = maps.templateLayoutFactory.createClass(`
                             <div class="map-popup map-popup--bottom">
-                              <a href="${this.mapData[i].url}" style="color: #393e48">
+                              <a target="_blank" href="${this.mapData[i].url}" style="color: #393e48">
                                 <div class="map-popup__pic-area">
                                     <div class="map-popup__slider">
                                         <div class="swiper-container" id="balloon-swiper">
