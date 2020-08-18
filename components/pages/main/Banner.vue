@@ -8,8 +8,8 @@
 				<h4 class="banner__card__info-area__title" v-html="getTitle"></h4>
 				<p class="banner__card__info-area__text" v-html="data.description">
 				</p>
-				<a :href="data.link" @click="$bus.goTo(data.link, $router)" class="banner__card__info-area__button">
-					<span>{{ data.buttonText }}</span>
+				<a :href="data.link" class="banner__card__info-area__button">
+					<span>{{ data.buttonText }}jopa</span>
 				</a>
 			</div>
 		</div>
