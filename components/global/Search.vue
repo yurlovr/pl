@@ -404,7 +404,7 @@
             }, 1);
           }
         }
-        this.clearInput();
+        // this.clearInput();
         this.mobileSearchBarShown = false;
       },
 

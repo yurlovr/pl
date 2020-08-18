@@ -97,7 +97,7 @@ export const getters = {
                 eventId: state.event.data.item.ID,
                 price: state.event.data.item.PRICE || null,
                 beachSeabedType: state.event.data.item.BEACH && state.event.data.item.BEACH.PARAMETERS && state.event.data.item.BEACH.PARAMETERS.P_BOTTOM ? state.event.data.item.BEACH.PARAMETERS.P_BOTTOM.NAME : null,
-                time: dataAndTimeTransform(state.event.data.item.ACTIVE_FROM, state.event.data.item.ACTIVE_TO, 'time'),
+                time: state.event.data.item.EVENT_TIME ? state.event.data.item.EVENT_TIME : dataAndTimeTransform(state.event.data.item.ACTIVE_FROM, state.event.data.item.ACTIVE_TO, 'time'),
             },
 
             about: state.event.data.item.DESCRIPTION,

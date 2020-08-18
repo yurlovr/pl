@@ -167,7 +167,7 @@
                              <img src="~/static/pics/search/loop_plus.svg">
                         </span>
                     <div v-if="!pic.includes('youtube')">
-                      <div class="size-stamp">
+                      <div class="size-stamp" v-if="data.sizes && data.sizes.length">
                         <img src="~/static/pics/beach/size.png">
                         <div class="stamp-text-size">
                           <span>ОРИГИНАЛ</span>
@@ -357,7 +357,7 @@
       this.mySwiperModal.init(this.swiperOption);
       this.mySwiperModalSmall.init(this.swiperOption);
 
-      this.updateArrows();
+      // this.updateArrows();
     },
 
     methods: {
