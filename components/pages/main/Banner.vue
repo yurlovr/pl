@@ -9,7 +9,7 @@
 				<p class="banner__card__info-area__text" v-html="data.description">
 				</p>
 				<a :href="data.link" class="banner__card__info-area__button">
-					<span>{{ data.buttonText }}jopa</span>
+					<span>{{ data.buttonText }}</span>
 				</a>
 			</div>
 		</div>
