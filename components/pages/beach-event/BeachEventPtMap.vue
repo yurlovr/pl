@@ -96,7 +96,7 @@
               let features = [];
               if (this.additional && this.additional.length) {
                 this.additional.forEach((el, i) => {
-                  let {pos, id, title, pic, description, pictures} = el;
+                  let {pos, id, title, pic, description, pictures, map_pic} = el;
                   let slides = [];
                   if (pictures) {
                     for (let k = 0; k < pictures.length; k++) {
@@ -123,7 +123,7 @@
                     },
                     options: {
                       iconLayout: 'default#imageWithContent',
-                      iconImageHref: pic || '/pics/global/svg/map_beach_72dpi.svg',
+                      iconImageHref: (map_pic || pic) || '/pics/global/svg/map_beach_72dpi.svg',
                       // iconContentLayout: icon,
                       iconImageSize: [30, 43],
                       minWidth: 200,

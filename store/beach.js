@@ -387,7 +387,8 @@ export const getters = {
                 pos: filteredInfra[i].COORDINATES ? filteredInfra[i].COORDINATES.split(',') : null,
                 id: filteredInfra[i].ID,
                 description: filteredInfra[i].DESCRIPTION,
-                pictures: filteredInfra[i].PICTURES
+                pictures: filteredInfra[i].PICTURES,
+                map_pic: filteredInfra[i].ICON_ON_MAP ? filteredInfra[i].ICON_ON_MAP : filteredInfra[i].ICON
             })
         }
 
@@ -399,6 +400,7 @@ export const getters = {
                 pos: state.beach.data.item.SERVICES[i].COORDINATES ? state.beach.data.item.SERVICES[i].COORDINATES.split(',') : null,
                 id: state.beach.data.item.SERVICES[i].ID,
                 description: state.beach.data.item.SERVICES[i].DESCRIPTION,
+                map_pic: state.beach.data.item.SERVICES[i].ICON_ON_MAP ? state.beach.data.item.SERVICES[i].ICON_ON_MAP : state.beach.data.item.SERVICES[i].ICON,
             })
         }
 
