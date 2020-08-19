@@ -26,6 +26,7 @@
         chosenBus: -1,
         chosenObject: -1,
         map: null,
+        mobile: 1025
       }
     },
 
@@ -107,7 +108,7 @@
                         </div>
                       </div>
                     `);
-                    };
+                    }
                   }
                   let icon = maps.templateLayoutFactory.createClass(
                     `<div class="map__beach-icon">
@@ -136,18 +137,18 @@
                       balloonLayout: maps.templateLayoutFactory.createClass("<div class='my-hint'>" +
                         `<div class='header'>${title}</div><br />` +
                         `<div class='description'>${description}</div>`+
-                        `<div class="beach-event__visitor-pics__slider" style='height: 100%'>
+                        `<div class="beach-event__visitor-pics__slider" style='height: 100%; overflow-x: hidden'>
                           <div class="swiper-container" id='balloon-swiper'>
                             <div class="swiper-wrapper">
                                ${slides.join('')}
                             </div>
                           </div>
-                          <button class="slider__arrow-left slider__arrow-left-balloon ${slides && slides.length <= 2 ? 'd-none': ''}"
-                                  style="transform: translate(-50%, -50%); top: 50%">
+                          <button class="slider__arrow-left slider__arrow-left-balloon  ${slides && slides.length <= 2 ? 'd-none': 'd-block'}"
+                                  style="transform: translate(-50%, -50%); top: 50%; opacity: 1 !important;">
                             <img src="/pics/global/svg/slider_arrow_left.svg" alt="Налево">
                           </button>
-                          <button class="slider__arrow-right slider__arrow-right-balloon ${slides && slides.length <= 2 ? 'd-none': ''}"
-                                  style="transform: translate(50%, -50%); top: 50%">
+                          <button class="slider__arrow-right slider__arrow-right-balloon ${slides && slides.length <= 2 ? 'd-none': 'd-block'}"
+                                  style="transform: translate(50%, -50%); top: 50%; opacity: 1 !important;">
                             <img src="/pics/global/svg/slider_arrow_right.svg" alt="Направо">
                           </button>
                         </div>` +
@@ -167,15 +168,15 @@
                             this.swiper.on('imagesReady', () => {
                               let left = document.querySelector(`.slider__arrow-left-balloon`);
                               let right = document.querySelector(`.slider__arrow-right-balloon`);
-                              this.swiper.isBeginning === false ? left.style.display = '' : left.style.display = 'none';
-                              this.swiper.isEnd === false ? right.style.display = '' : right.style.display = 'none'
+                              this.swiper.isBeginning === false ? left.style.display = 'block' : left.style.display = 'none';
+                              this.swiper.isEnd === false ? right.style.display = 'block' : right.style.display = 'none'
                             });
 
                             this.swiper.on('slideChange', () => {
                               let left = document.querySelector(`.slider__arrow-left-balloon`);
                               let right = document.querySelector(`.slider__arrow-right-balloon`);
-                              this.swiper.isBeginning === false ? left.style.display = '' : left.style.display = 'none';
-                              this.swiper.isEnd === false ? right.style.display = '' : right.style.display = 'none'
+                              this.swiper.isBeginning === false ? left.style.display = 'block' : left.style.display = 'none';
+                              this.swiper.isEnd === false ? right.style.display = 'block' : right.style.display = 'none'
                             });
 
                             // init the arrows
@@ -195,13 +196,13 @@
                         }
                       ),
                       balloonContentLayout: '',
-                      balloonOffset: [-155, -5],
+                      balloonOffset: this.mobile > 600 ? [-155, -5] : [-170, -150],
                       balloonPane: 'balloon',
                       balloonAutoPan: true,
                       balloonPanelMaxMapArea: 0,
                       hintLayout: maps.templateLayoutFactory.createClass("<div class='my-hint'>" +
                         `<div class='header'>${title}</div><br />` +
-                        `<div class='description'>${description}</div>` +
+                        `<div class='description'>${description} ${slides.length}</div>` +
                         `<div class="beach-event__visitor-pics__slider" style='height: 100%'>
                           <div class="swiper-container" id='balloon-swiper'>
                             <div class="swiper-wrapper">
@@ -209,11 +210,11 @@
                             </div>
                           </div>
                           <button class="slider__arrow-left slider__arrow-left-balloon ${slides && slides.length <= 2 ? 'd-none': ''}"
-                                  style="transform: translate(-50%, -50%); top: 50%">
+                                  style="transform: translate(-50%, -50%); top: 50%; opacity: 1 !important;">
                             <img src="/pics/global/svg/slider_arrow_left.svg" alt="Налево">
                           </button>
                           <button class="slider__arrow-right slider__arrow-right-balloon ${slides && slides.length <= 2 ? 'd-none': ''}"
-                                  style="transform: translate(50%, -50%); top: 50%">
+                                  style="transform: translate(50%, -50%); top: 50%; opacity: 1 !important;">
                             <img src="/pics/global/svg/slider_arrow_right.svg" alt="Направо">
                           </button>
                         </div>` +
@@ -700,6 +701,15 @@
       this.$bus.$on('call-balloon-service', (id, coords) => {
         this.goto(id, coords);
       })
+        if (process.browser) {
+          this.mobile = window.innerWidth
+          window.onresize = () => {
+            this.mobile = window.innerWidth
+          }
+        }
+    },
+    beforeDestroy() {
+      window.onresize = null
     }
   }
 </script>
