@@ -20,18 +20,46 @@
             </div>
           </div>
         </div>
+        <line-chart :chart-data="chartData"></line-chart>
       </section>
     </div>
   </div>
 </template>
 
 <script>
+import LineChart from '../../../assets/LineChart'
 export default {
   props: ['data'],
+  components: {
+    LineChart
+  },
+
+  created () {
+    this.chartData = {
+      labels: ["Янв", "Фев", "Мар", "Апр", "Май", "Июн", "Июл", "Авг", "Сен", "Окт", "Ноя", "Дек"],
+      datasets: [
+        {
+          label: 'Температура воды',
+          borderWidth: 1,
+          borderColor: '#0099FF',
+          data: this.data
+        }, {
+          label: 'Температура воздуха',
+          borderWidth: 1,
+          borderColor: '#FF8C00',
+          data: [this.getRandomInt(), this.getRandomInt(), this.getRandomInt(), this.getRandomInt(), this.getRandomInt(),
+            this.getRandomInt(), this.getRandomInt(), this.getRandomInt(), this.getRandomInt(), this.getRandomInt(),
+            this.getRandomInt(), this.getRandomInt()]
+        }
+      ]
+    };
+  },
 
   data() {
     return {
-      modalOpen: false
+      modalOpen: false,
+      chartData: null,
+      gradientFill: null
     };
   },
 
@@ -75,7 +103,12 @@ export default {
       }
 
       this.modalOpen = !this.modalOpen;
+    },
+
+    getRandomInt () {
+      return Math.floor(Math.random() * (20 - 5 + 1)) + 5
     }
+
   }
 }
 </script>
