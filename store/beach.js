@@ -101,7 +101,7 @@ export const actions = {
 }
 
 export const getters = {
-    beachData: (state, getters) => {
+    beachData: (state) => {
         if (!state.beach.data) return null;
 
         let ret = {
@@ -294,6 +294,7 @@ export const getters = {
 
       if (state.hotels.data){
         let hotels = state.hotels.data.list
+        console.warn('hotels', hotels)
 
         ret.hotels = {
           title: 'Забронируй номер рядом с пляжем',
@@ -310,7 +311,6 @@ export const getters = {
         }
 
         let coordinat = Cookies.getJSON('last_coordinates') || {};
-
         let distance = (d, coord) => {
           if (d && d.length == 2 && Object.keys(coord).length) {
             let lat2 = d[0], lng2 = d[1],
@@ -320,7 +320,7 @@ export const getters = {
           return 0;
         }
 
-        for (let i = 0; i < hotels.length; i++) {
+        for (let i = 0; i < hotels.slice(0, 10).length; i++) {
           ret.hotels.beachSliderData.cardData.push({
             rating: hotels[i].RATING,
             title: hotels[i].NAME,
@@ -334,7 +334,7 @@ export const getters = {
             another_place: true,
             price: hotels[i].PRICE,
             coordinates: hotels[i].COORDINATES ? hotels[i].COORDINATES.split(',').map(Number) : [],
-            dist: distance(hotels[i].COORDINATES ? hotels[i].COORDINATES.split(',').map(Number) : [], coordinat),
+            dist: 0,
             custom_photo: true
           })
         }
