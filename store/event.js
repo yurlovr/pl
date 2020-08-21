@@ -1,4 +1,5 @@
 import moment from 'moment';
+import Cookies from 'js-cookie';
 import {getDistanceFromLatLonInKm} from "../assets/calcDistance";
 moment.locale('ru');
 
@@ -264,7 +265,7 @@ export const getters = {
         }
       }
 
-      let coordinat = rootState.user_coordinates
+      let coordinat = Cookies.getJSON('last_coordinates') || {};
 
       let distance = (d, coord) => {
         if (d && d.length == 2 && Object.keys(coord).length) {
@@ -294,7 +295,8 @@ export const getters = {
         });
       }
 
-      ret.hotels.beachSliderData.cardData.sort((a, b) => (a.dist > b.dist) ? 1 : (a.dist === b.dist) ? ((a.dist > b.dist) ? 1 : -1) : -1 )
+      ret.hotels.beachSliderData.cardData.sort((a, b) => (parseFloat(a.dist) > parseFloat(b.dist)) ? 1 :
+        (parseFloat(a.dist) === parseFloat(b.dist)) ? ((parseFloat(a.dist) > parseFloat(b.dist)) ? 1 : -1) : -1 )
 
     }
 
