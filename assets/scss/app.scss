@@ -6099,7 +6099,7 @@ input {
           font-size: 30px;
 
           &-area {
-            max-width: 600px;
+            max-width: 750px;
           }
         }
 
@@ -6852,6 +6852,12 @@ input {
         &__left {
           max-width: 650px;
         }
+
+        &__title {
+          &-area {
+            max-width: 650px;
+          }
+        }
       }
     }
 
@@ -7575,7 +7581,7 @@ input {
           font-size: 18px;
 
           &-area {
-            max-width: 400px;
+            max-width: 550px;
           }
         }
 
@@ -8050,6 +8056,7 @@ input {
         &__title {
           &-area {
             margin-bottom: 20px;
+            max-width: 400px;
           }
         }
 
@@ -8607,7 +8614,7 @@ input {
 
         &__title {
           &-area {
-            max-width: 300px;
+            max-width: calc(100vw - 10px);
           }
         }
 
@@ -10178,6 +10185,17 @@ body.touch {
 
 //.swiper-slide, .swiper-slide img { width: 1024px !important; }
 @media (min-width: 1440px) {
+  .slider {
+    &-beach-event {
+      &__modal {
+        &__title {
+          &-area {
+            width: 1093px;
+          }
+        }
+      }
+    }
+  }
   .big-modal {
     width: 1093px !important;
     max-width: 1093px !important;
