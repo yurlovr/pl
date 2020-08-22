@@ -4,11 +4,32 @@
       <div class="beach-page__water-temp__bg" @click="toggleModal()"></div>
       <section class="two-part-layout__card">
         <div class="beach-page__water-temp__title-area" :class="{ active : modalOpen }" @click="toggleModal()">
-          <h2 class="two-part-layout__card__title beach-page__water-temp__title">График температуры воды на пляже</h2>
+          <h2 class="two-part-layout__card__title beach-page__water-temp__title">График температуры</h2>
           <img  src="~/static/pics/beach/accordion_dropdown_orange.svg">
         </div>
+        <hr class="mt-4 mb-4">
+        <div class="beach-page__water-temp__info">
+          <div class="slider-weather__part__info slider-weather__part__temperature-text beach-page__water-temp__text mb-0">
+            <img  src="~/static/pics/global/svg/temp_air.svg">
+            <span>Среднемесячная температура воздуха</span>
+          </div>
+          <div class="slider-weather__slide__temp slider-weather__part__info">
+            <span class="slider-weather__slide__temp-number">+ 26</span>
+            <span class="slider-weather__slide__temp-o"><span>o</span></span>
+            <span class="slider-weather__slide__temp-C">C</span>
+          </div>
+          <div class="slider-weather__part__info slider-weather__part__temperature-text beach-page__water-temp__text ml-auto">
+            <img  src="~/static/pics/global/svg/temp_water.svg">
+            <span>Среднемесячная температура воды</span>
+          </div>
+          <div class="slider-weather__slide__temp slider-weather__part__info">
+            <span class="slider-weather__slide__temp-number" style="color: #115C91">+ 23</span>
+            <span class="slider-weather__slide__temp-o"><span>o</span></span>
+            <span class="slider-weather__slide__temp-C">C</span>
+          </div>
+        </div>
         <div class="beach-page__water-temp__content" :class="{ active : modalOpen }">
-          <div class="beach-page__water-temp__histogram">
+          <!--<div class="beach-page__water-temp__histogram">
             <div class="beach-page__water-temp__histogram__item" v-for="(item, i) in data" :key="i">
               <div class="beach-page__water-temp__histogram__item__bar" :style="{ height: (140 * item / Math.max.apply(null, data) + 'px') }">
                 <div class="beach-page__water-temp__histogram__item__bar__info">
@@ -18,9 +39,9 @@
               </div>
               <span class="beach-page__water-temp__histogram__item__title">{{ getMonth(i+1) }}</span>
             </div>
-          </div>
+          </div>-->
+          <line-chart :chart-data="chartData" :options="chartData.options"></line-chart>
         </div>
-        <line-chart :chart-data="chartData"></line-chart>
       </section>
     </div>
   </div>
@@ -51,7 +72,22 @@ export default {
             this.getRandomInt(), this.getRandomInt(), this.getRandomInt(), this.getRandomInt(), this.getRandomInt(),
             this.getRandomInt(), this.getRandomInt()]
         }
-      ]
+      ],
+      options: {
+        scales: {
+          yAxes: [
+            {
+              ticks: {
+                beginAtZero: true,
+                max: 50,
+                min: 0,
+                stepSize: 10,
+              }
+            }]
+        },
+        /*responsive: true,
+        maintainAspectRatio: false*/
+      }
     };
   },
 
