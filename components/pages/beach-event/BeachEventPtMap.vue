@@ -134,7 +134,7 @@
                       zIndexHover: 2000,
                       zIndex: 2000,
                       iconImageOffset: [-18, -50],
-                      balloonLayout: maps.templateLayoutFactory.createClass("<div class='my-hint'>" +
+                      balloonLayout: maps.templateLayoutFactory.createClass("<div class='my-hint features'>" +
                         `<div class='header'>${title}</div><br />` +
                         `<div class='description'>${description}</div>`+
                         `<div class="beach-event__visitor-pics__slider" style='height: 100%'>
@@ -144,11 +144,11 @@
                             </div>
                           </div>
                           <button class="slider__arrow-left slider__arrow-left-balloon ${slides && slides.length <= 2 ? 'd-none': ''}"
-                                  style="transform: translate(-50%, -50%); top: 50%; opacity: 1 !important; display: none">
+                                  style="transform: translate(-50%, -50%); top: 50%; opacity: 1 !important; display: none;">
                             <img src="/pics/global/svg/slider_arrow_left.svg" alt="Налево">
                           </button>
                           <button class="slider__arrow-right slider__arrow-right-balloon ${slides && slides.length <= 2 ? 'd-none': ''}"
-                                  style="transform: translate(50%, -50%); top: 50%; opacity: 1 !important; display: none">
+                                  style="transform: translate(50%, -50%); top: 50%; opacity: 1 !important; display: none;">
                             <img src="/pics/global/svg/slider_arrow_right.svg" alt="Направо">
                           </button>
                         </div>` +
@@ -200,7 +200,7 @@
                       balloonPane: 'balloon',
                       balloonAutoPan: true,
                       balloonPanelMaxMapArea: 0,
-                      hintLayout: maps.templateLayoutFactory.createClass("<div class='my-hint'>" +
+                      hintLayout: maps.templateLayoutFactory.createClass("<div class='my-hint features'>" +
                         `<div class='header'>${title}</div><br />` +
                         `<div class='description'>${description} ${slides.length}</div>` +
                         `<div class="beach-event__visitor-pics__slider" style='height: 100%'>
@@ -210,11 +210,11 @@
                             </div>
                           </div>
                           <button class="slider__arrow-left slider__arrow-left-balloon ${slides && slides.length <= 2 ? 'd-none': ''}"
-                                  style="transform: translate(-50%, -50%); top: 50%; opacity: 1 !important; display: none">
+                                  style="transform: translate(-50%, -50%); top: 50%; opacity: 1 !important; display: none;">
                             <img src="/pics/global/svg/slider_arrow_left.svg" alt="Налево">
                           </button>
                           <button class="slider__arrow-right slider__arrow-right-balloon ${slides && slides.length <= 2 ? 'd-none': ''}"
-                                  style="transform: translate(50%, -50%); top: 50%; opacity: 1 !important; display: none">
+                                  style="transform: translate(50%, -50%); top: 50%; opacity: 1 !important; display: none;">
                             <img src="/pics/global/svg/slider_arrow_right.svg" alt="Направо">
                           </button>
                         </div>` +
