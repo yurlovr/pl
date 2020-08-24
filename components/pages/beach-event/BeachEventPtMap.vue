@@ -137,18 +137,18 @@
                       balloonLayout: maps.templateLayoutFactory.createClass("<div class='my-hint'>" +
                         `<div class='header'>${title}</div><br />` +
                         `<div class='description'>${description}</div>`+
-                        `<div class="beach-event__visitor-pics__slider" style='height: 100%; overflow-x: hidden'>
+                        `<div class="beach-event__visitor-pics__slider" style='height: 100%'>
                           <div class="swiper-container" id='balloon-swiper'>
                             <div class="swiper-wrapper">
                                ${slides.join('')}
                             </div>
                           </div>
-                          <button class="slider__arrow-left slider__arrow-left-balloon  ${slides && slides.length <= 2 ? 'd-none': 'd-block'}"
-                                  style="transform: translate(-50%, -50%); top: 50%; opacity: 1 !important;">
+                          <button class="slider__arrow-left slider__arrow-left-balloon ${slides && slides.length <= 2 ? 'd-none': ''}"
+                                  style="transform: translate(-50%, -50%); top: 50%; opacity: 1 !important; display: none">
                             <img src="/pics/global/svg/slider_arrow_left.svg" alt="Налево">
                           </button>
-                          <button class="slider__arrow-right slider__arrow-right-balloon ${slides && slides.length <= 2 ? 'd-none': 'd-block'}"
-                                  style="transform: translate(50%, -50%); top: 50%; opacity: 1 !important;">
+                          <button class="slider__arrow-right slider__arrow-right-balloon ${slides && slides.length <= 2 ? 'd-none': ''}"
+                                  style="transform: translate(50%, -50%); top: 50%; opacity: 1 !important; display: none">
                             <img src="/pics/global/svg/slider_arrow_right.svg" alt="Направо">
                           </button>
                         </div>` +
@@ -163,20 +163,20 @@
                             // init the swiper
                             this.swiper = new Swiper(`#balloon-swiper`, {
                               slidesPerView: 2,
-                            });
-
-                            this.swiper.on('imagesReady', () => {
-                              let left = document.querySelector(`.slider__arrow-left-balloon`);
-                              let right = document.querySelector(`.slider__arrow-right-balloon`);
-                              this.swiper.isBeginning === false ? left.style.display = 'block' : left.style.display = 'none';
-                              this.swiper.isEnd === false ? right.style.display = 'block' : right.style.display = 'none'
-                            });
-
-                            this.swiper.on('slideChange', () => {
-                              let left = document.querySelector(`.slider__arrow-left-balloon`);
-                              let right = document.querySelector(`.slider__arrow-right-balloon`);
-                              this.swiper.isBeginning === false ? left.style.display = 'block' : left.style.display = 'none';
-                              this.swiper.isEnd === false ? right.style.display = 'block' : right.style.display = 'none'
+                              on: {
+                                imagesReady: function() {
+                                  let left = document.querySelector(`.slider__arrow-left-balloon`);
+                                  let right = document.querySelector(`.slider__arrow-right-balloon`);
+                                  this.isBeginning === false ? left.style.display = 'block' : left.style.display = 'none';
+                                  this.isEnd === false ? right.style.display = 'block' : right.style.display = 'none'
+                                },
+                                slideChange: function() {
+                                  let left = document.querySelector(`.slider__arrow-left-balloon`);
+                                  let right = document.querySelector(`.slider__arrow-right-balloon`);
+                                  this.isBeginning === false ? left.style.display = 'block' : left.style.display = 'none';
+                                  this.isEnd === false ? right.style.display = 'block' : right.style.display = 'none'
+                                }
+                              }
                             });
 
                             // init the arrows
@@ -210,11 +210,11 @@
                             </div>
                           </div>
                           <button class="slider__arrow-left slider__arrow-left-balloon ${slides && slides.length <= 2 ? 'd-none': ''}"
-                                  style="transform: translate(-50%, -50%); top: 50%; opacity: 1 !important;">
+                                  style="transform: translate(-50%, -50%); top: 50%; opacity: 1 !important; display: none">
                             <img src="/pics/global/svg/slider_arrow_left.svg" alt="Налево">
                           </button>
                           <button class="slider__arrow-right slider__arrow-right-balloon ${slides && slides.length <= 2 ? 'd-none': ''}"
-                                  style="transform: translate(50%, -50%); top: 50%; opacity: 1 !important;">
+                                  style="transform: translate(50%, -50%); top: 50%; opacity: 1 !important; display: none">
                             <img src="/pics/global/svg/slider_arrow_right.svg" alt="Направо">
                           </button>
                         </div>` +
@@ -228,21 +228,21 @@
 
                           // init the swiper
                           this.swiper = new Swiper(`#balloon-swiper`, {
-                            slidesPerView: 3,
-                          });
-
-                          this.swiper.on('imagesReady', () => {
-                            let left = document.querySelector(`.slider__arrow-left-balloon`);
-                            let right = document.querySelector(`.slider__arrow-right-balloon`);
-                            this.swiper.isBeginning === false ? left.style.display = '' : left.style.display = 'none';
-                            this.swiper.isEnd === false ? right.style.display = '' : right.style.display = 'none'
-                          });
-
-                          this.swiper.on('slideChange', () => {
-                            let left = document.querySelector(`.slider__arrow-left-balloon`);
-                            let right = document.querySelector(`.slider__arrow-right-balloon`);
-                            this.swiper.isBeginning === false ? left.style.display = '' : left.style.display = 'none';
-                            this.swiper.isEnd === false ? right.style.display = '' : right.style.display = 'none'
+                            slidesPerView: 2,
+                            on: {
+                              imagesReady: function () {
+                                let left = document.querySelector(`.slider__arrow-left-balloon`);
+                                let right = document.querySelector(`.slider__arrow-right-balloon`);
+                                this.isBeginning === false ? left.style.display = '' : left.style.display = 'none';
+                                this.isEnd === false ? right.style.display = '' : right.style.display = 'none'
+                              },
+                              slideChange: function() {
+                                let left = document.querySelector(`.slider__arrow-left-balloon`);
+                                let right = document.querySelector(`.slider__arrow-right-balloon`);
+                                this.isBeginning === false ? left.style.display = '' : left.style.display = 'none';
+                                this.isEnd === false ? right.style.display = '' : right.style.display = 'none'
+                              }
+                            }
                           });
 
                           // init the arrows
