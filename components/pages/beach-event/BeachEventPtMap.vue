@@ -144,11 +144,11 @@
                             </div>
                           </div>
                           <button class="slider__arrow-left slider__arrow-left-balloon ${slides && slides.length <= 2 ? 'd-none': ''}"
-                                  style="transform: translate(-50%, -50%); top: 50%; opacity: 1 !important; display: none;">
+                                  style="transform: translate(-50%, -50%); top: 50%; opacity: 1 !important; display: none; left: 13px">
                             <img src="/pics/global/svg/slider_arrow_left.svg" alt="Налево">
                           </button>
                           <button class="slider__arrow-right slider__arrow-right-balloon ${slides && slides.length <= 2 ? 'd-none': ''}"
-                                  style="transform: translate(50%, -50%); top: 50%; opacity: 1 !important; display: none;">
+                                  style="transform: translate(50%, -50%); top: 50%; opacity: 1 !important; display: none; right: 13px">
                             <img src="/pics/global/svg/slider_arrow_right.svg" alt="Направо">
                           </button>
                         </div>` +
@@ -210,11 +210,11 @@
                             </div>
                           </div>
                           <button class="slider__arrow-left slider__arrow-left-balloon ${slides && slides.length <= 2 ? 'd-none': ''}"
-                                  style="transform: translate(-50%, -50%); top: 50%; opacity: 1 !important; display: none;">
+                                  style="transform: translate(-50%, -50%); top: 50%; opacity: 1 !important; display: none; left: 13px">
                             <img src="/pics/global/svg/slider_arrow_left.svg" alt="Налево">
                           </button>
                           <button class="slider__arrow-right slider__arrow-right-balloon ${slides && slides.length <= 2 ? 'd-none': ''}"
-                                  style="transform: translate(50%, -50%); top: 50%; opacity: 1 !important; display: none;">
+                                  style="transform: translate(50%, -50%); top: 50%; opacity: 1 !important; display: none; right: 13px">
                             <img src="/pics/global/svg/slider_arrow_right.svg" alt="Направо">
                           </button>
                         </div>` +
