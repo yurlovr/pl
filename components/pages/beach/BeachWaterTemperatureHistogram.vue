@@ -14,7 +14,7 @@
             <span>Среднемесячная температура воздуха</span>
           </div>
           <div class="slider-weather__slide__temp slider-weather__part__info">
-            <span class="slider-weather__slide__temp-number">+ 26</span>
+            <span class="slider-weather__slide__temp-number">{{ (dataAir[month].toFixed(0) > 0 ? '+ ' : '') + dataAir[month].toFixed(0) }}</span>
             <span class="slider-weather__slide__temp-o"><span>o</span></span>
             <span class="slider-weather__slide__temp-C">C</span>
           </div>
@@ -23,7 +23,7 @@
             <span>Среднемесячная температура воды</span>
           </div>
           <div class="slider-weather__slide__temp slider-weather__part__info">
-            <span class="slider-weather__slide__temp-number" style="color: #115C91">+ 23</span>
+            <span class="slider-weather__slide__temp-number" style="color: #115C91">{{ (data[month].toFixed(0) > 0 ? '+ ' : '') + data[month].toFixed(0) }}</span>
             <span class="slider-weather__slide__temp-o"><span>o</span></span>
             <span class="slider-weather__slide__temp-C">C</span>
           </div>
@@ -50,7 +50,7 @@
 <script>
 import LineChart from '../../../assets/LineChart'
 export default {
-  props: ['data'],
+  props: ['data', 'dataAir'],
   components: {
     LineChart
   },
@@ -60,15 +60,6 @@ export default {
       labels: ["Янв", "Фев", "Мар", "Апр", "Май", "Июн", "Июл", "Авг", "Сен", "Окт", "Ноя", "Дек"],
       datasets: [
         {
-          label: 'Температура воздуха',
-          borderWidth: 1,
-          borderColor: '#FF8C00',
-          pointBackgroundColor: '#FF8C00',
-          data: [this.getRandomInt(), this.getRandomInt(), this.getRandomInt(), this.getRandomInt(), this.getRandomInt(),
-            this.getRandomInt(), this.getRandomInt(), this.getRandomInt(), this.getRandomInt(), this.getRandomInt(),
-            this.getRandomInt(), this.getRandomInt()]
-        },
-        {
           label: 'Температура воды',
           fill: true,
           borderWidth: 1,
@@ -76,6 +67,13 @@ export default {
           pointBackgroundColor: '#0099FF',
           pointStyle: 'circle',
           data: this.data
+        },
+        {
+          label: 'Температура воздуха',
+          borderWidth: 1,
+          borderColor: '#FF8C00',
+          pointBackgroundColor: '#FF8C00',
+          data: this.dataAir
         }
       ],
       options: {
@@ -85,7 +83,6 @@ export default {
               ticks: {
                 beginAtZero: true,
                 max: 50,
-                min: 0,
                 stepSize: 10,
                 padding: 40
               },
@@ -172,7 +169,7 @@ export default {
 
               bodyLines.forEach(function(body, i) {
                 let value = body[0].split(' ')[2];
-                let spanValue = (value > 0 ? '+ ' : '') + (value < 0 ? '- ' : '' ) + value;
+                let spanValue = (value > 0 ? '+ ' : '') + value;
                 let color = i === 0 ? '#115C91' : '#FF8C00';
                 let span = `<span class="slider-weather__slide__temp-number" style="font-size: 18px; line-height: 22px; font-weight: 500; color: ${color}">${spanValue}</span>
                           <span class="slider-weather__slide__temp-o" style="left: -3px"><span>o</span></span>
@@ -205,13 +202,16 @@ export default {
         maintainAspectRatio: false
       }
     };
+    let date = new Date();
+    this.month = date.getMonth();
   },
 
   data() {
     return {
       modalOpen: false,
       chartData: null,
-      gradientFill: null
+      gradientFill: null,
+      month: null
     };
   },
 
@@ -256,10 +256,6 @@ export default {
 
       this.modalOpen = !this.modalOpen;
     },
-
-    getRandomInt () {
-      return Math.floor(Math.random() * (20 - 5 + 1)) + 5
-    }
 
   }
 }

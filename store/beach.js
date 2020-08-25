@@ -173,6 +173,7 @@ export const getters = {
             servicesData: [],
 
             waterHistogramData: [],
+            airHistogramData: [],
 
             sideMapWeatherData: {
                 title: state.beach.data.item.NAME,
@@ -406,9 +407,11 @@ export const getters = {
 
         // adding formatted temperatures
         let temps = Object.values(state.temperatures.data.list);
+
         for (let i = 0; i < temps.length; i++) { // going through months
             if (temps[i].find(v => v.CITY.ID == state.beach.data.item.CITY.ID))
                 ret.waterHistogramData.push(parseFloat(temps[i].find(v => v.CITY.ID == state.beach.data.item.CITY.ID).TEMP.WATER));
+                ret.airHistogramData.push(parseFloat(temps[i].find(v => v.CITY.ID == state.beach.data.item.CITY.ID).TEMP.AIR));
         }
 
         // adding formatted events

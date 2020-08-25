@@ -18,8 +18,8 @@ export default {
     gradientFill2.addColorStop(0, '#FF8C00');
     gradientFill2.addColorStop(1, 'rgba(255, 140, 0, 0)');
 
-    this.chartData.datasets[0].backgroundColor = gradientFill2;
-    this.chartData.datasets[1].backgroundColor = gradientFill1;
+    this.chartData.datasets[0].backgroundColor = gradientFill1;
+    this.chartData.datasets[1].backgroundColor = gradientFill2;
 
     this.renderChart(this.chartData, this.options)
   },
