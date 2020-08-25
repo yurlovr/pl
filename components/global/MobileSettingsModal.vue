@@ -46,7 +46,11 @@
           closeModal() {
             document.querySelector('#content').style.overflow = 'inherit'
             this.$emit('closeModal', false)
+            localStorage.setItem('reload', 'true');
             this.$store.commit('main/setMobileState', false)
+          },
+          reloadPage() {
+            localStorage.setItem('reload', 'true');
           }
         },
         computed: {
@@ -55,8 +59,17 @@
           })
         },
         mounted() {
-          this.modalNumber = 2;
-          document.querySelector('#content').style.overflow = 'hidden'
+          if (localStorage.getItem('reload')) {
+            this.$store.commit('main/setMobileState', false)
+            localStorage.removeItem('reload');
+          } else {
+            this.modalNumber = 2;
+            document.querySelector('#content').style.overflow = 'hidden'
+          }
+          window.addEventListener("beforeunload", this.reloadPage)
         },
+        destroyed() {
+          window.removeEventListener('beforeunload', this.reloadPage);
+        }
     }
 </script>
