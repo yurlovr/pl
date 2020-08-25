@@ -44,6 +44,7 @@
         },
         methods: {
           closeModal() {
+            document.querySelector('#content').style.overflow = 'inherit'
             this.$emit('closeModal', false)
             this.$store.commit('main/setMobileState', false)
           }
@@ -55,6 +56,7 @@
         },
         mounted() {
           this.modalNumber = 2;
+          document.querySelector('#content').style.overflow = 'hidden'
         },
     }
 </script>
