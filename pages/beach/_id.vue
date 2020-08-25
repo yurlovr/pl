@@ -29,7 +29,7 @@
                                        :mapData="beachData.map_entity"
                                        v-if="beachData.ptData.parkings.auto.length > 0 || beachData.ptData.parkings.bus.length > 0"/>
           <BeachWaterTemperatureHistogram id="water-temp" v-if="beachData.waterHistogramData.length > 0"
-                                          :data="beachData.waterHistogramData"/>
+                                          :data="beachData.waterHistogramData" :dataAir="beachData.airHistogramData"/>
           <BeachEvents id="events" :showTemp="false" :data="beachData.events" class="beach-page__cardless-area"
                        v-if="beachData.events.cardData.length > 0"/>
           <BeachBarsNRestos id="barsNRestos" :data="beachData.barsNRestos" v-if="beachData.barsNRestos.length > 0"
