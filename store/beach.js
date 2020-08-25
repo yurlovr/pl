@@ -77,7 +77,7 @@ export const actions = {
         commit('SET_BARS_N_RESTOS', await this.$axios.$get(`/restaurant/list?beachId=${beach_id}`));
         commit('SET_OPINIONS', await this.$axios.$get(`/opinion/list?entityId=${beach_id}`));
         commit('SET_TEMPERATURES', await this.$axios.$get(`/weather/list`));
-        commit('SET_REVIEWS', await this.$axios.$get(`/review/list?entityId=${beach_id}`));
+        commit('SET_REVIEWS', await this.$axios.$get(`/review/list?entityId=${beach_id}&count=9999`));
         commit('SET_VISITOR_PICS', await this.$axios.$get(`/socialPhoto/list?entityId=${beach_id}&count=10`));
         commit('SET_ANNOUNCEMENT_DATA', await this.$axios.$get(`/banner/list?page=/beach`));
 
