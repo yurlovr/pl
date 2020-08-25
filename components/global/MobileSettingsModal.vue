@@ -5,9 +5,9 @@
         <div :class="{'d-flex justify-content-end': this.modalNumber > 1}" @click="closeModal">
           <img src="~/static/pics/global/mobile/close.png" alt="Убрать">
         </div>
-        <div :class="{'text-center': this.modalNumber > 1}">
+        <div :class="{'text-center logo-block': this.modalNumber > 1}">
           <img v-if="this.modalNumber === 1" src="~/static/pics/global/mobile/logo.png" alt="НашПляж">
-          <img v-else src="~/static/pics/global/mobile/logo_2.png" alt="НашПляж">
+          <img v-else src="~/static/pics/global/mobile/logo_2.png" alt="НашПляж" class="w-100">
         </div>
         <div>
           <p class="text">Попробуйте приложение</p>
@@ -19,11 +19,11 @@
               </a>
             </div>
           </div>
-          <div v-else class="text-center">
-            <div v-for="item in data" class="d-inline-block mr-1 ml-1">
+          <div v-else class="d-flex text-center link-block">
+            <div v-for="item in data" class="d-inline-block mr-1 ml-1 w-50">
               <a v-if="item.active === true" :href="item.value">
-                <img v-if="item.code === 'mobile_android_link'" src="~/static/pics/global/mobile/play_2.png" alt="Goggle Play">
-                <img v-if="item.code === 'mobile_ios_link'" src="~/static/pics/global/mobile/store_2.png" alt="App Store">
+                <img v-if="item.code === 'mobile_android_link'" src="~/static/pics/global/mobile/play_2.png" alt="Goggle Play" class="w-100">
+                <img v-if="item.code === 'mobile_ios_link'" src="~/static/pics/global/mobile/store_2.png" alt="App Store" class="w-100">
               </a>
             </div>
           </div>
