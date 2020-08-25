@@ -4,11 +4,32 @@
       <div class="beach-page__water-temp__bg" @click="toggleModal()"></div>
       <section class="two-part-layout__card">
         <div class="beach-page__water-temp__title-area" :class="{ active : modalOpen }" @click="toggleModal()">
-          <h2 class="two-part-layout__card__title beach-page__water-temp__title">График температуры воды на пляже</h2>
+          <h2 class="two-part-layout__card__title beach-page__water-temp__title">График температуры</h2>
           <img  src="~/static/pics/beach/accordion_dropdown_orange.svg">
         </div>
+        <hr class="mt-4 mb-4">
+        <div class="beach-page__water-temp__info">
+          <div class="slider-weather__part__info slider-weather__part__temperature-text beach-page__water-temp__text mb-0">
+            <img  src="~/static/pics/global/svg/temp_air.svg">
+            <span>Среднемесячная температура воздуха</span>
+          </div>
+          <div class="slider-weather__slide__temp slider-weather__part__info">
+            <span class="slider-weather__slide__temp-number">+ 26</span>
+            <span class="slider-weather__slide__temp-o"><span>o</span></span>
+            <span class="slider-weather__slide__temp-C">C</span>
+          </div>
+          <div class="slider-weather__part__info slider-weather__part__temperature-text beach-page__water-temp__text ml-auto">
+            <img  src="~/static/pics/global/svg/temp_water.svg">
+            <span>Среднемесячная температура воды</span>
+          </div>
+          <div class="slider-weather__slide__temp slider-weather__part__info">
+            <span class="slider-weather__slide__temp-number" style="color: #115C91">+ 23</span>
+            <span class="slider-weather__slide__temp-o"><span>o</span></span>
+            <span class="slider-weather__slide__temp-C">C</span>
+          </div>
+        </div>
         <div class="beach-page__water-temp__content" :class="{ active : modalOpen }">
-          <div class="beach-page__water-temp__histogram">
+          <!--<div class="beach-page__water-temp__histogram">
             <div class="beach-page__water-temp__histogram__item" v-for="(item, i) in data" :key="i">
               <div class="beach-page__water-temp__histogram__item__bar" :style="{ height: (140 * item / Math.max.apply(null, data) + 'px') }">
                 <div class="beach-page__water-temp__histogram__item__bar__info">
@@ -18,7 +39,8 @@
               </div>
               <span class="beach-page__water-temp__histogram__item__title">{{ getMonth(i+1) }}</span>
             </div>
-          </div>
+          </div>-->
+          <line-chart :chart-data="chartData" :options="chartData.options"></line-chart>
         </div>
       </section>
     </div>
@@ -26,12 +48,170 @@
 </template>
 
 <script>
+import LineChart from '../../../assets/LineChart'
 export default {
   props: ['data'],
+  components: {
+    LineChart
+  },
+
+  created () {
+    this.chartData = {
+      labels: ["Янв", "Фев", "Мар", "Апр", "Май", "Июн", "Июл", "Авг", "Сен", "Окт", "Ноя", "Дек"],
+      datasets: [
+        {
+          label: 'Температура воздуха',
+          borderWidth: 1,
+          borderColor: '#FF8C00',
+          pointBackgroundColor: '#FF8C00',
+          data: [this.getRandomInt(), this.getRandomInt(), this.getRandomInt(), this.getRandomInt(), this.getRandomInt(),
+            this.getRandomInt(), this.getRandomInt(), this.getRandomInt(), this.getRandomInt(), this.getRandomInt(),
+            this.getRandomInt(), this.getRandomInt()]
+        },
+        {
+          label: 'Температура воды',
+          fill: true,
+          borderWidth: 1,
+          borderColor: '#0099FF',
+          pointBackgroundColor: '#0099FF',
+          pointStyle: 'circle',
+          data: this.data
+        }
+      ],
+      options: {
+        scales: {
+          yAxes: [
+            {
+              ticks: {
+                beginAtZero: true,
+                max: 50,
+                min: 0,
+                stepSize: 10,
+                padding: 40
+              },
+              gridLines: {
+                borderDash: [2, 2],
+                zeroLineColor: 'rgba(0, 0, 0, 0.1)',
+                zeroLineBorderDash: [2, 2],
+                drawTicks : false
+              }
+            }],
+          xAxes: [
+            {
+              ticks: {
+                padding: 15
+              },
+              gridLines: {
+                borderDash: [2, 2],
+                zeroLineColor: 'rgba(0, 0, 0, 0.1)',
+                zeroLineBorderDash: [2, 2],
+                drawTicks : false
+              }
+            }]
+        },
+        legend: {
+          position: 'bottom',
+          align: 'start',
+          labels: {
+            usePointStyle: true,
+            padding: 40
+          },
+        },
+        tooltips: {
+          enabled: false,
+          mode: 'index',
+          custom: function(tooltipModel){
+            // Tooltip Element
+            let tooltipEl = document.getElementById('chartjs-tooltip');
+
+            // Create element on first render
+            if (!tooltipEl) {
+              tooltipEl = document.createElement('div');
+              tooltipEl.id = 'chartjs-tooltip';
+              tooltipEl.innerHTML = '<table></table>';
+              tooltipEl.style.backgroundColor = '#FFFFFF';
+              tooltipEl.style.borderRadius = '20px';
+              tooltipEl.style.boxShadow = '6px 6px 10px rgba(0, 0, 0, 0.15)';
+              document.body.appendChild(tooltipEl);
+
+              let caretEl = document.createElement('div');
+              caretEl.innerHTML = '<div></div>';
+              caretEl.style.width = '8px';
+              caretEl.style.height = '8px';
+              caretEl.style.background = '#ffffff';
+              caretEl.style.position = 'absolute';
+              caretEl.style.left = '46%';
+              caretEl.style.webkitTransform = 'rotate(-45deg)';
+              caretEl.style.transform = 'rotate(-45deg)';
+              tooltipEl.appendChild(caretEl);
+            }
+
+            // Hide if no tooltip
+            if (tooltipModel.opacity === 0) {
+              tooltipEl.style.opacity = 0;
+              return;
+            }
+
+            // Set caret Position
+            tooltipEl.classList.remove('above', 'below', 'no-transform');
+            if (tooltipModel.yAlign) {
+              tooltipEl.classList.add(tooltipModel.yAlign);
+            } else {
+              tooltipEl.classList.add('no-transform');
+            }
+
+            function getBody(bodyItem) {
+              return bodyItem.lines;
+            }
+
+            // Set Text
+            if (tooltipModel.body) {
+              let bodyLines = tooltipModel.body.map(getBody);
+
+              let innerHtml = '<tbody>';
+
+              bodyLines.forEach(function(body, i) {
+                let value = body[0].split(' ')[2];
+                let spanValue = (value > 0 ? '+ ' : '') + (value < 0 ? '- ' : '' ) + value;
+                let color = i === 0 ? '#115C91' : '#FF8C00';
+                let span = `<span class="slider-weather__slide__temp-number" style="font-size: 18px; line-height: 22px; font-weight: 500; color: ${color}">${spanValue}</span>
+                          <span class="slider-weather__slide__temp-o" style="left: -3px"><span>o</span></span>
+                          <span class="slider-weather__slide__temp-C" style="font-size: 18px; line-height: 22px; font-weight: normal; padding-left: 4px">C</span>`;
+                innerHtml += '<tr><td>' + span + '</td></tr>';
+              });
+              innerHtml += '</tbody>';
+
+              let tableRoot = tooltipEl.querySelector('table');
+              tableRoot.innerHTML = innerHtml;
+            }
+
+            // `this` will be the overall tooltip
+            let position = this._chart.canvas.getBoundingClientRect();
+
+            // Display, position, and set styles for font
+            tooltipEl.style.opacity = 1;
+            tooltipEl.style.position = 'absolute';
+            tooltipEl.style.left = position.left + window.pageXOffset + tooltipModel.caretX - tooltipEl.offsetWidth / 2 + 'px';
+            tooltipEl.style.top = position.top + window.pageYOffset + Math.min(tooltipModel.dataPoints[0].y, tooltipModel.dataPoints[1].y) - tooltipEl.offsetHeight - 25 + 'px';
+            tooltipEl.style.fontFamily = tooltipModel._bodyFontFamily;
+            tooltipEl.style.fontSize = tooltipModel.bodyFontSize + 'px';
+            tooltipEl.style.fontStyle = tooltipModel._bodyFontStyle;
+            tooltipEl.style.padding = '5px 12px';
+            tooltipEl.style.pointerEvents = 'none';
+            tooltipEl.style.transition = '0.23s';
+          }
+        },
+        responsive: true,
+        maintainAspectRatio: false
+      }
+    };
+  },
 
   data() {
     return {
-      modalOpen: false
+      modalOpen: false,
+      chartData: null,
+      gradientFill: null
     };
   },
 
@@ -75,7 +255,12 @@ export default {
       }
 
       this.modalOpen = !this.modalOpen;
+    },
+
+    getRandomInt () {
+      return Math.floor(Math.random() * (20 - 5 + 1)) + 5
     }
+
   }
 }
 </script>

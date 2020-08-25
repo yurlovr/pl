@@ -2343,6 +2343,17 @@ input {
       }
     }
 
+    &__info {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 66px;
+    }
+
+    &__text {
+      max-width: 160px;
+      margin-right: 24px;
+    }
+
     &__year-month {
       display: flex;
       margin-bottom: 25px;

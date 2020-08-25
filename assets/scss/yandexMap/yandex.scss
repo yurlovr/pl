@@ -46,10 +46,39 @@
     right: 5px;
     top: 1px;
   }
+
+  &.features {
+    box-shadow: 2px 3px 8px #A3BBC7;
+    border-radius: 4px;
+    border: none;
+
+    &:before {
+      content: '';
+      display: block;
+      width: 0;
+      height: 0;
+      position: absolute;
+      border-left: 2px solid transparent;
+      border-right: 2px solid transparent;
+      border-bottom: 8px solid #ffffff;
+      left: calc(50% - 8px);
+      top: -8px;
+    }
+  }
 }
 
 #balloon-swiper {
   margin-top: 20px;
+}
+
+@media (max-width: 900px) {
+  .my-hint {
+    .beach-event__visitor-pics__slider {
+      .swiper-container {
+        overflow: hidden;
+      }
+    }
+  }
 }
 
 @media (max-width: 600px) {
