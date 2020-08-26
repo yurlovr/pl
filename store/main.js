@@ -56,6 +56,9 @@ export const mutations = {
 
     SET_GEO_COUNT: (state, payload) => {
         state.geo.count = payload;
+    },
+    SET_MOBILE_SETTINGS: (state, payload) => {
+    state.mobile_settings = payload;
     }
 }
 
@@ -501,21 +504,6 @@ export const getters = {
                 ret.chooseToYourWishes = null;
             }
 
-    // Mobile settings
-    ret.mobile_settings = [];
-    if (state.mobile_settings.data) {
-      for (let i = 0; i < state.mobile_settings.data.list.length; i++) {
-        ret.mobile_settings.push({
-          active: state.mobile_settings.data.list[i].ACTIVE,
-          id: state.mobile_settings.data.list[i].ID,
-          code: state.mobile_settings.data.list[i].CODE,
-          value: state.mobile_settings.data.list[i].VALUE,
-        });
-      }
-    } else {
-      ret.mobile_settings = null;
+        return ret;
     }
-
-    return ret;
-  }
 }
