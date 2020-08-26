@@ -16,8 +16,6 @@ export const mutations = {
   },
   setLastUserPos: (state, data) => state.user_coordinates = data,
   setChoosePosition: (state, data) => state.choose_position = data,
-  },
-
   SET_MAP_ENTITY: (state, payload) => {
     state.map_entity = payload;
   },
