@@ -1,5 +1,10 @@
 <template>
   <div id="content">
+    <script type="text/javascript">!function(){var t=document.createElement("script");t.type="text/javascript",t.async=!0,t.src="https://vk.com/js/api/openapi.js?168",t.onload=function()
+
+    {VK.Retargeting.Init("VK-RTRG-505686-cbKtO"),VK.Retargeting.Hit()}
+      ,document.head.appendChild(t)}();</script><noscript><img src="https://vk.com/rtrg?p=VK-RTRG-505686-cbKtO" style="position:fixed; left:-999px;" alt=""/></noscript>
+
     <PageTransitioner />
     <Preloader />
     <Header />
@@ -8,11 +13,8 @@
       >
       <nuxt class="full-screen" ref="mainNuxt"/>
     </transition>
-    <div class="main-page__white-wrapper">
-      <Footer />
-    </div>
-    <search-popup v-if="choose_position" @close="$store.commit('setChoosePosition', false)" :coords="user_coordinates"
-                  @clean="$store.commit('setLastUserPos', {})"></search-popup>
+    <div class="main-page__white-wrapper"><Footer /></div>
+    <search-popup v-if="choose_position" @close="$store.commit('setChoosePosition', false)" :coords="user_coordinates" @clean="$store.commit('setLastUserPos', {})"></search-popup>
   </div>
 </template>
 
@@ -52,19 +54,17 @@
       // document.removeEventListener('touchstart', ()=>{}, true);
       // document.removeEventListener('mousemove', ()=>{}, true);
     },
-    mounted() {
-      if (process.browser) {
 
-        let scr = document.createElement('script')
-        scr.type = 'text/javascript';
-        scr.innerHTML = '!function(){var t=document.createElement("script");t.type="text/javascript",t.async=!0,t.src="https://vk.com/js/api/openapi.js?168",t.onload=function()\n' +
-          '\n' +
-          '{VK.Retargeting.Init("VK-RTRG-505686-cbKtO"),VK.Retargeting.Hit()}\n' +
-          ',document.head.appendChild(t)}();';
-        // let noscr = document.createElement('noscript')
-        // noscr.innerHTML = '<img src="https://vk.com/rtrg?p=VK-RTRG-505686-cbKtO" style="position:fixed; left:-999px;" alt=""/>'
-        document.head.appendChild(scr);
-      }
+    mounted() {
+      // let scr = document.createElement('script')
+      // scr.type = 'text/javascript';
+      // scr.innerHTML ='!function(){var t=document.createElement("script");t.type="text/javascript",t.async=!0,t.src="https://vk.com/js/api/openapi.js?168",t.onload=function()\n' +
+      //   '\n' +
+      //   '{VK.Retargeting.Init("VK-RTRG-505686-cbKtO"),VK.Retargeting.Hit()}\n' +
+      //   ',document.head.appendChild(t)}();';
+      // let noscr = document.createElement('noscript')
+      // noscr.innerHTML = '<img src="https://vk.com/rtrg?p=VK-RTRG-505686-cbKtO" style="position:fixed; left:-999px;" alt=""/>'
+      // document.head.appendChild(scr);
       // document.head.appendChild(noscr);
 
 
@@ -78,23 +78,23 @@
         let lastTouchTime = 0;
 
         function enableHover() {
-          // discard emulated mouseMove events coming from touch events
-          if (new Date() - lastTouchTime < 500) return;
-          if (hasHoverClass) return;
+            // discard emulated mouseMove events coming from touch events
+            if (new Date() - lastTouchTime < 500) return;
+            if (hasHoverClass) return;
 
-          container.className = container.className.replace('touch', '');
-          hasHoverClass = true;
+            container.className = container.className.replace('touch', '');
+            hasHoverClass = true;
         }
 
         function disableHover() {
-          if (!hasHoverClass) return;
+            if (!hasHoverClass) return;
 
-          container.className += 'touch';
-          hasHoverClass = false;
+            container.className += 'touch';
+            hasHoverClass = false;
         }
 
         function updateLastTouchTime() {
-          lastTouchTime = new Date();
+            lastTouchTime = new Date();
         }
 
         document.addEventListener('touchstart', updateLastTouchTime, true);
@@ -106,11 +106,10 @@
 
       watchForHover();
     },
+
     beforeRouteLeave(to, from, next) {
       this.$bus.$emit('transition');
-      setTimeout(() => {
-        next()
-      }, 500);
+      setTimeout(() => { next() }, 500);
     }
   }
 </script>

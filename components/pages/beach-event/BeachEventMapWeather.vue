@@ -228,6 +228,9 @@
       this.$bus.$on('call-balloon-weather', (id, coords) => {
         this.goto(id, coords);
       })
+    },
+    beforeDestroy() {
+      this.$bus.$off('call-balloon-weather')
     }
   }
 </script>

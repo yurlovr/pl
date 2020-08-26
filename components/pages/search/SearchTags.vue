@@ -48,6 +48,9 @@
 			this.mySwiper.init(this.swiperOption);
 
 			this.$bus.$on('updateSearchTagsSlider', () => { if (this.mySwiper) this.mySwiper.update() });
-		}
-	}
+		},
+    beforeDestroy() {
+      this.$bus.$off('updateSearchTagsSlider')
+    }
+  }
 </script>

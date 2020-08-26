@@ -88,8 +88,11 @@
         ]
       }
     },
+    beforeDestroy() {
+      this.$bus.$off('pToggleFavorites')
+    },
 
-		mounted() {
+    mounted() {
 			this.$bus.$on('pToggleFavorites', () => {
 				this.favorite = !this.favorite;
 			})

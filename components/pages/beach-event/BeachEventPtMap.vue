@@ -435,6 +435,10 @@
       this.$bus.$on('call-balloon-service', (id, coords) => {
         this.goto(id, coords);
       })
+    },
+    beforeDestroy() {
+      this.$bus.$off('showOnMap');
+      this.$bus.$off('call-balloon-service')
     }
   }
 </script>

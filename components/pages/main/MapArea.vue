@@ -32,6 +32,9 @@
             this.$bus.$on('changeStep', stepID => {
                 this.step = stepID;
             });
-        }
+        },
+      beforeDestroy() {
+        this.$bus.$off('changeStep');
+      }
     }
 </script>

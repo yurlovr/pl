@@ -11,8 +11,11 @@
 				preloaderShown: true
 			}
 		},
+    beforeDestroy() {
+      this.$bus.$off('mainPageReady')
+    },
 
-		mounted() {
+    mounted() {
 			if (this.$router.currentRoute.path != '/') {
 				window.onNuxtReady((app) => {
 					this.hidePreloader();

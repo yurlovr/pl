@@ -386,7 +386,6 @@
           });
         }
 
-        this.$bus.$emit('show_geo', this.geoLocating)
       },
 
       searchFilter() {

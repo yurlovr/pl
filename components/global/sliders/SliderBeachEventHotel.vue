@@ -103,7 +103,12 @@ export default {
         };
     },
 
-    mounted () {
+  beforeDestroy() {
+    this.$bus.$off('hidePageTransitioner');
+    this.$bus.$off('mainPageReady');
+  },
+
+  mounted () {
         this.mySwiper.on('imagesReady', () => {
             window.addEventListener('resize', this.onResize);
             this.onResize();

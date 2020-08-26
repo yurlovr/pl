@@ -25,8 +25,17 @@
                 map: null
             }
         },
+      beforeDestroy() {
+        this.$bus.$off('updateMap', (n) => {
+          unchoose();
+          placeMarks(n);
+        });
+        this.$bus.$off('modalClosed', () => {
+          unchoose();
+        });
+      },
 
-        methods: {
+      methods: {
             initMap() {
                 setTimeout(() => {
                     let filteredBeaches = this.beaches.filter(v => v.pos != undefined && !isNaN(v.pos[0]));

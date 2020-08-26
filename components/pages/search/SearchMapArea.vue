@@ -62,6 +62,15 @@
         mobile: 1024
       }
     },
+    beforeDestroy() {
+      this.$bus.$off('scrollToCard');
+
+      this.$bus.$off('openModal');
+
+      this.$bus.$off('closeModalAndUnscrollToCard');
+
+      this.$bus.$off('updateScrollbar');
+    },
 
     mounted() {
       if (this.data) {
