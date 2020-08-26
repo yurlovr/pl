@@ -79,7 +79,7 @@ export const actions = {
     commit('SET_COLLECTION_LIST', await this.$axios.$get('/collectionList/list/'));
     commit('SET_BANNERS', await this.$axios.$get('/banner/list/'));
     commit('SET_MAP', await this.$axios.$get('/beach/clusters/'));
-
+    //
     commit('SET_ANY_PLACES', await this.$axios.$get('/hotel/list?count=10'));
     console.warn('last callback')
   }
@@ -202,6 +202,7 @@ export const getters = {
                 for (let i = 0; i < clusters.length; i++) {
                     curCluster = [];
                     for (let j = 0; j < clusters[i].length; j++) {
+                      console.warn(clusters[i][j], 'clusters[i][j].PHOTOS')
                         if (!clusters[i][j].COORDINATES || clusters[i][j].COORDINATES && isNaN(clusters[i][j].COORDINATES.split(',').map(v => parseFloat(v))[0])) continue;
                         curCluster.push({
                             pos: clusters[i][j].COORDINATES ? clusters[i][j].COORDINATES.split(',').map(v => parseFloat(v)) : null,
@@ -210,7 +211,7 @@ export const getters = {
                             location: clusters[i][j].CITY ? clusters[i][j].CITY.NAME : null,
                             locationId: clusters[i][j].CITY ? clusters[i][j].CITY.ID : -1,
                             beachId: clusters[i][j].ID,
-                            pics: clusters[i][j].PHOTOS ? [ ...clusters[i][j].PHOTOS ] : null,
+                            pics: clusters[i][j].PHOTOS && clusters[i][j].PHOTOS.small ? [ ...clusters[i][j].PHOTOS.small.map(e=>e.path) ] : null,
                             showFavorite: true,
                             paid: clusters[i][j].PAID,
                             humanLink: clusters[i][j].CODE || clusters[i][j].ID
@@ -504,6 +505,21 @@ export const getters = {
                 ret.chooseToYourWishes = null;
             }
 
-        return ret;
+    // Mobile settings
+    ret.mobile_settings = [];
+    if (state.mobile_settings.data) {
+      for (let i = 0; i < state.mobile_settings.data.list.length; i++) {
+        ret.mobile_settings.push({
+          active: state.mobile_settings.data.list[i].ACTIVE,
+          id: state.mobile_settings.data.list[i].ID,
+          code: state.mobile_settings.data.list[i].CODE,
+          value: state.mobile_settings.data.list[i].VALUE,
+        });
+      }
+    } else {
+      ret.mobile_settings = null;
     }
+
+    return ret;
+  }
 }
