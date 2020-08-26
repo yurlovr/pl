@@ -451,15 +451,15 @@
       // making the map
       this.initMap();
 
-      window.addEventListener('resize', this.onResize);
-    },
-    created() {
-      this.$bus.$on('call-balloon-weather', (id, coords) => {
-        this.goto(id, coords);
-      })
-    },
-    beforeDestroy() {
-      this.$bus.$off('call-balloon-weather')
-    }
+    window.addEventListener('resize', this.onResize);
+  },
+  created() {
+    this.$bus.$on('call-balloon-weather', (id, coords) => {
+      this.goto(id, coords);
+    })
+  },
+  beforeDestroy() {
+    this.$bus.$off('call-balloon-weather')
   }
+}
 </script>

@@ -105,21 +105,21 @@
 </template>
 
 <script>
-  import Vue from 'vue';
-  import VClamp from 'vue-clamp';
-  import AddToFavorites from '~/components/global/AddToFavorites';
-  import moment from 'moment'
-  import {getDistanceFromLatLonInKm} from "../../assets/calcDistance";
+import Vue from 'vue';
+import VClamp from 'vue-clamp';
+import AddToFavorites from '~/components/global/AddToFavorites';
+import moment from 'moment'
+import {getDistanceFromLatLonInKm} from "../../assets/calcDistance";
 
-  moment.locale('ru')
-  const today = moment().format('L')
-  export default {
-    props: ['data', 'showTemp'],
+moment.locale('ru')
+const today = moment().format('L')
+export default {
+  props: ['data', 'showTemp'],
 
-    components: {
-      VClamp,
-      AddToFavorites
-    },
+  components: {
+    VClamp,
+    AddToFavorites
+  },
 
     data() {
       return {

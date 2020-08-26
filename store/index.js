@@ -27,6 +27,7 @@ export const actions = {
     commit('SET_ALL_EVENTS', await this.$axios.$get('/event/list?count=9999'));
     commit('search/SET_SEARCH', await this.$axios.$get('search/config'));
     commit('SET_MAP_ENTITY', await this.$axios.$get('/map-entity/list?count=9999'));
+    commit('setLastUserPos', this.$cookies.get('last_coordinates') || {})
   }
 }
 
