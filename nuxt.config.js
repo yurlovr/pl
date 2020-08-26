@@ -1,4 +1,3 @@
-import axios from 'axios';
 import {url_api, prom_host, prom_port} from './.env.js';
 
 export default {
@@ -8,6 +7,7 @@ export default {
    */
   head: {
     title: 'ПЛЯЖИ.РУ',
+    noscript: [{innerHTML: '<img src="https://vk.com/rtrg?p=VK-RTRG-505686-cbKtO" style="position:fixed; left:-999px;" alt=""/>'}],
     meta: [{
       charset: 'utf-8'
     }, {
@@ -94,22 +94,22 @@ export default {
     noscriptURL: 'https://www.googletagmanager.com/ns.html'
   },
   generate: {
-    async routes() {
-      let beachAsync = await axios.get(url_api + 'beach/list?count=9999'),
+    async routes({$axios}) {
+      let beachAsync = await $axios.get(url_api + 'beach/list?count=9999'),
         beachRoutes = beachAsync.data.data.list.map((b) => {
           return {
             route: `/beach/${b.ID}`
           }
         });
 
-      let eventAsync = await axios.get(url_api + 'event/list?count=9999'),
+      let eventAsync = await $axios.get(url_api + 'event/list?count=9999'),
         eventRoutes = eventAsync.data.data.list.map((e) => {
           return {
             route: `/event/${e.ID}`
           }
         });
 
-      let infoPagesAsync = await axios.get(url_api + 'page/list?count=9999'),
+      let infoPagesAsync = await $axios.get(url_api + 'page/list?count=9999'),
         infoPages = infoPagesAsync.data.data.list.map((e) => {
           return {
             route: `/${e.CODE}`
