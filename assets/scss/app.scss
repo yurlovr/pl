@@ -1411,6 +1411,13 @@ input {
     &s {
       display: flex;
     }
+
+    .desk-svg {
+      display: block;
+    }
+    .mob-svg {
+      display: none;
+    }
   }
 }
 
@@ -7573,9 +7580,16 @@ input {
                   justify-content: center;
                 }
 
-                svg {
+                /*svg {
                   width: 44px;
                   height: 44px;
+                }*/
+
+                .desk-svg {
+                  display: none;
+                }
+                .mob-svg {
+                  display: block;
                 }
               }
             }
