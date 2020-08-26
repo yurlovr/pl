@@ -103,21 +103,16 @@ export default {
         };
     },
 
-  beforeDestroy() {
-    this.$bus.$off('hidePageTransitioner');
-    this.$bus.$off('mainPageReady');
-  },
-
   mounted () {
-        this.mySwiper.on('imagesReady', () => {
-            window.addEventListener('resize', this.onResize);
-            this.onResize();
-        });
+    this.mySwiper.on('imagesReady', () => {
+      window.addEventListener('resize', this.onResize);
+      this.onResize();
+    });
 
-        this.mySwiper.on('slideChange', () => {
-            this.updateArrows();
-            this.activeIndex = this.mySwiper.activeIndex;
-        });
+    this.mySwiper.on('slideChange', () => {
+      this.updateArrows();
+      this.activeIndex = this.mySwiper.activeIndex;
+    });
 
         this.mySwiper.init(this.swiperOption);
         this.updateArrows();
