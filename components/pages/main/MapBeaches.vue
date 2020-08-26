@@ -121,8 +121,15 @@
 				minus: 1
 			}
 		},
+    beforeDestroy() {
+      this.$bus.$off('goToCard');
 
-		mounted() {
+      this.$bus.$off('changeStep')
+
+      this.$bus.$off('releaseSelection')
+    },
+
+    mounted() {
 			this.mySwiper.on('imagesReady', () => {
 				window.addEventListener('resize', this.onResize);
 				this.onResize();

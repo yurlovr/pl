@@ -20,8 +20,11 @@
 				page: 1
 			}
 		},
+    beforeDestroy() {
+      this.$bus.$off('pageChanged');
+    },
 
-		mounted() {
+    mounted() {
 			this.$bus.$on('pageChanged', i => {
 				setTimeout(() => {this.$bus.$emit('updateFavorite')}, 1);
 			});

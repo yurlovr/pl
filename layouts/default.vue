@@ -35,15 +35,9 @@
       Footer,
       SearchPopup
     },
-    data() {
-      return {
-        choose_position: false,
-        last_coordinates: this.$cookies.get('last_coordinates') || {}
-      }
-    },
 
     computed: {
-      ...mapState(['beaches', 'events'])
+      ...mapState(['beaches', 'events', 'choose_position', 'user_coordinates'])
     },
 
     methods: {
@@ -53,12 +47,10 @@
       }
     },
 
-    created() {
-      this.$bus.$on('position-modal', (state, coords) => {
-        this.last_coordinates = coords
-        this.choose_position = state
-      })
-
+    beforeDestroy() {
+      // document.removeEventListener('touchstart', ()=>{}, true);
+      // document.removeEventListener('touchstart', ()=>{}, true);
+      // document.removeEventListener('mousemove', ()=>{}, true);
     },
 
     mounted() {

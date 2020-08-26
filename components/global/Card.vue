@@ -143,6 +143,12 @@
         })() : {}
       }
     },
+    beforeDestroy() {
+      this.$bus.$off('visitedAdd');
+      this.$bus.$off('visitedRemove');
+      this.$bus.$off('updateVisited');
+      this.$bus.$off('show_geo');
+    },
 
     mounted() {
       window.addEventListener('resize', this.onResize, false);

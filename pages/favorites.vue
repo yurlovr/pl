@@ -68,6 +68,19 @@
       }
     },
 
+    beforeDestroy() {
+      this.$bus.$off('visitedAdd');
+      this.$bus.$off('visitedRemove');
+      this.$bus.$off('favoriteBeachRemoved');
+      this.$bus.$off('favoriteEventAdded');
+      this.$bus.$off('favoriteEventRemoved');
+    },
+
+    async created() {
+      await this.$axios.$get('seo/meta?url=' + this.$route.fullPath).then(res => {
+        this.meta = res.data
+      })
+    },
     mounted() {
       this.$bus.$on('visitedAdd', id => {
         this.visited.push(this.eventsToShow[this.eventsToShow.map(v => v.eventId).indexOf(id)]);

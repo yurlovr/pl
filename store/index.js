@@ -1,6 +1,8 @@
 export const state = () => ({
   beaches: [],
   events: [],
+  user_coordinates: {},
+  choose_position: false,
   map_entity: [],
 })
 
@@ -11,6 +13,9 @@ export const mutations = {
 
   SET_ALL_EVENTS: (state, payload) => {
     state.events = payload;
+  },
+  setLastUserPos: (state, data) => state.user_coordinates = data,
+  setChoosePosition: (state, data) => state.choose_position = data,
   },
 
   SET_MAP_ENTITY: (state, payload) => {

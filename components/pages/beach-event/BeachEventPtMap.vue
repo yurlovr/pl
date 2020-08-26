@@ -710,6 +710,10 @@
     },
     beforeDestroy() {
       window.onresize = null
+    },
+    beforeDestroy() {
+      this.$bus.$off('showOnMap');
+      this.$bus.$off('call-balloon-service')
     }
   }
 </script>

@@ -18,7 +18,8 @@
             <div class="slider-cities__slide__pic-area despondency">
             </div>
           </a>
-				</div>
+
+        </div>
 			</div>
 		</div>
 		<div class="pagination-wrapper">

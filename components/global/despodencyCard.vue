@@ -62,6 +62,12 @@ export default {
     }
   },
 
+  beforeDestroy() {
+    this.$bus.$off('visitedAdd');
+    this.$bus.$off('visitedRemove');
+    this.$bus.$off('updateVisited');
+  },
+
   mounted() {
     window.addEventListener('resize', this.onResize, false);
     this.onResize();

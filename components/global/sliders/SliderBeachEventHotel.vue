@@ -56,6 +56,7 @@
 import Vue from 'vue';
 import Card from '~/components/global/Card';
 import despodencyCard from "../despodencyCard";
+
 export default {
     props: ['data'],
 
@@ -102,7 +103,12 @@ export default {
         };
     },
 
-    mounted () {
+  beforeDestroy() {
+    this.$bus.$off('hidePageTransitioner');
+    this.$bus.$off('mainPageReady');
+  },
+
+  mounted () {
         this.mySwiper.on('imagesReady', () => {
             window.addEventListener('resize', this.onResize);
             this.onResize();

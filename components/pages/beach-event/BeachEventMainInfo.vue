@@ -75,6 +75,10 @@
       }
     },
 
+    beforeDestroy() {
+      this.$bus.$off('cToggleFavorites');
+    },
+
     mounted() {
       this.$bus.$on('cToggleFavorites', () => {
         this.updateHeart();
