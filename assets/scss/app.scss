@@ -10168,6 +10168,13 @@ body.touch {
   cursor: pointer;
   z-index: 12;
 }
+.slider-beach-event__modal__left {
+  .swiper-slide:hover {
+    .zoom-img {
+      display: block !important;
+    }
+  }
+}
 .zoom-modal-inner {
   max-width: 1133px;
   width: 100%;
