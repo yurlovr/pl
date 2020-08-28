@@ -1411,6 +1411,13 @@ input {
     &s {
       display: flex;
     }
+
+    .desk-svg {
+      display: block;
+    }
+    .mob-svg {
+      display: none;
+    }
   }
 }
 
@@ -7573,9 +7580,16 @@ input {
                   justify-content: center;
                 }
 
-                svg {
+                /*svg {
                   width: 44px;
                   height: 44px;
+                }*/
+
+                .desk-svg {
+                  display: none;
+                }
+                .mob-svg {
+                  display: block;
                 }
               }
             }
@@ -9997,7 +10011,7 @@ body.touch {
 }
 .card-photo {
   //background: #115c91;
-  background-size: cover;
+  background-size: 100% 100%;
 }
 .beach-event__leave-review__modal__photos {
   margin-top: 20px;
@@ -10153,6 +10167,13 @@ body.touch {
   margin-top: -30px;
   cursor: pointer;
   z-index: 12;
+}
+.slider-beach-event__modal__left {
+  .swiper-slide:hover {
+    .zoom-img {
+      display: block !important;
+    }
+  }
 }
 .zoom-modal-inner {
   max-width: 1133px;

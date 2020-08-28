@@ -20,16 +20,16 @@
 				</div>
 				<div class="beach-event__leave-review__modal__input-name-area input-name-area--20 ">
 					<span class="beach-event__leave-review__modal__part-title">Представьтесь</span>
-					<input class="beach-event__leave-review__modal__part-title" type="text" name="name" placeholder="Фамилия, имя, отчество" v-model="name">
+					<input class="beach-event__leave-review__modal__part-title" type="text" name="name" placeholder="Фамилия, имя, отчество" v-model="name" :disabled="error == false">
 				</div>
         <div class="beach-event__leave-review__modal__review-area">
           <span class="beach-event__leave-review__modal__part-title">Оставьте отзыв</span>
-          <textarea maxlength="10000" placeholder="Введите текст" v-model="review"></textarea>
+          <textarea maxlength="10000" placeholder="Введите текст" v-model="review" :disabled="error == false"></textarea>
         </div>
 				<div class="beach-event__leave-review__modal__ratings-area">
 					<span class="beach-event__leave-review__modal__part-title photo">Ваша оценка</span>
 					<div class="beach-event__leave-review__modal__ratings">
-						<Rating5Star class="beach-event__leave-review__modal__rating" v-model="rating.rating" :data="rating" v-for="(rating, i) in ratings" :key="i" />
+						<Rating5Star class="beach-event__leave-review__modal__rating" v-model="rating.rating" :data="rating" v-for="(rating, i) in ratings" :key="i" :class="{'pointer-events-none': error == false}" />
 					</div>
 				</div>
         <div class="beach-event__leave-review__modal__ratings-area">
@@ -51,21 +51,21 @@
           </div>
         </div>
 				<div class="beach-event__leave-review__modal__send-button-area">
-					<button class="banner__card__info-area__button" @click="sendReview()" :disabled="error == false">
+					<button v-if="error != false" class="banner__card__info-area__button" @click="sendReview()" :disabled="error == false">
 						<span v-show="error == null && !addPic && !ratingsNotFilled && !noName && !noDescription">Отправить</span>
 						<span v-show="noName == true && error == null">Пожалуйста представьтесь</span>
 						<span v-show="addPic == true && !noName && error == null">Пожалуйста добавьте фото</span>
 						<span v-show="ratingsNotFilled == true && !addPic && !noName && error == null">Пожалуйста дайте полную оценку</span>
 						<span v-show="noDescription == true && !ratingsNotFilled && !addPic && !noName && error == null">Пожалуйста напишите отзыв</span>
 						<span v-show="error == true">Не получилось отправить отзыв, попробовать отправить заного</span>
-						<span v-show="error == false">Отзыв успешно отправлен</span>
 					</button>
+          <span v-if="error == false" style="color: #FF8C00">Отзыв успешно отправлен</span>
 					<div class="beach-event__leave-review__modal__bottom-space"></div>
 				</div>
 			</div>
 		</div>
-		<input v-show="false" type="file" accept="image" name="image" @change="uploadImage" ref="imageLoader">
-		<input v-if="hui" v-show="false" type="file" accept="image" name="media" multiple @change="uploadPhotos" :ref="'photoLoader'+dynamicRef">
+		<input v-show="false" type="file" accept="image" name="image" @change="uploadImage" ref="imageLoader" :disabled="error == false">
+		<input v-if="hui" v-show="false" type="file" accept="image" name="media" multiple @change="uploadPhotos" :ref="'photoLoader'+dynamicRef" :disabled="error == false">
 	</div>
 </template>
 
@@ -133,8 +133,10 @@
         this.$refs["photoLoader" + this.dynamicRef].click();
       },
       deletePhoto(index) {
-			  this.photoNames.splice(index, 1)
-			  this.photo.splice(index, 1)
+			  if (this.error != false) {
+          this.photoNames.splice(index, 1)
+          this.photo.splice(index, 1)
+        }
       },
       uploadPhotos(e) {
         if (this.$refs["photoLoader" + this.dynamicRef]){
