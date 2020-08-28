@@ -7,7 +7,7 @@ export default {
   props: ['options'],
   mounted () {
     Chart.defaults.global.defaultFontColor = '#4A4A4A';
-    Chart.defaults.global.defaultFontFamily = "'Museo', 'Sans', 'Cyrl'";
+    Chart.defaults.global.defaultFontFamily = "'Museo Sans Cyrl'";
     // this.chartData создаётся внутри миксина.
     // Если вы хотите передать опции, создайте локальный объект options
     let gradientFill1 = this.$refs.canvas.getContext('2d').createLinearGradient(0, 0, 0, 300);

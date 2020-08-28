@@ -8,26 +8,6 @@
           <img  src="~/static/pics/beach/accordion_dropdown_orange.svg">
         </div>
         <hr class="mt-4 mb-4">
-        <div class="beach-page__water-temp__info">
-          <div class="slider-weather__part__info slider-weather__part__temperature-text beach-page__water-temp__text mb-0">
-            <img  src="~/static/pics/global/svg/temp_air.svg">
-            <span>Среднемесячная температура воздуха</span>
-          </div>
-          <div class="slider-weather__slide__temp slider-weather__part__info">
-            <span class="slider-weather__slide__temp-number">{{ (dataAir[month].toFixed(0) > 0 ? '+ ' : '') + dataAir[month].toFixed(0) }}</span>
-            <span class="slider-weather__slide__temp-o"><span>o</span></span>
-            <span class="slider-weather__slide__temp-C">C</span>
-          </div>
-          <div class="slider-weather__part__info slider-weather__part__temperature-text beach-page__water-temp__text ml-auto">
-            <img  src="~/static/pics/global/svg/temp_water.svg">
-            <span>Среднемесячная температура воды</span>
-          </div>
-          <div class="slider-weather__slide__temp slider-weather__part__info">
-            <span class="slider-weather__slide__temp-number" style="color: #115C91">{{ (data[month].toFixed(0) > 0 ? '+ ' : '') + data[month].toFixed(0) }}</span>
-            <span class="slider-weather__slide__temp-o"><span>o</span></span>
-            <span class="slider-weather__slide__temp-C">C</span>
-          </div>
-        </div>
         <div class="beach-page__water-temp__content" :class="{ active : modalOpen }">
           <!--<div class="beach-page__water-temp__histogram">
             <div class="beach-page__water-temp__histogram__item" v-for="(item, i) in data" :key="i">
@@ -40,7 +20,27 @@
               <span class="beach-page__water-temp__histogram__item__title">{{ getMonth(i+1) }}</span>
             </div>
           </div>-->
-          <line-chart :chart-data="chartData" :options="chartData.options"></line-chart>
+          <div class="beach-page__water-temp__info">
+            <div class="slider-weather__part__info slider-weather__part__temperature-text beach-page__water-temp__text mb-0">
+              <img  src="~/static/pics/global/svg/temp_air.svg">
+              <span>Среднемесячная температура воздуха</span>
+            </div>
+            <div class="slider-weather__slide__temp slider-weather__part__info">
+              <span class="slider-weather__slide__temp-number">{{ (dataAir[month].toFixed(0) > 0 ? '+ ' : '') + dataAir[month].toFixed(0) }}</span>
+              <span class="slider-weather__slide__temp-o"><span>o</span></span>
+              <span class="slider-weather__slide__temp-C">C</span>
+            </div>
+            <div class="slider-weather__part__info slider-weather__part__temperature-text beach-page__water-temp__text ml-auto">
+              <img  src="~/static/pics/global/svg/temp_water.svg">
+              <span>Среднемесячная температура воды</span>
+            </div>
+            <div class="slider-weather__slide__temp slider-weather__part__info">
+              <span class="slider-weather__slide__temp-number" style="color: #115C91">{{ (data[month].toFixed(0) > 0 ? '+ ' : '') + data[month].toFixed(0) }}</span>
+              <span class="slider-weather__slide__temp-o"><span>o</span></span>
+              <span class="slider-weather__slide__temp-C">C</span>
+            </div>
+          </div>
+          <line-chart :chart-data="chartData" :options="chartData.options" class="line-chart"></line-chart>
         </div>
       </section>
     </div>
@@ -61,11 +61,11 @@ export default {
       datasets: [
         {
           label: 'Температура воды',
-          fill: true,
           borderWidth: 1,
           borderColor: '#0099FF',
           pointBackgroundColor: '#0099FF',
-          pointStyle: 'circle',
+          pointRadius: 2,
+          pointHoverRadius: 2,
           data: this.data
         },
         {
@@ -73,8 +73,30 @@ export default {
           borderWidth: 1,
           borderColor: '#FF8C00',
           pointBackgroundColor: '#FF8C00',
+          pointRadius: 2,
+          pointHoverRadius: 2,
           data: this.dataAir
-        }
+        },
+        {
+          label: '',
+          borderWidth: 1,
+          borderColor: '#0099FF',
+          showLine: false,
+          pointBackgroundColor: 'transparent',
+          pointHoverBackgroundColor: 'transparent',
+          pointRadius: 5,
+          data: this.data
+        },
+        {
+          label: '',
+          borderWidth: 1,
+          borderColor: '#FF8C00',
+          showLine: false,
+          pointBackgroundColor: 'transparent',
+          pointHoverBackgroundColor: 'transparent',
+          pointRadius: 5,
+          data: this.dataAir
+        },
       ],
       options: {
         scales: {
@@ -109,9 +131,18 @@ export default {
         legend: {
           position: 'bottom',
           align: 'start',
+          reverse: true,
           labels: {
             usePointStyle: true,
-            padding: 40
+            boxWidth: 6,
+            padding: 40,
+            filter: function(legendItem, data) {
+              let index = legendItem.datasetIndex;
+              if (index === 0 || index === 1)
+              {
+                return true;
+              }
+            },
           },
         },
         tooltips: {
@@ -174,7 +205,9 @@ export default {
                 let span = `<span class="slider-weather__slide__temp-number" style="font-size: 18px; line-height: 22px; font-weight: 500; color: ${color}">${spanValue}</span>
                           <span class="slider-weather__slide__temp-o" style="left: -3px"><span>o</span></span>
                           <span class="slider-weather__slide__temp-C" style="font-size: 18px; line-height: 22px; font-weight: normal; padding-left: 4px">C</span>`;
-                innerHtml += '<tr><td>' + span + '</td></tr>';
+                if (i <= 1) {
+                  innerHtml += '<tr><td>' + span + '</td></tr>';
+                }
               });
               innerHtml += '</tbody>';
 
