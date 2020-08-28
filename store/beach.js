@@ -141,7 +141,7 @@ export const getters = {
           return 0;
         }
 
-        for (let i = 0; i < hotels.length; i++) {
+        for (let i = 0; i < hotels.slice(0, 10).length; i++) {
           ret.hotels.beachSliderData.cardData.push({
             rating: hotels[i].RATING,
             title: hotels[i].NAME,
@@ -162,7 +162,6 @@ export const getters = {
 
         ret.hotels.beachSliderData.cardData.sort((a, b) => (parseFloat(a.dist) > parseFloat(b.dist)) ? 1 :
           (parseFloat(a.dist) === parseFloat(b.dist)) ? ((parseFloat(a.dist) > parseFloat(b.dist)) ? 1 : -1) : -1 ).filter(e => e.dist > 0)
-
       }
       return ret;
     },
