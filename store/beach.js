@@ -101,6 +101,71 @@ export const actions = {
 }
 
 export const getters = {
+    hotelsData: state => {
+      let coordinat = Cookies.getJSON('last_coordinates') || {};
+      let distance = (d, coord) => {
+        if (d && d.length == 2 && Object.keys(coord).length) {
+          let lat2 = d[0], lng2 = d[1],
+            {lat, lng} = coord;
+          return Number(getDistanceFromLatLonInKm(lat, lng, Number(lat2), Number(lng2)).toFixed(1)).toString().replace(/\./, ',')
+        }
+        return 0;
+      }
+
+      let ret = {}
+
+      if (state.hotels.data){
+        let hotels = state.hotels.data.list
+
+        ret.hotels = {
+          title: 'Забронируй номер рядом с пляжем',
+          subtitle: 'Наша подборка отелей, основанная на ваших отзывах',
+          beachNumber: state.hotels.data.pagination.countElements,
+          /*showMore: {
+            type: 'beach',
+            query: '?another'
+          },*/
+          beachSliderData: {
+            slideNumber: 6,
+            cardData: []
+          }
+        }
+
+        let coordinat = Cookies.getJSON('last_coordinates') || {};
+        let distance = (d, coord) => {
+          if (d && d.length == 2 && Object.keys(coord).length) {
+            let lat2 = d[0], lng2 = d[1],
+              {lat, lng} = coord;
+            return Number(getDistanceFromLatLonInKm(lat, lng, Number(lat2), Number(lng2)).toFixed(1)).toString().replace(/\./, ',')
+          }
+          return 0;
+        }
+
+        for (let i = 0; i < hotels.length; i++) {
+          ret.hotels.beachSliderData.cardData.push({
+            rating: hotels[i].RATING,
+            title: hotels[i].NAME,
+            pic: hotels[i].PICTURE,
+            mainLink: hotels[i].URL,
+            beachLink: hotels[i].URL,
+            beachId: hotels[i].ID,
+            show_distance: true,
+            geo_string: hotels[i].COUNTRY + ', ' + hotels[i].CITY,
+            internal_url: hotels[i].URL,
+            another_place: true,
+            price: hotels[i].PRICE,
+            coordinates: hotels[i].COORDINATES ? hotels[i].COORDINATES.split(',').map(Number) : [],
+            dist: distance(hotels[i].COORDINATES ? hotels[i].COORDINATES.split(',').map(Number) : [], coordinat),
+            custom_photo: true
+          })
+        }
+
+        ret.hotels.beachSliderData.cardData.sort((a, b) => (parseFloat(a.dist) > parseFloat(b.dist)) ? 1 :
+          (parseFloat(a.dist) === parseFloat(b.dist)) ? ((parseFloat(a.dist) > parseFloat(b.dist)) ? 1 : -1) : -1 ).filter(e => e.dist > 0)
+
+      }
+      return ret;
+    },
     beachData: (state) => {
         if (!state.beach.data) return null;
 
@@ -290,57 +355,6 @@ export const getters = {
             custom_photo: true
           });
         }
-
-      }
-
-      if (state.hotels.data){
-        let hotels = state.hotels.data.list
-
-        ret.hotels = {
-          title: 'Забронируй номер рядом с пляжем',
-          subtitle: 'Наша подборка отелей, основанная на ваших отзывах',
-          beachNumber: state.hotels.data.pagination.countElements,
-          /*showMore: {
-            type: 'beach',
-            query: '?another'
-          },*/
-          beachSliderData: {
-            slideNumber: 6,
-            cardData: []
-          }
-        }
-
-        let coordinat = Cookies.getJSON('last_coordinates') || {};
-        let distance = (d, coord) => {
-          if (d && d.length == 2 && Object.keys(coord).length) {
-            let lat2 = d[0], lng2 = d[1],
-              {lat, lng} = coord;
-            return Number(getDistanceFromLatLonInKm(lat, lng, Number(lat2), Number(lng2)).toFixed(1)).toString().replace(/\./, ',')
-          }
-          return 0;
-        }
-
-        for (let i = 0; i < hotels.slice(0, 10).length; i++) {
-          ret.hotels.beachSliderData.cardData.push({
-            rating: hotels[i].RATING,
-            title: hotels[i].NAME,
-            pic: hotels[i].PICTURE,
-            mainLink: hotels[i].URL,
-            beachLink: hotels[i].URL,
-            beachId: hotels[i].ID,
-            show_distance: true,
-            geo_string: hotels[i].COUNTRY + ', ' + hotels[i].CITY,
-            internal_url: hotels[i].URL,
-            another_place: true,
-            price: hotels[i].PRICE,
-            coordinates: hotels[i].COORDINATES ? hotels[i].COORDINATES.split(',').map(Number) : [],
-            dist: 0,
-            custom_photo: true
-          })
-        }
-
-        ret.hotels.beachSliderData.cardData.sort((a, b) => (parseFloat(a.dist) > parseFloat(b.dist)) ? 1 :
-          (parseFloat(a.dist) === parseFloat(b.dist)) ? ((parseFloat(a.dist) > parseFloat(b.dist)) ? 1 : -1) : -1 )
 
       }
 

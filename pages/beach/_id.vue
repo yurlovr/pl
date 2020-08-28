@@ -59,8 +59,8 @@
     <div class="main-page__white-wrapper" v-if="beachData.another_places && beachData.another_places.beachNumber > 0">
       <BeachSliderArea :data="beachData.another_places" class="main-page__family-rest" outlink="https://nash.travel/hotel" />
     </div>
-    <div class="main-page__white-wrapper" v-if="beachData.hotels && beachData.hotels.beachNumber > 0">
-      <BeachSliderArea :data="beachData.hotels" class="main-page__family-rest" outlink="https://nash.travel/hotel" />
+    <div class="main-page__white-wrapper" v-if="hotelsData.hotels && hotelsData.hotels.beachNumber > 0">
+      <BeachSliderArea :data="hotelsData.hotels" class="main-page__family-rest" outlink="https://nash.travel/hotel" />
     </div>
     <iframe360 v-if="show_pano" @close-modal="changeModalState" :url="beachData.hugeSliderData.panorama"></iframe360>
   </div>
@@ -145,7 +145,7 @@
     },
 
     computed: {
-      ...mapGetters('beach', ['beachData']),
+      ...mapGetters('beach', ['beachData', 'hotelsData']),
       ...mapGetters(['mapEntity']),
       distance(){
         let {sideMapWeatherData:{pos}} = this.beachData;
