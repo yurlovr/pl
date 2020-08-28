@@ -254,7 +254,7 @@ export const getters = {
       ret.hotels = {
         title: 'Забронируй номер рядом с пляжем',
         subtitle: 'Наша подборка отелей, основанная на ваших отзывах',
-        beachNumber: hotels.length,
+        beachNumber: state.hotels.data.pagination.countElements,
         /*showMore: {
           type: 'beach',
           query: '?another'

@@ -202,7 +202,6 @@ export const getters = {
                 for (let i = 0; i < clusters.length; i++) {
                     curCluster = [];
                     for (let j = 0; j < clusters[i].length; j++) {
-                      console.warn(clusters[i][j], 'clusters[i][j].PHOTOS')
                         if (!clusters[i][j].COORDINATES || clusters[i][j].COORDINATES && isNaN(clusters[i][j].COORDINATES.split(',').map(v => parseFloat(v))[0])) continue;
                         curCluster.push({
                             pos: clusters[i][j].COORDINATES ? clusters[i][j].COORDINATES.split(',').map(v => parseFloat(v)) : null,
