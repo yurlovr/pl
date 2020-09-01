@@ -423,9 +423,10 @@ export const getters = {
         let temps = Object.values(state.temperatures.data.list);
 
         for (let i = 0; i < temps.length; i++) { // going through months
-            if (temps[i].find(v => v.CITY.ID == state.beach.data.item.CITY.ID))
-                ret.waterHistogramData.push(parseFloat(temps[i].find(v => v.CITY.ID == state.beach.data.item.CITY.ID).TEMP.WATER));
-                ret.airHistogramData.push(parseFloat(temps[i].find(v => v.CITY.ID == state.beach.data.item.CITY.ID).TEMP.AIR));
+            if (temps[i].find(v => v.CITY.ID == state.beach.data.item.CITY.ID)) {
+              ret.waterHistogramData.push(parseFloat(temps[i].find(v => v.CITY.ID == state.beach.data.item.CITY.ID).TEMP.WATER));
+              ret.airHistogramData.push(parseFloat(temps[i].find(v => v.CITY.ID == state.beach.data.item.CITY.ID).TEMP.AIR));
+            }
         }
 
         // adding formatted events
