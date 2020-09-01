@@ -185,14 +185,17 @@
                             // step 2 markers
                             for (let j = 0; j < this.data.addressBeaches[i].beaches.length; j++) {
                                 // adding the balloon
-                                let slides = [];
+                                let slides = [],
+                                  pics = this.data.addressBeaches[i].beaches[j].pics
 
-                                for (let k = 0; k < this.data.addressBeaches[i].beaches[j].pics.length; k++) {
+                                if (pics && pics.length){
+                                  for (let k = 0; k < this.data.addressBeaches[i].beaches[j].pics.length; k++) {
                                     slides.push(`
                                         <div class="swiper-slide map-popup__slide">
                                             <img  src="${this.data.addressBeaches[i].beaches[j].pics[k]}">
                                         </div>
                                     `);
+                                  }
                                 }
 
                               balloonLayout = maps.templateLayoutFactory.createClass(`
@@ -294,23 +297,25 @@
 
                         for (let i = 0; i < this.mapData.length; i++) {
                           balloonLayout = maps.templateLayoutFactory.createClass(`
-                      <div class="map-popup map-popup--bottom">
-                      <div class="map-popup__pic-area">
-                          <div class="map-popup__slider">
-                              <div class="swiper-container" id="balloon-swiper">
-                                  <div class="swiper-wrapper">
-                                     <img class="map__img" src="${this.mapData[i].preview}" alt="">
-                                  </div>
-                              </div>
-                          </div>
-                      </div>
-                      <div class="map-popup__info-area">
-                          <a href="${this.mapData[i].url}" class="map-popup__title">${this.mapData[i].name}</a>
-                          <p>${this.mapData[i].type.NAME}</p>
-                          <p>${this.mapData[i].type.DESCRIPTION}</p>
-                      </div>
-                  </div>
-              `, {
+                            <div class="map-popup map-popup--bottom">
+                              <a target="_blank" href="${this.mapData[i].url}" style="color: #393e48">
+                                <div class="map-popup__pic-area">
+                                    <div class="map-popup__slider">
+                                        <div class="swiper-container" id="balloon-swiper">
+                                            <div class="swiper-wrapper">
+                                               <img class="map__img" src="${this.mapData[i].preview}" alt="">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="map-popup__info-area">
+                                    <div class="map-popup__title">${this.mapData[i].name}</div>
+                                    <p>${this.mapData[i].type.DESCRIPTION}</p>
+                                    ${this.mapData[i].description || ''}
+                                </div>
+                              </a>
+                            </div>
+                        `, {
                             build() {
                               this.constructor.superclass.build.call(this);
                             },

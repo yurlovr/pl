@@ -71,7 +71,7 @@
 						{{ data.beachClosedText }}
 					</span>
         </div>
-        <button class="slider-beach-event__zoom-button" @click="modalOpen = !modalOpen">
+        <button class="slider-beach-event__zoom-button" @click="bigModalOpen">
           <img src="~/static/pics/global/svg/zoom.svg">
         </button>
         <div v-swiper:mySwiper="swiperOption">
@@ -151,22 +151,31 @@
           <h2 class="slider-beach-event__modal__title" v-html="data.title"></h2>
           <span class="slider-beach-event__modal__count"><span class="orange">{{ activeIndex+1 }}</span>/{{ data.pics.length }}</span>
         </div>
-        <div class="slider-beach-event__modal__sides">
-          <CoolLightBox
-            :items="data.pics"
-            :index="index"
-            @close="index = null">
-          </CoolLightBox>
-          <div class="slider-beach-event__modal__left">
+        <div class="slider-beach-event__modal__sides big-big-big">
+          <!--          <CoolLightBox-->
+          <!--            :items="data.pics"-->
+          <!--            :index="index"-->
+          <!--            @close="index = null">-->
+          <!--          </CoolLightBox>-->
+          <div class="slider-beach-event__modal__left big-modal">
+
             <div v-swiper:mySwiperModal="swiperOption">
               <div class="swiper-wrapper">
                 <div class="swiper-slide" v-for="(pic, i) in data.pics" :key="i">
                   <div class="position-relative">
-<!--                    <button class="position-absolute full-size-btn" @click="index = i" v-if="!pic.includes('youtube')"-->
-<!--                    >-->
-<!--                      <img src="~/static/pics/global/svg/zoom.svg">-->
-<!--                    </button>-->
-                    <img v-lazy-load :data-src="pic" v-if="!pic.includes('youtube')">
+                        <span class="zoom-img" @click="$refs.beachZoomModal.showZoomModal(pic)" v-show="zoom_plus_show">
+                             <img src="~/static/pics/search/loop_plus.svg">
+                        </span>
+                    <div v-if="!pic.includes('youtube')">
+                      <div class="size-stamp" v-if="data.sizes && data.sizes.length">
+                        <img src="~/static/pics/beach/size.png">
+                        <div class="stamp-text-size">
+                          <span>ОРИГИНАЛ</span>
+                          <b>{{ (data.sizes[i]/1024/1024).toFixed(1)}} МБ</b>
+                        </div>
+                      </div>
+                          <img v-lazy-load :data-src="pic">
+                    </div>
                     <div v-else class="w-100 h-100 y-block">
                       <!--                    active in modal-->
                       <no-ssr>
@@ -178,15 +187,26 @@
               </div>
             </div>
             <button class="slider__arrow-left" :style="{ display: showLeft ? '' : 'none' }"
-                    @click="mySwiperModal.slidePrev()">
+                    @click=" () => {
+                      mySwiperModal.slidePrev();
+                      zoomController();
+                      $nextTick(() => {
+                        zoomController();
+                      })
+                    }">
               <img src="~/static/pics/global/svg/slider_arrow_left.svg" alt="Налево">
             </button>
             <button class="slider__arrow-right" :style="{ display: showRight ? '' : 'none' }"
-                    @click="mySwiperModal.slideNext();">
+                    @click="() => {
+                      mySwiperModal.slideNext();
+                      $nextTick(() => {
+                        zoomController();
+                      })
+                    }">
               <img src="~/static/pics/global/svg/slider_arrow_right.svg" alt="Направо">
             </button>
           </div>
-          <div class="slider-beach-event__modal__right">
+          <div class="slider-beach-event__modal__right big-modal-right">
             <div v-swiper:mySwiperModalSmall="swiperModalSmallOption">
               <div class="swiper-wrapper">
                 <div class="swiper-slide" v-for="(pic, i) in data.pics" :key="i" :class="{ active: activeIndex == i }"
@@ -225,6 +245,7 @@
 
       </div>
     </div>
+    <beach-zoom-image ref="beachZoomModal"/>
   </div>
 </template>
 
@@ -234,10 +255,14 @@
   import {getIdFromUrl} from 'vue-youtube';
   import CoolLightBox from 'vue-cool-lightbox'
   import 'vue-cool-lightbox/dist/vue-cool-lightbox.min.css'
+  import VueZoomer from 'vue-zoomer'
+  import BeachZoomImage from "./BeachZoomImage";
+
 
   export default {
     props: ['data'],
     components: {
+      BeachZoomImage,
       VideoYoutube,
       CoolLightBox,
     },
@@ -247,6 +272,7 @@
         require('swiper/dist/css/swiper.css');
         const VueAwesomeSwiper = require('vue-awesome-swiper/dist/ssr');
         Vue.use(VueAwesomeSwiper);
+        Vue.use(VueZoomer);
       }
     },
 
@@ -266,6 +292,7 @@
 
     data() {
       return {
+        zoom_plus_show: true,
         index: null,
         mobile: 1024,
         swiperOption: {
@@ -330,10 +357,23 @@
       this.mySwiperModal.init(this.swiperOption);
       this.mySwiperModalSmall.init(this.swiperOption);
 
-      this.updateArrows();
+      // this.updateArrows();
     },
 
     methods: {
+      zoomController(){
+        console.warn('zoom controller')
+        this.zoom_plus_show = true;
+        this.$nextTick(()=>{
+          setTimeout(()=> {
+            this.zoom_plus_show = false;
+          }, 3000)
+        })
+      },
+      bigModalOpen(){
+        this.modalOpen = !this.modalOpen;
+        this.zoomController();
+      },
       showPhotoSwipe(index) {
         this.isOpen = true
         this.$set(this.optionsGallery, 'index', index)

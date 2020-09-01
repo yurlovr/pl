@@ -1,14 +1,14 @@
 <template>
 	<section class="banner custom-container">
 		<div class="banner__card" :class="{ 'rtl': data.rightToLeft }">
-			<div class="banner__card__pic-area">
-				<img v-lazy-load class="banner__card__pic" alt="Пляж" :data-src="data.pic">
+			<div class="banner__card__pic-area" :class="{despondency: data.id === 'fake'}">
+				<img v-if="data.id !== 'fake'" v-lazy-load class="banner__card__pic" alt="Пляж" :data-src="data.pic">
 			</div>
 			<div class="banner__card__info-area">
 				<h4 class="banner__card__info-area__title" v-html="getTitle"></h4>
 				<p class="banner__card__info-area__text" v-html="data.description">
 				</p>
-				<a :href="data.link" @click="$bus.goTo(data.link, $router)" class="banner__card__info-area__button">
+				<a :href="data.link" class="banner__card__info-area__button">
 					<span>{{ data.buttonText }}</span>
 				</a>
 			</div>

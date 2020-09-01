@@ -78,8 +78,11 @@
 				this.pos = coords;
 			})
 		},
+    beforeDestroy() {
+      this.$bus.$off('routeCoords')
+    },
 
-		methods: {
+    methods: {
       yandexTransform(pos) {
         const user_pos = Object.values(this.last_coordinates).join(','),
           beach_pos = pos.join(',')

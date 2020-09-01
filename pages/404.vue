@@ -21,9 +21,10 @@
 
 <script>
   export default {
-    data() {
+    async asyncData( {$axios, route}){
+      const {data} = await $axios.$get('seo/meta?url=' + route.fullPath)
       return {
-        meta: {}
+        meta: data
       }
     },
     head() {
@@ -40,11 +41,6 @@
         ]
       }
     },
-    async created() {
-      await this.$axios.$get('seo/meta?url=' + this.$route.fullPath).then(res => {
-        this.meta = res.data
-      })
-    }
   }
 </script>
 

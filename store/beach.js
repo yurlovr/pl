@@ -1,3 +1,6 @@
+import {getDistanceFromLatLonInKm} from "../assets/calcDistance";
+import Cookies from 'js-cookie';
+
 export const state = () => ({
     beach: null,
     temperatures: null,
@@ -10,6 +13,7 @@ export const state = () => ({
     announcementData: null,
     tags: null,
     any_places: [],
+    hotels: []
 })
 
 export const mutations = {
@@ -52,7 +56,11 @@ export const mutations = {
         state.announcementData = payload;
     },
 
-    SET_TAGS: (state, payload) => state.tags = payload
+    SET_TAGS: (state, payload) => state.tags = payload,
+
+    SET_HOTELS: (state, data) => {
+      state.hotels = data
+    },
 }
 
 export const actions = {
@@ -73,7 +81,9 @@ export const actions = {
         commit('SET_REVIEWS', await this.$axios.$get(`/review/list?entityId=${beach_id}&count=9999`));
         commit('SET_VISITOR_PICS', await this.$axios.$get(`/socialPhoto/list?entityId=${beach_id}&count=10`));
         commit('SET_ANNOUNCEMENT_DATA', await this.$axios.$get(`/banner/list?page=/beach`));
-        commit('SET_ANY_PLACES', await this.$axios.$get('/hotel/list?count=9999'));
+
+        commit('SET_ANY_PLACES', await this.$axios.$get('/hotel/list?count=10'));
+        commit('SET_HOTELS', await this.$axios.$get(`/hotel/beachList?count=10&beachId=${beach_id}`));
 
         let tagsCount = 0, tags;
         if (state.beach.data.item.TAGS)
@@ -92,6 +102,56 @@ export const actions = {
 }
 
 export const getters = {
+    hotelsData: state => {
+      let ret = {}
+      if (state.hotels.data){
+        let hotels = state.hotels.data.list
+        console.warn('fdssfdfds')
+        ret.hotels = {
+          title: 'Забронируй номер рядом с пляжем',
+          subtitle: 'Наша подборка отелей, основанная на ваших отзывах',
+          beachNumber: state.hotels.data.pagination.countElements,
+          /*showMore: {
+            type: 'beach',
+            query: '?another'
+          },*/
+          beachSliderData: {
+            slideNumber: 6,
+            cardData: []
+          }
+        }
+
+        let coordinat = Cookies.getJSON('last_coordinates') || {};
+        let distance = (d, coord) => {
+          if (d && d.length == 2 && Object.keys(coord).length) {
+            let lat2 = d[0], lng2 = d[1],
+              {lat, lng} = coord;
+            return Number(getDistanceFromLatLonInKm(lat, lng, Number(lat2), Number(lng2)).toFixed(1)).toString().replace(/\./, ',')
+          }
+          return 0;
+        }
+
+        for (let i = 0; i < hotels.length; i++) {
+          ret.hotels.beachSliderData.cardData.push({
+            rating: hotels[i].RATING,
+            title: hotels[i].NAME,
+            pic: hotels[i].PICTURE,
+            mainLink: hotels[i].URL,
+            beachLink: hotels[i].URL,
+            beachId: hotels[i].ID,
+            show_distance: true,
+            geo_string: hotels[i].COUNTRY + ', ' + hotels[i].CITY,
+            internal_url: hotels[i].URL,
+            another_place: true,
+            price: hotels[i].PRICE,
+            coordinates: hotels[i].COORDINATES ? hotels[i].COORDINATES.split(',').map(Number) : [],
+            dist: distance(hotels[i].COORDINATES ? hotels[i].COORDINATES.split(',').map(Number) : [], coordinat),
+            custom_photo: true
+          })
+        }
+      }
+      return ret;
+    },
     beachData: (state) => {
         if (!state.beach.data) return null;
 
@@ -147,8 +207,9 @@ export const getters = {
                 isBeachClosed: state.beach.data.item.LABEL.TEXT != '',
                 goldMedal: state.beach.data.item.CERTIFICATION,
                 blueMedal: state.beach.data.item.WEBCAMERA,
-                pics: !state.beach.data.item.VIDEO.LINK ?  state.beach.data.item.PHOTOS.medium
-                  : [...state.beach.data.item.PHOTOS.medium.map(e => e.path), state.beach.data.item.VIDEO.LINK],
+                pics: !state.beach.data.item.VIDEO.LINK ?  state.beach.data.item.PHOTOS.reference.map(e => e.path)
+                  : [...state.beach.data.item.PHOTOS.reference.map(e => e.path), state.beach.data.item.VIDEO.LINK],
+                sizes: state.beach.data.item.PHOTOS.reference.map(e => e.size),
                 beachClosedText: state.beach.data.item.LABEL.TEXT,
                 beachClosedColor: state.beach.data.item.LABEL.COLOR,
                 beachClosedTooltip: state.beach.data.item.LABEL.DESCRIPTION,
@@ -164,6 +225,7 @@ export const getters = {
             servicesData: [],
 
             waterHistogramData: [],
+            airHistogramData: [],
 
             sideMapWeatherData: {
                 title: state.beach.data.item.NAME,
@@ -251,7 +313,7 @@ export const getters = {
         ret.another_places = {
           title: 'Где остановиться в Крыму',
           subtitle: 'Наша подборка отелей, основанная на ваших отзывах',
-          beachNumber: another_places.length,
+          beachNumber: state.any_places.data.pagination.countElements,
           showMore: {
             type: 'beach',
             query: '?another'
@@ -276,6 +338,7 @@ export const getters = {
             another_place: true,
             price: another_places[i].PRICE,
             coordinates: another_places[i].COORDINATES ? another_places[i].COORDINATES.split(',').map(Number) : [],
+            custom_photo: true
           });
         }
 
@@ -326,6 +389,8 @@ export const getters = {
                 pos: filteredInfra[i].COORDINATES ? filteredInfra[i].COORDINATES.split(',') : null,
                 id: filteredInfra[i].ID,
                 description: filteredInfra[i].DESCRIPTION,
+                pictures: filteredInfra[i].PICTURES,
+                map_pic: filteredInfra[i].ICON_ON_MAP ? filteredInfra[i].ICON_ON_MAP : filteredInfra[i].ICON
             })
         }
 
@@ -337,14 +402,18 @@ export const getters = {
                 pos: state.beach.data.item.SERVICES[i].COORDINATES ? state.beach.data.item.SERVICES[i].COORDINATES.split(',') : null,
                 id: state.beach.data.item.SERVICES[i].ID,
                 description: state.beach.data.item.SERVICES[i].DESCRIPTION,
+                map_pic: state.beach.data.item.SERVICES[i].ICON_ON_MAP ? state.beach.data.item.SERVICES[i].ICON_ON_MAP : state.beach.data.item.SERVICES[i].ICON,
             })
         }
 
         // adding formatted temperatures
         let temps = Object.values(state.temperatures.data.list);
+
         for (let i = 0; i < temps.length; i++) { // going through months
-            if (temps[i].find(v => v.CITY.ID == state.beach.data.item.CITY.ID))
-                ret.waterHistogramData.push(parseFloat(temps[i].find(v => v.CITY.ID == state.beach.data.item.CITY.ID).TEMP.WATER));
+            if (temps[i].find(v => v.CITY.ID == state.beach.data.item.CITY.ID)) {
+              ret.waterHistogramData.push(parseFloat(temps[i].find(v => v.CITY.ID == state.beach.data.item.CITY.ID).TEMP.WATER));
+              ret.airHistogramData.push(parseFloat(temps[i].find(v => v.CITY.ID == state.beach.data.item.CITY.ID).TEMP.AIR));
+            }
         }
 
         // adding formatted events
@@ -358,7 +427,7 @@ export const getters = {
                 humanLink: state.events.data.list[i].CODE ? `event/${state.events.data.list[i].CODE}` : null,
                 location: state.events.data.list[i].BEACH ? state.events.data.list[i].BEACH.CITY.NAME : null,
                 locationId: state.events.data.list[i].BEACH ? state.events.data.list[i].BEACH.CITY.ID : null,
-                pic: state.events.data.list[i].PHOTOS ? state.events.data.list[i].PHOTOS[0] : null,
+                pic: state.events.data.list[i].PHOTOS ? state.events.data.list[i].PHOTOS.medium[0].path : null,
                 eventId: state.events.data.list[i].ID,
                 showFavorite: true
             });
@@ -394,7 +463,8 @@ export const getters = {
                 name: state.reviews.data.list[i].FIO,
                 date: state.reviews.data.list[i].CREATED_DATE,
                 rating: state.reviews.data.list[i].AVERAGE_RATING,
-                comment: state.reviews.data.list[i].DESCRIPTION
+                comment: state.reviews.data.list[i].DESCRIPTION,
+                photos: state.reviews.data.list[i].PHOTOS
             });
         }
 
@@ -422,7 +492,7 @@ export const getters = {
                         title: state.similarBeaches.data.list[i].NAME,
                         location: state.similarBeaches.data.list[i].CITY ? state.similarBeaches.data.list[i].CITY.NAME : 'Не указан',
                         locationId: state.similarBeaches.data.list[i].CITY ? state.similarBeaches.data.list[i].CITY.ID : null,
-                        pic: state.similarBeaches.data.list[i].PHOTOS ? state.similarBeaches.data.list[i].PHOTOS[0] : null,
+                        pic: state.similarBeaches.data.list[i].PHOTOS ? state.similarBeaches.data.list[i].PHOTOS.medium[0].path : null,
                         mainLink: `beach/${state.similarBeaches.data.list[i].ID}`,
                         beachLink: `beach/${state.similarBeaches.data.list[i].ID}`,
                         humanLink: state.similarBeaches.data.list[i].CODE ? `beach/${state.similarBeaches.data.list[i].CODE}`: null,

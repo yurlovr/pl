@@ -1,7 +1,9 @@
 export const state = () => ({
   beaches: [],
   events: [],
-  map_entity: []
+  user_coordinates: {},
+  choose_position: false,
+  map_entity: [],
 })
 
 export const mutations = {
@@ -12,10 +14,11 @@ export const mutations = {
   SET_ALL_EVENTS: (state, payload) => {
     state.events = payload;
   },
-
+  setLastUserPos: (state, data) => state.user_coordinates = data,
+  setChoosePosition: (state, data) => state.choose_position = data,
   SET_MAP_ENTITY: (state, payload) => {
     state.map_entity = payload;
-  }
+  },
 }
 
 export const actions = {
@@ -24,6 +27,7 @@ export const actions = {
     commit('SET_ALL_EVENTS', await this.$axios.$get('/event/list?count=9999'));
     commit('search/SET_SEARCH', await this.$axios.$get('search/config'));
     commit('SET_MAP_ENTITY', await this.$axios.$get('/map-entity/list?count=9999'));
+    commit('setLastUserPos', this.$cookies.get('last_coordinates') || {})
   }
 }
 
@@ -66,7 +70,7 @@ export const getters = {
         rating: parseFloat(state.beaches.data.list[i].AVERAGE_RATING),
         title: state.beaches.data.list[i].NAME,
         location: state.beaches.data.list[i].CITY ? state.beaches.data.list[i].CITY.NAME : null,
-        pic: state.beaches.data.list[i].PHOTOS ? state.beaches.data.list[i].PHOTOS[0] : null,
+        pic: state.beaches.data.list[i].PHOTOS ? state.beaches.data.list[i].PHOTOS.medium[0].path : null,
         mainLink: `beach/${state.beaches.data.list[i].ID}`,
         beachLink: `beach/${state.beaches.data.list[i].ID}`,
         humanLink: state.beaches.data.list[i].CODE ? `beach/${state.beaches.data.list[i].CODE}` : null,
@@ -112,7 +116,7 @@ export const getters = {
         paid: state.events.data.list[i].PAID,
         title: state.events.data.list[i].NAME,
         location: state.events.data.list[i].BEACH && state.events.data.list[i].BEACH.CITY ? state.events.data.list[i].BEACH.CITY.NAME : null,
-        pic: state.events.data.list[i].PHOTOS ? state.events.data.list[i].PHOTOS[0] : null,
+        pic: state.events.data.list[i].PHOTOS ? state.events.data.list[i].PHOTOS.medium[0].path : null,
         mainLink: `event/${state.events.data.list[i].ID}`,
         humanLink: state.events.data.list[i].CODE ? `event/${state.events.data.list[i].CODE}`: null,
         beachLink: state.events.data.list[i].BEACH ? `beach/${state.events.data.list[i].BEACH.CODE}` : null,
@@ -138,7 +142,8 @@ export const getters = {
         preview: state.map_entity.data.list[i].PREVIEW,
         url: state.map_entity.data.list[i].URL,
         photos: state.map_entity.data.list[i].PHOTOS,
-        type: state.map_entity.data.list[i].TYPE
+        type: state.map_entity.data.list[i].TYPE,
+        description: state.map_entity.data.list[i].DESCRIPTION,
       });
     }
 

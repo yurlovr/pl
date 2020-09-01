@@ -4,16 +4,20 @@
       <a v-if="!data.another_place" :href="data.humanLink ? data.humanLink : ( data.mainLink ? data.mainLink : '#')"
          class="custom-card__link"
          @click.prevent="$bus.goTo( data.humanLink ? data.humanLink : ( data.mainLink ? data.mainLink : '#'), $router)">
-        <img v-lazy-load :data-src="data.pic" v-show="this.picLoaded" alt="Фото" class="custom-card__pic"
+        <img v-if="data.custom_photo" :src="data.pic" v-show="this.picLoaded" alt="Фото" class="custom-card__pic"
+             @load="picLoaded = true">
+        <img v-else v-lazy-load :data-src="data.pic" v-show="this.picLoaded" alt="Фото" class="custom-card__pic"
              @load="picLoaded = true">
         <img v-show="!this.picLoaded" class="custom-card__pic"
-             src="~/static/pics/global/pics/slider_beh_placeholder.png">
+             src="~/static/pics/global/pics/slider_height_placeholder.png">
       </a>
       <a v-else :href="data.internal_url" class="custom-card__link" target="_blank">
-        <img v-lazy-load :data-src="data.pic" v-show="this.picLoaded" alt="Фото" class="custom-card__pic"
+        <img v-if="data.custom_photo" :src="data.pic" v-show="this.picLoaded" alt="Фото" class="custom-card__pic"
+             @load="picLoaded = true">
+        <img v-else v-lazy-load :data-src="data.pic" v-show="this.picLoaded" alt="Фото" class="custom-card__pic"
              @load="picLoaded = true">
         <img v-show="!this.picLoaded" class="custom-card__pic"
-             src="~/static/pics/global/pics/slider_beh_placeholder.png">
+             src="~/static/pics/global/pics/slider_height_placeholder.png">
       </a>
       <div class="custom-card__temp-area" v-if="data.tempWater != undefined && showTemp != false">
         <img src="~/static/pics/global/svg/temper_big.svg" alt="Температура" class="big">
@@ -34,8 +38,8 @@
       </button>
     </div>
     <div class="custom-card__info-area position-relative" :class="{ event: data.beach }">
-      <p class="distance" v-if="data.show_distance && distance" v-show="distanceValue(data.coordinates)"
-         :style="{position: !data.rating && data.another_place ? 'relative !important' : 'absolute'}">
+      <p class="distance" v-if="data.show_distance" v-show="distanceValue(data.coordinates)"
+         :style="{position: !data.rating && (data.another_place || data.hotels) ? 'relative !important' : 'absolute'}">
         {{distanceValue(data.coordinates)}} км</p>
       <!--      <div class="mobile-distance"><span v-if="data.show_distance" v-show="distanceValue(data.coordinates)">{{distanceValue(data.coordinates)}} км</span></div>-->
       <div class="custom-card__rating-area" v-if="data.rating">
@@ -101,21 +105,21 @@
 </template>
 
 <script>
-  import Vue from 'vue';
-  import VClamp from 'vue-clamp';
-  import AddToFavorites from '~/components/global/AddToFavorites';
-  import moment from 'moment'
-  import {getDistanceFromLatLonInKm} from "../../assets/calcDistance";
+import Vue from 'vue';
+import VClamp from 'vue-clamp';
+import AddToFavorites from '~/components/global/AddToFavorites';
+import moment from 'moment'
+import {getDistanceFromLatLonInKm} from "../../assets/calcDistance";
 
-  moment.locale('ru')
-  const today = moment().format('L')
-  export default {
-    props: ['data', 'showTemp'],
+moment.locale('ru')
+const today = moment().format('L')
+export default {
+  props: ['data', 'showTemp'],
 
-    components: {
-      VClamp,
-      AddToFavorites
-    },
+  components: {
+    VClamp,
+    AddToFavorites
+  },
 
     data() {
       return {
@@ -138,6 +142,12 @@
           return obj.length == 2 ? {lat: obj[0], lng: obj[1]} : {}
         })() : {}
       }
+    },
+    beforeDestroy() {
+      this.$bus.$off('visitedAdd');
+      this.$bus.$off('visitedRemove');
+      this.$bus.$off('updateVisited');
+      this.$bus.$off('show_geo');
     },
 
     mounted() {

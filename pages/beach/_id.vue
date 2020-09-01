@@ -29,7 +29,7 @@
                                        :mapData="beachData.map_entity"
                                        v-if="beachData.ptData.parkings.auto.length > 0 || beachData.ptData.parkings.bus.length > 0"/>
           <BeachWaterTemperatureHistogram id="water-temp" v-if="beachData.waterHistogramData.length > 0"
-                                          :data="beachData.waterHistogramData"/>
+                                          :data="beachData.waterHistogramData" :dataAir="beachData.airHistogramData"/>
           <BeachEvents id="events" :showTemp="false" :data="beachData.events" class="beach-page__cardless-area"
                        v-if="beachData.events.cardData.length > 0"/>
           <BeachBarsNRestos id="barsNRestos" :data="beachData.barsNRestos" v-if="beachData.barsNRestos.length > 0"
@@ -56,8 +56,11 @@
     </div>
     <BeachSliderArea id="similar-beaches" class="beach-event__similar-beaches" :data="beachData.similarBeaches"
                      v-if="beachData.similarBeaches.beachNumber"/>
-    <div class="main-page__white-wrapper" v-if="beachData.another_places && beachData.another_places.length > 0">
+    <div class="main-page__white-wrapper" v-if="beachData.another_places && beachData.another_places.beachNumber > 0">
       <BeachSliderArea :data="beachData.another_places" class="main-page__family-rest" outlink="https://nash.travel/hotel" />
+    </div>
+    <div class="main-page__white-wrapper" v-if="hotelsData.hotels && hotelsData.hotels.beachNumber > 0">
+      <BeachSliderArea :data="hotelsData.hotels" class="main-page__family-rest" outlink="https://nash.travel/hotel" />
     </div>
     <iframe360 v-if="show_pano" @close-modal="changeModalState" :url="beachData.hugeSliderData.panorama"></iframe360>
   </div>
@@ -111,7 +114,12 @@
       return {
         show_pano: false,
         last_coordinates: this.$cookies.get('last_coordinates') || {},
-        meta: {}
+      }
+    },
+    async asyncData( {$axios, route}){
+      const {data} = await $axios.$get('seo/meta?url=/beach/'+ route.params.id)
+      return {
+        meta: data
       }
     },
 
@@ -137,7 +145,7 @@
     },
 
     computed: {
-      ...mapGetters('beach', ['beachData']),
+      ...mapGetters('beach', ['beachData', 'hotelsData']),
       ...mapGetters(['mapEntity']),
       distance(){
         let {sideMapWeatherData:{pos}} = this.beachData;
@@ -154,11 +162,5 @@
         this.show_pano = !this.show_pano;
       }
     },
-   async created() {
-      this.beachData.map_entity = this.mapEntity;
-      await this.$axios.$get('seo/meta?url=/beach/'+ this.beachData.mainData.beachId).then(res => {
-        this.meta = res.data
-      })
-    }
   }
 </script>

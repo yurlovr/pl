@@ -21,8 +21,15 @@
 				favoriteHover: false
 			}
 		},
+    beforeDestroy() {
+      this.$bus.$off('favoriteBeachAdded');
+      this.$bus.$off('favoriteEventAdded');
+      this.$bus.$off('favoriteBeachRemoved');
+      this.$bus.$off('favoriteEventRemoved');
+      this.$bus.$off('updateFavorite');
+    },
 
-		mounted() {
+    mounted() {
 			this.$bus.$on('favoriteBeachAdded', id => {
 				if (this.data.beachId == id)
 					this.favorite = true;

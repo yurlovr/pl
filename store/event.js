@@ -1,4 +1,6 @@
 import moment from 'moment';
+import Cookies from 'js-cookie';
+import {getDistanceFromLatLonInKm} from "../assets/calcDistance";
 moment.locale('ru');
 
 export const state = () => ({
@@ -7,6 +9,7 @@ export const state = () => ({
   visitorPics: [],
   announcementData: null,
   any_places: [],
+  hotels: []
 })
 
 export const mutations = {
@@ -27,7 +30,11 @@ export const mutations = {
 
   SET_ANNOUNCEMENT_DATA: (state, payload) => {
     state.announcementData = payload;
-  }
+  },
+
+  SET_HOTELS: (state, data) => {
+    state.hotels = data
+  },
 }
 
 export const actions = {
@@ -44,7 +51,9 @@ export const actions = {
     commit('SET_REVIEWS', await this.$axios.$get(`/review/list?entityId=${event_id}&count=9999`));
     commit('SET_VISITOR_PICS', await this.$axios.$get(`/socialPhoto/list?entityId=${event_id}&count=10`));
     commit('SET_ANNOUNCEMENT_DATA', await this.$axios.$get(`/banner/list?page=/event`));
-    commit('SET_ANY_PLACES', await this.$axios.$get('/hotel/list?count=9999'));
+
+    commit('SET_ANY_PLACES', await this.$axios.$get('/hotel/list?count=10'));
+    commit('SET_HOTELS', await this.$axios.$get('/hotel/beachList?count=9999'));
   }
 }
 
@@ -70,11 +79,12 @@ export const getters = {
       }
       return result;
     }
+
     let ret = {
       hugeSliderData: {
         title: state.event.data.item.NAME,
         isBeachClosed: false,
-        pics: state.event.data.item.PHOTOS,
+        pics: state.event.data.item.PHOTOS.medium.map(e => e.path),
         goldMedal: null,
         blueMedal: null
       },
@@ -88,7 +98,7 @@ export const getters = {
                 eventId: state.event.data.item.ID,
                 price: state.event.data.item.PRICE || null,
                 beachSeabedType: state.event.data.item.BEACH && state.event.data.item.BEACH.PARAMETERS && state.event.data.item.BEACH.PARAMETERS.P_BOTTOM ? state.event.data.item.BEACH.PARAMETERS.P_BOTTOM.NAME : null,
-                time: dataAndTimeTransform(state.event.data.item.ACTIVE_FROM, state.event.data.item.ACTIVE_TO, 'time'),
+                time: state.event.data.item.EVENT_TIME ? state.event.data.item.EVENT_TIME : dataAndTimeTransform(state.event.data.item.ACTIVE_FROM, state.event.data.item.ACTIVE_TO, 'time'),
             },
 
             about: state.event.data.item.DESCRIPTION,
@@ -207,7 +217,7 @@ export const getters = {
         ret.another_places = {
           title: 'Где остановиться в Крыму',
           subtitle: 'Наша подборка отелей, основанная на ваших отзывах',
-          beachNumber: another_places.length,
+          beachNumber: state.any_places.data.pagination.countElements,
           showMore: {
             type: 'beach',
             query: '?another'
@@ -232,10 +242,63 @@ export const getters = {
             another_place: true,
             price: another_places[i].PRICE,
             coordinates: another_places[i].COORDINATES ? another_places[i].COORDINATES.split(',').map(Number) : [],
+            custom_photo: true
           });
         }
 
       }
+
+    if (state.hotels.data){
+      let hotels = state.hotels.data.list
+
+      ret.hotels = {
+        title: 'Забронируй номер рядом с пляжем',
+        subtitle: 'Наша подборка отелей, основанная на ваших отзывах',
+        beachNumber: state.hotels.data.pagination.countElements,
+        /*showMore: {
+          type: 'beach',
+          query: '?another'
+        },*/
+        beachSliderData: {
+          slideNumber: 6,
+          cardData: []
+        }
+      }
+
+      let coordinat = Cookies.getJSON('last_coordinates') || {};
+
+      let distance = (d, coord) => {
+        if (d && d.length == 2 && Object.keys(coord).length) {
+          let lat2 = d[0], lng2 = d[1],
+            {lat, lng} = coord;
+          return Number(getDistanceFromLatLonInKm(lat, lng, Number(lat2), Number(lng2)).toFixed(1)).toString().replace(/\./, ',')
+        }
+        return 0;
+      }
+
+      for (let i = 0; i < hotels.slice(0, 10).length; i++) {
+        ret.hotels.beachSliderData.cardData.push({
+          rating: hotels[i].RATING,
+          title: hotels[i].NAME,
+          pic: hotels[i].PICTURE,
+          mainLink: hotels[i].URL,
+          beachLink: hotels[i].URL,
+          beachId: hotels[i].ID,
+          show_distance: true,
+          geo_string: hotels[i].COUNTRY + ', ' + hotels[i].CITY,
+          internal_url: hotels[i].URL,
+          another_place: true,
+          price: hotels[i].PRICE,
+          coordinates: hotels[i].COORDINATES ? hotels[i].COORDINATES.split(',').map(Number) : [],
+          dist: distance(hotels[i].COORDINATES ? hotels[i].COORDINATES.split(',').map(Number) : [], coordinat),
+          custom_photo: true
+        });
+      }
+
+      ret.hotels.beachSliderData.cardData.sort((a, b) => (parseFloat(a.dist) > parseFloat(b.dist)) ? 1 :
+        (parseFloat(a.dist) === parseFloat(b.dist)) ? ((parseFloat(a.dist) > parseFloat(b.dist)) ? 1 : -1) : -1 )
+
+    }
 
         // adding formatted visitor pics
         for (let i = 0; i < state.visitorPics.data.list.length; i++) {
