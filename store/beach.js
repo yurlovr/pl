@@ -1,5 +1,6 @@
 import {getDistanceFromLatLonInKm} from "../assets/calcDistance";
 import Cookies from 'js-cookie';
+
 export const state = () => ({
     beach: null,
     temperatures: null,
@@ -82,7 +83,7 @@ export const actions = {
         commit('SET_ANNOUNCEMENT_DATA', await this.$axios.$get(`/banner/list?page=/beach`));
 
         commit('SET_ANY_PLACES', await this.$axios.$get('/hotel/list?count=10'));
-        commit('SET_HOTELS', await this.$axios.$get(`/hotel/beachList?count=10&beachid=${beach_id}`));
+        commit('SET_HOTELS', await this.$axios.$get(`/hotel/beachList?count=10&beachId=${beach_id}`));
 
         let tagsCount = 0, tags;
         if (state.beach.data.item.TAGS)
@@ -102,21 +103,10 @@ export const actions = {
 
 export const getters = {
     hotelsData: state => {
-      let coordinat = Cookies.getJSON('last_coordinates') || {};
-      let distance = (d, coord) => {
-        if (d && d.length == 2 && Object.keys(coord).length) {
-          let lat2 = d[0], lng2 = d[1],
-            {lat, lng} = coord;
-          return Number(getDistanceFromLatLonInKm(lat, lng, Number(lat2), Number(lng2)).toFixed(1)).toString().replace(/\./, ',')
-        }
-        return 0;
-      }
-
       let ret = {}
-
       if (state.hotels.data){
         let hotels = state.hotels.data.list
-
+        console.warn('fdssfdfds')
         ret.hotels = {
           title: 'Забронируй номер рядом с пляжем',
           subtitle: 'Наша подборка отелей, основанная на ваших отзывах',
@@ -141,7 +131,7 @@ export const getters = {
           return 0;
         }
 
-        for (let i = 0; i < hotels.slice(0, 10).length; i++) {
+        for (let i = 0; i < hotels.length; i++) {
           ret.hotels.beachSliderData.cardData.push({
             rating: hotels[i].RATING,
             title: hotels[i].NAME,
@@ -159,9 +149,6 @@ export const getters = {
             custom_photo: true
           })
         }
-
-        ret.hotels.beachSliderData.cardData.sort((a, b) => (parseFloat(a.dist) > parseFloat(b.dist)) ? 1 :
-          (parseFloat(a.dist) === parseFloat(b.dist)) ? ((parseFloat(a.dist) > parseFloat(b.dist)) ? 1 : -1) : -1 ).filter(e => e.dist > 0)
       }
       return ret;
     },
