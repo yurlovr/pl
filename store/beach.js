@@ -82,7 +82,7 @@ export const actions = {
         commit('SET_ANNOUNCEMENT_DATA', await this.$axios.$get(`/banner/list?page=/beach`));
 
         commit('SET_ANY_PLACES', await this.$axios.$get('/hotel/list?count=10'));
-        commit('SET_HOTELS', await this.$axios.$get('/hotel/beachList?count=9999'));
+        commit('SET_HOTELS', await this.$axios.$get(`/hotel/beachList?count=10&beachid=${beach_id}`));
 
         let tagsCount = 0, tags;
         if (state.beach.data.item.TAGS)
