@@ -1,5 +1,4 @@
-import axios from 'axios';
-import {url_api} from './.env.js';
+import {url_api, prom_host, prom_port} from './.env.js';
 
 export default {
   mode: "universal",
@@ -52,6 +51,7 @@ export default {
   plugins: [
     '~/plugins/bus',
     '~/plugins/gtm',
+    '~/plugins/sentry',
     {
       src: '~/plugins/scroll-lock',
       ssr: false
@@ -76,7 +76,7 @@ export default {
   gtm: {
     dev: true,
 
-    id: 'UA-163797304-1',
+    id: 'GTM-T7SKSV7',
     layer: 'dataLayer',
     variables: {},
 
@@ -95,22 +95,22 @@ export default {
     noscriptURL: 'https://www.googletagmanager.com/ns.html'
   },
   generate: {
-    async routes() {
-      let beachAsync = await axios.get(url_api + 'beach/list?count=9999'),
+    async routes({$axios}) {
+      let beachAsync = await $axios.get(url_api + 'beach/list?count=9999'),
         beachRoutes = beachAsync.data.data.list.map((b) => {
           return {
             route: `/beach/${b.ID}`
           }
         });
 
-      let eventAsync = await axios.get(url_api + 'event/list?count=9999'),
+      let eventAsync = await $axios.get(url_api + 'event/list?count=9999'),
         eventRoutes = eventAsync.data.data.list.map((e) => {
           return {
             route: `/event/${e.ID}`
           }
         });
 
-      let infoPagesAsync = await axios.get(url_api + 'page/list?count=9999'),
+      let infoPagesAsync = await $axios.get(url_api + 'page/list?count=9999'),
         infoPages = infoPagesAsync.data.data.list.map((e) => {
           return {
             route: `/${e.CODE}`
@@ -135,7 +135,21 @@ export default {
       images: true,
       directiveOnly: true,
       defaultImage: '/pics/global/pics/slider_beh_placeholder.png'
-    }]
+    }],
+    '@qonfucius/nuxt-prometheus-module',
+
+    // With options
+    [
+      '@qonfucius/nuxt-prometheus-module',
+      {
+        port: prom_port,
+        host: prom_host,
+        metrics: {
+          collectDefault: true,
+          requestDuration: false,
+        },
+      },
+    ],
   ],
   axios: {
     baseURL: url_api

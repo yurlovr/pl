@@ -5,7 +5,9 @@
 				<div class="map-beaches-main__card" v-for="(beach, i) in getBeaches" :id="`smc-${i}`" :class="{ active : activeCard == i}">
 					<div class="map-beaches-main__card__pic-area">
 						<a :href="`/beach/${beach.humanLink || beach.beachId}`" @click.prevent="$bus.goTo(`/beach/${beach.humanLink || beach.beachId}`, $router)">
-							<img v-lazy-load :data-src="beach.pics[0]">
+							<img v-if="beach.pics && beach.pics.length" v-lazy-load :data-src="beach.pics[0]">
+							<img  v-else src="~/static/pics/global/pics/slider_beh_placeholder.png">
+
 						</a>
 						<AddToFavorites :data="beach" />
 					</div>
@@ -30,7 +32,8 @@
 					<div class="swiper-slide map-beaches-main__slide" v-for="(beach, i) in getBeaches" :class="{ active : activeCard == i}">
 						<div class="map-beaches-main__card__pic-area">
 							<a href="/" @click.prevent="$bus.goTo('/', $router)">
-								<img v-lazy-load class="map-beaches-main__card__pic" :data-src="beach.pics[0]">
+                <img v-if="beach.pics && beach.pics.length" v-lazy-load :data-src="beach.pics[0]">
+                <img  v-else src="~/static/pics/global/pics/slider_beh_placeholder.png">
 							</a>
 							<AddToFavorites :data="beach" />
 						</div>
@@ -118,8 +121,15 @@
 				minus: 1
 			}
 		},
+    beforeDestroy() {
+      this.$bus.$off('goToCard');
 
-		mounted() {
+      this.$bus.$off('changeStep')
+
+      this.$bus.$off('releaseSelection')
+    },
+
+    mounted() {
 			this.mySwiper.on('imagesReady', () => {
 				window.addEventListener('resize', this.onResize);
 				this.onResize();
@@ -153,7 +163,7 @@
 
 		methods: {
 			onResize() {
-				this.arrowY = this.$el.querySelector('.map-beaches-main__card__pic').offsetHeight / 2;
+				this.arrowY = this.$el.querySelector('.map-beaches-main__card__pic-area').offsetHeight / 2;
 
 				if (window.innerWidth > 400)
 					this.minus = 1;

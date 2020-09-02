@@ -3,7 +3,7 @@
     <div class="beach-event__main-info">
       <div class="search-page__map-area__card__title-area beach-event__main-info__title-area">
         <div class="beach-event__main-info__title-area__left">
-          <h1 class="search-page__map-area__card__title beach-event__main-info__title " v-html="data.title"></h1>
+          <h2 class="search-page__map-area__card__title beach-event__main-info__title " v-html="data.title"></h2>
           <a :href="getLink" @click.prevent="$bus.goTo(getLink, $router)"
              class="search-page__map-area__card__subtitle beach-event__main-info__subtitle">{{ data.location }}</a>
         </div>
@@ -66,81 +66,89 @@
 </template>
 
 <script>
-  export default {
-    props: ['data'],
+export default {
+  props: ['data'],
 
-    data() {
-      return {
-        favorite: false
+  data() {
+    return {
+      favorite: false
+    }
+  },
+
+    beforeDestroy() {
+      this.$bus.$off('cToggleFavorites');
+    },
+
+  beforeDestroy() {
+    this.$bus.$off('cToggleFavorites');
+  },
+
+  mounted() {
+    this.$bus.$on('cToggleFavorites', () => {
+      this.updateHeart();
+    });
+
+    if (this.data.beachId && this.$cookies.get(`favorites.beaches.${this.data.beachId}`) || this.data.eventId && this.$cookies.get(`favorites.events.${this.data.eventId}`))
+      this.favorite = true;
+  },
+
+  computed: {
+    getLink() {
+      if (this.data.beachId)
+        return `/beach-catalog?city=${this.data.locationId}`;
+      else (this.data.eventId)
+      return `/event-catalog?city=${this.data.locationId}`;
+    },
+
+    beachType() {
+      if (this.data.beachType) {
+        if (this.data.beachType == 'Галечные пляжи')
+          return 'Галька';
+        else if (this.data.beachType == 'Песчаные пляжи')
+          return 'Песок';
+        else if (this.data.beachType == 'Ракушечные пляжи')
+          return 'Ракушки';
+      } else {
+        return null;
       }
     },
+    isEvent() {
+      return this.$route.path.includes('event')
+    }
+  },
 
-    mounted() {
-      this.$bus.$on('cToggleFavorites', () => {
-        this.updateHeart();
-      });
+  methods: {
+    updateHeart() {
+      if (this.favorite)
+        this.$bus.$emit('decreaseFavorites');
+      else this.$bus.$emit('increaseFavorites');
 
-      if (this.data.beachId && this.$cookies.get(`favorites.beaches.${this.data.beachId}`) || this.data.eventId && this.$cookies.get(`favorites.events.${this.data.eventId}`))
-        this.favorite = true;
-    },
+      this.$bus.$emit('pToggleFavorites');
 
-    computed: {
-      getLink() {
-        if (this.data.beachId)
-          return `/beach-catalog?city=${this.data.locationId}`;
-        else (this.data.eventId)
-        return `/event-catalog?city=${this.data.locationId}`;
-      },
+      this.favorite = !this.favorite;
 
-      beachType() {
-        if (this.data.beachType) {
-          if (this.data.beachType == 'Галечные пляжи')
-            return 'Галька';
-          else if (this.data.beachType == 'Песчаные пляжи')
-            return 'Песок';
-          else if (this.data.beachType == 'Ракушечные пляжи')
-            return 'Ракушки';
-        } else {
-          return null;
+      if (this.data.beachId) {
+        if (this.$cookies.get(`favorites.beaches.${this.data.beachId}`))
+          this.$cookies.set(`favorites.beaches.${this.data.beachId}`, true, {
+            maxAge: -1 // remove
+          });
+        else {
+          this.$cookies.set(`favorites.beaches.${this.data.beachId}`, true, {
+            maxAge: 30 * 24 * 60 * 60 // one month
+          });
         }
-      },
-      isEvent() {
-        return this.$route.path.includes('event')
-      }
-    },
-
-    methods: {
-      updateHeart() {
-        if (this.favorite)
-          this.$bus.$emit('decreaseFavorites');
-        else this.$bus.$emit('increaseFavorites');
-
-        this.$bus.$emit('pToggleFavorites');
-
-        this.favorite = !this.favorite;
-
-        if (this.data.beachId) {
-          if (this.$cookies.get(`favorites.beaches.${this.data.beachId}`))
-            this.$cookies.set(`favorites.beaches.${this.data.beachId}`, true, {
-              maxAge: -1 // remove
-            });
-          else {
-            this.$cookies.set(`favorites.beaches.${this.data.beachId}`, true, {
-              maxAge: 30 * 24 * 60 * 60 // one month
-            });
-          }
-        } else if (this.data.eventId) {
-          if (this.$cookies.get(`favorites.events.${this.data.eventId}`))
-            this.$cookies.set(`favorites.events.${this.data.eventId}`, true, {
-              maxAge: -1 // one month
-            });
-          else {
-            this.$cookies.set(`favorites.events.${this.data.eventId}`, true, {
-              maxAge: 30 * 24 * 60 * 60 // one month
-            });
-          }
+      } else if (this.data.eventId) {
+        if (this.$cookies.get(`favorites.events.${this.data.eventId}`))
+          this.$cookies.set(`favorites.events.${this.data.eventId}`, true, {
+            maxAge: -1 // one month
+          });
+        else {
+          this.$cookies.set(`favorites.events.${this.data.eventId}`, true, {
+            maxAge: 30 * 24 * 60 * 60 // one month
+          });
         }
       }
     }
   }
+}
 </script>

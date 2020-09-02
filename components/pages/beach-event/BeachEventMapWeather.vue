@@ -299,31 +299,33 @@
               }
 
 // adding customs
-                let parkingIcon = maps.templateLayoutFactory.createClass(
-                    `<div class="map__beach-parking-icon"></div>`
-                  ),
-                  customObjectManager = new maps.ObjectManager({
-                    geoObjectOpenBalloonOnClick: true
-                  });
-                this.map.geoObjects.add(customObjectManager);
-
+              let customObjectManager = new maps.ObjectManager({
+                geoObjectOpenBalloonOnClick: true
+              }),
+                parkingIcon = maps.templateLayoutFactory.createClass(
+                  `<div class="map__beach-parking-icon"></div>`
+                );
+            //  this.map.geoObjects.add(objectManager);
+              this.map.geoObjects.add(customObjectManager);
+              if (this.mapData && this.mapData.length) {
                 for (let i = 0; i < this.mapData.length; i++) {
                   let balloonLayout = maps.templateLayoutFactory.createClass(`
                       <div class="map-popup map-popup--bottom">
-                      <div class="map-popup__pic-area">
-                          <div class="map-popup__slider">
-                              <div class="swiper-container" id="balloon-swiper">
-                                  <div class="swiper-wrapper">
-                                     <img class="map__img" src="${this.mapData[i].preview}" alt="">
+                        <a href="${this.mapData[i].url}" style="color: #393e48">
+                          <div class="map-popup__pic-area">
+                              <div class="map-popup__slider">
+                                  <div class="swiper-container" id="balloon-swiper">
+                                      <div class="swiper-wrapper">
+                                         <img class="map__img" src="${this.mapData[i].preview}" alt="">
+                                      </div>
                                   </div>
                               </div>
                           </div>
-                      </div>
-                      <div class="map-popup__info-area">
-                          <a href="${this.mapData[i].url}" class="map-popup__title">${this.mapData[i].name}</a>
-                          <p>${this.mapData[i].type.NAME}</p>
-                          <p>${this.mapData[i].type.DESCRIPTION}</p>
-                      </div>
+                          <div class="map-popup__info-area">
+                              <div class="map-popup__title">${this.mapData[i].name}</div>
+                              <p>${this.mapData[i].type.DESCRIPTION}</p>
+                          </div>
+                        </a>
                   </div>
               `, {
                     build() {
@@ -376,6 +378,8 @@
                     }]
                   });
                 }
+              }
+
                 const customObjectEvent = (e) => {
                   const objectId = e.get('objectId');
                   if (e.get('type') == 'mouseenter') {
@@ -447,12 +451,15 @@
       // making the map
       this.initMap();
 
-      window.addEventListener('resize', this.onResize);
-    },
-    created() {
-      this.$bus.$on('call-balloon-weather', (id, coords) => {
-        this.goto(id, coords);
-      })
-    }
+    window.addEventListener('resize', this.onResize);
+  },
+  created() {
+    this.$bus.$on('call-balloon-weather', (id, coords) => {
+      this.goto(id, coords);
+    })
+  },
+  beforeDestroy() {
+    this.$bus.$off('call-balloon-weather')
   }
+}
 </script>

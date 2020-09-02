@@ -25,7 +25,8 @@
         chosenAuto: -1,
         chosenBus: -1,
         chosenObject: -1,
-        map: null
+        map: null,
+        mobile: 1025
       }
     },
 
@@ -35,7 +36,7 @@
         this.map.panTo(coords.map(e => Number(e)), {
           safe: true
         }).then(() => {
-          this.map.setZoom(23);
+          this.map.setZoom(20);
           this.map.geoObjects.get(0).objects.balloon.open(i)
         })
       },
@@ -96,7 +97,19 @@
               let features = [];
               if (this.additional && this.additional.length) {
                 this.additional.forEach((el, i) => {
-                  let {pos, id, title, pic, description} = el;
+                  let {pos, id, title, pic, description, pictures, map_pic} = el;
+                  let slides = [];
+                  if (pictures) {
+                    for (let k = 0; k < pictures.length; k++) {
+                      slides.push(`
+                      <div class="swiper-slide map-swiper-d">
+                        <div class="beach-event__visitor-pics__pic-area" style="height: 90px; width: 135px;">
+                          <img src="${pictures[k]}" style="border-radius: 12px;">
+                        </div>
+                      </div>
+                    `);
+                    }
+                  }
                   let icon = maps.templateLayoutFactory.createClass(
                     `<div class="map__beach-icon">
                     <div class="map__beach-caption">${title}</div>
@@ -111,24 +124,144 @@
                     },
                     options: {
                       iconLayout: 'default#imageWithContent',
-                      iconImageHref: pic || '/pics/global/svg/map_beach_72dpi.svg',
+                      iconImageHref: (map_pic || pic) || '/pics/global/svg/map_beach_72dpi.svg',
                       // iconContentLayout: icon,
                       iconImageSize: [30, 43],
                       minWidth: 200,
                       minHeight: 50,
+                      zIndexActive: 2000,
+                      zIndexDrag: 2000,
+                      zIndexHover: 2000,
+                      zIndex: 2000,
                       iconImageOffset: [-18, -50],
-                      hintLayout: maps.templateLayoutFactory.createClass("<div class='my-hint'>" +
+                      balloonLayout: maps.templateLayoutFactory.createClass("<div class='my-hint features'>" +
                         `<div class='header'>${title}</div><br />` +
-                        `<div class='description'>${description}</div>` +
-                        "</div>"
+                        `<div class='description'>${description}</div>`+
+                        `<div class="beach-event__visitor-pics__slider" style='height: 100%'>
+                          <div class="swiper-container" id='balloon-swiper'>
+                            <div class="swiper-wrapper">
+                               ${slides.join('')}
+                            </div>
+                          </div>
+                          <button class="slider__arrow-left slider__arrow-left-balloon ${slides && slides.length <= 2 ? 'd-none': ''}"
+                                  style="transform: translate(-50%, -50%); top: 50%; opacity: 1 !important; display: none; left: 13px">
+                            <img src="/pics/global/svg/slider_arrow_left.svg" alt="Налево">
+                          </button>
+                          <button class="slider__arrow-right slider__arrow-right-balloon ${slides && slides.length <= 2 ? 'd-none': ''}"
+                                  style="transform: translate(50%, -50%); top: 50%; opacity: 1 !important; display: none; right: 13px">
+                            <img src="/pics/global/svg/slider_arrow_right.svg" alt="Направо">
+                          </button>
+                        </div>` +
+                        "</div>", {
+                          build() {
+                            this.constructor.superclass.build.call(this);
+
+                            if (!pictures || pictures.length <= 0) {
+                              document.querySelector(`.beach-event__visitor-pics__slider`).style.display = 'none'
+                            }
+
+                            // init the swiper
+                            this.swiper = new Swiper(`#balloon-swiper`, {
+                              slidesPerView: 2,
+                              on: {
+                                imagesReady: function() {
+                                  let left = document.querySelector(`.slider__arrow-left-balloon`);
+                                  let right = document.querySelector(`.slider__arrow-right-balloon`);
+                                  this.isBeginning === false ? left.style.display = 'block' : left.style.display = 'none';
+                                  this.isEnd === false ? right.style.display = 'block' : right.style.display = 'none'
+                                },
+                                slideChange: function() {
+                                  let left = document.querySelector(`.slider__arrow-left-balloon`);
+                                  let right = document.querySelector(`.slider__arrow-right-balloon`);
+                                  this.isBeginning === false ? left.style.display = 'block' : left.style.display = 'none';
+                                  this.isEnd === false ? right.style.display = 'block' : right.style.display = 'none'
+                                }
+                              }
+                            });
+
+                            // init the arrows
+                            document.querySelector(`.slider__arrow-left-balloon`).addEventListener('click', () => this.swiper.slidePrev());
+                            document.querySelector(`.slider__arrow-right-balloon`).addEventListener('click', () => this.swiper.slideNext());
+                          },
+                          clear() {
+                            this.swiper.destroy();
+
+                            this.constructor.superclass.clear.call(this);
+                          },
+                          getShape() {
+                            return new maps.shape.Rectangle(new maps.geometry.pixel.Rectangle([
+                              [25, 0], [275, 0] // balloon's width is always 300 and -25 for the margin
+                            ]));
+                          },
+                        }
+                      ),
+                      balloonContentLayout: '',
+                      balloonOffset: this.mobile > 600 ? [-155, -5] : [-170, -150],
+                      balloonPane: 'balloon',
+                      balloonAutoPan: true,
+                      balloonPanelMaxMapArea: 0,
+                      hintLayout: maps.templateLayoutFactory.createClass("<div class='my-hint features'>" +
+                        `<div class='header'>${title}</div><br />` +
+                        `<div class='description'>${description} ${slides.length}</div>` +
+                        `<div class="beach-event__visitor-pics__slider" style='height: 100%'>
+                          <div class="swiper-container" id='balloon-swiper'>
+                            <div class="swiper-wrapper">
+                               ${slides.join('')}
+                            </div>
+                          </div>
+                          <button class="slider__arrow-left slider__arrow-left-balloon ${slides && slides.length <= 2 ? 'd-none': ''}"
+                                  style="transform: translate(-50%, -50%); top: 50%; opacity: 1 !important; display: none; left: 13px">
+                            <img src="/pics/global/svg/slider_arrow_left.svg" alt="Налево">
+                          </button>
+                          <button class="slider__arrow-right slider__arrow-right-balloon ${slides && slides.length <= 2 ? 'd-none': ''}"
+                                  style="transform: translate(50%, -50%); top: 50%; opacity: 1 !important; display: none; right: 13px">
+                            <img src="/pics/global/svg/slider_arrow_right.svg" alt="Направо">
+                          </button>
+                        </div>` +
+                        "</div>",{
+                        build() {
+                          this.constructor.superclass.build.call(this);
+
+                          if (!pictures || pictures.length <= 0) {
+                            document.querySelector(`.beach-event__visitor-pics__slider`).style.display = 'none'
+                          }
+
+                          // init the swiper
+                          this.swiper = new Swiper(`#balloon-swiper`, {
+                            slidesPerView: 2,
+                            on: {
+                              imagesReady: function () {
+                                let left = document.querySelector(`.slider__arrow-left-balloon`);
+                                let right = document.querySelector(`.slider__arrow-right-balloon`);
+                                this.isBeginning === false ? left.style.display = '' : left.style.display = 'none';
+                                this.isEnd === false ? right.style.display = '' : right.style.display = 'none'
+                              },
+                              slideChange: function() {
+                                let left = document.querySelector(`.slider__arrow-left-balloon`);
+                                let right = document.querySelector(`.slider__arrow-right-balloon`);
+                                this.isBeginning === false ? left.style.display = '' : left.style.display = 'none';
+                                this.isEnd === false ? right.style.display = '' : right.style.display = 'none'
+                              }
+                            }
+                          });
+
+                          // init the arrows
+                          document.querySelector(`.slider__arrow-left-balloon`).addEventListener('click', () => this.swiper.slidePrev());
+                          document.querySelector(`.slider__arrow-right-balloon`).addEventListener('click', () => this.swiper.slideNext());
+                        },
+                          clear() {
+                            this.swiper.destroy();
+
+                            this.constructor.superclass.clear.call(this);
+                          },
+                          getShape() {
+                            return new maps.shape.Rectangle(new maps.geometry.pixel.Rectangle([
+                              [0, 0], [1000, 350] // balloon's width is always 300 and -25 for the margin
+                            ]));
+                          },
+                      }
                       ),
                     },
-                    properties: {
-                      balloonContentBody: "<div class='my-balloon'>" +
-                        `<div class='header'>${title}</div><br />` +
-                        `<div class='description'>${description}</div>` +
-                        "</div>"
-                    }
                   })
                 })
               }
@@ -409,75 +542,79 @@
 
               // adding customs
 
-              for (let i = 0; i < this.mapData.length; i++) {
-                balloonLayout = maps.templateLayoutFactory.createClass(`
+              if (this.mapData && this.mapData.length) {
+                for (let i = 0; i < this.mapData.length; i++) {
+                  balloonLayout = maps.templateLayoutFactory.createClass(`
                       <div class="map-popup map-popup--bottom">
-                      <div class="map-popup__pic-area">
-                          <div class="map-popup__slider">
-                              <div class="swiper-container" id="balloon-swiper">
-                                  <div class="swiper-wrapper">
-                                     <img class="map__img" src="${this.mapData[i].preview}" alt="">
+                        <a href="${this.mapData[i].url}" style="color: #393e48">
+                          <div class="map-popup__pic-area">
+                              <div class="map-popup__slider">
+                                  <div class="swiper-container" id="balloon-swiper">
+                                      <div class="swiper-wrapper">
+                                         <img class="map__img" src="${this.mapData[i].preview}" alt="">
+                                      </div>
                                   </div>
                               </div>
                           </div>
-                      </div>
-                      <div class="map-popup__info-area">
-                          <a href="${this.mapData[i].url}" class="map-popup__title">${this.mapData[i].name}</a>
-                          <p>${this.mapData[i].type.NAME}</p>
-                          <p>${this.mapData[i].type.DESCRIPTION}</p>
-                      </div>
+                          <div class="map-popup__info-area">
+                              <div class="map-popup__title">${this.mapData[i].name}</div>
+                              <p>${this.mapData[i].type.DESCRIPTION}</p>
+                          </div>
+                        </a>
                   </div>
               `, {
-                  build() {
-                    this.constructor.superclass.build.call(this);
-                  },
-
-                  clear() {
-                    this.constructor.superclass.clear.call(this);
-                  },
-
-                  getShape() {
-                    return new maps.shape.Rectangle(new maps.geometry.pixel.Rectangle([
-                      [25, 0], [275, 0] // balloon's width is always 300 and -25 for the margin
-                    ]));
-                  },
-
-                  _isElement(element) {
-                    return element && element[0];
-                  }
-                });
-
-                customObjectManager.add({
-                  type: "FeatureCollection",
-                  features: [{
-                    type: "Feature",
-                    id: i,
-                    geometry: {
-                      type: "Point",
-                      coordinates: this.mapData[i] ? this.mapData[i].coordinates : [0, 0]
+                    build() {
+                      this.constructor.superclass.build.call(this);
                     },
-                    options: {
-                      iconLayout: 'default#imageWithContent',
-                      iconImageHref: '/pics/global/svg/beach_blue.svg',
-                      iconContentLayout: parkingIcon,
-                      iconImageSize: [27, 40],
-                      iconImageOffset: [-18, -50],
-                      hideIconOnBalloonOpen: false,
-                      balloonShadow: false,
-                      balloonLayout: balloonLayout,
-                      balloonContentLayout: '',
-                      balloonOffset: [-155, -345],
-                      balloonPane: 'balloon',
-                      balloonAutoPan: true,
-                      balloonPanelMaxMapArea: 0,
-                      hintLayout: maps.templateLayoutFactory.createClass("<div class='my-hint'>" +
-                        `<b>${this.mapData[i].name}</b><br />` +
-                        "</div>"
-                      )
+
+                    clear() {
+                      this.constructor.superclass.clear.call(this);
                     },
-                  }]
-                });
+
+                    getShape() {
+                      return new maps.shape.Rectangle(new maps.geometry.pixel.Rectangle([
+                        [25, 0], [275, 0] // balloon's width is always 300 and -25 for the margin
+                      ]));
+                    },
+
+                    _isElement(element) {
+                      return element && element[0];
+                    }
+                  });
+
+                  customObjectManager.add({
+                    type: "FeatureCollection",
+                    features: [{
+                      type: "Feature",
+                      id: i,
+                      geometry: {
+                        type: "Point",
+                        coordinates: this.mapData[i] ? this.mapData[i].coordinates : [0, 0]
+                      },
+                      options: {
+                        iconLayout: 'default#imageWithContent',
+                        iconImageHref: '/pics/global/svg/beach_blue.svg',
+                        iconContentLayout: parkingIcon,
+                        iconImageSize: [27, 40],
+                        iconImageOffset: [-18, -50],
+                        hideIconOnBalloonOpen: false,
+                        balloonShadow: false,
+                        balloonLayout: balloonLayout,
+                        balloonContentLayout: '',
+                        balloonOffset: [-155, -345],
+                        balloonPane: 'balloon',
+                        balloonAutoPan: true,
+                        balloonPanelMaxMapArea: 0,
+                        hintLayout: maps.templateLayoutFactory.createClass("<div class='my-hint'>" +
+                          `<b>${this.mapData[i].name}</b><br />` +
+                          "</div>"
+                        )
+                      },
+                    }]
+                  });
+                }
               }
+
               const customObjectEvent = (e) => {
                 const objectId = e.get('objectId');
                 if (e.get('type') == 'mouseenter') {
@@ -550,10 +687,12 @@
       onResize() {
         if (this.map)
           this.map.container.fitToViewport();
-      }
+      },
     },
 
-    mounted() {
+    async mounted() {
+      // requiring the Swiper
+      require('~/plugins/swiper.min').__proto__;
       this.initMap();
 
       window.addEventListener('resize', this.onResize);
@@ -562,6 +701,19 @@
       this.$bus.$on('call-balloon-service', (id, coords) => {
         this.goto(id, coords);
       })
+        if (process.browser) {
+          this.mobile = window.innerWidth
+          window.onresize = () => {
+            this.mobile = window.innerWidth
+          }
+        }
+    },
+    beforeDestroy() {
+      window.onresize = null
+    },
+    beforeDestroy() {
+      this.$bus.$off('showOnMap');
+      this.$bus.$off('call-balloon-service')
     }
   }
 </script>

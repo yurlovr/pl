@@ -197,6 +197,23 @@
         geoLocating: false
       };
     },
+    beforeDestroy() {
+      this.$bus.$off('changeToggle');
+      this.$bus.$off('showCorrectSelectText');
+      this.$bus.$off('dontShowCorrectSelectText');
+      this.$bus.$off('showBgAndBar');
+      this.$bus.$off('hideBgAndBar');
+      this.$bus.$off('tempShowMobileSearchBar');
+      this.$bus.$off('tempHideMobileSearchBar');
+      this.$bus.$off('toggleMobileSearchBar');
+      this.$bus.$off('showParams');
+      this.$bus.$off('hideParams');
+      this.$bus.$off('updateSearchParam');
+      this.$bus.$off('search');
+      this.$bus.$off('emptySearchParams');
+      this.$bus.$off('updateSearchInput');
+      // window.removeEventListener('resize', this.onResize, true);
+    },
 
     mounted() {
       window.addEventListener('resize', this.onResize);
@@ -346,7 +363,8 @@
               this.$cookies.set('last_coordinates', JSON.stringify(my_coords), {
                 maxAge: 30 * 24 * 60 * 60 // one month
               });
-              this.$bus.$emit('position-modal', true, my_coords);
+              this.$store.commit('setChoosePosition', true)
+              this.$store.commit('setLastUserPos', my_coords)
             }, err => {
               this.geoLocating = false;
               alert('Доступ к геолокации отклонён!')
@@ -404,7 +422,7 @@
             }, 1);
           }
         }
-        this.clearInput();
+        // this.clearInput();
         this.mobileSearchBarShown = false;
       },
 

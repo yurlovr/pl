@@ -13,8 +13,12 @@
 				active: false
 			};
 		},
+    beforeDestroy() {
+      this.$bus.$off('transition');
+      this.$bus.$off('hidePageTransitioner');
+    },
 
-		mounted() {
+    mounted() {
 			let	left = document.getElementById('page-transitioner__left'),
 				right = document.getElementById('page-transitioner__right'),
 				logo = document.getElementById('page-transitioner__logo'),

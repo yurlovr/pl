@@ -1,13 +1,21 @@
 <template>
     <div class="slider-beh">
         <div v-swiper:mySwiper="swiperOption">
-            <div class="swiper-wrapper">
-                <Card v-if="data"
+            <div class="swiper-wrapper" v-if="data">
+                <Card
+                    v-if="!data.cardData.some(e => e.id == 'fake')"
                     v-for="(slide, i) in data.cardData"
                     :data="slide"
                     :key="i"
                     class="swiper-slide"
                 />
+              <despodencyCard
+                v-else
+                v-for="(slide, i) in data.cardData"
+                :data="slide"
+                :key="i"
+                class="swiper-slide"
+              />
             </div>
         </div>
         <div class="pagination-wrapper">
@@ -47,6 +55,7 @@
 <script>
 import Vue from 'vue';
 import Card from '~/components/global/Card';
+import despodencyCard from "../despodencyCard";
 
 export default {
     props: ['data'],
@@ -60,7 +69,8 @@ export default {
     },
 
     components: {
-        Card
+        Card,
+        despodencyCard
     },
 
     data () {
@@ -93,16 +103,16 @@ export default {
         };
     },
 
-    mounted () {
-        this.mySwiper.on('imagesReady', () => {
-            window.addEventListener('resize', this.onResize);
-            this.onResize();
-        });
+  mounted () {
+    this.mySwiper.on('imagesReady', () => {
+      window.addEventListener('resize', this.onResize);
+      this.onResize();
+    });
 
-        this.mySwiper.on('slideChange', () => {
-            this.updateArrows();
-            this.activeIndex = this.mySwiper.activeIndex;
-        });
+    this.mySwiper.on('slideChange', () => {
+      this.updateArrows();
+      this.activeIndex = this.mySwiper.activeIndex;
+    });
 
         this.mySwiper.init(this.swiperOption);
         this.updateArrows();

@@ -40,8 +40,11 @@
 				Vue.use(VueAwesomeSwiper);
 			}
 		},
+    beforeDestroy() {
+      this.$bus.$off('mainPageReady')
+    },
 
-		data() {
+    data() {
 			return {
 				swiperOption: {
 					spaceBetween: 24,

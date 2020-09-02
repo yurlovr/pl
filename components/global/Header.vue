@@ -49,7 +49,21 @@
 			...mapGetters('search', ['paramsShown'])
 		},
 
-		mounted() {
+    beforeDestroy() {
+      this.$bus.$off('hideHeaderBgAndBar');
+
+      this.$bus.$off('tempHideHeaderBgAndBar');
+
+      this.$bus.$off('showHeaderBgAndBar');
+
+      this.$bus.$off('tempShowHeaderBgAndBar');
+
+      this.$bus.$off('increaseFavorites');
+
+      this.$bus.$off('decreaseFavorites');
+    },
+
+    mounted() {
 			this.$bus.$on('hideHeaderBgAndBar', () => {
 				this.bgAndBarShown = false;
 			});

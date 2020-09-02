@@ -44,7 +44,13 @@
         visited: [],
         beachesToShow: [],
         eventsToShow: [],
-        meta: {}
+      }
+    },
+
+    async asyncData( {$axios, route}){
+      const {data} = await $axios.$get('seo/meta?url=' + route.fullPath)
+      return {
+        meta: data
       }
     },
     head() {
@@ -60,6 +66,14 @@
           {hid: 'keywords-beach', name: 'keywords', content: this.meta.keywords || stable},
         ]
       }
+    },
+
+    beforeDestroy() {
+      this.$bus.$off('visitedAdd');
+      this.$bus.$off('visitedRemove');
+      this.$bus.$off('favoriteBeachRemoved');
+      this.$bus.$off('favoriteEventAdded');
+      this.$bus.$off('favoriteEventRemoved');
     },
 
     async created() {
