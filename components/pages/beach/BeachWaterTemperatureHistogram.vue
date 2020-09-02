@@ -229,6 +229,7 @@ export default {
             tooltipEl.style.padding = '5px 12px';
             tooltipEl.style.pointerEvents = 'none';
             tooltipEl.style.transition = '0.23s';
+            tooltipEl.style.zIndex = 999999;
           }
         },
         responsive: true,
