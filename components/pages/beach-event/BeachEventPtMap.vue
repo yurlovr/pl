@@ -163,6 +163,7 @@
                             // init the swiper
                             this.swiper = new Swiper(`#balloon-swiper`, {
                               slidesPerView: 2,
+                              slidesPerGroup: 3,
                               on: {
                                 imagesReady: function() {
                                   let left = document.querySelector(`.slider__arrow-left-balloon`);
@@ -229,6 +230,7 @@
                           // init the swiper
                           this.swiper = new Swiper(`#balloon-swiper`, {
                             slidesPerView: 2,
+                            slidesPerGroup: 3,
                             on: {
                               imagesReady: function () {
                                 let left = document.querySelector(`.slider__arrow-left-balloon`);
