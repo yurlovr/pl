@@ -163,7 +163,7 @@
               <div class="swiper-wrapper">
                 <div class="swiper-slide" v-for="(pic, i) in data.pics" :key="i">
                   <div class="position-relative">
-                        <span class="zoom-img" @click="$refs.beachZoomModal.showZoomModal(pic)" v-show="zoom_plus_show">
+                        <span v-if="!pic.includes('youtube')" class="zoom-img" @click="$refs.beachZoomModal.showZoomModal(pic)" v-show="zoom_plus_show">
                              <img src="~/static/pics/search/loop_plus.svg">
                         </span>
                     <div v-if="!pic.includes('youtube')">
