@@ -187,22 +187,11 @@
               </div>
             </div>
             <button class="slider__arrow-left" :style="{ display: showLeft ? '' : 'none' }"
-                    @click=" () => {
-                      mySwiperModal.slidePrev();
-                      zoomController();
-                      $nextTick(() => {
-                        zoomController();
-                      })
-                    }">
+                    @click=" () => { mySwiperModal.slidePrev(); }">
               <img src="~/static/pics/global/svg/slider_arrow_left.svg" alt="Налево">
             </button>
             <button class="slider__arrow-right" :style="{ display: showRight ? '' : 'none' }"
-                    @click="() => {
-                      mySwiperModal.slideNext();
-                      $nextTick(() => {
-                        zoomController();
-                      })
-                    }">
+                    @click="() => { mySwiperModal.slideNext(); }">
               <img src="~/static/pics/global/svg/slider_arrow_right.svg" alt="Направо">
             </button>
           </div>
@@ -210,11 +199,7 @@
             <div v-swiper:mySwiperModalSmall="swiperModalSmallOption">
               <div class="swiper-wrapper">
                 <div class="swiper-slide" v-for="(pic, i) in data.pics" :key="i" :class="{ active: activeIndex == i }"
-                     @click="() => {
-                     mySwiperModal.slideTo(i);
-                     $nextTick(() => {
-                        zoomController();
-                      })}">
+                     @click="() => { mySwiperModal.slideTo(i); }">
                   <img v-lazy-load :data-src="pic" v-if="!pic.includes('youtube')">
                   <!--                  modal true-->
                   <div v-else class="w-100 h-100">
@@ -297,6 +282,8 @@
     data() {
       return {
         zoom_plus_show: true,
+        interval_show: 0,
+        interval_plus: null,
         index: null,
         mobile: 1024,
         swiperOption: {
@@ -354,10 +341,11 @@
 
       this.mySwiperModal.on('slideChange', () => {
         if (this.modalOpen) {
+          this.interval_show = 0;
+          clearInterval(this.interval_plus);
           this.mySwiper.slideTo(this.mySwiperModal.activeIndex);
-          this.$nextTick(() => {
-            this.zoomController();
-          })
+          this.zoom_plus_show = true;
+          this.zoomController();
         }
       });
 
@@ -371,12 +359,13 @@
     methods: {
       zoomController(){
         console.warn('zoom controller')
-        this.zoom_plus_show = true;
-        this.$nextTick(()=>{
-          setTimeout(()=> {
+        this.interval_plus = setInterval(() => {
+          this.interval_show++;
+          if (this.interval_show >= 2) {
             this.zoom_plus_show = false;
-          }, 3000)
-        })
+            clearInterval(this.interval_plus)
+          }
+        }, 1000)
       },
       bigModalOpen(){
         this.modalOpen = !this.modalOpen;
