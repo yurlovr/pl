@@ -76,7 +76,7 @@
         </button>
         <div v-swiper:mySwiper="swiperOption">
           <div class="swiper-wrapper">
-            <div class="swiper-slide" v-for="(pic, i) in data.pics" :key="i">
+            <div class="swiper-slide" v-for="(pic, i) in data.medium_pics" :key="i">
               <img v-lazy-load :data-src="pic" v-if="!pic.includes('youtube')">
               <div v-else class="w-100 h-100">
                 <no-ssr>
@@ -102,9 +102,9 @@
             </div>
           </div>
         </div>
-        <div class="pagination-wrapper" v-if="data.pics.length > 1">
+        <div class="pagination-wrapper" v-if="data.medium_pics.length > 1">
           <div class="custom-pagination">
-            <button @click="mySwiper.slideTo(i)" class="custom-pagination-bullet" v-for="(b,i) in data.pics.length"
+            <button @click="mySwiper.slideTo(i)" class="custom-pagination-bullet" v-for="(b,i) in data.medium_pics.length"
                     :class="{ 'custom-pagination-bullet-active' : i == activeIndex }"></button>
           </div>
         </div>
@@ -121,11 +121,11 @@
       </div>
     </div>
     <div class="slider-beach-event__right">
-      <div class="slider-beach-event__right__item" v-for="(pic, i) in data.pics" :key="i" v-if="i != 0 && i <= 6"
+      <div class="slider-beach-event__right__item" v-for="(pic, i) in data.medium_pics" :key="i" v-if="i != 0 && i <= 6"
            :style="{ height: getRightPicsHeight }">
         <div class="slider-beach-event__right__item__inner" @click="openModal(i)" v-if="!pic.includes('youtube')">
           <img v-lazy-load :data-src="pic">
-          <span v-if="i == 6 && data.pics.length - 7 > 0">+{{ data.pics.length - 7 }}</span>
+          <span v-if="i == 6 && data.medium_pics.length - 7 > 0">+{{ data.medium_pics.length - 7 }}</span>
         </div>
         <!--        page-->
         <div v-else class="slider-beach-event__right__item__inner" @click="openModal(i, true, 'model')">
@@ -163,7 +163,7 @@
               <div class="swiper-wrapper">
                 <div class="swiper-slide" v-for="(pic, i) in data.pics" :key="i">
                   <div class="position-relative">
-                        <span class="zoom-img" @click="$refs.beachZoomModal.showZoomModal(pic)" v-show="zoom_plus_show">
+                        <span v-if="!pic.includes('youtube')" class="zoom-img" @click="$refs.beachZoomModal.showZoomModal(pic)" v-show="zoom_plus_show">
                              <img src="~/static/pics/search/loop_plus.svg">
                         </span>
                     <div v-if="!pic.includes('youtube')">
@@ -187,22 +187,11 @@
               </div>
             </div>
             <button class="slider__arrow-left" :style="{ display: showLeft ? '' : 'none' }"
-                    @click=" () => {
-                      mySwiperModal.slidePrev();
-                      zoomController();
-                      $nextTick(() => {
-                        zoomController();
-                      })
-                    }">
+                    @click=" () => { mySwiperModal.slidePrev(); }">
               <img src="~/static/pics/global/svg/slider_arrow_left.svg" alt="Налево">
             </button>
             <button class="slider__arrow-right" :style="{ display: showRight ? '' : 'none' }"
-                    @click="() => {
-                      mySwiperModal.slideNext();
-                      $nextTick(() => {
-                        zoomController();
-                      })
-                    }">
+                    @click="() => { mySwiperModal.slideNext(); }">
               <img src="~/static/pics/global/svg/slider_arrow_right.svg" alt="Направо">
             </button>
           </div>
@@ -210,7 +199,7 @@
             <div v-swiper:mySwiperModalSmall="swiperModalSmallOption">
               <div class="swiper-wrapper">
                 <div class="swiper-slide" v-for="(pic, i) in data.pics" :key="i" :class="{ active: activeIndex == i }"
-                     @click="mySwiperModal.slideTo(i)">
+                     @click="() => { mySwiperModal.slideTo(i); }">
                   <img v-lazy-load :data-src="pic" v-if="!pic.includes('youtube')">
                   <!--                  modal true-->
                   <div v-else class="w-100 h-100">
@@ -293,6 +282,8 @@
     data() {
       return {
         zoom_plus_show: true,
+        interval_show: 0,
+        interval_plus: null,
         index: null,
         mobile: 1024,
         swiperOption: {
@@ -349,8 +340,13 @@
       });
 
       this.mySwiperModal.on('slideChange', () => {
-        if (this.modalOpen)
+        if (this.modalOpen) {
+          this.interval_show = 0;
+          clearInterval(this.interval_plus);
           this.mySwiper.slideTo(this.mySwiperModal.activeIndex);
+          this.zoom_plus_show = true;
+          this.zoomController();
+        }
       });
 
       this.mySwiper.init(this.swiperOption);
@@ -363,12 +359,13 @@
     methods: {
       zoomController(){
         console.warn('zoom controller')
-        this.zoom_plus_show = true;
-        this.$nextTick(()=>{
-          setTimeout(()=> {
+        this.interval_plus = setInterval(() => {
+          this.interval_show++;
+          if (this.interval_show >= 2) {
             this.zoom_plus_show = false;
-          }, 3000)
-        })
+            clearInterval(this.interval_plus)
+          }
+        }, 1000)
       },
       bigModalOpen(){
         this.modalOpen = !this.modalOpen;

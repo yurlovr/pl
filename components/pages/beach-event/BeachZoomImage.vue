@@ -5,6 +5,7 @@
     </button>
     <div class="slider-beach-event__modal__inner zoom-modal-inner">
       <v-zoomer :max-scale="10"
+                :limit-translation="false"
                 style="width: 100%; height: 100%"
                 ref="zoomer">
       <img :src="imageUrl" alt="" title="Двойной клик - максимально увеличить/уменьшить изображение">
