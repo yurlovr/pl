@@ -154,7 +154,7 @@ export const getters = {
     },
     beachData: (state) => {
         if (!state.beach.data) return null;
-
+console.log('33333',  state.beach.data.item.PHOTOS)
         let ret = {
             avgRating: {
                 rating: parseFloat(state.beach.data.item.RATING.RATING),
@@ -210,6 +210,8 @@ export const getters = {
                 pics: !state.beach.data.item.VIDEO.LINK ?  state.beach.data.item.PHOTOS.reference.map(e => e.path)
                   : [...state.beach.data.item.PHOTOS.reference.map(e => e.path), state.beach.data.item.VIDEO.LINK],
                 sizes: state.beach.data.item.PHOTOS.reference.map(e => e.size),
+                medium_pics: !state.beach.data.item.VIDEO.LINK ?  state.beach.data.item.PHOTOS.medium.map(e => e.path)
+                  : [...state.beach.data.item.PHOTOS.medium.map(e => e.path), state.beach.data.item.VIDEO.LINK],
                 beachClosedText: state.beach.data.item.LABEL.TEXT,
                 beachClosedColor: state.beach.data.item.LABEL.COLOR,
                 beachClosedTooltip: state.beach.data.item.LABEL.DESCRIPTION,

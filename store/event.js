@@ -84,7 +84,8 @@ export const getters = {
       hugeSliderData: {
         title: state.event.data.item.NAME,
         isBeachClosed: false,
-        pics: state.event.data.item.PHOTOS.medium.map(e => e.path),
+        pics: state.event.data.item.PHOTOS.reference.map(e => e.path),
+        medium_pics: state.event.data.item.PHOTOS.medium.map(e => e.path),
         goldMedal: null,
         blueMedal: null
       },
