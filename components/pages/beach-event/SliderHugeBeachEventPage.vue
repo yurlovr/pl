@@ -210,7 +210,11 @@
             <div v-swiper:mySwiperModalSmall="swiperModalSmallOption">
               <div class="swiper-wrapper">
                 <div class="swiper-slide" v-for="(pic, i) in data.pics" :key="i" :class="{ active: activeIndex == i }"
-                     @click="mySwiperModal.slideTo(i)">
+                     @click="() => {
+                     mySwiperModal.slideTo(i);
+                     $nextTick(() => {
+                        zoomController();
+                      })}">
                   <img v-lazy-load :data-src="pic" v-if="!pic.includes('youtube')">
                   <!--                  modal true-->
                   <div v-else class="w-100 h-100">
@@ -349,8 +353,12 @@
       });
 
       this.mySwiperModal.on('slideChange', () => {
-        if (this.modalOpen)
+        if (this.modalOpen) {
           this.mySwiper.slideTo(this.mySwiperModal.activeIndex);
+          this.$nextTick(() => {
+            this.zoomController();
+          })
+        }
       });
 
       this.mySwiper.init(this.swiperOption);
