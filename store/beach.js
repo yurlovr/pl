@@ -106,7 +106,6 @@ export const getters = {
       let ret = {}
       if (state.hotels.data){
         let hotels = state.hotels.data.list
-        console.warn('fdssfdfds')
         ret.hotels = {
           title: 'Забронируй номер рядом с пляжем',
           subtitle: 'Наша подборка отелей, основанная на ваших отзывах',
