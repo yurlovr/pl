@@ -434,7 +434,6 @@ export const actions = {
   },
 
   async searchAutocomplete({commit, state}, [coords = null, city = -1]) {
-    console.warn(coords, city, 'coords city search autocomplite')
     commit('SET_MY_COORDS', coords);
     commit('SET_MY_CITY', city);
     let res = await this.$axios.$get(`search/autocomplete?q=${state.searchInput}`);
