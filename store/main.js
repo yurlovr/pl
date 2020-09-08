@@ -296,7 +296,7 @@ export const getters = {
                             title: family.BEACHES[i].NAME,
                             location: family.BEACHES[i].CITY ? family.BEACHES[i].CITY.NAME : null,
                             locationId: family.BEACHES[i].CITY ? family.BEACHES[i].CITY.ID : -1,
-                            pic: family.BEACHES[i].PHOTOS[0],
+                            pic: family.BEACHES[i].PHOTOS.medium && family.BEACHES[i].PHOTOS.medium.length ? family.BEACHES[i].PHOTOS.medium[0].path : null,
                             mainLink: `beach/${family.BEACHES[i].ID}`,
                             beachLink: `beach/${family.BEACHES[i].ID}`,
                             humanLink: family.BEACHES[i].CODE ? `beach/${family.BEACHES[i].CODE}` : null,
