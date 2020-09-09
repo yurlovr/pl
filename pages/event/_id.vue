@@ -35,8 +35,8 @@
     <div class="main-page__white-wrapper" v-if="eventData.another_places && eventData.another_places.beachNumber > 0">
       <BeachSliderArea :data="eventData.another_places" class="main-page__family-rest" outlink="https://nash.travel/hotel" />
     </div>
-    <div class="main-page__white-wrapper" v-if="eventData.hotels && eventData.hotels.beachNumber > 0">
-      <BeachSliderArea :data="eventData.hotels" class="main-page__family-rest" outlink="https://nash.travel/hotel" />
+    <div class="main-page__white-wrapper" v-if="hotelsData.hotels && hotelsData.hotels.beachNumber > 0">
+      <BeachSliderArea :data="hotelsData.hotels" class="main-page__family-rest" outlink="https://nash.travel/hotel" />
     </div>
 	</div>
 </template>
@@ -124,7 +124,7 @@
 		},
 
 		computed: {
-		    ...mapGetters('event', ['eventData']),
+		    ...mapGetters('event', ['eventData', 'hotelsData']),
         ...mapGetters(['mapEntity']),
 		},
     async created(){
