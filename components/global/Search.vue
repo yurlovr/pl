@@ -197,23 +197,6 @@
         geoLocating: false
       };
     },
-    destroyed() {
-      this.$bus.$off('changeToggle');
-      this.$bus.$off('showCorrectSelectText');
-      this.$bus.$off('dontShowCorrectSelectText');
-      this.$bus.$off('showBgAndBar');
-      this.$bus.$off('hideBgAndBar');
-      this.$bus.$off('tempShowMobileSearchBar');
-      this.$bus.$off('tempHideMobileSearchBar');
-      this.$bus.$off('toggleMobileSearchBar');
-      this.$bus.$off('showParams');
-      this.$bus.$off('hideParams');
-      this.$bus.$off('updateSearchParam');
-      this.$bus.$off('search');
-      this.$bus.$off('emptySearchParams');
-      this.$bus.$off('updateSearchInput');
-      // window.removeEventListener('resize', this.onResize, true);
-    },
 
     mounted() {
       window.addEventListener('resize', this.onResize);
