@@ -6,7 +6,7 @@
 			<a href="/" class="header__logo" @click.prevent="$bus.goTo('/', $router)">
 				<img  src="~/static/pics/global/svg/logo-white.svg" alt="НашПляж">
 			</a>
-			<Search v-show="(bgAndBarShown || tempBgAndBarShown)" />
+			<Search ref="searchGeneral" v-show="(bgAndBarShown || tempBgAndBarShown)" />
 			<div class="header__left">
 				<button class="header__search-button" @click="toggleSearch()" v-show="(bgAndBarShown || tempBgAndBarShown)">
 					<img  src="~/static/pics/global/svg/search_white.svg" alt="Поиск">
@@ -107,7 +107,7 @@
 			...mapMutations('search', ['updateParamsShown']),
 
 			toggleSearch() {
-				this.$bus.$emit('toggleMobileSearchBar');
+				this.$refs.searchGeneral.toggleMobileShow()
 			}
 		}
 	}

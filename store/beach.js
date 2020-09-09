@@ -153,7 +153,6 @@ export const getters = {
     },
     beachData: (state) => {
         if (!state.beach.data) return null;
-console.log('33333',  state.beach.data.item.PHOTOS)
         let ret = {
             avgRating: {
                 rating: parseFloat(state.beach.data.item.RATING.RATING),
