@@ -4649,6 +4649,11 @@ input {
         &:focus {
           outline: none;
         }
+
+        @media (max-width: 767px) {
+          right: unset;
+          left: 40px;
+        }
       }
 
       &__sides {
