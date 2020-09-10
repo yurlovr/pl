@@ -1,3 +1,5 @@
+import fakeData from './mainData.json'
+
 export const state = () => ({
   beachesTop: [],
   citiesTop: [],
@@ -64,6 +66,51 @@ export const mutations = {
 
 export const actions = {
   async getMainPageData({commit, state}, callback) {
+
+    let popularBeachReq = state.geo.id
+      ? this.$axios.$get(`/beach/list?city=${state.geo.id}&count=10`)
+      : this.$axios.$get('/beach/top?count=10');
+
+    const [
+      popularBeach,
+      mobileSettings,
+      cities,
+      weather,
+      collection,
+      collectionList,
+      banners,
+      map,
+      anyPlaces
+    ] = await Promise.all([
+      popularBeachReq,
+      this.$axios.$get('/settings/list'),
+      this.$axios.$get('/city/top?count=9999'),
+      this.$axios.$get('/weather/list'),
+      this.$axios.$get('/collection/list/'),
+      this.$axios.$get('/collectionList/list/'),
+      this.$axios.$get('/banner/list/'),
+      this.$axios.$get('/beach/clusters/'),
+      this.$axios.$get('/hotel/list?count=10'),
+    ]);
+
+    commit('SET_POPULAR_BEACH', popularBeach);
+    if (state.geo.id) {
+      commit('SET_GEO_COUNT', state.beachesTop.data ? state.beachesTop.data.list.length : 0)
+    }
+    callback();
+    commit('SET_MOBILE_SETTINGS', mobileSettings);
+    commit('SET_CITIES', cities);
+    commit('SET_WEATHER', weather);
+    commit('SET_COLLECTION', collection);
+    commit('SET_COLLECTION_LIST', collectionList);
+    commit('SET_BANNERS', banners);
+    commit('SET_MAP', map);
+    commit('SET_ANY_PLACES', anyPlaces);
+
+
+    console.warn('last callback')
+  },
+  async getMainPageData2({commit, state}, callback) {
     if (state.geo.id) {
       commit('SET_POPULAR_BEACH', await this.$axios.$get(`/beach/list?city=${state.geo.id}&count=10`));
       commit('SET_GEO_COUNT', state.beachesTop.data ? state.beachesTop.data.list.length : 0)
@@ -86,6 +133,10 @@ export const actions = {
 }
 
 export const getters = {
+  mainData2: () => {
+    console.log('getter start')
+    return fakeData;
+  },
     mainData: (state, getters, rootState, rootGetters) => {
         const google_pic = "https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png"
         let ret = {};

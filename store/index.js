@@ -22,11 +22,26 @@ export const mutations = {
 }
 
 export const actions = {
-  async nuxtServerInit({commit}) {
+  async nuxtServerInit2({commit}) {
     commit('SET_ALL_BEACHES', await this.$axios.$get('/beach/list?count=9999'));
     commit('SET_ALL_EVENTS', await this.$axios.$get('/event/list?count=9999'));
     commit('search/SET_SEARCH', await this.$axios.$get('search/config'));
     commit('SET_MAP_ENTITY', await this.$axios.$get('/map-entity/list?count=9999'));
+    commit('setLastUserPos', this.$cookies.get('last_coordinates') || {})
+  },
+  async nuxtServerInit({commit}) {
+    const [beaches, events, search, map] = await Promise.all([
+      this.$axios.$get('/beach/list?count=9999'),
+      this.$axios.$get('/event/list?count=9999'),
+      this.$axios.$get('search/config'),
+      this.$axios.$get('/map-entity/list?count=9999'),
+    ]);
+
+    commit('SET_ALL_BEACHES', beaches);
+    commit('SET_ALL_EVENTS', events);
+    commit('search/SET_SEARCH', search);
+    commit('SET_MAP_ENTITY', map);
+
     commit('setLastUserPos', this.$cookies.get('last_coordinates') || {})
   }
 }
