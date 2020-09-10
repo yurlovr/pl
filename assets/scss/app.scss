@@ -4654,6 +4654,10 @@ input {
           right: unset;
           left: 40px;
         }
+        @media (max-width: 500px) {
+          right: unset;
+          left: 10px;
+        }
       }
 
       &__sides {
