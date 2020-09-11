@@ -34,7 +34,10 @@
     },
 
     computed: {
-      ...mapState(['beaches', 'events', 'choose_position', 'user_coordinates'])
+      ...mapState([
+        'choose_position',
+        'user_coordinates'
+      ])
     },
 
     methods: {

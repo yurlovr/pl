@@ -36,10 +36,16 @@ export const actions = {
       this.$axios.$get('search/config'),
       this.$axios.$get('/map-entity/list?count=9999'),
     ]);
-
+    console.log('SET_ALL_BEACHES');
     commit('SET_ALL_BEACHES', beaches);
+
+    console.log('SET_ALL_EVENTS');
     commit('SET_ALL_EVENTS', events);
+
+    console.log('search/SET_SEARCH');
     commit('search/SET_SEARCH', search);
+
+    console.log('SET_MAP_ENTITY');
     commit('SET_MAP_ENTITY', map);
 
     commit('setLastUserPos', this.$cookies.get('last_coordinates') || {})
@@ -48,120 +54,101 @@ export const actions = {
 
 export const getters = {
   beachIds: (state) => {
-    if (!state.beaches.data) return [];
-
-    let ret = [];
-
-    for (let i = 0; i < state.beaches.data.list.length; i++) {
-      ret.push(state.beaches.data.list[i].ID);
-    }
-
-    return ret;
+    // console.log('getter beachIds');
+    return mapIDs(state.events.list)
   },
 
   eventIds: (state) => {
-    if (!state.events.data) return [];
-
-    let ret = [];
-
-    for (let i = 0; i < state.events.data.list.length; i++) {
-      ret.push(state.events.data.list[i].ID);
-    }
-
-    return ret;
+    // console.log('getter eventIds');
+    return mapIDs(state.events.list)
   },
 
   beaches: (state) => {
-    if (!state.beaches.data) return [];
-
-    let ret = [];
-
-    for (let i = 0; i < state.beaches.data.list.length; i++) {
-      ret.push({
-        access: state.beaches.data.list[i].ACCESS || null,
-        tempWater: state.beaches.data.list[i].WEATHER && state.beaches.data.list[i].WEATHER.TEMP ? state.beaches.data.list[i].WEATHER.TEMP.WATER : null,
-        showFavorite: true,
-        paid: state.beaches.data.list[i].PAID,
-        rating: parseFloat(state.beaches.data.list[i].AVERAGE_RATING),
-        title: state.beaches.data.list[i].NAME,
-        location: state.beaches.data.list[i].CITY ? state.beaches.data.list[i].CITY.NAME : null,
-        pic: state.beaches.data.list[i].PHOTOS ? state.beaches.data.list[i].PHOTOS.medium[0].path : null,
-        mainLink: `beach/${state.beaches.data.list[i].ID}`,
-        beachLink: `beach/${state.beaches.data.list[i].ID}`,
-        humanLink: state.beaches.data.list[i].CODE ? `beach/${state.beaches.data.list[i].CODE}` : null,
-        locationId: state.beaches.data.list[i].CITY ? state.beaches.data.list[i].CITY.ID : null,
-        beachId: state.beaches.data.list[i].ID,
-        tags: state.beaches.data.list[i].TAGS ? state.beaches.data.list[i].TAGS.map(v => {
-          return {
-            id: v.ID,
-            title: v.NAME
-          }
-        }) : null,
-        addTags: state.beaches.data.list[i].ADD_TAGS ? state.beaches.data.list[i].ADD_TAGS.map(v => {
-          return {
-            id: v.ID,
-            title: v.NAME
-          }
-        }) : null,
-        pos: state.beaches.data.list[i].COORDINATES && state.beaches.data.list[i].COORDINATES.length > 0 ? [parseFloat(state.beaches.data.list[i].COORDINATES.split(',')[0]), parseFloat(state.beaches.data.list[i].COORDINATES.split(',')[1])] : [],
-        beachLength: state.beaches.data.list[i].PARAMETERS ? (state.beaches.data.list[i].PARAMETERS.P_LINE_LENGTH == '' ? null : state.beaches.data.list[i].PARAMETERS.P_LINE_LENGTH) : null,
-        beachPrice: state.beaches.data.list[i].PARAMETERS ? (state.beaches.data.list[i].PARAMETERS.P_PRICE == '' ? null : state.beaches.data.list[i].PARAMETERS.P_PRICE) : null,
-        beachType: state.beaches.data.list[i].PARAMETERS ? (state.beaches.data.list[i].PARAMETERS.P_BEACH_TYPE ? state.beaches.data.list[i].PARAMETERS.P_BEACH_TYPE.NAME : null) : null,
-        beachWorktime: state.beaches.data.list[i].PARAMETERS ? (state.beaches.data.list[i].PARAMETERS.P_MODE ? state.beaches.data.list[i].PARAMETERS.P_MODE.NAME : null) : null,
-        beachSeabedType: null,
-        coordinates: state.beaches.data.list[i].COORDINATES && state.beaches.data.list[i].COORDINATES.length > 0 ? [parseFloat(state.beaches.data.list[i].COORDINATES.split(',')[0]), parseFloat(state.beaches.data.list[i].COORDINATES.split(',')[1])] : [],
-        show_distance: true,
-      });
-    }
-
-    return ret;
+    // console.log('getter beaches');
+    return mapBeaches(state.beaches.data.list)
   },
-
   events: (state) => {
-    if (!state.events.data) return [];
-
-    let ret = [];
-
-    for (let i = 0; i < state.events.data.list.length; i++) {
-      ret.push({
-        tempWater: state.events.data.list[i].BEACH && state.events.data.list[i].BEACH.WEATHER && state.events.data.list[i].BEACH.WEATHER.TEMP ? state.events.data.list[i].BEACH.WEATHER.TEMP.WATER : null,
-        date: state.events.data.list[i].ACTIVE_FROM,
-        showFavorite: true,
-        beach: state.events.data.list[i].BEACH ? state.events.data.list[i].BEACH.NAME : null,
-        paid: state.events.data.list[i].PAID,
-        title: state.events.data.list[i].NAME,
-        location: state.events.data.list[i].BEACH && state.events.data.list[i].BEACH.CITY ? state.events.data.list[i].BEACH.CITY.NAME : null,
-        pic: state.events.data.list[i].PHOTOS ? state.events.data.list[i].PHOTOS.medium[0].path : null,
-        mainLink: `event/${state.events.data.list[i].ID}`,
-        humanLink: state.events.data.list[i].CODE ? `event/${state.events.data.list[i].CODE}`: null,
-        beachLink: state.events.data.list[i].BEACH ? `beach/${state.events.data.list[i].BEACH.CODE}` : null,
-        locationId: state.events.data.list[i].BEACH && state.events.data.list[i].BEACH.CITY ? state.events.data.list[i].BEACH.CITY.ID : null,
-        eventId: state.events.data.list[i].ID,
-        beachId: state.events.data.list[i].BEACH ? state.events.data.list[i].BEACH.ID : null
-      });
-    }
-
-    return ret;
+    // console.log('getter events');
+    return mapEvents(state.events.data.list)
   },
-
   mapEntity: (state) => {
-    if (!state.map_entity.data) return [];
-
-    let ret = [];
-
-    for (let i = 0; i < state.map_entity.data.list.length; i++) {
-      ret.push({
-        coordinates: state.map_entity.data.list[i].COORDINATES.length ? state.map_entity.data.list[i].COORDINATES.split(',') : [],
-        id: state.map_entity.data.list[i].ID,
-        name: state.map_entity.data.list[i].NAME,
-        preview: state.map_entity.data.list[i].PREVIEW,
-        url: state.map_entity.data.list[i].URL,
-        photos: state.map_entity.data.list[i].PHOTOS,
-        type: state.map_entity.data.list[i].TYPE,
-        description: state.map_entity.data.list[i].DESCRIPTION,
-      });
-    }
-
-    return ret;
+    // console.log('getter mapEntity');
+    return mapEntity(state.map_entity.data.list)
   }
+}
+
+function mapEntity(list = []) {
+  return list.map(item => {
+    return {
+      coordinates: item.COORDINATES.length ? item.COORDINATES.split(',') : [],
+      id:          item.ID,
+      name:        item.NAME,
+      preview:     item.PREVIEW,
+      url:         item.URL,
+      photos:      item.PHOTOS,
+      type:        item.TYPE,
+      description: item.DESCRIPTION,
+    }
+  })
+}
+function mapEvents(list = []) {
+  return list.map(item => {
+    return {
+      tempWater: item.BEACH && item.BEACH.WEATHER && item.BEACH.WEATHER.TEMP ? item.BEACH.WEATHER.TEMP.WATER : null,
+      date: item.ACTIVE_FROM,
+      showFavorite: true,
+      beach: item.BEACH ? item.BEACH.NAME : null,
+      paid: item.PAID,
+      title: item.NAME,
+      location: item.BEACH && item.BEACH.CITY ? item.BEACH.CITY.NAME : null,
+      pic: item.PHOTOS ? item.PHOTOS.medium[0].path : null,
+      mainLink: `event/${item.ID}`,
+      humanLink: item.CODE ? `event/${item.CODE}`: null,
+      beachLink: item.BEACH ? `beach/${item.BEACH.CODE}` : null,
+      locationId: item.BEACH && item.BEACH.CITY ? item.BEACH.CITY.ID : null,
+      eventId: item.ID,
+      beachId: item.BEACH ? item.BEACH.ID : null
+    }
+  })
+
+}
+
+function mapBeaches(list = []) {
+  return list.map(item => {
+    return {
+      access: item.ACCESS || null,
+        tempWater: item.WEATHER && item.WEATHER.TEMP ? item.WEATHER.TEMP.WATER : null,
+      showFavorite: true,
+      paid: item.PAID,
+      rating: parseFloat(item.AVERAGE_RATING),
+      title: item.NAME,
+      location: item.CITY ? item.CITY.NAME : null,
+      pic: item.PHOTOS ? item.PHOTOS.medium[0].path : null,
+      mainLink: `beach/${item.ID}`,
+      beachLink: `beach/${item.ID}`,
+      humanLink: item.CODE ? `beach/${item.CODE}` : null,
+      locationId: item.CITY ? item.CITY.ID : null,
+      beachId: item.ID,
+      tags: item.TAGS ? item.TAGS.map(v => ({
+        id: v.ID,
+        title: v.NAME,
+      })) : null,
+      addTags: item.ADD_TAGS ? item.ADD_TAGS.map(v => ({
+        id: v.ID,
+        title: v.NAME
+      })) : null,
+      pos: item.COORDINATES && item.COORDINATES.length > 0 ? [parseFloat(item.COORDINATES.split(',')[0]), parseFloat(item.COORDINATES.split(',')[1])] : [],
+      beachLength: item.PARAMETERS ? (item.PARAMETERS.P_LINE_LENGTH == '' ? null : item.PARAMETERS.P_LINE_LENGTH) : null,
+      beachPrice: item.PARAMETERS ? (item.PARAMETERS.P_PRICE == '' ? null : item.PARAMETERS.P_PRICE) : null,
+      beachType: item.PARAMETERS ? (item.PARAMETERS.P_BEACH_TYPE ? item.PARAMETERS.P_BEACH_TYPE.NAME : null) : null,
+      beachWorktime: item.PARAMETERS ? (item.PARAMETERS.P_MODE ? item.PARAMETERS.P_MODE.NAME : null) : null,
+      beachSeabedType: null,
+      coordinates: item.COORDINATES && item.COORDINATES.length > 0 ? [parseFloat(item.COORDINATES.split(',')[0]), parseFloat(item.COORDINATES.split(',')[1])] : [],
+      show_distance: true,
+    }
+  })
+}
+
+function mapIDs(list = []) {
+  return list.map(i => i.ID)
 }
