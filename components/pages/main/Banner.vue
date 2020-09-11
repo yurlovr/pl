@@ -17,19 +17,25 @@
 </template>
 
 <script>
-	export default {
-		props: ['data', 'lastWordYellow'],
+import { mapGetters } from 'vuex';
 
-		computed: {
-			getTitle() {
-				if (this.lastWordYellow) {
-					let words = this.data.title.split(' ');
-					words[words.length - 1] = `<span class="orange">${words[words.length - 1]}</span>`;
-					return words.join(' ');
-				} else {
-					return this.data.title.replace(' ', '<br>').split('<br>').map(v => v = `<span>${v}</span>`).join('<br>');
-				}
-			}
-		}
-	}
+export default {
+  props: ['lastWordYellow', 'index'],
+  created() { },
+  computed: {
+    ...mapGetters('main', ['getBanners']),
+    data() {
+      return this.getBanners[this.index] || this.getBanners[0]
+    },
+    getTitle() {
+      if (this.lastWordYellow) {
+        let words = this.data.title.split(' ');
+        words[words.length - 1] = `<span class="orange">${words[words.length - 1]}</span>`;
+        return words.join(' ');
+      } else {
+        return this.data.title.replace(' ', '<br>').split('<br>').map(v => v = `<span>${v}</span>`).join('<br>');
+      }
+    }
+  }
+}
 </script>

@@ -4,6 +4,7 @@ export const state = () => ({
   user_coordinates: {},
   choose_position: false,
   map_entity: [],
+  mappedEvents: []
 })
 
 export const mutations = {
@@ -13,6 +14,7 @@ export const mutations = {
 
   SET_ALL_EVENTS: (state, payload) => {
     state.events = payload;
+    state.mappedEvents = mapEvents(payload.data.list);
   },
   setLastUserPos: (state, data) => state.user_coordinates = data,
   setChoosePosition: (state, data) => state.choose_position = data,
@@ -22,13 +24,6 @@ export const mutations = {
 }
 
 export const actions = {
-  async nuxtServerInit2({commit}) {
-    commit('SET_ALL_BEACHES', await this.$axios.$get('/beach/list?count=9999'));
-    commit('SET_ALL_EVENTS', await this.$axios.$get('/event/list?count=9999'));
-    commit('search/SET_SEARCH', await this.$axios.$get('search/config'));
-    commit('SET_MAP_ENTITY', await this.$axios.$get('/map-entity/list?count=9999'));
-    commit('setLastUserPos', this.$cookies.get('last_coordinates') || {})
-  },
   async nuxtServerInit({commit}) {
     const [beaches, events, search, map] = await Promise.all([
       this.$axios.$get('/beach/list?count=9999'),
@@ -36,18 +31,10 @@ export const actions = {
       this.$axios.$get('search/config'),
       this.$axios.$get('/map-entity/list?count=9999'),
     ]);
-    console.log('SET_ALL_BEACHES');
     commit('SET_ALL_BEACHES', beaches);
-
-    console.log('SET_ALL_EVENTS');
     commit('SET_ALL_EVENTS', events);
-
-    console.log('search/SET_SEARCH');
     commit('search/SET_SEARCH', search);
-
-    console.log('SET_MAP_ENTITY');
     commit('SET_MAP_ENTITY', map);
-
     commit('setLastUserPos', this.$cookies.get('last_coordinates') || {})
   }
 }
@@ -91,6 +78,7 @@ function mapEntity(list = []) {
     }
   })
 }
+
 function mapEvents(list = []) {
   return list.map(item => {
     return {
@@ -117,7 +105,7 @@ function mapBeaches(list = []) {
   return list.map(item => {
     return {
       access: item.ACCESS || null,
-        tempWater: item.WEATHER && item.WEATHER.TEMP ? item.WEATHER.TEMP.WATER : null,
+      tempWater: item.WEATHER && item.WEATHER.TEMP ? item.WEATHER.TEMP.WATER : null,
       showFavorite: true,
       paid: item.PAID,
       rating: parseFloat(item.AVERAGE_RATING),

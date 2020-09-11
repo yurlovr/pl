@@ -1,51 +1,94 @@
 <template>
-  <div class="main-page">
+<div>
+
+  <p v-if="$fetchState.pending">
+    <!-- Fetching data -->
+  </p>
+  <p v-else-if="$fetchState.error">
+    <!-- error message here -->
+  </p>
+  <div v-else class="main-page">
     <img src="~/static/pics/main/bg.jpg" class="main-page__welcome__background" alt="Добро пожаловать">
     <div class="main-page__welcome__gradient"></div>
     <Welcome />
+
     <Search class="main-page__welcome__search" labelId="1" />
-    <BeachSliderArea class="main-page__popular-beaches" :data="getBeachesTop" v-if="getBeachesTop" />
 
-    <Cities :data="getCitiesTop" v-if="getCitiesTop" />
+    <client-only>
+      <BeachSliderArea
+        class="main-page__popular-beaches"
+        :data="getBeachesTop"
+        v-if="getBeachesTop"
+      />
 
-    <MapArea :data="getMap" :mapData="mapEntity" v-if="getMap" />
+      <Cities
+        :data="getCitiesTop"
+        v-if="getCitiesTop"
+      />
 
-    <Banner :data="getBanners[2]" v-if="getBanners && getBanners[2]" class="banner-1" />
+      <MapArea :data="getMap" :mapData="mapEntity" v-if="getMap" />
 
-    <div class="main-page__white-wrapper" v-if="getFamilyRest">
-      <BeachSliderArea :data="getFamilyRest" class="main-page__family-rest" />
-    </div>
+      <Banner :index="2" class="banner-1" />
 
-    <BeachSliderArea class="main-page__beach-events" :data="getEvents" v-if="getEvents" />
+      <div class="main-page__white-wrapper" v-if="getFamilyRest">
+        <BeachSliderArea :data="getFamilyRest" class="main-page__family-rest" />
+      </div>
 
-    <ChooseBeach :data="getChooseYourBeach" v-if="getChooseYourBeach" />
-    <DynamicSliderArea :data="getActiveRest" v-if="getActiveRest" />
+      <BeachSliderArea
+        class="main-page__beach-events"
+        :data="getEvents" v-if="getEvents"
+      />
 
-    <div class="main-page__white-wrapper">
-      <WeatherSliderArea :data="getWeather" v-if="getWeather" />
-    </div>
-    <div class="main-page__white-wrapper" v-if="getAnotherPlaces && getAnotherPlaces.beachNumber > 0">
-      <BeachSliderArea :data="getAnotherPlaces" class="main-page__family-rest" outlink="https://nash.travel/hotel" />
-    </div>
+      <ChooseBeach
+        :data="getChooseYourBeach"
+        v-if="getChooseYourBeach"
+      />
 
-    <Banner
-      :data="getBanners[0]"
-      v-if="getBanners && getBanners[0]"
-      class="banner-2"
+      <DynamicSliderArea
+        :data="getActiveRest"
+        v-if="getActiveRest"
+      />
+
+      <div class="main-page__white-wrapper">
+        <WeatherSliderArea
+          :data="getWeather"
+          v-if="getWeather"
+        />
+      </div>
+
+      <div class="main-page__white-wrapper" v-if="getAnotherPlaces && getAnotherPlaces.beachNumber > 0">
+        <BeachSliderArea
+          :data="getAnotherPlaces"
+          class="main-page__family-rest"
+          outlink="https://nash.travel/hotel"
+        />
+      </div>
+
+      <Banner
+        :index="0"
+        class="banner-2"
+      />
+
+      <BeachType
+        :data="getChooseToYourWishes"
+        v-if="getChooseToYourWishes"
+      />
+
+      <Banner
+        :index="1"
+        :lastWordYellow="true"
+        class="banner-3"
+      />
+
+    </client-only>
+
+    <MobileSettingsModal
+      v-if="open_app && getMobileSettings && getMobileSettings.length > 0"
+      :data="getMobileSettings"
+      @closeModal="(v) => {this.open_app = v}"
     />
-
-    <BeachType :data="getChooseToYourWishes" v-if="getChooseToYourWishes" />
-
-    <Banner
-      :data="getBanners[1]"
-      :lastWordYellow="true"
-      v-if="getBanners && getBanners[1]"
-      class="banner-3"
-    />
-
-    <MobileSettingsModal v-if="open_app && getMobileSettings && getMobileSettings.length > 0"
-                         :data="getMobileSettings" @closeModal="(v) => {this.open_app = v}"/>
   </div>
+</div>
 </template>
 
 <script>
@@ -74,52 +117,58 @@ export default {
     WeatherSliderArea,
     DynamicSliderArea,
     Banner,
-    MobileSettingsModal
-  },
-  data (){
-    return{
-      open_app: false
-    }
+    MobileSettingsModal,
   },
 
-  async asyncData( {$axios, route}){
-    const {data} = await $axios.$get('seo/meta?url=' + route.fullPath)
+  async asyncData({ $axios, route }) {
+    // console.log('1 hook asyncData')
+  },
+
+  data() {
+    // console.log('2 hook data')
     return {
-      meta: data
+      open_app: false,
+      meta: null
     }
   },
 
-  mounted() {
-    this.$bus.$emit('dontShowSearch');
-
-    window.addEventListener('scroll', this.onScroll, false);
-    window.addEventListener('resize', this.onResize, false);
-    this.onScroll();
-    this.onResize();
+  async created() {
+    // console.log('3 hook created')
   },
 
- async created() {
-    // this.mainData.map_entity = this.mapEntity;
+  async fetch() {
+    // console.log('4 hook fetch')
+    const [ meta ] = await Promise.all([
+      this.$axios.$get('seo/meta?url=' + this.$route.fullPath),
+      this.getMainPageData()
+    ]);
     this.setGeoLocating(this.$cookies.get('geo_locating'));
-    this.getMainPageData(() => {
-      this.$bus.$emit('mainPageReady');
-      this.$bus.$emit('hidePageTransitioner');
-    });
+    this.meta = meta.data;
+    // console.log('4 hook fetch end')
   },
 
   head() {
+    // console.log('5 hook head')
     const stable = 'ПЛЯЖИ.РУ'
     return {
       title: this.meta.title || stable,
       meta: [
-        {
-          hid: 'description-beach',
-          name: 'description',
-          content: this.meta.description || stable
-        },
-        {hid: 'keywords-beach', name: 'keywords', content: this.meta.keywords || stable},
+        { hid: 'description-beach', name: 'description', content: this.meta.description || stable },
+        { hid: 'keywords-beach',    name: 'keywords',    content: this.meta.keywords || stable},
       ]
     }
+  },
+
+  mounted() {
+    this.$bus.$emit('mainPageReady');
+    this.$bus.$emit('hidePageTransitioner');
+    this.$bus.$emit('dontShowSearch');
+
+    window.addEventListener('scroll', this.onScroll, false);
+    window.addEventListener('resize', this.onResize, false);
+
+    this.onScroll();
+    this.onResize();
   },
 
   computed: {
@@ -136,12 +185,8 @@ export default {
       'getChooseToYourWishes',
       'getWeather',
       'getMobileSettings',
-
     ]),
     ...mapGetters(['mapEntity']),
-    mainData() {
-      return this.$store.getters["main/mainData"]
-    }
   },
 
   methods: {

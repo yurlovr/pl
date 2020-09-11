@@ -8,8 +8,15 @@
     >
       <nuxt class="full-screen"/>
     </transition>
-    <div class="main-page__white-wrapper"><Footer /></div>
-    <search-popup v-if="choose_position" @close="$store.commit('setChoosePosition', false)" :coords="user_coordinates" @clean="$store.commit('setLastUserPos', {})"></search-popup>
+    <div class="main-page__white-wrapper">
+      <Footer />
+    </div>
+    <search-popup
+      v-if="choose_position"
+      @close="$store.commit('setChoosePosition', false)"
+      :coords="user_coordinates"
+      @clean="$store.commit('setLastUserPos', {})"
+    />
   </div>
 </template>
 
@@ -54,6 +61,8 @@
     },
 
     mounted() {
+      console.log('Layout mounted')
+
       // let scr = document.createElement('script')
       // scr.type = 'text/javascript';
       // scr.innerHTML ='!function(){var t=document.createElement("script");t.type="text/javascript",t.async=!0,t.src="https://vk.com/js/api/openapi.js?168",t.onload=function()\n' +
@@ -65,10 +74,7 @@
       // document.head.appendChild(scr);
       // document.head.appendChild(noscr);
 
-
-      if (process.client && window) {
-        window.history.scrollRestoration = 'manual';
-      }
+      window.history.scrollRestoration = 'manual';
 
       function watchForHover() {
         let hasHoverClass = false;

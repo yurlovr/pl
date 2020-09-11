@@ -65,7 +65,7 @@ export const mutations = {
 }
 
 export const actions = {
-  async getMainPageData({commit, state}, callback) {
+  async getMainPageData({commit, state}) {
 
     let popularBeachReq = state.geo.id
       ? this.$axios.$get(`/beach/list?city=${state.geo.id}&count=10`)
@@ -97,7 +97,7 @@ export const actions = {
     if (state.geo.id) {
       commit('SET_GEO_COUNT', state.beachesTop.data ? state.beachesTop.data.list.length : 0)
     }
-    callback();
+
     commit('SET_MOBILE_SETTINGS', mobileSettings);
     commit('SET_CITIES', cities);
     commit('SET_WEATHER', weather);
@@ -106,31 +106,11 @@ export const actions = {
     commit('SET_BANNERS', banners);
     commit('SET_MAP', map);
     commit('SET_ANY_PLACES', anyPlaces);
-    console.warn('last callback')
   },
-  async getMainPageData2({commit, state}, callback) {
-    if (state.geo.id) {
-      commit('SET_POPULAR_BEACH', await this.$axios.$get(`/beach/list?city=${state.geo.id}&count=10`));
-      commit('SET_GEO_COUNT', state.beachesTop.data ? state.beachesTop.data.list.length : 0)
-    }
-    if (!state.geo.id || !state.geo.count)
-      commit('SET_POPULAR_BEACH', await this.$axios.$get('/beach/top?count=10'));
-    callback();
-    commit('SET_MOBILE_SETTINGS', await this.$axios.$get('/settings/list'));
-    console.warn('after call back')
-    commit('SET_CITIES', await this.$axios.$get('/city/top?count=9999'));
-    commit('SET_WEATHER', await this.$axios.$get('/weather/list'));
-    commit('SET_COLLECTION', await this.$axios.$get('/collection/list/'));
-    commit('SET_COLLECTION_LIST', await this.$axios.$get('/collectionList/list/'));
-    commit('SET_BANNERS', await this.$axios.$get('/banner/list/'));
-    commit('SET_MAP', await this.$axios.$get('/beach/clusters/'));
-    //
-    commit('SET_ANY_PLACES', await this.$axios.$get('/hotel/list?count=10'));
-    console.warn('last callback')
-  }
 }
 const google_pic = "https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png"
 function mapBeachesTop(list, pagination, geo) {
+  // console.log('!!! HARD MAPPER')
   // Популярные пляжи
   const beachesTop = {
     title: 'Самые популярные пляжи' + (geo.id && geo.count && geo.count != 0 && list[0] && list[0].CITY ? ' ' + list[0].CITY.NAME : ''),
@@ -180,7 +160,7 @@ export const getters = {
     return fakeData;
   },
   getBeachesTop: (state) => {
-    console.log('getBeachesTop', state.beachesTop.data)
+    // console.log('!!!getBeachesTop', state.beachesTop.data)
     if (!state.beachesTop.data) return null;
     const { list, pagination } = state.beachesTop.data;
     const { geo } = state
@@ -188,7 +168,7 @@ export const getters = {
   },
 
   getCitiesTop: state => {
-    console.log('getCitiesTop')
+    // console.log('!!!getCitiesTop', state.citiesTop.data)
     // Курортные города
     // let citiesTop = [
     //   {id: 'fake', "city":"Ялта","cityId":"47","beachNumber":3,"pic":google_pic,},
@@ -214,12 +194,13 @@ export const getters = {
   },
 
   getMap: state => {
+    // console.log('!!!getMap', state.map.data)
     // Карта пляжей
     if (!state.map.data) return null;
     let clusterCenters = [];
     let curCluster;
     const ret = {};
-    console.log(state.map.data.list, 'state.map.data.list')
+    // console.log(state.map.data.list, 'state.map.data.list')
 
 
     let clusters = Object.keys(state.map.data.list).map((k) => state.map.data.list[k]);
@@ -289,12 +270,13 @@ export const getters = {
   },
 
   getBanners: state => {
-    const fake = [
-      {id: 'fake', "title":"Z FEST","description":"Приглашаем Вас поучаствовать в самом ярком событии весны – социально-благотворительном фестивале Z FEST, посвященному Досугу нового поколения!","link":"https://uat.plyazhi.ru/event/1930","pic": google_pic,"buttonText":"Присоединяйтесь","rightToLeft":true},
-      {id: 'fake', "title":"День рождения Mriya Resort & SPA","description":"Яркие декорации, удивительные персонажи и незабываемые развлечения — откройте для себя чудесный мир Mriya и почувствуйте силу нашего гостеприимства и радушия!","link":"https://uat.plyazhi.ru/event/1945","pic":google_pic,"buttonText":"Подробнее","rightToLeft":true},
-      {id: 'fake', "title":"Шесть чувств","description":"Японский сад, предназначенный для медитаций, раздумий и расслабления,\r\nпредмет особой гордости отеля Mriya Resort &amp; Spa","link":"https://uat.plyazhi.ru/beach/1939","pic":google_pic,"buttonText":"Подробнее","rightToLeft":true},
-      {id: 'fake', "title":"Праздник Непутна","description":"","link":"https://uat.plyazhi.ru/event/2265","pic":google_pic,"buttonText":"продолжить","rightToLeft":false}
-    ];
+    // console.log('!!!getBanners', !!state.banners.data)
+    // const fake = [
+    //   {id: 'fake', "title":"Z FEST","description":"Приглашаем Вас поучаствовать в самом ярком событии весны – социально-благотворительном фестивале Z FEST, посвященному Досугу нового поколения!","link":"https://uat.plyazhi.ru/event/1930","pic": google_pic,"buttonText":"Присоединяйтесь","rightToLeft":true},
+    //   {id: 'fake', "title":"День рождения Mriya Resort & SPA","description":"Яркие декорации, удивительные персонажи и незабываемые развлечения — откройте для себя чудесный мир Mriya и почувствуйте силу нашего гостеприимства и радушия!","link":"https://uat.plyazhi.ru/event/1945","pic":google_pic,"buttonText":"Подробнее","rightToLeft":true},
+    //   {id: 'fake', "title":"Шесть чувств","description":"Японский сад, предназначенный для медитаций, раздумий и расслабления,\r\nпредмет особой гордости отеля Mriya Resort &amp; Spa","link":"https://uat.plyazhi.ru/beach/1939","pic":google_pic,"buttonText":"Подробнее","rightToLeft":true},
+    //   {id: 'fake', "title":"Праздник Непутна","description":"","link":"https://uat.plyazhi.ru/event/2265","pic":google_pic,"buttonText":"продолжить","rightToLeft":false}
+    // ];
     if (!state.banners.data) return null;
     const { list } = state.banners.data;
 
@@ -312,6 +294,7 @@ export const getters = {
   },
 
   getFamilyRest: state => {
+    // console.log('!!!getFamilyRest', !!state.collection.data)
     // Отдых для всей семьи
     if (!state.collection.data) return null;
     const { list } = state.collection.data;
@@ -367,6 +350,7 @@ export const getters = {
   },
 
   getAnotherPlaces: state => {
+    // console.log('!!!getAnotherPlaces', !!state.any_places.data)
     if (!state.any_places.data) return null;
     const ret = {}
     let another_places = state.any_places.data.list
@@ -405,25 +389,30 @@ export const getters = {
   },
 
   // Ближайшие мероприятия
-  getEvents: (state, getters, rootState, rootGetters) => {
-    if (!rootGetters.events) return null;
+  // TODO calls 2 times
+  getEvents: (state, getters, rootState) => {
+    // console.log('!!!getEvents', !!rootState.mappedEvents)
+
+    if (!rootState.mappedEvents) return null;
     const events = {
       title: 'Ближайшие мероприятия на пляжах',
-      beachNumber: Math.min(rootGetters.events.length, 45),
+      beachNumber: Math.min(rootState.mappedEvents.length, 45),
       showMore: {
         type: 'event',
         query: null
       },
       beachSliderData: {
         slideNumber: 4,
-        cardData: rootGetters.events.slice(0, 10)
+        cardData: rootState.mappedEvents.slice(0, 10)
       }
     }
     return events
   },
 
   // Выберите свой пляж
+  // TODO calls two times
   getChooseYourBeach: (state, getters, rootState, rootGetters) => {
+    // console.log('!!!getChooseYourBeach', !!rootState.search.searchConfig)
     if (!rootState.search.searchConfig) return null;
     const { beachTypes } = rootState.search.searchConfig.data;
     return [
@@ -444,6 +433,7 @@ export const getters = {
 
   // Активный отдых
   getActiveRest: state => {
+    // console.log('!!!getActiveRest', state.collectionList.data)
     if (!state.collectionList.data) return null;
     const { list } = state.collectionList.data
     let activeRest = list.find(v => v.CODE == 'active-leisure');
@@ -488,6 +478,7 @@ export const getters = {
   },
 
   getWeather: state => {
+    // console.log('!!!getWeather', state.weather.data)
     if (!state.weather.data) return null;
 
     let curCluster;
@@ -515,6 +506,7 @@ export const getters = {
 
   getMobileSettings: state => {
     // Mobile settings
+    // console.log('getMobileSettings', state.mobile_settings.data)
     const ret = {}
     ret.mobile_settings = [];
     if (state.mobile_settings.data) {
@@ -534,6 +526,7 @@ export const getters = {
   },
 
   getChooseToYourWishes: state => {
+    // console.log('getChooseToYourWishes', state.collectionList.data)
     // Выбирайте по своим желаниям
     let ret = {}
     if (state.collectionList.data) {
@@ -578,10 +571,4 @@ export const getters = {
     }
     return ret.chooseToYourWishes;
   },
-
-    mainData: (state, getters, rootState, rootGetters) => {
-      // console.log('getter mainData')
-        const google_pic = "https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png"
-        let ret = {};
-  }
 }
