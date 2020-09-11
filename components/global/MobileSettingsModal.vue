@@ -1,6 +1,7 @@
 <template>
     <div v-if="show_mobile_preview" :class="`mobile-modal banner-mobile-${this.modalNumber}`"
-         :style="{'background-image': 'url(' + require('~/static/pics/global/mobile/banner_' + this.modalNumber + '.png') + ')' }">
+         :style="{'background-image': 'url(' + require('~/static/pics/global/mobile/banner_bg.png') + ')' }">
+      <img class="modal_mobile__img" :src="require('~/static/pics/global/mobile/Iphone_bg.png')" alt="">
       <div class="content" :class="{'d-flex justify-content-between align-items-center': this.modalNumber === 1}">
         <div :class="{'d-flex justify-content-end': this.modalNumber > 1}" @click="closeModal">
           <img src="~/static/pics/global/mobile/close.png" alt="Убрать">
@@ -20,10 +21,10 @@
             </div>
           </div>
           <div v-else class="d-flex text-center link-block">
-            <div v-for="item in data" class="d-inline-block mr-1 ml-1 w-50">
+            <div v-for="item in data" class="d-inline-block">
               <a v-if="item.active === true" :href="item.value">
-                <img v-if="item.code === 'mobile_android_link'" src="~/static/pics/global/mobile/play_2.png" alt="Goggle Play" class="w-100">
-                <img v-if="item.code === 'mobile_ios_link'" src="~/static/pics/global/mobile/store_2.png" alt="App Store" class="w-100">
+                <img v-if="item.code === 'mobile_android_link'" src="~/static/pics/global/mobile/play_2.png" alt="Goggle Play" class=" android-app ml-1">
+                <img v-if="item.code === 'mobile_ios_link'" src="~/static/pics/global/mobile/store_2.png" alt="App Store" class="apple-app mr-1">
               </a>
             </div>
           </div>

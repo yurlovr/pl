@@ -10327,3 +10327,19 @@ body.touch {
   z-index: -1 !important;
 }
 
+.modal_mobile__img {
+  position: absolute;
+  bottom: 0;
+  width: 200px;
+  left: 50%;
+  margin-left: -100px;
+}
+.apple-app {
+  width: 96px;
+}
+.android-app {
+  width: 97px;
+}
+.mobile-modal .link-block {
+  width: 200px;
+}
