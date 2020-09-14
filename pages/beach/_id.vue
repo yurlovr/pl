@@ -16,10 +16,10 @@
                           class="beach-page__avg-rating__mobile"/>
           <BeachQuickData id="infra" :title="'Инфраструктура пляжа'" :data="beachData.infraData" action="service" :href="true"
                           v-if="beachData.infraData.length > 0"/>
-          <BeachEventMapWeather :data="beachData.sideMapWeatherData" :mapData="beachData.map_entity" class="beach-event__map-weather__tablet"/>
+          <BeachEventMapWeather :data="beachData.sideMapWeatherData"  :locationData="beachData.mainData" :mapData="beachData.map_entity" class="beach-event__map-weather__tablet"/>
           <BeachEventAbout id="about" :data="beachData.about" v-if="beachData.about && beachData.about.length > 1"
                            :title="'О пляже'"/>
-          <BeachEventMapWeather :data="beachData.sideMapWeatherData" :mapData="beachData.map_entity"
+          <BeachEventMapWeather :data="beachData.sideMapWeatherData"  :locationData="beachData.mainData" :mapData="beachData.map_entity"
                                 v-if="beachData.sideMapWeatherData.pos.length > 0"
                                 class="beach-event__map-weather__mobile"/>
           <BeachQuickData id="services" :title="'Услуги и аренда'" :data="beachData.servicesData" action="service"
@@ -43,7 +43,7 @@
               <p class="m-0">Расстояние до пляжа <span>{{distance.toString().replace(/\./, ',')}} км</span></p>
             </div>
           <BeachAvgRating :data="beachData.avgRating" class="beach-page__avg-rating__desktop"/>
-          <BeachEventMapWeather :data="beachData.sideMapWeatherData" :mapData="beachData.map_entity"
+          <BeachEventMapWeather  :locationData="beachData.mainData" :data="beachData.sideMapWeatherData" :mapData="beachData.map_entity"
                                 v-if="beachData.sideMapWeatherData.pos.length > 0"
                                 class="beach-event__map-weather__desktop"/>
           <AnnouncementCard :data="beachData.announcementData" class="beach-page__announcement"/>
