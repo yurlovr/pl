@@ -203,7 +203,7 @@
                       balloonPanelMaxMapArea: 0,
                       hintLayout: maps.templateLayoutFactory.createClass("<div class='my-hint features'>" +
                         `<div class='header'>${title}</div><br />` +
-                        `<div class='description'>${description} ${slides.length}</div>` +
+                        `<div class='description'>${description}</div>` +
                         `<div class="beach-event__visitor-pics__slider" style='height: 100%'>
                           <div class="swiper-container" id='balloon-swiper'>
                             <div class="swiper-wrapper">
