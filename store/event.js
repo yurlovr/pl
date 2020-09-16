@@ -295,10 +295,6 @@ export const getters = {
           custom_photo: true
         });
       }
-
-      ret.hotels.beachSliderData.cardData.sort((a, b) => (parseFloat(a.dist) > parseFloat(b.dist)) ? 1 :
-        (parseFloat(a.dist) === parseFloat(b.dist)) ? ((parseFloat(a.dist) > parseFloat(b.dist)) ? 1 : -1) : -1 )
-
     }
 
         // adding formatted visitor pics
