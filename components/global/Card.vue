@@ -38,9 +38,9 @@
       </button>
     </div>
     <div class="custom-card__info-area position-relative" :class="{ event: data.beach }">
-      <p class="distance" v-if="data.show_distance" v-show="distanceValue(data.coordinates)"
+      <p class="distance" v-if="data.show_distance" v-show="data.ignore_global_km || distanceValue(data.coordinates)"
          :style="{position: !data.rating && (data.another_place || data.hotels) ? 'relative !important' : 'absolute'}">
-        {{distanceValue(data.coordinates)}} км</p>
+        {{data.ignore_global_km ? data.dist : distanceValue(data.coordinates)}} км</p>
       <!--      <div class="mobile-distance"><span v-if="data.show_distance" v-show="distanceValue(data.coordinates)">{{distanceValue(data.coordinates)}} км</span></div>-->
       <div class="custom-card__rating-area" v-if="data.rating">
         <img src="~/static/pics/global/svg/star.svg" alt="Рейтинг">

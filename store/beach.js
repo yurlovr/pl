@@ -1,6 +1,3 @@
-import {getDistanceFromLatLonInKm} from "../assets/calcDistance";
-import Cookies from 'js-cookie';
-
 export const state = () => ({
     beach: null,
     temperatures: null,
@@ -120,17 +117,8 @@ export const getters = {
           }
         }
 
-        let coordinat = Cookies.getJSON('last_coordinates') || {};
-        let distance = (d, coord) => {
-          if (d && d.length == 2 && Object.keys(coord).length) {
-            let lat2 = d[0], lng2 = d[1],
-              {lat, lng} = coord;
-            return Number(getDistanceFromLatLonInKm(lat, lng, Number(lat2), Number(lng2)).toFixed(1)).toString().replace(/\./, ',')
-          }
-          return 0;
-        }
-
         for (let i = 0; i < hotels.length; i++) {
+          console.warn(hotels[i].DISTANCE, 'hotels[i].DISTANCE')
           ret.hotels.beachSliderData.cardData.push({
             rating: hotels[i].RATING,
             title: hotels[i].NAME,
@@ -144,8 +132,9 @@ export const getters = {
             another_place: true,
             price: hotels[i].PRICE,
             coordinates: hotels[i].COORDINATES ? hotels[i].COORDINATES.split(',').map(Number) : [],
-            dist: distance(hotels[i].COORDINATES ? hotels[i].COORDINATES.split(',').map(Number) : [], coordinat),
-            custom_photo: true
+            dist: hotels[i].DISTANCE,
+            custom_photo: true,
+            ignore_global_km: true,
           })
         }
       }
