@@ -134,12 +134,14 @@ export const state = () => ({
     lat: 52.9760256,
     lng: 36.077568
   },
-  radius: null
+  radius: null,
+  f_loaded: false,
 })
 
 export const mutations = {
   set_coords: (state, pos) => state.coords = pos,
   set_radius: (state, rad) => state.radius = rad,
+  set_loaded: (state, s) => state.f_loaded = s,
   SET_MY_COORDS: (state, data) => state.my_coords = data,
   SET_MY_CITY: (state, city) => state.my_city_id = city,
   SET_SEARCH: (state, payload) => {
@@ -430,6 +432,7 @@ export const actions = {
     commit('SET_SEARCH_RESULT', beaches);
     commit('SET_SEARCH_RESULT_BEACH_BACKUP', beaches);
     commit('SET_SEARCH_RESULT_EVENT_BACKUP', events);
+    commit('set_loaded', true)
     // } else commit('EMPTY_RESULTS');
   },
 

@@ -118,7 +118,6 @@ export const getters = {
         }
 
         for (let i = 0; i < hotels.length; i++) {
-          console.warn(hotels[i].DISTANCE, 'hotels[i].DISTANCE')
           ret.hotels.beachSliderData.cardData.push({
             rating: hotels[i].RATING,
             title: hotels[i].NAME,
@@ -142,7 +141,6 @@ export const getters = {
     },
     beachData: (state) => {
         if (!state.beach.data) return null;
-console.log('33333',  state.beach.data.item.PHOTOS)
         let ret = {
             avgRating: {
                 rating: parseFloat(state.beach.data.item.RATING.RATING),

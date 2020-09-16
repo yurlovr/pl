@@ -34,7 +34,7 @@
       </button>
     </div>
     <div class="custom-container search-page__empty" v-if="!getSearchResult || getSearchResult.length <= 1">
-      <div class="favorites-page__visited-empty">К сожалению по Вашему запросу ничего не найдено.<br>Попробуйте изменить
+      <div class="favorites-page__visited-empty" v-show="f_loaded">К сожалению по Вашему запросу ничего не найдено.<br>Попробуйте изменить
         запрос, или начните <a href="/" @click.prevent="$bus.goTo('/', $router)">сначала</a></div>
     </div>
     <CardGrid :perPage="20" :data="getSearchResult.slice(0, -1)" v-show="mode_option == 'card'"
@@ -68,7 +68,7 @@
 
     computed: {
       ...mapGetters('search', ['getSearchResult', 'getRadiusIfCityExists']),
-      ...mapState('search', ['searchParams', 'searchPageResultEventBackup', 'query']),
+      ...mapState('search', ['searchParams', 'searchPageResultEventBackup', 'query', 'f_loaded']),
       ...mapGetters(['mapEntity']),
 
       radius() {
@@ -124,7 +124,7 @@
       }
     },
 
-    mounted() {
+    created() {
       if (this.updateQuery()) return;
 
       this.wait = true;
