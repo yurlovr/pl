@@ -13,7 +13,9 @@
         </a>
       </div>
     </div>
-    <SliderBeachEventHotel :data="data.beachSliderData"/>
+
+    <SliderBeachEventHotel :data="data.beachSliderData" />
+
     <div class="main-page__beach-slider-area__see-all-bottom">
       <a v-if="!outlink" :href="link" @click.prevent="$bus.goTo(link, $router)" class="main-page__see-all">
         <span>Смотреть все ({{ data.beachNumber }})</span>

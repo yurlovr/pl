@@ -34,6 +34,12 @@
                        v-if="beachData.events.cardData.length > 0"/>
           <BeachBarsNRestos id="barsNRestos" :data="beachData.barsNRestos" v-if="beachData.barsNRestos.length > 0"
                             class="beach-page__cardless-area"/>
+          <BeachSliderArea
+            v-if="hotelsData.hotels && hotelsData.hotels.beachNumber > 0"
+            :data="hotelsData.hotels"
+            class="hotels-section"
+            outlink="https://nash.travel/hotel"
+          />
           <BeachOpinions id="opinions" :data="beachData.opinions" v-if="beachData.opinions.length > 0"/>
           <BeachEventReviews id="reviews" :typeId="beachData.mainData.beachId" :data="beachData.reviews" :type="'beach'"
                              class="beach-page__cardless-area"/>
@@ -56,12 +62,7 @@
     </div>
     <BeachSliderArea id="similar-beaches" class="beach-event__similar-beaches" :data="beachData.similarBeaches"
                      v-if="beachData.similarBeaches.beachNumber"/>
-    <div class="main-page__white-wrapper" v-if="beachData.another_places && beachData.another_places.beachNumber > 0">
-      <BeachSliderArea :data="beachData.another_places" class="main-page__family-rest" outlink="https://nash.travel/hotel" />
-    </div>
-    <div class="main-page__white-wrapper" v-if="hotelsData.hotels && hotelsData.hotels.beachNumber > 0">
-      <BeachSliderArea :data="hotelsData.hotels" class="main-page__family-rest" outlink="https://nash.travel/hotel" />
-    </div>
+
     <iframe360 v-if="show_pano" @close-modal="changeModalState" :url="beachData.hugeSliderData.panorama"></iframe360>
   </div>
 </template>
@@ -164,3 +165,9 @@
     },
   }
 </script>
+
+<style lang="scss">
+.hotels-section {
+  padding: 0;
+}
+</style>
