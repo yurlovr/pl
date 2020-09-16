@@ -58,7 +58,13 @@ import Card from '~/components/global/Card';
 import despodencyCard from "../despodencyCard";
 
 export default {
-    props: ['data'],
+    props: {
+      data: Object,
+      count: {
+        type: Array,
+        default: () => [5, 4, 3, 2]
+      }
+    },
 
     beforeMount () {
         if (process.browser) {
@@ -81,17 +87,17 @@ export default {
                 init: false,
                 breakpoints: {
                     1150: {
-                        slidesPerView: 5,
+                        slidesPerView: this.count[0],
                         spaceBetween: 20
                     },
                     1000: {
-                        slidesPerView: 4
+                        slidesPerView: this.count[1]
                     },
                     700: {
-                        slidesPerView: 3
+                        slidesPerView: this.count[2]
                     },
                     550: {
-                        slidesPerView: 2,
+                        slidesPerView: this.count[3],
                         spaceBetween: 10
                     }
                 }
