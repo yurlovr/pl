@@ -49,12 +49,12 @@ export const actions = {
 export const getters = {
   beachIds: (state) => {
     // console.log('getter beachIds');
-    return mapIDs(state.events.list)
+    return mapIDs(state.beaches.data.list)
   },
 
   eventIds: (state) => {
     // console.log('getter eventIds');
-    return mapIDs(state.events.list)
+    return mapIDs(state.events.data.list)
   },
 
   beaches: (state) => {
