@@ -51,7 +51,6 @@
 
 				if (this.data.beachId && !this.data.eventId) {
 					if (this.$cookies.get(`favorites.beaches.${this.data.beachId}`)) {
-            console.warn(this.data.beachId, 'hfg', this.$cookies.get(`favorites.beaches.${this.data.beachId}`))
             this.$cookies.remove(`favorites.beaches.${this.data.beachId}`);
 						this.$bus.$emit('favoriteBeachRemoved', this.data.beachId);
 					} else {

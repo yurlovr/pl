@@ -88,7 +88,6 @@
         this.meta = res.data
       })
       this.$bus.$on('favoriteBeachRemoved', id => {
-        console.warn(id, 'favoriteremoved ')
         if (this.beachesToShow.length > 0) {
           this.beachesToShow.splice(this.beachesToShow.map(v => v.beachId).indexOf(id), 1);
         }
