@@ -7,7 +7,7 @@
       <div class="review-photo-container" v-if="winWidth > 767">
         <div class="review-photo" v-for="(img, index) in data.photos.slice(0, 3)" :key="index + 'photo'">
           <div class="all-photos" @click="openPhotoModal" v-if="data.photos && data.photos.length > 3 && index==2">
-            {{'+' + (data.photos.length - 2)}}
+            {{'+' + (data.photos.length - 3)}}
           </div>
           <img :src="img" alt="">
         </div>
@@ -15,7 +15,7 @@
       <div v-else class="review-photo-container">
         <div class="review-photo" v-for="(img, index) in data.photos.slice(0, 2)" :key="index + 'photo'">
           <div class="all-photos" @click="openPhotoModal" v-if="data.photos.length > 2 && index==1">
-            {{'+' + (data.photos.length - 1)}}
+            {{'+' + (data.photos.length - 3)}}
           </div>
           <img :src="img" alt="">
         </div>
