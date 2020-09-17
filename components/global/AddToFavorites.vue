@@ -1,5 +1,5 @@
 <template>
-	<button class="heart" @click.prevent="updateHeart()" @mouseenter="updateHeartHover()" @mouseleave="updateHeartHover()" v-if="data.showFavorite != undefined">
+	<button class="heart" @click.stop="updateHeart" @mouseenter="updateHeartHover()" @mouseleave="updateHeartHover()" v-if="data.showFavorite != undefined">
 <!--		<img  src="~/static/pics/global/svg/heart_unclicked.svg" alt="В избранное" v-show="!favorite && !favoriteHover">
 		<img  src="~/static/pics/global/svg/heart_clicked.svg" alt="В избранное" v-show="favorite || favoriteHover && !favorite">-->
     <svg class="svg-heart" width="12" height="11" viewBox="0 0 23 22" xmlns="http://www.w3.org/2000/svg">
@@ -21,14 +21,6 @@
 				favoriteHover: false
 			}
 		},
-    beforeDestroy() {
-      this.$bus.$off('favoriteBeachAdded');
-      this.$bus.$off('favoriteEventAdded');
-      this.$bus.$off('favoriteBeachRemoved');
-      this.$bus.$off('favoriteEventRemoved');
-      this.$bus.$off('updateFavorite');
-    },
-
     mounted() {
 			this.$bus.$on('favoriteBeachAdded', id => {
 				if (this.data.beachId == id)
@@ -59,9 +51,8 @@
 
 				if (this.data.beachId && !this.data.eventId) {
 					if (this.$cookies.get(`favorites.beaches.${this.data.beachId}`)) {
-						this.$cookies.set(`favorites.beaches.${this.data.beachId}`, true, {
-							maxAge: -1 // remove
-						});
+            console.warn(this.data.beachId, 'hfg', this.$cookies.get(`favorites.beaches.${this.data.beachId}`))
+            this.$cookies.remove(`favorites.beaches.${this.data.beachId}`);
 						this.$bus.$emit('favoriteBeachRemoved', this.data.beachId);
 					} else {
 						this.$cookies.set(`favorites.beaches.${this.data.beachId}`, true, {

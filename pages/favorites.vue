@@ -75,6 +75,7 @@
     },
 
     beforeDestroy() {
+      console.warn('herer')
       this.$bus.$off('visitedAdd');
       this.$bus.$off('visitedRemove');
       this.$bus.$off('favoriteBeachRemoved');
@@ -86,6 +87,15 @@
       await this.$axios.$get('seo/meta?url=' + this.$route.fullPath).then(res => {
         this.meta = res.data
       })
+      this.$bus.$on('favoriteBeachRemoved', id => {
+        console.warn(id, 'favoriteremoved ')
+        if (this.beachesToShow.length > 0) {
+          this.beachesToShow.splice(this.beachesToShow.map(v => v.beachId).indexOf(id), 1);
+        }
+        this.$nextTick(()=>{
+          this.$bus.$emit('updateFavorite')
+        })
+      });
     },
     mounted() {
 
@@ -101,14 +111,6 @@
         }, 1);
       });
 
-      this.$bus.$on('favoriteBeachRemoved', id => {
-        if (this.beachesToShow.length > 0) {
-          this.beachesToShow.splice(this.beachesToShow.map(v => v.beachId).indexOf(id), 1);
-        }
-        setTimeout(() => {
-          this.$bus.$emit('updateFavorite')
-        }, 1);
-      });
       this.$bus.$on('favoriteEventAdded', id => {
         this.eventsToShow.push(this.events[this.events.map(v => v.eventId).indexOf(id)]);
       });
