@@ -34,8 +34,14 @@
     },
 
     computed: {
-      ...mapGetters(['beachIds', 'eventIds']),
-      ...mapGetters(['beaches', 'events']),
+      ...mapGetters([
+        'beachIds',
+        'eventIds'
+      ]),
+      ...mapGetters([
+        'beaches',
+        'events'
+      ]),
     },
 
     data() {
@@ -82,6 +88,7 @@
       })
     },
     mounted() {
+
       this.$bus.$on('visitedAdd', id => {
         this.visited.push(this.eventsToShow[this.eventsToShow.map(v => v.eventId).indexOf(id)]);
       });
