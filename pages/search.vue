@@ -217,8 +217,8 @@
               type: 'select'
             });
             if (path == undefined) this.updateSearchParam({param: 'modes', value: curValue})
-          } else if (curQuery[0] == 'paid') {
-            curValue = this.searchParams.selects.price.options.find(v => v.id === curQuery[1])
+          } else if (curQuery[0] == 'price') {
+            curValue = this.searchParams.selects.price.options.find(v => v.id == curQuery[1])
             if (!curValue) continue;
             this.tags.push({
               param: 'price',
