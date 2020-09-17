@@ -129,7 +129,7 @@
     data() {
       return {
         map: null,
-        zoom: null,
+        zoom: 15,
         chosenObject: -1
       }
     },

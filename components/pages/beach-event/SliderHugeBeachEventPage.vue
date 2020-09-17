@@ -7,27 +7,6 @@
   <div class="slider-beach-event">
     <div class="slider-beach-event__left">
       <div class="slider-beach-event__left__inner">
-        <!--        не вижу никакой камеры тут, потому пока что будет так-->
-        <!--<div class="slider-beach-event__medal-gold" v-if="!isEvent">
-          <img src="~/static/pics/global/svg/goldMedal.svg">
-          <div class="slider-beach-event__medal-gold__tooltip">
-            <span>Пляж сертифицирован</span>
-          </div>
-        </div>-->
-        <!--<div class="slider-beach-event__sun">
-          <div class="slider-beach-event__sun-item" v-if="data.beautySunrise">
-            <img src="~/static/pics/global/svg/sunrise.svg">
-            <div class="slider-beach-event__sun-item__tooltip">
-              <span>Красивый рассвет</span>
-            </div>
-          </div>
-          <div class="slider-beach-event__sun-item" v-if="data.beautySunset">
-            <img src="~/static/pics/global/svg/sunset.svg">
-            <div class="slider-beach-event__sun-item__tooltip">
-              <span>Красивый закат</span>
-            </div>
-          </div>
-        </div>-->
         <div class="position-absolute d-flex icon-group">
           <div class="orange-cont bem-is-a-dead-methodology" v-if="!isEvent">
             <img src="~/static/pics/global/svg/sert_beach.svg" alt="">
@@ -165,7 +144,7 @@
             <div v-swiper:mySwiperModal="swiperOption">
               <div class="swiper-wrapper">
                 <div class="swiper-slide" v-for="(pic, i) in data.pics" :key="i">
-                  <div class="position-relative">
+                  <div class="position-relative h-100">
                         <span v-if="!pic.includes('youtube')" class="zoom-img"
                               @click="$refs.beachZoomModal.showZoomModal(pic)" v-show="zoom_plus_show">
                              <img src="~/static/pics/search/loop_plus.svg">
