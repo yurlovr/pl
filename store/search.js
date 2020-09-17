@@ -422,6 +422,7 @@ export const actions = {
       };
     // if (!autocompleteRes.data)
     //     return;
+    console.warn(autocompleteRes)
     if (autocompleteRes.data && autocompleteRes.data.list)
       for (let i = 0; i < autocompleteRes.data.list.length; i++) {
         if (rootState.beaches.data.list.find(v => v.ID == autocompleteRes.data.list[i].ID))

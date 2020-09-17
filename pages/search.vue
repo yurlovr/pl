@@ -171,14 +171,9 @@
       updateQuery() {
         let p = this.$nuxt.$route.fullPath,
           query = decodeURIComponent(p.replace('/search', '').replace('/', '').replace('?', '').replace('q=', '')).split('&');
-
-        if (!p.includes('?q='))
-          return false;
-
-        if (query[0].length > 0) {
           this.updateInput(query[0]);
           this.searchQuery([this.last_coordinates, this.geo_locating]);
-        }
+
       },
 
       updateTags(path) {
