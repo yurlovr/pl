@@ -141,7 +141,7 @@ export const getters = {
     const beachesTop = {
       title: 'Самые популярные пляжи' + geoName,
       subtitle: 'Пологий берег, плавный вход в воду, безопасность и современная инфраструктура',
-      beachNumber: Math.min(pagination.countElements, 45),
+      beachNumber: pagination.countElements,
       showMore: {
         type: 'beach',
         query
