@@ -10342,3 +10342,9 @@ body.touch {
 .mobile-modal .link-block {
   width: 200px;
 }
+
+@media (max-width: 1601px) and (min-width: 1025px) {
+  #similar-beaches {
+    padding-top: 59px;
+  }
+}
