@@ -23,7 +23,10 @@
         <img src="~/static/pics/global/svg/calendar_big.svg">
         <span>{{ data.date }}</span>
       </div>
-      <h3 class="beach-event__map-weather__weather-card__title" v-html="locationData.location"></h3>
+      <h3 class="beach-event__map-weather__weather-card__title"
+          v-if="locationData"
+          v-html="locationData.location">
+      </h3>
       <div class="h-line"></div>
       <div class="beach-event__map-weather__weather-card__temp-area">
         <div class="beach-event__map-weather__weather-card__temp-area__item">
