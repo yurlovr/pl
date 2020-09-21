@@ -52,18 +52,10 @@ export default {
     '~/plugins/bus',
     '~/plugins/gtm',
     '~/plugins/sentry',
-    {
-      src: '~/plugins/scroll-lock',
-      ssr: false
-    },
-    {
-      src: '~/plugins/custom-scroll',
-      ssr: false
-    },
-    {
-      src: '~/plugins/youtube',
-      ssr: false
-    }
+    { src: '~/plugins/cookie.js',       ssr: false, mode: 'client' },
+    { src: '~/plugins/scroll-lock',     ssr: false },
+    { src: '~/plugins/custom-scroll',   ssr: false },
+    { src: '~/plugins/youtube',         ssr: false },
   ],
   /*
    ** Nuxt.js dev-modules

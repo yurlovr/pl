@@ -34,7 +34,7 @@
               v-if="this.data && this.data.eventId"
               v-show="showIfEventIsPast(data.date)">
         <div class="custom-card__visited__round">
-          <img src="~/static/pics/global/svg/tick.svg" v-show="visited">
+          <img src="~/static/pics/global/svg/tick.svg" v-show="isVisited(this.data.eventId)">
         </div>
         <span class="custom-card__visited__text">посетил</span>
       </button>
@@ -107,8 +107,8 @@
 </template>
 
 <script>
-import Vue from 'vue';
 import VClamp from 'vue-clamp';
+import { mapGetters, mapMutations } from 'vuex';
 import AddToFavorites from '~/components/global/AddToFavorites';
 import moment from 'moment'
 import {getDistanceFromLatLonInKm} from "../../assets/calcDistance";
@@ -125,7 +125,6 @@ export default {
 
     data() {
       return {
-        visited: this.data && this.data.eventId && this.$cookies.get(`visited.events.${this.data.eventId}`),
         max: 2,
         picLoaded: false,
         distance: false,
@@ -133,6 +132,8 @@ export default {
       };
     },
     computed: {
+      ...mapGetters('favorites', ['isVisited']),
+
       last_coordinates() {
         let cookie_coords = this.$cookies.get('last_coordinates') || {},
           route_coords = this.$route.params && this.$route.params.coordinates ? this.$route.params.coordinates : {}
@@ -145,10 +146,8 @@ export default {
         })() : {}
       }
     },
+
     beforeDestroy() {
-      this.$bus.$off('visitedAdd');
-      this.$bus.$off('visitedRemove');
-      this.$bus.$off('updateVisited');
       this.$bus.$off('show_geo');
     },
 
@@ -156,23 +155,16 @@ export default {
       window.addEventListener('resize', this.onResize, false);
       this.onResize();
 
-      this.$bus.$on('visitedAdd', id => {
-        if (this.data && this.data.eventId == id)
-          this.visited = true;
-      });
-      this.$bus.$on('visitedRemove', id => {
-        if (this.data && this.data.eventId == id)
-          this.visited = false;
-      });
-      this.$bus.$on('updateVisited', () => {
-        this.visited = this.data && this.data.eventId && this.$cookies.get(`visited.events.${this.data.eventId}`);
-      });
       this.$bus.$on('show_geo', value => {
         this.distance = value
       });
     },
 
     methods: {
+      ...mapMutations('favorites', [
+        'removeVisited',
+        'addVisited',
+      ]),
       distanceValue(d) {
         if (d && d.length == 2 && Object.keys(this.last_coordinates).length) {
           let lat2 = d[0], lng2 = d[1],
@@ -185,16 +177,11 @@ export default {
         return moment(today, 'L').isSameOrAfter(moment(date, 'L'));
       },
       updateVisited() {
-        if (this.data.eventId) {
-          if (this.$cookies.get(`visited.events.${this.data.eventId}`)) {
-            this.$cookies.remove(`visited.events.${this.data.eventId}`);
-            this.$bus.$emit('visitedRemove', this.data.eventId);
-          } else {
-            this.$cookies.set(`visited.events.${this.data.eventId}`, true, {
-              maxAge: 30 * 24 * 60 * 60 // one month
-            });
-            this.$bus.$emit('visitedAdd', this.data.eventId);
-          }
+        const { eventId } = this.data
+        if (eventId) {
+          this.isVisited(eventId)
+            ? this.removeVisited(eventId)
+            : this.addVisited(eventId)
         }
       },
 
