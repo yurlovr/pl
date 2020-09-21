@@ -278,7 +278,7 @@ export const getters = {
           another_place: true,
           price: hotels[i].PRICE,
           coordinates: hotels[i].COORDINATES ? hotels[i].COORDINATES.split(',').map(Number) : [],
-          dist: distancehotels[i].DISTANCE,
+          dist: hotels[i].DISTANCE,
           custom_photo: true,
           ignore_global_km: true,
         });

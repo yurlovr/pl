@@ -406,9 +406,7 @@
 
       searchCurQuery() {
         document.querySelector('.search__bar__input').blur(); // hide autocomlete
-        if (this.autocompleteResults.length == 1) {
-          this.$bus.goTo(this.autocompleteResults[0].link, this.$router);
-        } else if (this.searchInput != '') {
+        if (this.searchInput != '') {
           if (this.$nuxt.$route.path == '/search') { // already in the search page
             this.searchQuery([this.$cookies.get('last_coordinates') || {}, this.$cookies.get('geo_locating') || -1]); // update results and tags
             this.$bus.goTo(`/search${this.query}`, this.$router, false); // updateQuery
