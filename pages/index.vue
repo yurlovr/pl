@@ -149,12 +149,13 @@ export default {
 
   head() {
     // console.log('5 hook head')
+    const meta = this.meta || {};
     const stable = 'ПЛЯЖИ.РУ'
     return {
-      title: this.meta.title || stable,
+      title: meta.title || stable,
       meta: [
-        { hid: 'description-beach', name: 'description', content: this.meta.description || stable },
-        { hid: 'keywords-beach',    name: 'keywords',    content: this.meta.keywords || stable},
+        { hid: 'description-beach', name: 'description', content: meta.description || stable },
+        { hid: 'keywords-beach',    name: 'keywords',    content: meta.keywords || stable},
       ]
     }
   },

@@ -29,7 +29,9 @@
       <AddToFavorites :data="data"/>
       <img class="custom-card__paid cursor-pointer" v-if="data.paid" src="~/static/pics/global/svg/diamond.svg"
            alt="Платный" :title="data.access  && data.access.DESCRIPTION ? data.access.DESCRIPTION : ''">
-      <button class="custom-card__visited" @click="updateVisited()" v-if="this.data && this.data.eventId"
+      <button class="custom-card__visited"
+              @click="updateVisited()"
+              v-if="this.data && this.data.eventId"
               v-show="showIfEventIsPast(data.date)">
         <div class="custom-card__visited__round">
           <img src="~/static/pics/global/svg/tick.svg" v-show="visited">
