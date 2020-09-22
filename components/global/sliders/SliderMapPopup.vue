@@ -18,18 +18,17 @@
 </template>
 
 <script>
-	import Vue from 'vue';
 
 	export default {
 		props: ['pics'],
 
-		beforeMount () {
-			if (process.browser) {
-				require('swiper/dist/css/swiper.css');
-				const VueAwesomeSwiper = require('vue-awesome-swiper/dist/ssr');
-				Vue.use(VueAwesomeSwiper);
-			}
-		},
+		// beforeMount () {
+			// if (process.browser) {
+			// 	require('swiper/dist/css/swiper.css');
+			// 	const VueAwesomeSwiper = require('vue-awesome-swiper/dist/ssr');
+			// 	Vue.use(VueAwesomeSwiper);
+			// }
+		// },
 
 		data() {
 			return {

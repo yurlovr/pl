@@ -14,17 +14,15 @@
 
     <Search class="main-page__welcome__search" labelId="1" />
 
-    <client-only>
       <BeachSliderArea
         class="main-page__popular-beaches"
         :data="getBeachesTop"
         v-if="getBeachesTop"
       />
-
-      <Cities
-        :data="getCitiesTop"
-        v-if="getCitiesTop"
-      />
+      <client-only>
+        <Cities :data="getCitiesTop"
+                 v-if="getCitiesTop" />
+      </client-only>
 
       <MapArea :data="getMap" :mapData="mapEntity" v-if="getMap" />
 
@@ -80,7 +78,6 @@
         class="banner-3"
       />
 
-    </client-only>
 
     <MobileSettingsModal
       v-if="open_app && getMobileSettings && getMobileSettings.length > 0"
@@ -92,6 +89,7 @@
 </template>
 
 <script>
+import Vue from 'vue';
 import Search from '~/components/global/Search';
 import Welcome from '~/components/pages/main/Welcome';
 import BeachSliderArea from '~/components/global/BeachSliderArea';
@@ -157,6 +155,16 @@ export default {
         { hid: 'description-beach', name: 'description', content: meta.description || stable },
         { hid: 'keywords-beach',    name: 'keywords',    content: meta.keywords || stable},
       ]
+    }
+  },
+
+  beforeMount () {
+    // TODO Вынести куданибудь в одно место
+    // выдывать надо как только process.browser станет тру
+    if (process.browser) {
+    	require('swiper/dist/css/swiper.css');
+    	const VueAwesomeSwiper = require('vue-awesome-swiper/dist/ssr');
+    	Vue.use(VueAwesomeSwiper);
     }
   },
 

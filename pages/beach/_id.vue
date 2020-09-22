@@ -1,67 +1,120 @@
 <template>
   <div class="beach-page custom-page">
     <div class="beach-page__container custom-container">
-      <BeachEventSections :sections="beachData.sections" class="beach-page-sections--w-100"/>
-      <SliderHugeBeachEventPage :data="beachData.hugeSliderData" id="gallery" @call-modal="changeModalState"/>
+
+       <client-only>
+        <BeachEventSections :sections="beachData.sections"
+                            class="beach-page-sections--w-100"/>
+        <SliderHugeBeachEventPage :data="beachData.hugeSliderData"
+                                  id="gallery"
+                                  @call-modal="changeModalState"/>
+      </client-only>
+
       <div class="custom-container-inner">
-        <BeachEventSideButtons :data="beachData.sideMapWeatherData"/>
+        <BeachEventSideButtons :data="beachData.sideMapWeatherData" />
       </div>
       <div class="two-part-layout">
         <main class="two-part-layout__left">
-          <BeachEventMainInfo id="main-info" :data="beachData.mainData"/>
-          <div v-if="distance" class="beach-page__avg-rating__mobile distance-right-mobile">
+          <BeachEventMainInfo id="main-info" :data="beachData.mainData" />
+          <div class="beach-page__avg-rating__mobile distance-right-mobile"
+               v-if="distance">
             <p class="m-0">Расстояние до пляжа <span>{{distance.toString().replace(/\./, ',')}} км</span></p>
           </div>
-          <BeachAvgRating :data="beachData.avgRating" v-if="beachData.avgRating.ratings.length > 0"
-                          class="beach-page__avg-rating__mobile"/>
-          <BeachQuickData id="infra" :title="'Инфраструктура пляжа'" :data="beachData.infraData" action="service" :href="true"
-                          v-if="beachData.infraData.length > 0"/>
-          <BeachEventMapWeather :data="beachData.sideMapWeatherData"  :locationData="beachData.mainData" :mapData="beachData.map_entity" class="beach-event__map-weather__tablet"/>
-          <BeachEventAbout id="about" :data="beachData.about" v-if="beachData.about && beachData.about.length > 1"
-                           :title="'О пляже'"/>
-          <BeachEventMapWeather :data="beachData.sideMapWeatherData"  :locationData="beachData.mainData" :mapData="beachData.map_entity"
+          <BeachAvgRating :data="beachData.avgRating"
+                          v-if="beachData.avgRating.ratings.length > 0"
+                          class="beach-page__avg-rating__mobile" />
+          <BeachQuickData id="infra"
+                          :title="'Инфраструктура пляжа'"
+                          :data="beachData.infraData"
+                          action="service"
+                          :href="true"
+                          v-if="beachData.infraData.length > 0" />
+          <BeachEventMapWeather :data="beachData.sideMapWeatherData"
+                                :locationData="beachData.mainData"
+                                :mapData="beachData.map_entity"
+                                class="beach-event__map-weather__tablet" />
+          <BeachEventAbout id="about"
+                           :data="beachData.about"
+                           v-if="beachData.about && beachData.about.length > 1"
+                           :title="'О пляже'" />
+          <BeachEventMapWeather :data="beachData.sideMapWeatherData"
+                                :locationData="beachData.mainData"
+                                :mapData="beachData.map_entity"
                                 v-if="beachData.sideMapWeatherData.pos.length > 0"
-                                class="beach-event__map-weather__mobile"/>
-          <BeachQuickData id="services" :title="'Услуги и аренда'" :data="beachData.servicesData" action="service"
-                          v-if="beachData.servicesData.length > 0"/>
-          <BeachEventParkingsTransport id="pt" :data="beachData.ptData"
+                                class="beach-event__map-weather__mobile" />
+          <BeachQuickData id="services"
+                          :title="'Услуги и аренда'"
+                          :data="beachData.servicesData"
+                          action="service"
+                          v-if="beachData.servicesData.length > 0" />
+          <BeachEventParkingsTransport id="pt"
+                                       :data="beachData.ptData"
                                        :additional="[...beachData.servicesData.filter(e => Array.isArray(e.pos)), ...beachData.infraData.filter(e => Array.isArray(e.pos))]"
                                        :mapData="beachData.map_entity"
-                                       v-if="beachData.ptData.parkings.auto.length > 0 || beachData.ptData.parkings.bus.length > 0"/>
-          <BeachWaterTemperatureHistogram id="water-temp" v-if="beachData.waterHistogramData.length > 0"
-                                          :data="beachData.waterHistogramData" :dataAir="beachData.airHistogramData"/>
-          <BeachEvents id="events" :showTemp="false" :data="beachData.events" class="beach-page__cardless-area"
+                                       v-if="beachData.ptData.parkings.auto.length > 0 || beachData.ptData.parkings.bus.length > 0" />
+          <BeachWaterTemperatureHistogram id="water-temp"
+                                          v-if="beachData.waterHistogramData.length > 0"
+                                          :data="beachData.waterHistogramData"
+                                          :dataAir="beachData.airHistogramData"/>
+          <BeachEvents id="events"
+                       :showTemp="false"
+                       :data="beachData.events"
+                       class="beach-page__cardless-area"
                        v-if="beachData.events.cardData.length > 0"/>
-          <BeachBarsNRestos id="barsNRestos" :data="beachData.barsNRestos" v-if="beachData.barsNRestos.length > 0"
-                            class="beach-page__cardless-area"/>
+          <BeachBarsNRestos id="barsNRestos"
+                            :data="beachData.barsNRestos"
+                            v-if="beachData.barsNRestos.length > 0"
+                            class="beach-page__cardless-area" />
           <BeachSliderArea
             v-if="hotelsData.hotels && hotelsData.hotels.beachNumber > 0"
             :data="hotelsData.hotels"
             class="hotels-section"
-            outlink="https://nash.travel/hotel"
-          />
-          <BeachOpinions id="opinions" :data="beachData.opinions" v-if="beachData.opinions.length > 0"/>
-          <BeachEventReviews id="reviews" :typeId="beachData.mainData.beachId" :data="beachData.reviews" :type="'beach'"
-                             class="beach-page__cardless-area"/>
+            outlink="https://nash.travel/hotel" />
+
+          <BeachOpinions id="opinions"
+                         :data="beachData.opinions"
+                         v-if="beachData.opinions.length > 0" />
+
+          <client-only>
+            <BeachEventReviews id="reviews"
+                               :typeId="beachData.mainData.beachId"
+                               :data="beachData.reviews"
+                               :type="'beach'"
+                               class="beach-page__cardless-area" />
+          </client-only>
+
         </main>
         <aside class="two-part-layout__right">
             <div class="distance-right" v-if="distance">
               <p class="m-0">Расстояние до пляжа <span>{{distance.toString().replace(/\./, ',')}} км</span></p>
             </div>
-          <BeachAvgRating :data="beachData.avgRating" class="beach-page__avg-rating__desktop"/>
-          <BeachEventMapWeather  :locationData="beachData.mainData" :data="beachData.sideMapWeatherData" :mapData="beachData.map_entity"
-                                v-if="beachData.sideMapWeatherData.pos.length > 0"
-                                class="beach-event__map-weather__desktop"/>
+          <BeachAvgRating :data="beachData.avgRating"
+                          class="beach-page__avg-rating__desktop" />
+          <BeachEventMapWeather  :locationData="beachData.mainData"
+                                 :data="beachData.sideMapWeatherData"
+                                 :mapData="beachData.map_entity"
+                                 v-if="beachData.sideMapWeatherData.pos.length > 0"
+                                 class="beach-event__map-weather__desktop" />
           <AnnouncementCard :data="beachData.announcementData" class="beach-page__announcement"/>
         </aside>
       </div>
     </div>
     <div class="main-page__white-wrapper beach-event__visitor-pics-wrapper">
-      <BeachEventVisitorPics id="visitor-pics" :data="beachData.visitorPics" :type="'beach'"
-                             :typeId="beachData.mainData.beachId"/>
+
+      <client-only>
+        <BeachEventVisitorPics
+          id="visitor-pics"
+          :data="beachData.visitorPics"
+          :type="'beach'"
+          :typeId="beachData.mainData.beachId"
+        />
+      </client-only>
+
     </div>
-    <BeachSliderArea id="similar-beaches" class="beach-event__similar-beaches" :data="beachData.similarBeaches"
-                     v-if="beachData.similarBeaches.beachNumber"/>
+    <BeachSliderArea id="similar-beaches"
+                     class="beach-event__similar-beaches"
+                     :data="beachData.similarBeaches"
+                     v-if="beachData.similarBeaches.beachNumber" />
 
     <iframe360 v-if="show_pano" @close-modal="changeModalState" :url="beachData.hugeSliderData.panorama"></iframe360>
   </div>
@@ -70,22 +123,22 @@
 <script>
   import BeachQuickData from '~/components/pages/beach/BeachQuickData';
   import BeachWaterTemperatureHistogram from '~/components/pages/beach/BeachWaterTemperatureHistogram';
-  import BeachBarsNRestos from '~/components/pages/beach/BeachBarsNRestos';
-  import BeachOpinions from '~/components/pages/beach/BeachOpinions';
-  import BeachAvgRating from '~/components/pages/beach/BeachAvgRating';
+  import BeachBarsNRestos   from '~/components/pages/beach/BeachBarsNRestos';
+  import BeachOpinions      from '~/components/pages/beach/BeachOpinions';
+  import BeachAvgRating     from '~/components/pages/beach/BeachAvgRating';
   import BeachEventSections from '~/components/pages/beach-event/BeachEventSections';
   import SliderHugeBeachEventPage from '~/components/pages/beach-event/SliderHugeBeachEventPage';
-  import BeachEventMapWeather from '~/components/pages/beach-event/BeachEventMapWeather';
+  import BeachEventMapWeather  from '~/components/pages/beach-event/BeachEventMapWeather';
   import BeachEventSideButtons from '~/components/pages/beach-event/BeachEventSideButtons';
-  import BeachEventMainInfo from '~/components/pages/beach-event/BeachEventMainInfo';
+  import BeachEventMainInfo    from '~/components/pages/beach-event/BeachEventMainInfo';
   import BeachEventVisitorPics from '~/components/pages/beach-event/BeachEventVisitorPics';
   import BeachEventParkingsTransport from '~/components/pages/beach-event/BeachEventParkingsTransport';
-  import BeachEventAbout from '~/components/pages/beach-event/BeachEventAbout';
-  import BeachEventReviews from '~/components/pages/beach-event/BeachEventReviews';
-  import AnnouncementCard from '~/components/global/AnnouncementCard';
-  import BeachSliderArea from '~/components/global/BeachSliderArea';
-  import BeachEvents from '~/components/pages/beach/BeachEvents';
-  import iframe360 from "../../components/pages/beach/iframe360";
+  import BeachEventAbout    from '~/components/pages/beach-event/BeachEventAbout';
+  import BeachEventReviews  from '~/components/pages/beach-event/BeachEventReviews';
+  import AnnouncementCard   from '~/components/global/AnnouncementCard';
+  import BeachSliderArea    from '~/components/global/BeachSliderArea';
+  import BeachEvents        from '~/components/pages/beach/BeachEvents';
+  import iframe360          from '~/components/pages/beach/iframe360';
 
   import {mapGetters} from 'vuex';
   import {getDistanceFromLatLonInKm} from "../../assets/calcDistance";

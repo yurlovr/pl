@@ -14,7 +14,9 @@
       </div>
     </div>
 
-    <SliderBeachEventHotel :data="data.beachSliderData" />
+    <client-only>
+      <SliderBeachEventHotel :data="data.beachSliderData" />
+    </client-only>
 
     <div class="main-page__beach-slider-area__see-all-bottom">
       <a v-if="!outlink" :href="link" @click.prevent="$bus.goTo(link, $router)" class="main-page__see-all">

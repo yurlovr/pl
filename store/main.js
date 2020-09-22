@@ -93,12 +93,12 @@ export const actions = {
     ] = await Promise.all([
       popularBeachReq,
       this.$axios.$get('/settings/list'),
-      this.$axios.$get('/city/top?count=9999'),
-      this.$axios.$get('/weather/list'),
-      this.$axios.$get('/collection/list/'),
-      this.$axios.$get('/collectionList/list/'),
-      this.$axios.$get('/banner/list/'),
-      this.$axios.$get('/beach/clusters/'),
+      this.$axios.$get('/city/top?count=10'),
+      this.$axios.$get('/weather/list?count=10'),
+      this.$axios.$get('/collection/list/?count=10'),
+      this.$axios.$get('/collectionList/list/?count=10'),
+      this.$axios.$get('/banner/list/?count=10'),
+      this.$axios.$get('/beach/clusters/?count=10'),
       this.$axios.$get('/hotel/list?count=10'),
     ]);
 
