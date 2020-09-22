@@ -171,6 +171,15 @@
       }
 
 		},
+    beforeDestroy() {
+      try {
+        this.mySwiper                && this.mySwiper.destroy                && this.mySwiper.destroy(false, false);
+        this.mySwiperModalPhoto      && this.mySwiperModalPhoto.destroy      && this.mySwiperModalPhoto.destroy(false, false);
+        this.mySwiperModalSmallPhoto && this.mySwiperModalSmallPhoto.destroy && this.mySwiperModalSmallPhoto.destroy(false, false);
+      } catch (e) {
+        console.error(e)
+      }
+    },
     methods: {
 		  initSwiper(){
           this.mySwiperModalPhoto.on('slideChange', () => {
@@ -181,7 +190,7 @@
           });
 
 
-          this.mySwiperModalPhoto.init(this.swiperOption_double);
+          this.mySwiperModalPhoto     .init(this.swiperOption_double);
           this.mySwiperModalSmallPhoto.init(this.swiperOption_double);
 
           // this.updateArrows();
@@ -189,7 +198,7 @@
           // setTimeout(()=> { this.mySwiper.init(this.swiperOption) }, 1);
       },
       updateArrows() {
-        this.showLeft = !this.mySwiperModalPhoto.isBeginning;
+        this.showLeft  = !this.mySwiperModalPhoto.isBeginning;
         this.showRight = !this.mySwiperModalPhoto.isEnd;
       },
       openPhotosModal(val) {

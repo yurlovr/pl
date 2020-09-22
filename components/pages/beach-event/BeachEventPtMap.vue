@@ -185,7 +185,7 @@
                             document.querySelector(`.slider__arrow-right-balloon`).addEventListener('click', () => this.swiper.slideNext());
                           },
                           clear() {
-                            this.swiper.destroy();
+                            this.swiper && this.swiper.destroy && this.swiper.destroy();
 
                             this.constructor.superclass.clear.call(this);
                           },
@@ -252,7 +252,7 @@
                           document.querySelector(`.slider__arrow-right-balloon`).addEventListener('click', () => this.swiper.slideNext());
                         },
                           clear() {
-                            this.swiper.destroy();
+                            this.swiper && this.swiper.destroy && this.swiper.destroy();
 
                             this.constructor.superclass.clear.call(this);
                           },
@@ -712,8 +712,6 @@
     },
     beforeDestroy() {
       window.onresize = null
-    },
-    beforeDestroy() {
       this.$bus.$off('showOnMap');
       this.$bus.$off('call-balloon-service')
     }

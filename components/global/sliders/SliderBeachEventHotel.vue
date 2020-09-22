@@ -3,19 +3,19 @@
         <div v-swiper:mySwiper="swiperOption">
             <div class="swiper-wrapper" v-if="data">
                 <Card
-                    v-if="!data.cardData.some(e => e.id == 'fake')"
-                    v-for="(slide, i) in data.cardData"
-                    :data="slide"
-                    :key="i"
-                    class="swiper-slide"
+                  v-if="!data.cardData.some(e => e.id == 'fake')"
+                  v-for="(slide, i) in data.cardData"
+                  :data="slide"
+                  :key="i"
+                  class="swiper-slide"
                 />
-              <despodencyCard
-                v-else
-                v-for="(slide, i) in data.cardData"
-                :data="slide"
-                :key="i"
-                class="swiper-slide"
-              />
+                <despodencyCard
+                  v-else
+                  v-for="(slide, i) in data.cardData"
+                  :data="slide"
+                  :key="i + 300"
+                  class="swiper-slide"
+                />
             </div>
         </div>
         <div class="pagination-wrapper">
@@ -53,9 +53,9 @@
 </template>
 
 <script>
-import Vue from 'vue';
+// import Vue from 'vue';
 import Card from '~/components/global/Card';
-import despodencyCard from "../despodencyCard";
+import DespodencyCard from "../DespodencyCard";
 
 export default {
     props: {
@@ -66,19 +66,18 @@ export default {
       }
     },
 
-    beforeMount () {
-        if (process.browser) {
-            require('swiper/dist/css/swiper.css');
-            const VueAwesomeSwiper = require('vue-awesome-swiper/dist/ssr');
-            Vue.use(VueAwesomeSwiper);
-        }
-    },
+    // beforeMount () {
+    //     if (process.browser) {
+    //         require('swiper/dist/css/swiper.css');
+    //         const VueAwesomeSwiper = require('vue-awesome-swiper/dist/ssr');
+    //         Vue.use(VueAwesomeSwiper);
+    //     }
+    // },
 
     components: {
         Card,
-        despodencyCard
+        DespodencyCard
     },
-
     data () {
         return {
             swiperOption: {
@@ -154,9 +153,10 @@ export default {
             }
         }
     },
-
+    // TODO Swiper по хорошему надо обновить, и использовать одну версию
+    // + там есть плюшки с автодестроем
     beforeRouteLeave(to, from, next) {
-        this.mySwiper.destroy();
+        this.mySwiper && this.mySwiper.destroy && this.mySwiper.destroy(false, false);
         next();
     }
 }

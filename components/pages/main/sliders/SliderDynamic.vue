@@ -23,7 +23,7 @@
 </template>
 
 <script>
-	import Vue from 'vue';
+	// import Vue from 'vue';
 	import DynamicSlide from '~/components/pages/main/DynamicSlide';
 
 	export default {
@@ -33,13 +33,13 @@
 			DynamicSlide
 		},
 
-		beforeMount () {
-			if (process.browser) {
-				require('swiper/dist/css/swiper.css');
-				const VueAwesomeSwiper = require('vue-awesome-swiper/dist/ssr');
-				Vue.use(VueAwesomeSwiper);
-			}
-		},
+		// beforeMount () {
+			// if (process.browser) {
+			// 	require('swiper/dist/css/swiper.css');
+			// 	const VueAwesomeSwiper = require('vue-awesome-swiper/dist/ssr');
+			// 	Vue.use(VueAwesomeSwiper);
+			// }
+		// },
     beforeDestroy() {
       this.$bus.$off('mainPageReady')
     },
@@ -102,7 +102,7 @@
 			},
 
 			updateArrows() {
-				this.showLeft = !this.mySwiper.isBeginning;
+				this.showLeft  = !this.mySwiper.isBeginning;
 				this.showRight = !this.mySwiper.isEnd;
 			},
 

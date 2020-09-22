@@ -24,13 +24,15 @@
 </template>
 
 <script>
-import Vue from 'vue';
+// import Vue from 'vue';
 import VClamp from 'vue-clamp';
 import AddToFavorites from '~/components/global/AddToFavorites';
 import moment from 'moment'
 import {getDistanceFromLatLonInKm} from "../../assets/calcDistance";
 
+// TODO Add russian local
 moment.locale('ru')
+
 const today = moment().format('L')
 export default {
   props: ['data', 'showTemp'],
@@ -61,7 +63,7 @@ export default {
       })() : {}
     }
   },
-
+  // TODO Refactor!
   beforeDestroy() {
     this.$bus.$off('visitedAdd');
     this.$bus.$off('visitedRemove');
@@ -135,7 +137,10 @@ export default {
       this.$bus.$emit('emptySearchParams');
       this.$bus.$emit('updateSearchParam', {
         param: 'cities',
-        value: {title: this.data.location, id: this.data.locationId}
+        value: {
+          title: this.data.location,
+             id: this.data.locationId
+        }
       });
       setTimeout(() => {
         this.$bus.$emit('search')

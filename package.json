@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@nuxtjs/axios": "^5.12.2",
+    "@nuxtjs/component-cache": "^1.1.6",
     "@nuxtjs/gtm": "^2.3.2",
     "@qonfucius/nuxt-prometheus-module": "^0.1.1",
     "@sentry/browser": "^5.23.0",
@@ -38,11 +39,13 @@
     "vue-youtube": "^1.4.0",
     "vue-zoomer": "^0.3.6",
     "vue2-perfect-scrollbar": "^1.5.0",
+    "vuex-persistedstate": "^3.1.0",
     "ymaps": "^0.2.1"
   },
   "devDependencies": {
     "@babel/plugin-transform-runtime": "^7.11.5",
     "node-sass": "^4.14.1",
+    "nuxt-compress": "^3.0.0",
     "sass-loader": "^8.0.2"
   }
 }

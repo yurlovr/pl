@@ -182,9 +182,9 @@
           })
       }
     },
-
+    // TODO Почему это здесь??
     beforeRouteLeave(to, from, next) {
-      this.mySwiper.destroy();
+      this.mySwiper && this.mySwiper.destroy && this.mySwiper.destroy(false, false);
       next();
     }
   }
