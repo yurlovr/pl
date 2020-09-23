@@ -9,7 +9,7 @@
                   :key="i"
                   class="swiper-slide"
                 />
-                <despodencyCard
+                <DespodencyCard
                   v-else
                   v-for="(slide, i) in data.cardData"
                   :data="slide"

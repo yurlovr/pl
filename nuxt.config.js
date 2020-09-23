@@ -126,19 +126,20 @@ export default {
    ** Nuxt.js modules
    */
   modules: [
+    "bootstrap-vue/nuxt",
     "@nuxtjs/axios",
     'cookie-universal-nuxt',
-    ["nuxt-compress",
-      {
+    ["nuxt-compress", {
         gzip: {
           cache: true
         },
         brotli: {
           threshold: 10240
         }
-      }
-    ],
-    ['@nuxtjs/component-cache', { maxAge: 1000 * 60 * 60 }],
+      }],
+    ['@nuxtjs/component-cache', {
+        maxAge: 1000 * 60 * 60
+      }],
     ['nuxt-lazy-load', {
       images: true,
       directiveOnly: true,
@@ -165,6 +166,7 @@ export default {
      ** You can extend webpack config here
      */
     cache: true,
+    // Uncomment for analyze code
     // analyze: {
     //   analyzerMode: 'static',
     //   analyzerMode: 'server'
@@ -172,7 +174,9 @@ export default {
     devtools: true,
     transpile: ["vue-clamp", "resize-detector"],
     extend(config, ctx) {
-      config.plugins.push(new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/))
+      // Этот код убирает ненужные локали из момента
+      config.plugins.push(new webpack.ContextReplacementPlugin(/moment[\/\\]locale$/, /ru/))
+      // config.plugins.push(new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/)),
     }
   }
 }
