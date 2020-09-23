@@ -49,11 +49,11 @@
       >
         {{ data.ignore_global_km ? data.dist : distanceValue(data.coordinates) }} км
       </p>
-            <div class="mobile-distance">
-              <span v-if="data.show_distance" v-show="distanceValue(data.coordinates)">
-                {{distanceValue(data.coordinates)}} км
-              </span>
-            </div>
+<!--            <div class="mobile-distance">-->
+<!--              <span v-if="data.show_distance" v-show="distanceValue(data.coordinates)">-->
+<!--                {{distanceValue(data.coordinates)}} км-->
+<!--              </span>-->
+<!--            </div>-->
       <div class="custom-card__rating-area" v-if="data.rating">
         <img src="~/static/pics/global/svg/star.svg" alt="Рейтинг">
         <span>{{ data.rating.toFixed(1) }}</span>
@@ -150,11 +150,11 @@ export default {
       // last_coordinates: this.$cookies.get('last_coordinates') || {}
     };
   },
-  serverCacheKey: props => {
-    const {id, eventId, beachId} = props.data;
-    console.log('cached CardComponent by id: ', id || eventId || beachId || null);
-    return id || eventId || beachId || null;
-  },
+  // serverCacheKey: props => {
+  //   const {id, eventId, beachId} = props.data;
+  //   console.log('cached CardComponent by id: ', id || eventId || beachId || null);
+  //   return id || eventId || beachId || null;
+  // },
   computed: {
     ...mapGetters('favorites', ['isVisited']),
 
