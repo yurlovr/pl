@@ -50,17 +50,17 @@
 </template>
 
 <script>
-  // import Vue from 'vue';
+  import Vue from 'vue';
 
   export default {
     props: ['data'],
 
     beforeMount() {
-      // if (process.browser) {
-      //   require('swiper/dist/css/swiper.css');
-      //   const VueAwesomeSwiper = require('vue-awesome-swiper/dist/ssr');
-      //   Vue.use(VueAwesomeSwiper);
-      // }
+      if (process.browser) {
+        require('swiper/dist/css/swiper.css');
+        const VueAwesomeSwiper = require('vue-awesome-swiper/dist/ssr');
+        Vue.use(VueAwesomeSwiper);
+      }
     },
 
     data() {
