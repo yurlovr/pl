@@ -53,7 +53,7 @@
 </template>
 
 <script>
-// import Vue from 'vue';
+import Vue from 'vue';
 import Card from '~/components/global/Card';
 import DespodencyCard from "../DespodencyCard";
 
@@ -66,13 +66,13 @@ export default {
       }
     },
 
-    // beforeMount () {
-    //     if (process.browser) {
-    //         require('swiper/dist/css/swiper.css');
-    //         const VueAwesomeSwiper = require('vue-awesome-swiper/dist/ssr');
-    //         Vue.use(VueAwesomeSwiper);
-    //     }
-    // },
+    beforeMount () {
+        if (process.browser) {
+            require('swiper/dist/css/swiper.css');
+            const VueAwesomeSwiper = require('vue-awesome-swiper/dist/ssr');
+            Vue.use(VueAwesomeSwiper);
+        }
+    },
 
     components: {
         Card,
