@@ -400,6 +400,7 @@ export const actions = {
     commit('SET_MY_CITY', city);
     commit('updateSearchQuery');
     // if (state.query.length > 0) {
+    console.log(state.query, 'state query')
     commit('SET_SEARCH_RESULT', await this.$axios.$get(`search/filter${state.query}&count=9999`));
     // } else commit('EMPTY_RESULTS');
   },
@@ -423,13 +424,17 @@ export const actions = {
     // if (!autocompleteRes.data)
     //     return;
     console.warn(autocompleteRes)
-    if (autocompleteRes.data && autocompleteRes.data.list)
+    if (autocompleteRes.data && autocompleteRes.data.list) {
       for (let i = 0; i < autocompleteRes.data.list.length; i++) {
         if (rootState.beaches.data.list.find(v => v.ID == autocompleteRes.data.list[i].ID))
           beaches.data.list.push(rootState.beaches.data.list.find(v => v.ID == autocompleteRes.data.list[i].ID));
         if (rootState.events.data.list.find(v => v.ID == autocompleteRes.data.list[i].ID))
           events.data.list.push(rootState.events.data.list.find(v => v.ID == autocompleteRes.data.list[i].ID));
       }
+    } else {
+      events.data.list = rootState.events.data.list;
+      beaches.data.list = rootState.beaches.data.list;
+    }
     commit('SET_SEARCH_RESULT', beaches);
     commit('SET_SEARCH_RESULT_BEACH_BACKUP', beaches);
     commit('SET_SEARCH_RESULT_EVENT_BACKUP', events);
@@ -497,7 +502,7 @@ export const getters = {
         title: state.searchPageResult.data.list[i].NAME,
         location: state.searchPageResult.data.list[i].CITY ? state.searchPageResult.data.list[i].CITY.NAME : (state.searchPageResult.data.list[i].BEACH && state.searchPageResult.data.list[i].BEACH.CITY ? state.searchPageResult.data.list[i].BEACH.CITY.NAME : null),
         locationId: state.searchPageResult.data.list[i].CITY ? state.searchPageResult.data.list[i].CITY.ID : (state.searchPageResult.data.list[i].BEACH && state.searchPageResult.data.list[i].BEACH.CITY ? state.searchPageResult.data.list[i].BEACH.CITY.ID : null),
-        pic: state.searchPageResult.data.list[i].PHOTOS && state.searchPageResult.data.list[i].PHOTOS.big  && state.searchPageResult.data.list[i].PHOTOS.big.length ? state.searchPageResult.data.list[i].PHOTOS.big[0].path : null,
+        pic: state.searchPageResult.data.list[i].PHOTOS && state.searchPageResult.data.list[i].PHOTOS.big && state.searchPageResult.data.list[i].PHOTOS.big.length ? state.searchPageResult.data.list[i].PHOTOS.big[0].path : null,
         mainLink: `${state.beachesOrEventsAreShown ? 'event' : 'beach'}/${state.searchPageResult.data.list[i].ID}`,
         beachLink: `${state.beachesOrEventsAreShown ? 'event' : 'beach'}/${state.searchPageResult.data.list[i].ID}`,
         humanLink: `${state.beachesOrEventsAreShown ? 'event' : 'beach'}/${state.searchPageResult.data.list[i].CODE ? state.searchPageResult.data.list[i].CODE : state.searchPageResult.data.list[i].ID}`,
