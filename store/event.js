@@ -103,13 +103,13 @@ export const getters = {
             about: state.event.data.item.DESCRIPTION,
 
             reviews: [],
-
             sideMapWeatherData: {
                 title: state.event.data.item.BEACH ? state.event.data.item.BEACH.NAME : null,
                 date: state.event.data.item.BEACH ? state.event.data.item.BEACH.WEATHER.DATE : null,
                 pos: state.event.data.item.BEACH && state.event.data.item.BEACH.COORDINATES != '' ? state.event.data.item.BEACH.COORDINATES.split(',').map(v => parseFloat(v)) : [],
                 waterTemp: state.event.data.item.BEACH && state.event.data.item.BEACH.WEATHER && state.event.data.item.BEACH.WEATHER.TEMP ? state.event.data.item.BEACH.WEATHER.TEMP.WATER : null,
-                airTemp: state.event.data.item.BEACH && state.event.data.item.BEACH.WEATHER && state.event.data.item.BEACH.WEATHER.TEMP ? state.event.data.item.BEACH.WEATHER.TEMP.AIR : null
+                airTemp: state.event.data.item.BEACH && state.event.data.item.BEACH.WEATHER && state.event.data.item.BEACH.WEATHER.TEMP ? state.event.data.item.BEACH.WEATHER.TEMP.AIR : null,
+                email: state.event.data.item.BEACH.CONTACT && state.event.data.item.BEACH.CONTACT.EMAIL ? state.event.data.item.BEACH.CONTACT.EMAIL : null
             },
 
             ptData: {
