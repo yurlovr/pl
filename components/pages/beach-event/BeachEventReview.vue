@@ -15,7 +15,7 @@
       <div v-else class="review-photo-container">
         <div class="review-photo" v-for="(img, index) in data.photos.slice(0, 2)" :key="index + 'photo'">
           <div class="all-photos" @click="openPhotoModal" v-if="data.photos.length > 2 && index==1">
-            {{'+' + (data.photos.length - 3)}}
+            {{'+' + (data.photos.length - 2)}}
           </div>
           <img :src="img" alt="">
         </div>
