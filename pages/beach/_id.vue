@@ -61,15 +61,11 @@
                        :data="beachData.events"
                        class="beach-page__cardless-area"
                        v-if="beachData.events.cardData.length > 0"/>
+
           <BeachBarsNRestos id="barsNRestos"
                             :data="beachData.barsNRestos"
                             v-if="beachData.barsNRestos.length > 0"
                             class="beach-page__cardless-area" />
-          <BeachSliderArea
-            v-if="hotelsData.hotels && hotelsData.hotels.beachNumber > 0"
-            :data="hotelsData.hotels"
-            class="hotels-section"
-            outlink="https://nash.travel/hotel" />
 
           <BeachOpinions id="opinions"
                          :data="beachData.opinions"
@@ -84,6 +80,7 @@
           </client-only>
 
         </main>
+
         <aside class="two-part-layout__right">
             <div class="distance-right" v-if="distance">
               <p class="m-0">Расстояние до пляжа <span>{{distance.toString().replace(/\./, ',')}} км</span></p>
@@ -97,8 +94,17 @@
                                  class="beach-event__map-weather__desktop" />
           <AnnouncementCard :data="beachData.announcementData" class="beach-page__announcement"/>
         </aside>
+
       </div>
     </div>
+    <div class="custom-container">
+      <BeachSliderArea
+        v-if="hotelsData.hotels && hotelsData.hotels.beachNumber > 0"
+        :data="hotelsData.hotels"
+        class="hotels-section"
+        outlink="https://nash.travel/hotel" />
+    </div>
+
     <div class="main-page__white-wrapper beach-event__visitor-pics-wrapper">
 
       <client-only>
@@ -222,5 +228,7 @@
 <style lang="scss">
 .hotels-section {
   padding: 0;
+  margin-top: 30px;
+  margin-bottom: 30px;
 }
 </style>
