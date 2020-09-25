@@ -230,5 +230,13 @@
   padding: 0;
   margin-top: 30px;
   margin-bottom: 30px;
+  .custom-card {
+    &__pic {
+      height: 340px;
+    }
+  }
+  .slider__arrow-left, .slider__arrow-right {
+    top: 170px;
+  }
 }
 </style>
