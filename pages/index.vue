@@ -78,12 +78,6 @@
         class="banner-3"
       />
 
-
-    <MobileSettingsModal
-      v-if="open_app && getMobileSettings && getMobileSettings.length > 0"
-      :data="getMobileSettings"
-      @closeModal="(v) => {this.open_app = v}"
-    />
   </div>
 </div>
 </template>
@@ -100,7 +94,6 @@ import BeachType from '~/components/pages/main/BeachType';
 import WeatherSliderArea from '~/components/pages/main/WeatherSliderArea';
 import DynamicSliderArea from '~/components/pages/main/DynamicSliderArea';
 import MapArea from '~/components/pages/main/MapArea';
-import MobileSettingsModal from '~/components/global/MobileSettingsModal';
 import { mapActions, mapGetters, mapMutations } from 'vuex';
 
 export default {
@@ -115,7 +108,6 @@ export default {
     WeatherSliderArea,
     DynamicSliderArea,
     Banner,
-    MobileSettingsModal,
   },
 
   async asyncData({ $axios, route }) {
@@ -125,7 +117,6 @@ export default {
   data() {
     // console.log('2 hook data')
     return {
-      open_app: false,
       meta: null
     }
   },
@@ -193,7 +184,6 @@ export default {
       'getActiveRest',
       'getChooseToYourWishes',
       'getWeather',
-      'getMobileSettings',
     ]),
     ...mapGetters(['mapEntity']),
   },
@@ -221,10 +211,8 @@ export default {
     onResize() {
       // correct the text for the mobile
       if (window.innerWidth <= 650) {
-        this.open_app = true;
         this.$bus.$emit('showCorrectSelectText');
       } else {
-        this.open_app = false;
         this.$bus.$emit('dontShowCorrectSelectText');
       }
     }

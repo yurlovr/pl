@@ -2,7 +2,14 @@
   <div id="content">
     <PageTransitioner />
     <Preloader />
+
+    <MobileSettingsModal
+      v-if="getMobileSettings && getMobileSettings.length > 0"
+      :data="getMobileSettings"
+    />
+
     <Header />
+
     <transition
       @afterEnter="transitionEnd()"
     >
@@ -26,8 +33,9 @@
   import Header from '~/components/global/Header';
   import Footer from '~/components/global/Footer';
   import SearchPopup from '~/components/global/search/SearchPopup';
+  import MobileSettingsModal from '~/components/global/MobileSettingsModal';
 
-  import { mapState } from 'vuex';
+  import { mapState, mapGetters } from 'vuex';
 
   export default {
     middleware: 'error',
@@ -37,14 +45,21 @@
       Preloader,
       Header,
       Footer,
-      SearchPopup
+      SearchPopup,
+      MobileSettingsModal,
+    },
+    data() {
+      return {
+        open_app: false
+      }
     },
 
     computed: {
       ...mapState([
         'choose_position',
         'user_coordinates'
-      ])
+      ]),
+      ...mapGetters(['getMobileSettings'])
     },
 
     methods: {

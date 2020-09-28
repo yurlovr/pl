@@ -4,6 +4,7 @@ import {
   mapEventList,
   mapIDs
 } from "@/helpers/mappers";
+import {mapSettings} from "../helpers/mappers";
 
 export const state = () => ({
   beaches: [],
@@ -11,7 +12,12 @@ export const state = () => ({
   user_coordinates: {},
   choose_position: false,
   map_entity: [],
-  mappedEvents: []
+  mappedEvents: [],
+
+  // TODO Move to settings store module
+  mobile_settings: [],
+  isModalViewed: false,
+
 })
 
 export const mutations = {
@@ -28,21 +34,39 @@ export const mutations = {
   SET_MAP_ENTITY: (state, payload) => {
     state.map_entity = payload;
   },
+
+  // TODO Move to settings store module
+  SET_MOBILE_SETTINGS: (state, payload) => {
+    state.mobile_settings = payload;
+  },
+  // TODO Move to settings store module
+  SET_MODAL_VIEWED: (state, status = false) => {
+    state.isModalViewed = status
+  }
 }
 
 export const actions = {
-  async nuxtServerInit({commit}) {
-    const [beaches, events, search, map] = await Promise.all([
+  async nuxtServerInit({ commit }, { app }) {
+    const [beaches, events, search, map, settings] = await Promise.all([
       this.$axios.$get('/beach/list?count=9999'),
       this.$axios.$get('/event/list?count=9999'),
       this.$axios.$get('search/config'),
       this.$axios.$get('/map-entity/list?count=9999'),
+      this.$axios.$get('/settings/list'),
     ]);
     commit('SET_ALL_BEACHES', beaches);
     commit('SET_ALL_EVENTS', events);
     commit('search/SET_SEARCH', search);
     commit('SET_MAP_ENTITY', map);
+    commit('SET_MOBILE_SETTINGS', settings);
+
+    // TODO Configure cookie plugin for ssr
+    const storeCache = app.$cookies.get('store')
+    const { isModalViewed = false } = storeCache || {};
+    commit('SET_MODAL_VIEWED', isModalViewed)
+
     commit('setLastUserPos', this.$cookies.get('last_coordinates') || {})
+
   }
 }
 
@@ -70,5 +94,14 @@ export const getters = {
   mapEntity: (state) => {
     // console.log('getter mapEntity');
     return mapEntityList(state.map_entity.data.list)
-  }
+  },
+
+  // Mobile settings
+  getMobileSettings: state => {
+    // console.log('getMobileSettings', state.mobile_settings.data)
+    if (!state.mobile_settings.data) return null;
+    const { list } = state.mobile_settings.data;
+
+    return list.map(mapSettings);
+  },
 }

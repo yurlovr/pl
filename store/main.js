@@ -6,7 +6,6 @@ import {
   mapCollection,
   mapPlace,
   mapRest,
-  mapSettings,
 } from "@/helpers/mappers";
 
 export const state = () => ({
@@ -20,7 +19,6 @@ export const state = () => ({
   map: {},
   geo: {},
   any_places: [],
-  mobile_settings: [],
   show_mobile_preview: true,
 })
 
@@ -68,9 +66,6 @@ export const mutations = {
     SET_GEO_COUNT: (state, payload) => {
         state.geo.count = payload;
     },
-    SET_MOBILE_SETTINGS: (state, payload) => {
-    state.mobile_settings = payload;
-    }
 }
 
 export const actions = {
@@ -82,7 +77,6 @@ export const actions = {
 
     const [
       popularBeach,
-      mobileSettings,
       cities,
       weather,
       collection,
@@ -92,7 +86,6 @@ export const actions = {
       anyPlaces
     ] = await Promise.all([
       popularBeachReq,
-      this.$axios.$get('/settings/list'),
       this.$axios.$get('/city/top?count=9999'),
       this.$axios.$get('/weather/list'),
       this.$axios.$get('/collection/list/'),
@@ -107,7 +100,6 @@ export const actions = {
       commit('SET_GEO_COUNT', state.beachesTop.data ? state.beachesTop.data.list.length : 0)
     }
 
-    commit('SET_MOBILE_SETTINGS', mobileSettings);
     commit('SET_CITIES', cities);
     commit('SET_WEATHER', weather);
     commit('SET_COLLECTION', collection);
@@ -392,15 +384,6 @@ export const getters = {
     }
 
     return ret.weather;
-  },
-
-  // Mobile settings
-  getMobileSettings: state => {
-    // console.log('getMobileSettings', state.mobile_settings.data)
-    if (!state.mobile_settings.data) return null;
-    const { list } = state.mobile_settings.data;
-
-    return list.map(mapSettings);
   },
 
   // Выбирайте по своим желаниям

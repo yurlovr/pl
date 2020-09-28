@@ -7,7 +7,7 @@ export default ({ store, isHMR }) => {
   const cookieStorage = {
     getItem: (key) => Cookies.getJSON(key),
     setItem: (key, value) => {
-      return Cookies.set(key, value, { expires: 3, secure: true });
+      return Cookies.set(key, value, { expires: 3, secure: false });
     },
     removeItem: (key) => Cookies.remove(key),
     fetchBeforeUse: true,
@@ -21,17 +21,18 @@ export default ({ store, isHMR }) => {
           'favorites.events',
           'favorites.beaches',
           'favorites.visited',
+          'isModalViewed',
         ],
-        filter(mutation) {
-          return [
-            'favorites/addBeach',
-            'favorites/addEvent',
-            'favorites/addVisited',
-            'favorites/removeBeach',
-            'favorites/removeEvent',
-            'favorites/removeVisited',
-          ].includes(mutation.type)
-        },
+        // filter(mutation) {
+        //   return [
+        //     'favorites/addBeach',
+        //     'favorites/addEvent',
+        //     'favorites/addVisited',
+        //     'favorites/removeBeach',
+        //     'favorites/removeEvent',
+        //     'favorites/removeVisited',
+        //   ].includes(mutation.type)
+        // },
         storage:  cookieStorage,
         getState: cookieStorage.getItem,
         setState: cookieStorage.setItem,
