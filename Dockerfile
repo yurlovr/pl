@@ -17,7 +17,8 @@ RUN cp .env.example.js .env.js
 ARG URL_API
 ENV HOST 0.0.0.0
 RUN yarn install
-RUN npm run build
+RUN yarn run build
+
 EXPOSE 3000
 # start command
-CMD [ "npm", "run", "start" ]
+CMD [ "yarn", "run", "start" ]
