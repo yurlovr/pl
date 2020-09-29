@@ -30,6 +30,24 @@ stages:
     - docker build -t $IMAGE_TAG . --build-arg URL_API=$URL_API --compress --cache-from $IMAGE_TAG
     - docker push $IMAGE_TAG 
 
+.build_docker:
+  image: docker:19.03
+  stage: build
+  services:
+    - docker:19.03-dind
+  variables:
+    IMAGE_TAG: cr.yandex/$CR_ID/front-$ENV:latest
+  before_script:
+    - echo $CR_KEY | docker login --username json_key --password-stdin cr.yandex
+  script:
+    - echo $IMAGE_TAG
+    - docker pull $IMAGE_TAG || true
+    - echo "build image for $URL_API"
+    - docker build -t $IMAGE_TAG . --build-arg URL_API=$URL_API --compress --cache-from $IMAGE_TAG
+    - docker push $IMAGE_TAG     
+  tags:
+    - preprod-docker    
+
 .deploy_template:
   image: alpine:3.11
   stage: deploy
@@ -49,10 +67,12 @@ stages:
     
 build_develop:
   extends:
-    - .build_template
-    - .develop_environment
+    - .build_docker
   only:
     - develop
+  variables:    
+    ENV: develop
+    URL_API: https://backuat.plyazhi.ru/api/app/
 
 deploy_develop:
   extends: 
