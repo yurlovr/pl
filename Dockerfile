@@ -9,14 +9,13 @@ RUN apk --no-cache --virtual build-dependencies add \
     python \
     make \
     g++ \
-    && npm ci \
+    && yarn \
     && apk del build-dependencies
 # Copy other project files
 ADD . .
 RUN cp .env.example.js .env.js
 ARG URL_API
 ENV HOST 0.0.0.0
-RUN yarn install
 RUN yarn run build
 
 EXPOSE 3000
