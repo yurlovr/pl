@@ -79,7 +79,7 @@ deploy_develop:
     name: dev
     url: https://dev.plyazhi.ru/   
   tags:
-    - preprod-docker
+    - preprod-shell
   script:
     - docker stack deploy --with-registry-auth -c /home/ubuntu/plyazhi/web.yml web
   variables:
