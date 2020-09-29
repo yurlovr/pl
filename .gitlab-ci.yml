@@ -69,7 +69,7 @@ build_develop:
   only:
     - develop
   variables:    
-    ENV: develop
+    ENV: dev
     URL_API: https://backuat.plyazhi.ru/api/app/
 
 deploy_develop:
