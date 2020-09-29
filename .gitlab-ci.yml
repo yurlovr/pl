@@ -31,10 +31,8 @@ stages:
     - docker push $IMAGE_TAG 
 
 .build_docker:
-  image: docker:19.03
+  image: docker:19.03.12
   stage: build
-  services:
-    - docker:19.03-dind
   variables:
     IMAGE_TAG: cr.yandex/$CR_ID/front-$ENV:latest
   before_script:
