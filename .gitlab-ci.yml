@@ -34,7 +34,7 @@ stages:
   image: docker:19.03.12
   stage: build
   variables:
-    IMAGE_TAG: cr.yandex/$CR_ID/front-$ENV:latest
+    IMAGE_TAG: $CR_ID/front-$ENV:latest
   before_script:
     - echo $CR_KEY | docker login --username json_key --password-stdin cr.yandex
   script:
