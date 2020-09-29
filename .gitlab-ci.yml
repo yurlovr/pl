@@ -61,8 +61,7 @@ stages:
     - ssh_run $SSH_PARAMS "$SSH_PRIVATE_KEY" "docker rm krym-$CI_COMMIT_BRANCH || true"
     - ssh_run $SSH_PARAMS "$SSH_PRIVATE_KEY" "docker run -d --name krym-$CI_COMMIT_BRANCH --restart=on-failure:10 -p 127.0.0.1:$PORT:3000 $IMAGE_TAG"       
     # - ssh_run $SSH_PARAMS "$SSH_PRIVATE_KEY" "docker image prune -f" || true   
-    
-    
+        
 build_develop:
   extends:
     - .build_docker
@@ -73,14 +72,18 @@ build_develop:
     URL_API: https://backuat.plyazhi.ru/api/app/
 
 deploy_develop:
-  extends: 
-    - .deploy_template
-    - .develop_environment
-  variables: 
-    PORT: 3000
   only:
     - develop
-  needs: ["build_develop"]
+  stage: deploy
+  environment:
+    name: dev
+    url: https://dev.plyazhi.ru/   
+  tags:
+    - preprod-docker
+  script:
+    - docker stack deploy --with-registry-auth -c /home/ubuntu/plyazhi/web.yml web
+  variables:
+    GIT_STRATEGY: none           
 
 build_master:
   extends:
