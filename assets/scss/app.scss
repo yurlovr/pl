@@ -289,6 +289,10 @@ input {
     }
   }
 
+  &__length-val {
+    white-space: nowrap;
+  }
+
   &__bottom {
     position: absolute;
     top: 100%;
