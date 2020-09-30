@@ -71,7 +71,7 @@ export const mutations = {
 export const actions = {
   async getMainPageData({commit, state}) {
 
-    let popularBeachReq = state.geo.id
+    let popularBeachReq = (state.geo.id && state.geo.id > 0)
       ? this.$axios.$get(`/beach/list?city=${state.geo.id}&count=10`)
       : this.$axios.$get('/beach/top?count=10');
 
