@@ -302,9 +302,6 @@
                 balloonLayout = maps.templateLayoutFactory.createClass(`
                   <div class="map-popup map-popup--top map-pt__popup">
                       ${this.data.parkings.auto[i].title}
-                    <span class="map-pt__popup__info">
-                      ${this.data.parkings.auto[i].type}
-                    </span>
                     <h4 class="map-pt__popup__subtitle">
                       ${this.data.parkings.auto[i].mode}
                     </h4>
