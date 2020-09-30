@@ -416,16 +416,7 @@
                       Остановка общественного транспорта
                     </div>
                     <span class="map-pt__popup__info">
-                      Автобусы:
-                    </span>
-                    <h4 class="map-pt__popup__subtitle">
-                      ${this.data.parkings.bus[i].buses || ''}
-                    </h4>
-                    <span class="map-pt__popup__info">
-                      Маршрутное такси:
-                    </span>
-                    <span class="map-pt__popup__subtitle">
-                      ${this.data.parkings.bus[i].taxi || ''}
+                      Автобусы: ${this.data.parkings.bus[i].title || ''}
                     </span>
                   </div>
               `, {
