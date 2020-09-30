@@ -3,12 +3,13 @@
  */
 export function mapEvent(item) {
   return {
+    id:         item.ID,
+    title:      item.NAME,
     tempWater:  item.BEACH && item.BEACH.WEATHER && item.BEACH.WEATHER.TEMP ? item.BEACH.WEATHER.TEMP.WATER : null,
     date:       item.ACTIVE_FROM,
     showFavorite: true,
     beach:      item.BEACH ? item.BEACH.NAME : null,
     paid:       item.PAID,
-    title:      item.NAME,
     location:   item.BEACH && item.BEACH.CITY ? item.BEACH.CITY.NAME : null,
     pic:        item.PHOTOS ? item.PHOTOS.medium[0].path : null,
     mainLink:   `event/${item.ID}`,
@@ -42,24 +43,123 @@ export function mapEntity(item) {
 export function mapEntityList(list = []) {
   return list.map(mapEntity)
 }
+export function mapBeachFull(item) {
+  return {
 
+    access:       item.ACCESS || null,
+    tempWater:    item.WEATHER && item.WEATHER.TEMP ? item.WEATHER.TEMP.WATER : null,
+    showFavorite: true,
+    paid:         item.PAID,
+    rating:       parseFloat(item.AVERAGE_RATING),
+    // title:        item.NAME,
+    pic:          item.PHOTOS ? item.PHOTOS.medium[0].path : null,
+    mainLink:     `beach/${item.ID}`,
+    beachLink:    `beach/${item.ID}`,
+    humanLink:    item.CODE ? `beach/${item.CODE}` : null,
+
+    location:     item.CITY ? item.CITY.NAME : null,
+    locationId:   item.CITY ? item.CITY.ID : null,
+
+    // beachId:      item.ID,
+    tags: item.TAGS
+      ? item.TAGS.map(v => ({ id: v.ID, title: v.NAME }))
+      : null,
+    addTags: item.ADD_TAGS
+      ? item.ADD_TAGS.map(v => ({ id: v.ID, title: v.NAME }))
+      : null,
+    pos:             mapCoords(item.COORDINATES),
+    beachLength:     item.PARAMETERS ? (item.PARAMETERS.P_LINE_LENGTH == '' ? null : item.PARAMETERS.P_LINE_LENGTH) : null,
+    beachPrice:      item.PARAMETERS ? (item.PARAMETERS.P_PRICE == '' ? null : item.PARAMETERS.P_PRICE) : null,
+    beachType:       item.PARAMETERS ? (item.PARAMETERS.P_BEACH_TYPE ? item.PARAMETERS.P_BEACH_TYPE.NAME : null) : null,
+    beachWorktime:   item.PARAMETERS ? (item.PARAMETERS.P_MODE ? item.PARAMETERS.P_MODE.NAME : null) : null,
+    beachSeabedType: null,
+    coordinates:     mapCoords(item.COORDINATES),
+    show_distance:   true,
+
+    // mapBeachMainData
+    // title:           item.NAME,
+    likes:           item.COUNT_FAVORITES,
+    beachId:         item.ID,
+    // location:        item.CITY.NAME,
+    // locationId:      item.CITY.ID,
+    // beachLength:     item.PARAMETERS.P_LINE_LENGTH,
+    price:           item.PARAMETERS.P_PRICE,
+    // beachType:       item.PARAMETERS.P_BEACH_TYPE.NAME,
+    // beachSeabedType: item.PARAMETERS.P_BOTTOM
+    //   ? item.PARAMETERS.P_BOTTOM.NAME
+    //   : null,
+    time: item.PARAMETERS.P_MODE
+      ? item.PARAMETERS.P_MODE.NAME
+      : null,
+    sunrise:         item.WEATHER.SUNRISE,
+    sunset:          item.WEATHER.SUNSET,
+
+
+    // mapBeachHugeSliderData
+    title:         item.NAME,
+    isBeachClosed: item.LABEL.TEXT != '',
+    goldMedal:     item.CERTIFICATION,
+    blueMedal:     item.WEBCAMERA,
+    pics: !item.VIDEO.LINK
+      ? item.PHOTOS.reference.map(e => e.path)
+      : [...item.PHOTOS.reference.map(e => e.path), item.VIDEO.LINK],
+    sizes: item.PHOTOS.reference.map(e => e.size),
+    medium_pics: !item.VIDEO.LINK
+      ? item.PHOTOS.medium.map(e => e.path)
+      : [...item.PHOTOS.medium.map(e => e.path), item.VIDEO.LINK],
+    beachClosedText:    item.LABEL.TEXT,
+    beachClosedColor:   item.LABEL.COLOR,
+    beachClosedTooltip: item.LABEL.DESCRIPTION,
+    beautySunrise:      item.WEATHER.BEAUTIFUL_SUNRISE,
+    beautySunset:       item.WEATHER.BEAUTIFUL_SUNSET,
+    panorama:           item.PANORAMA,
+
+    // mapBeachToSideMapWeatherData
+    date:          item.WEATHER.DATE,
+    waterTemp:     item.WEATHER.TEMP.WATER,
+    airTemp:       item.WEATHER.TEMP.AIR,
+    email:         item.CONTACT && item.CONTACT.EMAIL ? item.CONTACT.EMAIL : null,
+    telegram:      item.CONTACT && item.CONTACT.TELEGRAM ? item.CONTACT.TELEGRAM : null,
+    sunriseTime:   item.WEATHER.SUNRISE,
+    sunsetTime:    item.WEATHER.SUNSET,
+    windSpeed:     item.WEATHER.WIND,
+    humidity:      item.WEATHER.HUMIDITY,
+    precipitation: item.WEATHER.PRECIPITATION,
+
+    // mapBeachToAvgRating
+    // rating: parseFloat(item.RATING.RATING),
+    peopleCount: item.RATING.COUNT_REVIEWS,
+    ratings: [
+      { title: 'Природа',        rating: item.RATING.NATURE },
+      { title: 'Чистота воды',   rating: item.RATING.WATER_PURITY },
+      { title: 'Чистота берега', rating: item.RATING.SHORE_CLEANLINESS },
+      { title: 'Инфраструктура', rating: item.RATING.INFRASTRUCTURE },
+      { title: 'Безопасность',   rating: item.RATING.SECURITY },
+      { title: 'Доступность',    rating: item.RATING.AVAILABILITY }
+    ]
+  }
+}
 /**
  * Map beach entity
  */
 export function mapBeach(item) {
     return {
+      id:           item.ID,
+      desc:         item.DESCRIPTION,
       access:       item.ACCESS || null,
       tempWater:    item.WEATHER && item.WEATHER.TEMP ? item.WEATHER.TEMP.WATER : null,
       showFavorite: true,
       paid:         item.PAID,
       rating:       parseFloat(item.AVERAGE_RATING),
       title:        item.NAME,
-      location:     item.CITY ? item.CITY.NAME : null,
       pic:          item.PHOTOS ? item.PHOTOS.medium[0].path : null,
       mainLink:     `beach/${item.ID}`,
       beachLink:    `beach/${item.ID}`,
       humanLink:    item.CODE ? `beach/${item.CODE}` : null,
+
+      location:     item.CITY ? item.CITY.NAME : null,
       locationId:   item.CITY ? item.CITY.ID : null,
+
       beachId:      item.ID,
       tags: item.TAGS
         ? item.TAGS.map(v => ({ id: v.ID, title: v.NAME }))
@@ -67,18 +167,163 @@ export function mapBeach(item) {
       addTags: item.ADD_TAGS
         ? item.ADD_TAGS.map(v => ({ id: v.ID, title: v.NAME }))
         : null,
-      pos:             item.COORDINATES && item.COORDINATES.length > 0 ? [parseFloat(item.COORDINATES.split(',')[0]), parseFloat(item.COORDINATES.split(',')[1])] : [],
+      pos:             mapCoords(item.COORDINATES),
       beachLength:     item.PARAMETERS ? (item.PARAMETERS.P_LINE_LENGTH == '' ? null : item.PARAMETERS.P_LINE_LENGTH) : null,
       beachPrice:      item.PARAMETERS ? (item.PARAMETERS.P_PRICE == '' ? null : item.PARAMETERS.P_PRICE) : null,
       beachType:       item.PARAMETERS ? (item.PARAMETERS.P_BEACH_TYPE ? item.PARAMETERS.P_BEACH_TYPE.NAME : null) : null,
       beachWorktime:   item.PARAMETERS ? (item.PARAMETERS.P_MODE ? item.PARAMETERS.P_MODE.NAME : null) : null,
       beachSeabedType: null,
-      coordinates:     item.COORDINATES && item.COORDINATES.length > 0 ? [parseFloat(item.COORDINATES.split(',')[0]), parseFloat(item.COORDINATES.split(',')[1])] : [],
+      coordinates:     mapCoords(item.COORDINATES),
       show_distance:   true,
     }
 }
 export function mapBeachList(list = []) {
   return list.map(mapBeach);
+}
+export function mapBeachServices(beach) {
+  return {
+    infrastructures: beach.INFRASTRUCTURES
+      .map(mapService)
+      .filter(i => ![
+        'ostanovki-obshchestvennogo-transporta',
+        'parkovka'
+      ].includes(i.code)),
+    services: beach.SERVICES.map(mapService)
+  }
+}
+export function mapCoords(coords) {
+  return coords && coords.length > 0
+    ? [parseFloat(coords.split(',')[0]), parseFloat(coords.split(',')[1])]
+    : [];
+}
+export function mapService(item) {
+  return {
+    id:    item.ID,
+    title: item.NAME,
+    pic:   item.ICON ? item.ICON : item.ICON,
+    pos:   mapCoords(item.COORDINATES),
+    description: item.DESCRIPTION,
+    pictures:    item.PICTURES,
+    map_pic:     item.ICON_ON_MAP ? item.ICON_ON_MAP : item.ICON,
+    code:        item.CODE,
+  }
+}
+
+/**
+ * Use in beach module for mainData prop
+ * @param item
+ */
+export function mapBeachMainData(item) {
+  return {
+    title:           item.NAME,
+    likes:           item.COUNT_FAVORITES,
+    beachId:         item.ID,
+    location:        item.CITY.NAME,
+    locationId:      item.CITY.ID,
+    beachLength:     item.PARAMETERS.P_LINE_LENGTH,
+    price:           item.PARAMETERS.P_PRICE,
+    beachType:       item.PARAMETERS.P_BEACH_TYPE.NAME,
+    beachSeabedType: item.PARAMETERS.P_BOTTOM
+      ? item.PARAMETERS.P_BOTTOM.NAME
+      : null,
+    time: item.PARAMETERS.P_MODE
+      ? item.PARAMETERS.P_MODE.NAME
+      : null,
+    sunrise:         item.WEATHER.SUNRISE,
+    sunset:          item.WEATHER.SUNSET,
+  }
+}
+
+/**
+ * Use in beach module for hugeSliderProperty
+ * @param item
+ * @returns {{beautySunset: *, beachClosedTooltip: *, goldMedal: *, medium_pics: (*|*[]), title: *, blueMedal: *, beautySunrise: *, panorama: *, sizes: *, beachClosedText: *, isBeachClosed: boolean, beachClosedColor: GLenum, pics: (*|*[])}}
+ */
+export function mapBeachHugeSliderData(item) {
+  return {
+    title:         item.NAME,
+    isBeachClosed: item.LABEL.TEXT != '',
+    goldMedal:     item.CERTIFICATION,
+    blueMedal:     item.WEBCAMERA,
+    pics: !item.VIDEO.LINK
+      ? item.PHOTOS.reference.map(e => e.path)
+      : [...item.PHOTOS.reference.map(e => e.path), item.VIDEO.LINK],
+    sizes: item.PHOTOS.reference.map(e => e.size),
+    medium_pics: !item.VIDEO.LINK
+      ? item.PHOTOS.medium.map(e => e.path)
+      : [...item.PHOTOS.medium.map(e => e.path), item.VIDEO.LINK],
+    beachClosedText:    item.LABEL.TEXT,
+    beachClosedColor:   item.LABEL.COLOR,
+    beachClosedTooltip: item.LABEL.DESCRIPTION,
+    beautySunrise:      item.WEATHER.BEAUTIFUL_SUNRISE,
+    beautySunset:       item.WEATHER.BEAUTIFUL_SUNSET,
+    panorama:           item.PANORAMA
+  }
+}
+
+/**
+ * use in beach event
+ * @param item
+ * @returns {{date: (string|string), precipitation: *, pos: (number[]|*[]), sunsetTime: *, waterTemp: *, airTemp: *, telegram: (*|null), humidity: *, title: *, windSpeed: *, email: (*|null), sunriseTime: *}}
+ */
+export function mapBeachToSideMapWeatherData(item) {
+  return {
+    title: item.NAME,
+    date:  item.WEATHER.DATE,
+    pos:   mapCoords(item.COORDINATES),
+    waterTemp:     item.WEATHER.TEMP.WATER,
+    airTemp:       item.WEATHER.TEMP.AIR,
+    email:         item.CONTACT && item.CONTACT.EMAIL ? item.CONTACT.EMAIL : null,
+    telegram:      item.CONTACT && item.CONTACT.TELEGRAM ? item.CONTACT.TELEGRAM : null,
+    sunriseTime:   item.WEATHER.SUNRISE,
+    sunsetTime:    item.WEATHER.SUNSET,
+    windSpeed:     item.WEATHER.WIND,
+    humidity:      item.WEATHER.HUMIDITY,
+    precipitation: item.WEATHER.PRECIPITATION,
+  }
+}
+
+/**
+ * use in beach module
+ * @param item
+ */
+export function mapBeachToAvgRating(item) {
+  return {
+    rating: parseFloat(item.RATING.RATING),
+    peopleCount: item.RATING.COUNT_REVIEWS,
+    ratings: [
+      { title: 'Природа',        rating: item.RATING.NATURE },
+      { title: 'Чистота воды',   rating: item.RATING.WATER_PURITY },
+      { title: 'Чистота берега', rating: item.RATING.SHORE_CLEANLINESS },
+      { title: 'Инфраструктура', rating: item.RATING.INFRASTRUCTURE },
+      { title: 'Безопасность',   rating: item.RATING.SECURITY },
+      { title: 'Доступность',    rating: item.RATING.AVAILABILITY }
+    ]
+  }
+}
+
+
+export function mapAnnounce(item) {
+  return {
+    id: item.ID,
+    title: item.NAME,
+    link: item.LINK,
+    pic: item.PREVIEW_PICTURE ? item.PREVIEW_PICTURE : null,
+    date: item.DATE,
+    description: item.DESCRIPTION,
+    color: item.COLOR
+  }
+}
+
+export function mapReview(item) {
+  return {
+    pic:     item.PICTURE ? item.PICTURE : null,
+    name:    item.FIO,
+    date:    item.CREATED_DATE,
+    rating:  item.AVERAGE_RATING,
+    comment: item.DESCRIPTION,
+    photos:  item.PHOTOS
+  }
 }
 
 /**
@@ -100,6 +345,17 @@ export function mapRest(item) {
     beachId:      item.ID,
     coordinates:  item.COORDINATES.length ? item.COORDINATES.split(',') : [],
     show_distance: true
+  }
+}
+
+export function mapBar(item) {
+  return {
+    title: item.NAME,
+    description: item.DESCRIPTION,
+    pics: item.PHOTOS.medium.map(v => v ? v.path : null),
+    coordinates: mapCoords(item.COORDINATES),
+    contact: item.CONTACT || null,
+    contact_telegram: item.CONTACT_TELEGRAM || null,
   }
 }
 
@@ -193,6 +449,7 @@ export function mapSearchFilter(item) {
     }, [])
 }
 
+
 /**
  * Map Place entity
  */
@@ -210,12 +467,29 @@ export function mapPlace(item) {
     another_place: true,
     price:         item.PRICE,
     coordinates:   item.COORDINATES ? item.COORDINATES.split(',').map(Number) : [],
+    custom_photo:  true,
   }
 }
 export function mapPlaceList(list = []) {
   return list.map(mapPlace)
 }
-
+export function mapOpinion(item) {
+  return {
+    pic:     item.PICTURE,
+    name:    item.NAME,
+    opinion: item.DESCRIPTION,
+    social:  item.SOCIAL_LINK,
+    icon:    item.SOCIAL
+  }
+}
+export function mapVisitors(item) {
+  return {
+    avatar: item.USER.PICTURE,
+    pic: item.PICTURE,
+    name: item.USER.FIO,
+    comment: item.DESCRIPTION
+  }
+}
 /**
  * Map banner entity
  */

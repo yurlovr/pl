@@ -70,7 +70,7 @@ export const mutations = {
 
 export const actions = {
   async getMainPageData({commit, state}) {
-
+    console.log('')
     let popularBeachReq = state.geo.id
       ? this.$axios.$get(`/beach/list?city=${state.geo.id}&count=10`)
       : this.$axios.$get('/beach/top?count=10');
@@ -87,9 +87,16 @@ export const actions = {
     ] = await Promise.all([
       popularBeachReq,
       this.$axios.$get('/city/top?count=9999'),
+      // big query
+      // добавить фильтрацию по месяцу
       this.$axios.$get('/weather/list'),
+      // big query
+      // убрать объекты пляжей
+      // смысла тут запрашивать нету
       this.$axios.$get('/collection/list/'),
+      // big query
       this.$axios.$get('/collectionList/list/'),
+      //
       this.$axios.$get('/banner/list/'),
       this.$axios.$get('/beach/clusters/'),
       this.$axios.$get('/hotel/list?count=10'),
@@ -306,6 +313,7 @@ export const getters = {
   },
 
   // Ближайшие мероприятия
+  // TODO Fetch by api
   getEvents: (state, getters, rootState) => {
     if (!rootState.mappedEvents) return null;
 
@@ -324,10 +332,10 @@ export const getters = {
   },
 
   // Выберите свой пляж
+  // TODO Hardcode this shit
   getChooseYourBeach: (state, getters, rootState) => {
     if (!rootState.search.searchConfig) return null;
 
-    // TODO Rename??
     const { beachTypes } = rootState.search.searchConfig.data;
     if (!beachTypes) return null;
 
