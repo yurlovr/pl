@@ -258,6 +258,7 @@ export const mutations = {
     state.searchInput = payload;
   },
 
+  // TODO Eating 1000ms on hydration
   updateSearchSecondRowParam(state, payload) {
     state.searchParams.selects[payload.param].options[0].title = payload.title;
     state.searchParams.selects[payload.param].options.push('lol');

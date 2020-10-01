@@ -36,6 +36,7 @@
     "vue-click-outside": "^1.1.0",
     "vue-clickaway": "^2.2.2",
     "vue-cool-lightbox": "^2.5.2",
+    "vue-lazy-hydration": "^1.0.0-beta.14",
     "vue-youtube": "^1.4.0",
     "vue-zoomer": "^0.3.6",
     "vue2-perfect-scrollbar": "^1.5.0",

@@ -24,7 +24,10 @@
                  v-if="getCitiesTop" />
       </client-only>
 
+    <LazyHydrate when-visible>
       <MapArea :data="getMap" :mapData="mapEntity" v-if="getMap" />
+    </LazyHydrate>
+
 
       <Banner :index="2" class="banner-1" />
 
@@ -47,12 +50,12 @@
         v-if="getActiveRest"
       />
 
-      <div class="main-page__white-wrapper">
-        <WeatherSliderArea
-          :data="getWeather"
-          v-if="getWeather"
-        />
-      </div>
+    <div class="main-page__white-wrapper">
+      <WeatherSliderArea
+        :data="getWeather"
+        v-if="getWeather"
+      />
+    </div>
 
       <div class="main-page__white-wrapper" v-if="getAnotherPlaces && getAnotherPlaces.beachNumber > 0">
         <BeachSliderArea
@@ -93,7 +96,8 @@ import ChooseBeach from '~/components/pages/main/ChooseBeach';
 import BeachType from '~/components/pages/main/BeachType';
 import WeatherSliderArea from '~/components/pages/main/WeatherSliderArea';
 import DynamicSliderArea from '~/components/pages/main/DynamicSliderArea';
-import MapArea from '~/components/pages/main/MapArea';
+// import MapArea from '~/components/pages/main/MapArea';
+import LazyHydrate from 'vue-lazy-hydration';
 import { mapActions, mapGetters, mapMutations } from 'vuex';
 
 export default {
@@ -102,12 +106,13 @@ export default {
     Welcome,
     BeachSliderArea,
     Cities,
-    MapArea,
+    MapArea: () => import('~/components/pages/main/MapArea'),
     ChooseBeach,
     BeachType,
     WeatherSliderArea,
     DynamicSliderArea,
     Banner,
+    LazyHydrate
   },
 
   async asyncData({ $axios, route }) {
