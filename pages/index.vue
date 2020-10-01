@@ -12,7 +12,7 @@
     <div class="main-page__welcome__gradient"></div>
     <Welcome />
 
-    <Search class="main-page__welcome__search" labelId="1" />
+    <Search v-show="!(bgAndBarShown || tempBgAndBarShown)" class="main-page__welcome__search" labelId="1" />
 
       <BeachSliderArea
         class="main-page__popular-beaches"
@@ -117,7 +117,9 @@ export default {
   data() {
     // console.log('2 hook data')
     return {
-      meta: null
+      meta: null,
+      bgAndBarShown: true,
+      tempBgAndBarShown: false,
     }
   },
 
@@ -169,6 +171,22 @@ export default {
 
     this.onScroll();
     this.onResize();
+
+    this.$bus.$on('hideHeaderBgAndBar', () => {
+      this.bgAndBarShown = false;
+    });
+
+    this.$bus.$on('tempHideHeaderBgAndBar', () => {
+      this.tempBgAndBarShown = false;
+    });
+
+    this.$bus.$on('showHeaderBgAndBar', () => {
+      this.bgAndBarShown = true;
+    });
+
+    this.$bus.$on('tempShowHeaderBgAndBar', () => {
+      this.tempBgAndBarShown = true;
+    });
   },
 
   computed: {
