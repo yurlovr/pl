@@ -14,21 +14,19 @@
 
     <Search v-show="!(bgAndBarShown || tempBgAndBarShown)" class="main-page__welcome__search" labelId="1" />
 
-      <BeachSliderArea
+      <BeachSliderAreaMoment
         class="main-page__popular-beaches"
         :data="getBeachesTop"
         v-if="getBeachesTop"
       />
-      <client-only>
-        <Cities :data="getCitiesTop"
-                 v-if="getCitiesTop" />
-      </client-only>
+      <Cities :data="getCitiesTop"
+              v-if="getCitiesTop" />
 
     <LazyHydrate when-visible>
+      <div>
+
       <MapArea :data="getMap" :mapData="mapEntity" v-if="getMap" />
-    </LazyHydrate>
-
-
+        
       <Banner :index="2" class="banner-1" />
 
       <div class="main-page__white-wrapper" v-if="getFamilyRest">
@@ -80,7 +78,8 @@
         :lastWordYellow="true"
         class="banner-3"
       />
-
+      </div>
+    </LazyHydrate>
   </div>
 </div>
 </template>
@@ -89,29 +88,30 @@
 import Vue from 'vue';
 import Search from '~/components/global/Search';
 import Welcome from '~/components/pages/main/Welcome';
-import BeachSliderArea from '~/components/global/BeachSliderArea';
+import BeachSliderAreaMoment from '~/components/global/BeachSliderArea';
 import Cities from '~/components/pages/main/Cities';
-import Banner from '~/components/pages/main/Banner';
-import ChooseBeach from '~/components/pages/main/ChooseBeach';
-import BeachType from '~/components/pages/main/BeachType';
-import WeatherSliderArea from '~/components/pages/main/WeatherSliderArea';
-import DynamicSliderArea from '~/components/pages/main/DynamicSliderArea';
+// import Banner from '~/components/pages/main/Banner';
+// import ChooseBeach from '~/components/pages/main/ChooseBeach';
+// import BeachType from '~/components/pages/main/BeachType';
+// import WeatherSliderArea from '~/components/pages/main/WeatherSliderArea';
+// import DynamicSliderArea from '~/components/pages/main/DynamicSliderArea';
 // import MapArea from '~/components/pages/main/MapArea';
 import LazyHydrate from 'vue-lazy-hydration';
 import { mapActions, mapGetters, mapMutations } from 'vuex';
 
 export default {
   components: {
-    Search,
     Welcome,
-    BeachSliderArea,
+    Search,
+    BeachSliderAreaMoment,
     Cities,
     MapArea: () => import('~/components/pages/main/MapArea'),
-    ChooseBeach,
-    BeachType,
-    WeatherSliderArea,
-    DynamicSliderArea,
-    Banner,
+    BeachSliderArea: () => import('~/components/global/BeachSliderArea'),
+    Banner: () => import('~/components/pages/main/Banner'),
+    ChooseBeach: () => import('~/components/pages/main/ChooseBeach'),
+    BeachType: () => import('~/components/pages/main/BeachType'),
+    WeatherSliderArea: () => import('~/components/pages/main/WeatherSliderArea'),
+    DynamicSliderArea: () => import('~/components/pages/main/DynamicSliderArea'),
     LazyHydrate
   },
 
@@ -123,7 +123,7 @@ export default {
     // console.log('2 hook data')
     return {
       meta: null,
-      bgAndBarShown: true,
+      bgAndBarShown: false,
       tempBgAndBarShown: false,
     }
   },
