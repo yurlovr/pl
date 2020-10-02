@@ -47,6 +47,7 @@ export const mutations = {
 
 export const actions = {
   async nuxtServerInit({ commit }, { app }) {
+    console.log('start load data', new Date())
     const [beaches, events, search, map, settings] = await Promise.all([
       this.$axios.$get('/beach/list?count=9999'),
       this.$axios.$get('/event/list?count=9999'),
@@ -54,6 +55,8 @@ export const actions = {
       this.$axios.$get('/map-entity/list?count=9999'),
       this.$axios.$get('/settings/list'),
     ]);
+    console.log('  end load data', new Date())
+
     commit('SET_ALL_BEACHES', beaches);
     commit('SET_ALL_EVENTS', events);
     commit('search/SET_SEARCH', search);

@@ -26,7 +26,12 @@
 					<div class="slider-weather__part-left__cover"></div>
 				</div>
 				<div class="slider-weather__part-right">
-					<SliderWeather :slideData="slideData" v-for="(slideData, monthIndex) in data" :key="monthIndex" v-show="monthIndex == activeMonth || activeMonth == -1" />
+          <client-only>
+            <SliderWeather
+              v-if="slideData"
+              :slideData="slideData"
+            />
+          </client-only>
 				</div>
 			</div>
 		</div>
@@ -83,6 +88,11 @@
 				}
 			}
 		},
+    computed: {
+      slideData() {
+		    return this.data[this.activeMonth] || []
+      }
+    },
 
 		mounted() {
 			this.activeMonth = new Date().getMonth();
