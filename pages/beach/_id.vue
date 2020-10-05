@@ -37,11 +37,6 @@
                            :data="beachData.about"
                            v-if="beachData.about && beachData.about.length > 1"
                            :title="'О пляже'" />
-          <BeachEventMapWeather :data="beachData.sideMapWeatherData"
-                                :locationData="beachData.mainData"
-                                :mapData="beachData.map_entity"
-                                v-if="beachData.sideMapWeatherData.pos.length > 0"
-                                class="beach-event__map-weather__mobile" />
           <BeachQuickData id="services"
                           :title="'Услуги и аренда'"
                           :data="beachData.servicesData"
