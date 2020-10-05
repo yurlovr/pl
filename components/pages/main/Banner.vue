@@ -1,5 +1,5 @@
 <template>
-	<section class="banner custom-container">
+	<section v-if="hasBanner" class="banner custom-container">
 		<div class="banner__card" :class="{ 'rtl': data.rightToLeft }">
 			<div class="banner__card__pic-area" :class="{despondency: data.id === 'fake'}">
 				<img v-if="data.id !== 'fake'" v-lazy-load class="banner__card__pic" alt="Пляж" :data-src="data.pic">
@@ -24,6 +24,9 @@ export default {
   created() { },
   computed: {
     ...mapGetters('main', ['getBanners']),
+    hasBanner() {
+      return !!this.getBanners[this.index]
+    },
     data() {
       return this.getBanners[this.index] || this.getBanners[0]
     },

@@ -26,7 +26,7 @@
       <div>
 
       <MapArea :data="getMap" :mapData="mapEntity" v-if="getMap" />
-        
+
       <Banner :index="2" class="banner-1" />
 
       <div class="main-page__white-wrapper" v-if="getFamilyRest">
