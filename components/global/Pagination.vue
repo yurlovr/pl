@@ -80,6 +80,18 @@ export default {
       if (p + 2 < this.lastPage)
         this.buttons.push('. . .');
     }
+  },
+  watch: {
+    totalElems(newVal, oldVal) {
+      if((newVal < oldVal) && (newVal % this.perPage === 0) ) {
+        this.page -= 1;
+        setTimeout(() => this.generatePagination(this.page), 1);
+      }
+    },
+    page(newVal) {
+      this.$emit('changePage', newVal)
+    }
   }
+
 }
 </script>

@@ -10,10 +10,10 @@
       {{ emptyText ? emptyText : 'Пусто'}}
     </h4>
 		<div class="pagination-num-wrapper custom-container"
-         v-if="data.length > perPage">
+         v-show="data.length > perPage">
 			<Pagination :perPage="perPage"
                   :totalElems="data.length"
-                  v-model="page"
+                  @changePage="onChangePage"
       />
 		</div>
 	</section>
@@ -44,6 +44,12 @@
 		components: {
 			Card,
 			Pagination
-		}
+		},
+
+    methods: {
+		  onChangePage(pageNum) {
+		    this.page = pageNum;
+      }
+    },
 	}
 </script>
