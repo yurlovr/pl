@@ -10351,3 +10351,9 @@ body.touch {
     padding-top: 59px;
   }
 }
+
+@media (max-width: 425px) {
+  .beach-page .beach-event__map-weather .map__zoom-wrapper {
+    display: none;
+  }
+}
