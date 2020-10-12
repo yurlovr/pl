@@ -52,7 +52,7 @@
               });
               this.map.behaviors.disable('scrollZoom');
               this.$el.querySelector('.map__zoom-plus').addEventListener('click', () => {
-                if (this.zoom < 15) {
+                if (this.zoom < 18) {
                   this.zoom++;
                   this.map.setZoom(this.zoom);
                 }
