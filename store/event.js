@@ -38,11 +38,13 @@ export const mutations = {
 export const actions = {
   async getEvent({commit, state}, id) {
     let error;
-    commit('SET_EVENT', await this.$axios.$get(`/event/item?id=${id}`).catch(e => {
+    const resp = await this.$axios.$get(`/event/item?id=${id}`).catch(e => {
       console.error(e);
       error = 404;
       return {};
-    }));
+    })
+
+    commit('SET_EVENT', resp);
     if (error) return error;
 
     let event_id = state.event.data.item.ID
@@ -109,7 +111,13 @@ export const getters = {
                 pos: state.event.data.item.BEACH && state.event.data.item.BEACH.COORDINATES != '' ? state.event.data.item.BEACH.COORDINATES.split(',').map(v => parseFloat(v)) : [],
                 waterTemp: state.event.data.item.BEACH && state.event.data.item.BEACH.WEATHER && state.event.data.item.BEACH.WEATHER.TEMP ? state.event.data.item.BEACH.WEATHER.TEMP.WATER : null,
                 airTemp: state.event.data.item.BEACH && state.event.data.item.BEACH.WEATHER && state.event.data.item.BEACH.WEATHER.TEMP ? state.event.data.item.BEACH.WEATHER.TEMP.AIR : null,
-                email: state.event.data.item.BEACH.CONTACT && state.event.data.item.BEACH.CONTACT.EMAIL ? state.event.data.item.BEACH.CONTACT.EMAIL : null
+                email: state.event.data.item.BEACH.CONTACT && state.event.data.item.BEACH.CONTACT.EMAIL ? state.event.data.item.BEACH.CONTACT.EMAIL : null,
+                telegram: state.event.data.item.CONTACT && state.beach.data.item.CONTACT.TELEGRAM ? state.beach.data.item.CONTACT.TELEGRAM : null,
+                sunriseTime: state.event.data.item.BEACH.WEATHER.SUNRISE || null,
+                sunsetTime: state.event.data.item.BEACH.WEATHER.SUNSET || null,
+                windSpeed: state.event.data.item.BEACH.WEATHER.WIND || null,
+                humidity: state.event.data.item.BEACH.WEATHER.HUMIDITY || null,
+                precipitation: state.event.data.item.BEACH.WEATHER.PRECIPITATION,
             },
 
             ptData: {
