@@ -31,6 +31,9 @@
           <div class="cursor-pointer bem-is-a-dead-methodology">
             <img src="~/static/pics/global/svg/blueMedal.svg" v-if="data.blueMedal"
                  @click.stop="openCamera(data.blueMedal)"/>
+            <div class="right-tooltip">
+              <span>Панорама</span>
+            </div>
           </div>
           <div class="cursor-pointer bem-is-a-dead-methodology" v-if="data.panorama"
                :style="{'margin-top': data.blueMedal ? '5px': 0}">
