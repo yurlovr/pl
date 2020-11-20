@@ -1564,7 +1564,7 @@ input {
       display: flex;
       align-items: center;
       background: white;
-      padding: 25px 30px;
+      overflow: hidden;
       box-shadow: 10px 10px 16px rgba(0, 0, 0, 0.1);
       border-radius: 12px;
       transition: background 0.2s ease, color 0.2s ease;
