@@ -4,7 +4,7 @@ import {
   mapEventList,
   mapIDs
 } from "@/helpers/mappers";
-import {mapSettings} from "../helpers/mappers";
+import { mapSettings } from "../helpers/mappers";
 
 export const state = () => ({
   beaches: [],
