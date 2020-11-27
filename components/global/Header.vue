@@ -17,7 +17,7 @@
 						<div class="header__favorites-text">
 							<span>Избранное</span>
 						</div>
-						<span class="header__favorites-number" v-show="favoritesNumber != 0"><span>{{ favoritesNumber }}</span></span>
+						<span class="header__favorites-number" v-show="count != 0"><span>{{ count }}</span></span>
 					</a>
 				</div>
 			</div>
@@ -40,72 +40,42 @@
 				// show background and the searchBar (searchBar for desktop)
 				bgAndBarShown: true,
 				tempBgAndBarShown: false,
-				favoritesNumber: 0
 			}
 		},
 
 		computed: {
-			...mapGetters(['beachIds', 'eventIds']),
-			...mapGetters('search', ['paramsShown'])
+			...mapGetters('search', ['paramsShown']),
+			...mapGetters('favorites', ['count']),
 		},
 
     beforeDestroy() {
       this.$bus.$off('hideHeaderBgAndBar');
-
       this.$bus.$off('tempHideHeaderBgAndBar');
-
       this.$bus.$off('showHeaderBgAndBar');
-
       this.$bus.$off('tempShowHeaderBgAndBar');
-
-      this.$bus.$off('increaseFavorites');
-
-      this.$bus.$off('decreaseFavorites');
     },
 
     mounted() {
-			this.$bus.$on('hideHeaderBgAndBar', () => {
-				this.bgAndBarShown = false;
-			});
+      this.$bus.$on('hideHeaderBgAndBar', () => {
+        this.bgAndBarShown = false;
+      });
 
-			this.$bus.$on('tempHideHeaderBgAndBar', () => {
-				this.tempBgAndBarShown = false;
-			});
+      this.$bus.$on('tempHideHeaderBgAndBar', () => {
+        this.tempBgAndBarShown = false;
+      });
 
-			this.$bus.$on('showHeaderBgAndBar', () => {
-				this.bgAndBarShown = true;
-			});
+      this.$bus.$on('showHeaderBgAndBar', () => {
+        this.bgAndBarShown = true;
+      });
 
-			this.$bus.$on('tempShowHeaderBgAndBar', () => {
-				this.tempBgAndBarShown = true;
-			});
-
-			this.$bus.$on('increaseFavorites', () => {
-				this.favoritesNumber++;
-			});
-
-			this.$bus.$on('decreaseFavorites', () => {
-				this.favoritesNumber--;
-			});
-
-			if (this.beachIds) {
-				for (let i = 0; i < this.beachIds.length; i++) {
-					if (this.$cookies.get(`favorites.beaches.${this.beachIds[i]}`))
-						this.favoritesNumber++;
-				}
-			} else console.error('Could not fetch beach ids (Header)');
-
-			if (this.eventIds) {
-				for (let i = 0; i < this.eventIds.length; i++) {
-					if (this.$cookies.get(`favorites.events.${this.eventIds[i]}`))
-						this.favoritesNumber++;
-				}
-			} else console.error('Could not fetch event ids (Header)');
-		},
-
+      this.$bus.$on('tempShowHeaderBgAndBar', () => {
+        this.tempBgAndBarShown = true;
+      });
+    },
 		methods: {
-			...mapMutations('search', ['updateParamsShown']),
-
+			...mapMutations('search', [
+			  'updateParamsShown'
+      ]),
 			toggleSearch() {
 				this.$refs.searchGeneral.toggleMobileShow()
 			}

@@ -56,7 +56,6 @@
     props: ['data'],
 
     beforeMount() {
-      console.log('ddddd', this.data);
       if (process.browser) {
         require('swiper/dist/css/swiper.css');
         const VueAwesomeSwiper = require('vue-awesome-swiper/dist/ssr');
@@ -155,7 +154,7 @@
       },
 
       updateArrowsNopinion() {
-        this.showLeft = !this.mySwiperMain.isBeginning;
+        this.showLeft  = !this.mySwiperMain.isBeginning;
         this.showRight = !this.mySwiperMain.isEnd;
         this.mySwiperOpinion.slideTo(this.activeIndex);
       },

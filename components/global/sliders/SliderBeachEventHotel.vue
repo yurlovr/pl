@@ -3,19 +3,19 @@
         <div v-swiper:mySwiper="swiperOption">
             <div class="swiper-wrapper" v-if="data">
                 <Card
-                    v-if="!data.cardData.some(e => e.id == 'fake')"
-                    v-for="(slide, i) in data.cardData"
-                    :data="slide"
-                    :key="i"
-                    class="swiper-slide"
+                  v-if="!data.cardData.some(e => e.id == 'fake')"
+                  v-for="(slide, i) in data.cardData"
+                  :data="slide"
+                  :key="i"
+                  class="swiper-slide"
                 />
-              <despodencyCard
-                v-else
-                v-for="(slide, i) in data.cardData"
-                :data="slide"
-                :key="i"
-                class="swiper-slide"
-              />
+                <DespodencyCard
+                  v-else
+                  v-for="(slide, i) in data.cardData"
+                  :data="slide"
+                  :key="i + 300"
+                  class="swiper-slide"
+                />
             </div>
         </div>
         <div class="pagination-wrapper">
@@ -55,10 +55,16 @@
 <script>
 import Vue from 'vue';
 import Card from '~/components/global/Card';
-import despodencyCard from "../despodencyCard";
+import DespodencyCard from "../DespodencyCard";
 
 export default {
-    props: ['data'],
+    props: {
+      data: Object,
+      count: {
+        type: Array,
+        default: () => [5, 4, 3, 2]
+      }
+    },
 
     beforeMount () {
         if (process.browser) {
@@ -70,9 +76,8 @@ export default {
 
     components: {
         Card,
-        despodencyCard
+        DespodencyCard
     },
-
     data () {
         return {
             swiperOption: {
@@ -81,17 +86,17 @@ export default {
                 init: false,
                 breakpoints: {
                     1150: {
-                        slidesPerView: 5,
+                        slidesPerView: this.count[0],
                         spaceBetween: 20
                     },
                     1000: {
-                        slidesPerView: 4
+                        slidesPerView: this.count[1]
                     },
                     700: {
-                        slidesPerView: 3
+                        slidesPerView: this.count[2]
                     },
                     550: {
-                        slidesPerView: 2,
+                        slidesPerView: this.count[3],
                         spaceBetween: 10
                     }
                 }
@@ -148,9 +153,10 @@ export default {
             }
         }
     },
-
+    // TODO Swiper по хорошему надо обновить, и использовать одну версию
+    // + там есть плюшки с автодестроем
     beforeRouteLeave(to, from, next) {
-        this.mySwiper.destroy();
+        this.mySwiper && this.mySwiper.destroy && this.mySwiper.destroy(false, false);
         next();
     }
 }

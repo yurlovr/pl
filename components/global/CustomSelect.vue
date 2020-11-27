@@ -1,7 +1,11 @@
 <template>
 	<div class="custom-new-select" :class="[{ open: dropdownOpen }, {'native-select' : city}]" v-on-clickaway="onBlur" v-if="options">
 		<div class="custom-new-select__top" @click="dropdownOpen = !dropdownOpen">
-			<span>{{ filteredTitle(title) }}</span>
+      <span v-if="param == 'searchBeachLengthFrom'">
+        <span v-if="chosenIndex !== 0">Протяженность линии от,</span>
+        <span class="custom-new-select__length-val">{{ title }}</span>
+      </span>
+      <span v-else>{{ filteredTitle(title) }}</span>
 			<img  src="~/static/pics/global/svg/dropdown.svg">
 		</div>
     <select name="citySelect" id="city-native" v-if="city" @change="x => choose(x.target.value)">
@@ -36,7 +40,7 @@ export default {
 		title() {
 			if (this.param == 'searchBeachLengthFrom' && this.value.id != -1) {
 				if (this.options[0].title != 'От')
-					return `Протяженность линии от, ${this.value.title} м`;
+					return `${this.value.title} м`;
 				else return `От ${this.value.title} м`;
 			} else if (this.param == 'searchWaterTempFrom' && this.value.id != -1) {
 				if (this.options[0].title != 'От')

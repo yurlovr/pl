@@ -3,7 +3,7 @@
     <div class="beach-page__quick-data">
       <h2 class="two-part-layout__card__title beach-page__quick-data__title">{{ title }}</h2>
       <div class="beach-page__quick-data__items" :class="{ active: open || data && data.length && data.length <= 4 }">
-        <div class="beach-page__quick-data__item" v-for="item in data" @click="callMapAction(item)">
+        <div class="beach-page__quick-data__item" v-for="item in filteredData" @click="callMapAction(item)">
           <img v-lazy-load :data-src="item.pic">
           <span v-html="item.title"></span>
           <div class="beach-page__quick-data__popup">
@@ -43,7 +43,21 @@
         open: false
       }
     },
+    computed: {
+      filteredData() {
+        return this.getUniqueItemsById(this.data);
+      }
+    },
     methods: {
+      getUniqueItemsById(items) {
+        const uniqueServiceIdList =  [...(new Set(items.map(item => item.id)))];
+        const filteredData = [];
+        uniqueServiceIdList.forEach(id => {
+          const item = items.find(item => item.id === id);
+          filteredData.push(item);
+        })
+        return filteredData;
+      },
       callMapAction(item) {
         if (this.href){
           document.getElementById('parks').scrollIntoView(true);   //Even IE6 supports this

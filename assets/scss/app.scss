@@ -289,6 +289,10 @@ input {
     }
   }
 
+  &__length-val {
+    white-space: nowrap;
+  }
+
   &__bottom {
     position: absolute;
     top: 100%;
@@ -1560,7 +1564,7 @@ input {
       display: flex;
       align-items: center;
       background: white;
-      padding: 25px 30px;
+      overflow: hidden;
       box-shadow: 10px 10px 16px rgba(0, 0, 0, 0.1);
       border-radius: 12px;
       transition: background 0.2s ease, color 0.2s ease;
@@ -4649,6 +4653,15 @@ input {
         &:focus {
           outline: none;
         }
+
+        @media (max-width: 767px) {
+          right: unset;
+          left: 40px;
+        }
+        @media (max-width: 500px) {
+          right: unset;
+          left: 10px;
+        }
       }
 
       &__sides {
@@ -5155,7 +5168,6 @@ input {
             right: 12px;
             width: 32px;
             height: 32px;
-            background: none;
             border: none;
             padding: 0;
             @include flex-center;
@@ -6029,7 +6041,6 @@ input {
 
       &__info-area {
         padding: 25px;
-        min-width: 240px;
 
         &__title {
           font-size: 24px;
@@ -7809,7 +7820,7 @@ input {
 
       &__tablet,
       &__desktop {
-        display: none !important;
+        //display: none !important;
       }
 
       &__mobile {
@@ -8907,7 +8918,7 @@ input {
       img {
         width: 23px;
         height: 22px;
-        margin-right: 9;
+        margin-right: 9px;
       }
 
       span {
@@ -10318,3 +10329,31 @@ body.touch {
   z-index: -1 !important;
 }
 
+.modal_mobile__img {
+  position: absolute;
+  bottom: 0;
+  width: 200px;
+  left: 50%;
+  margin-left: -100px;
+}
+.apple-app {
+  width: 96px;
+}
+.android-app {
+  width: 97px;
+}
+.mobile-modal .link-block {
+  width: 200px;
+}
+
+@media (max-width: 1601px) and (min-width: 1025px) {
+  #similar-beaches {
+    padding-top: 59px;
+  }
+}
+
+@media (max-width: 425px) {
+  .beach-page .beach-event__map-weather .map__zoom-wrapper {
+    display: none;
+  }
+}

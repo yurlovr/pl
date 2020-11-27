@@ -246,8 +246,8 @@
                                     },
 
                                     clear() {
-                                        this.swiper.destroy();
-
+                                        this.swiper && this.swiper.destroy && this.swiper.destroy(false, false);
+                                        // TODO И как с этим быть?
                                         this.constructor.superclass.clear.call(this);
                                     },
 
@@ -425,8 +425,7 @@
                                 iconImageHref: '/pics/global/svg/map_beach_72dpi.svg'
                             });
                             this.chosen = -1;
-                            if (this.swiper)
-                                this.swiper.destroy();
+                            this.swiper && this.swiper.destroy && this.swiper.destroy(false, false);
                             this.map.balloon.close();
                         });
 
@@ -448,6 +447,7 @@
         },
 
         async mounted() {
+		        // TODO use ssr swiper version instead
             // requiring the Swiper
             require('~/plugins/swiper.min').__proto__;
             // making the map

@@ -1,6 +1,4 @@
 import moment from 'moment';
-import Cookies from 'js-cookie';
-import {getDistanceFromLatLonInKm} from "../assets/calcDistance";
 moment.locale('ru');
 
 export const state = () => ({
@@ -40,11 +38,13 @@ export const mutations = {
 export const actions = {
   async getEvent({commit, state}, id) {
     let error;
-    commit('SET_EVENT', await this.$axios.$get(`/event/item?id=${id}`).catch(e => {
+    const resp = await this.$axios.$get(`/event/item?id=${id}`).catch(e => {
       console.error(e);
       error = 404;
       return {};
-    }));
+    })
+
+    commit('SET_EVENT', resp);
     if (error) return error;
 
     let event_id = state.event.data.item.ID
@@ -156,13 +156,19 @@ export const getters = {
             about: state.event.data.item.DESCRIPTION,
 
             reviews: [],
-
             sideMapWeatherData: {
                 title: state.event.data.item.BEACH ? state.event.data.item.BEACH.NAME : null,
                 date: state.event.data.item.BEACH ? state.event.data.item.BEACH.WEATHER.DATE : null,
                 pos: state.event.data.item.BEACH && state.event.data.item.BEACH.COORDINATES != '' ? state.event.data.item.BEACH.COORDINATES.split(',').map(v => parseFloat(v)) : [],
                 waterTemp: state.event.data.item.BEACH && state.event.data.item.BEACH.WEATHER && state.event.data.item.BEACH.WEATHER.TEMP ? state.event.data.item.BEACH.WEATHER.TEMP.WATER : null,
-                airTemp: state.event.data.item.BEACH && state.event.data.item.BEACH.WEATHER && state.event.data.item.BEACH.WEATHER.TEMP ? state.event.data.item.BEACH.WEATHER.TEMP.AIR : null
+                airTemp: state.event.data.item.BEACH && state.event.data.item.BEACH.WEATHER && state.event.data.item.BEACH.WEATHER.TEMP ? state.event.data.item.BEACH.WEATHER.TEMP.AIR : null,
+                email: state.event.data.item.BEACH.CONTACT && state.event.data.item.BEACH.CONTACT.EMAIL ? state.event.data.item.BEACH.CONTACT.EMAIL : null,
+                telegram: state.event.data.item.CONTACT && state.beach.data.item.CONTACT.TELEGRAM ? state.beach.data.item.CONTACT.TELEGRAM : null,
+                sunriseTime: state.event.data.item.BEACH.WEATHER.SUNRISE || null,
+                sunsetTime: state.event.data.item.BEACH.WEATHER.SUNSET || null,
+                windSpeed: state.event.data.item.BEACH.WEATHER.WIND || null,
+                humidity: state.event.data.item.BEACH.WEATHER.HUMIDITY || null,
+                precipitation: state.event.data.item.BEACH.WEATHER.PRECIPITATION,
             },
 
             ptData: {
@@ -299,6 +305,44 @@ export const getters = {
         }
 
       }
+
+    if (state.hotels.data){
+      let hotels = state.hotels.data.list
+
+      ret.hotels = {
+        title: 'Забронируй номер рядом с пляжем',
+        subtitle: 'Наша подборка отелей, основанная на ваших отзывах',
+        beachNumber: state.hotels.data.pagination.countElements,
+        /*showMore: {
+          type: 'beach',
+          query: '?another'
+        },*/
+        beachSliderData: {
+          slideNumber: 6,
+          cardData: []
+        }
+      }
+
+      for (let i = 0; i < hotels.slice(0, 10).length; i++) {
+        ret.hotels.beachSliderData.cardData.push({
+          rating: hotels[i].RATING,
+          title: hotels[i].NAME,
+          pic: hotels[i].PICTURE,
+          mainLink: hotels[i].URL,
+          beachLink: hotels[i].URL,
+          beachId: hotels[i].ID,
+          show_distance: true,
+          geo_string: hotels[i].COUNTRY + ', ' + hotels[i].CITY,
+          internal_url: hotels[i].URL,
+          another_place: true,
+          price: hotels[i].PRICE,
+          coordinates: hotels[i].COORDINATES ? hotels[i].COORDINATES.split(',').map(Number) : [],
+          dist: hotels[i].DISTANCE,
+          custom_photo: true,
+          ignore_global_km: true,
+        });
+      }
+    }
 
         // adding formatted visitor pics
         for (let i = 0; i < state.visitorPics.data.list.length; i++) {

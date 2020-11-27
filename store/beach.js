@@ -1,6 +1,3 @@
-import {getDistanceFromLatLonInKm} from "../assets/calcDistance";
-import Cookies from 'js-cookie';
-
 export const state = () => ({
     beach: null,
     temperatures: null,
@@ -76,7 +73,7 @@ export const actions = {
 
         commit('SET_EVENTS', await this.$axios.$get(`/event/list?beachId=${beach_id}`));
         commit('SET_BARS_N_RESTOS', await this.$axios.$get(`/restaurant/list?beachId=${beach_id}`));
-        commit('SET_OPINIONS', await this.$axios.$get(`/opinion/list?entityId=${beach_id}`));
+        commit('SET_OPINIONS', await this.$axios.$get(`/opinion/list?entityId=${beach_id}&count=9999`));
         commit('SET_TEMPERATURES', await this.$axios.$get(`/weather/list`));
         commit('SET_REVIEWS', await this.$axios.$get(`/review/list?entityId=${beach_id}&count=9999`));
         commit('SET_VISITOR_PICS', await this.$axios.$get(`/socialPhoto/list?entityId=${beach_id}&count=10`));
@@ -120,16 +117,6 @@ export const getters = {
           }
         }
 
-        let coordinat = Cookies.getJSON('last_coordinates') || {};
-        let distance = (d, coord) => {
-          if (d && d.length == 2 && Object.keys(coord).length) {
-            let lat2 = d[0], lng2 = d[1],
-              {lat, lng} = coord;
-            return Number(getDistanceFromLatLonInKm(lat, lng, Number(lat2), Number(lng2)).toFixed(1)).toString().replace(/\./, ',')
-          }
-          return 0;
-        }
-
         for (let i = 0; i < hotels.length; i++) {
           ret.hotels.beachSliderData.cardData.push({
             rating: hotels[i].RATING,
@@ -144,8 +131,9 @@ export const getters = {
             another_place: true,
             price: hotels[i].PRICE,
             coordinates: hotels[i].COORDINATES ? hotels[i].COORDINATES.split(',').map(Number) : [],
-            dist: distance(hotels[i].COORDINATES ? hotels[i].COORDINATES.split(',').map(Number) : [], coordinat),
-            custom_photo: true
+            dist: hotels[i].DISTANCE,
+            custom_photo: true,
+            ignore_global_km: true,
           })
         }
       }

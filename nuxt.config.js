@@ -1,4 +1,5 @@
 import {url_api, prom_host, prom_port} from './.env.js';
+import webpack from 'webpack';
 
 export default {
   mode: "universal",
@@ -49,21 +50,13 @@ export default {
    ** Plugins to load before mounting the App
    */
   plugins: [
-    '~/plugins/bus',
     '~/plugins/gtm',
     '~/plugins/sentry',
-    {
-      src: '~/plugins/scroll-lock',
-      ssr: false
-    },
-    {
-      src: '~/plugins/custom-scroll',
-      ssr: false
-    },
-    {
-      src: '~/plugins/youtube',
-      ssr: false
-    }
+    { src: '~/plugins/bus',             ssr: true  },
+    { src: '~/plugins/cookie',          ssr: false },
+    { src: '~/plugins/scroll-lock',     ssr: false },
+    { src: '~/plugins/custom-scroll',   ssr: false },
+    { src: '~/plugins/youtube',         ssr: false },
   ],
   /*
    ** Nuxt.js dev-modules
@@ -94,6 +87,11 @@ export default {
     noscriptId: 'gtm-noscript',
     noscriptURL: 'https://www.googletagmanager.com/ns.html'
   },
+  // render: {
+  //   compression: {
+  //
+  //   }
+  // },
   generate: {
     async routes({$axios}) {
       let beachAsync = await $axios.get(url_api + 'beach/list?count=9999'),
@@ -131,25 +129,30 @@ export default {
     "bootstrap-vue/nuxt",
     "@nuxtjs/axios",
     'cookie-universal-nuxt',
+    ["nuxt-compress", {
+        gzip: {
+          cache: true
+        },
+        brotli: {
+          threshold: 10240
+        }
+      }],
+    ['@nuxtjs/component-cache', {
+        maxAge: 1000 * 60 * 60
+      }],
     ['nuxt-lazy-load', {
       images: true,
       directiveOnly: true,
       defaultImage: '/pics/global/pics/slider_beh_placeholder.png'
     }],
-    '@qonfucius/nuxt-prometheus-module',
-
-    // With options
-    [
-      '@qonfucius/nuxt-prometheus-module',
-      {
+    ['@qonfucius/nuxt-prometheus-module', {
         port: prom_port,
         host: prom_host,
         metrics: {
           collectDefault: true,
           requestDuration: false,
         },
-      },
-    ],
+     }],
   ],
   axios: {
     baseURL: url_api
@@ -162,8 +165,18 @@ export default {
     /*
      ** You can extend webpack config here
      */
+    cache: true,
+    // Uncomment for analyze code
+    // analyze: {
+    //   analyzerMode: 'static',
+    //   analyzerMode: 'server'
+    // },
+    devtools: true,
     transpile: ["vue-clamp", "resize-detector"],
     extend(config, ctx) {
+      // Этот код убирает ненужные локали из момента
+      config.plugins.push(new webpack.ContextReplacementPlugin(/moment[\/\\]locale$/, /ru/))
+      // config.plugins.push(new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/)),
     }
   }
 }

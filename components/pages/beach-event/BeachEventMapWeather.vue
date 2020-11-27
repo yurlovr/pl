@@ -6,7 +6,7 @@
           <img  src="~/static/pics/global/svg/plus.svg">
         </button>
         <button class="map__zoom map__zoom-minus">
-          <img  src="~/static/pics/global/svg/minus.svg">
+          <img src="~/static/pics/global/svg/minus.svg">
         </button>
       </div>
       <div class="map"></div>
@@ -23,7 +23,10 @@
         <img src="~/static/pics/global/svg/calendar_big.svg">
         <span>{{ data.date }}</span>
       </div>
-      <h3 class="beach-event__map-weather__weather-card__title" v-html="data.title"></h3>
+      <h3 class="beach-event__map-weather__weather-card__title"
+          v-if="locationData"
+          v-html="locationData.location">
+      </h3>
       <div class="h-line"></div>
       <div class="beach-event__map-weather__weather-card__temp-area">
         <div class="beach-event__map-weather__weather-card__temp-area__item">
@@ -67,10 +70,12 @@
             <span>Скорость<br>ветра</span>
           </div>
           <div class="beach-event__map-weather__weather-card__temp-area__item__right">
-            <span
-              class="slider-weather__slide__temp-number beach-event__map-weather__weather-card__temp-area__temp-number">{{ data.windSpeed}}&nbsp;</span>
-            <span
-              class="slider-weather__slide__temp-C beach-event__map-weather__weather-card__temp-area__temp-C"> м/с</span>
+            <span class="slider-weather__slide__temp-number beach-event__map-weather__weather-card__temp-area__temp-number">
+              {{ data.windSpeed}}&nbsp;
+            </span>
+            <span class="slider-weather__slide__temp-C beach-event__map-weather__weather-card__temp-area__temp-C">
+              м/с
+            </span>
           </div>
         </div>
         <div class="beach-event__map-weather__weather-card__temp-area__item">
@@ -79,20 +84,22 @@
             <span>Тип<br>осадков</span>
           </div>
           <div class="beach-event__map-weather__weather-card__temp-area__item__right">
-            <span
-              class="slider-weather__slide__temp-C beach-event__map-weather__weather-card__temp-area__temp-C">{{precipitationText(data.precipitation)}}</span>
+            <span class="slider-weather__slide__temp-C beach-event__map-weather__weather-card__temp-area__temp-C">
+              {{ precipitationText(data.precipitation) }}
+            </span>
           </div>
         </div>
-        <div class="beach-event__map-weather__weather-card__temp-area__item" v-if="data.humidity >=0">
+        <div class="beach-event__map-weather__weather-card__temp-area__item"
+             v-if="data.humidity >=0">
           <div class="beach-event__map-weather__weather-card__temp-area__item__left">
             <img src="~/static/pics/global/svg/wet.svg">
             <span>Влажность<br>воздуха</span>
           </div>
           <div class="beach-event__map-weather__weather-card__temp-area__item__right">
-            <span
-              class="slider-weather__slide__temp-number beach-event__map-weather__weather-card__temp-area__temp-number">{{ data.humidity}}</span>
-            <span
-              class="slider-weather__slide__temp-C beach-event__map-weather__weather-card__temp-area__temp-C">%</span>
+            <span class="slider-weather__slide__temp-number beach-event__map-weather__weather-card__temp-area__temp-number">
+              {{ data.humidity }}
+            </span>
+            <span class="slider-weather__slide__temp-C beach-event__map-weather__weather-card__temp-area__temp-C">%</span>
           </div>
         </div>
         <div class="beach-event__map-weather__weather-card__temp-area__item">
@@ -101,8 +108,9 @@
             <span>Время<br>рассвета</span>
           </div>
           <div class="beach-event__map-weather__weather-card__temp-area__item__right">
-        <span
-          class="slider-weather__slide__temp-number beach-event__map-weather__weather-card__temp-area__temp-number">{{data.sunriseTime}}</span>
+            <span class="slider-weather__slide__temp-number beach-event__map-weather__weather-card__temp-area__temp-number">
+              {{data.sunriseTime}}
+            </span>
           </div>
         </div>
         <div class="beach-event__map-weather__weather-card__temp-area__item">
@@ -111,8 +119,9 @@
             <span>Время<br>заката</span>
           </div>
           <div class="beach-event__map-weather__weather-card__temp-area__item__right">
-            <span
-              class="slider-weather__slide__temp-number beach-event__map-weather__weather-card__temp-area__temp-number">{{data.sunsetTime}}</span>
+            <span class="slider-weather__slide__temp-number beach-event__map-weather__weather-card__temp-area__temp-number">
+              {{data.sunsetTime}}
+            </span>
           </div>
         </div>
       </div>
@@ -124,12 +133,12 @@
   import ymaps from "ymaps";
 
   export default {
-    props: ['data', 'additional', 'mapData'],
+    props: ['data', 'additional', 'mapData', 'locationData'],
 
     data() {
       return {
         map: null,
-        zoom: null,
+        zoom: 15,
         chosenObject: -1
       }
     },
@@ -161,7 +170,7 @@
         return text_type
       },
       goto(i, coords = [45.32, 33.03]) {
-        console.warn(this.map, i, coords, 'fsdsdfsfdfsdsfddfs')
+        console.warn(this.map, i, coords, 'почему у нас весь сайт в логах?')
         this.map.panTo(coords, {
           safe: true
         }).then(() => {
@@ -169,20 +178,20 @@
         })
       },
       initMap() {
-            this.zoom = this.data.pos ? 18 : 8
+        this.zoom = this.data.pos ? 18 : 8
         setTimeout(() => {
           ymaps
             .load()
             .then(maps => {
               this.map = new maps.Map(this.$el.getElementsByClassName('map')[0], {
                 center: this.data.pos || [44.50465522867475, 34.21493291965433],
-                zoom:  this.zoom,
+                zoom:   this.zoom,
                 controls: ['typeSelector']
               });
               this.map.behaviors.disable('scrollZoom');
 
               this.$el.querySelector('.map__zoom-plus').addEventListener('click', () => {
-                if (this.zoom < 15) {
+                if (this.zoom < 25) {
                   this.zoom++;
                   this.map.setZoom(this.zoom);
                 }
@@ -450,13 +459,13 @@
     async mounted() {
       // making the map
       this.initMap();
+      window.addEventListener('resize', this.onResize);
 
-    window.addEventListener('resize', this.onResize);
-  },
-  created() {
-    this.$bus.$on('call-balloon-weather', (id, coords) => {
-      this.goto(id, coords);
-    })
+      if (process.browser) {
+        this.$bus.$on('call-balloon-weather', (id, coords) => {
+          this.goto(id, coords);
+        })
+      }
   },
   beforeDestroy() {
     this.$bus.$off('call-balloon-weather')

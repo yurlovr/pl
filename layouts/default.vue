@@ -2,14 +2,28 @@
   <div id="content">
     <PageTransitioner />
     <Preloader />
+
+    <MobileSettingsModal
+      v-if="getMobileSettings && getMobileSettings.length > 0"
+      :data="getMobileSettings"
+    />
+
     <Header />
+
     <transition
       @afterEnter="transitionEnd()"
     >
       <nuxt class="full-screen"/>
     </transition>
-    <div class="main-page__white-wrapper"><Footer /></div>
-    <search-popup v-if="choose_position" @close="$store.commit('setChoosePosition', false)" :coords="user_coordinates" @clean="$store.commit('setLastUserPos', {})"></search-popup>
+    <div class="main-page__white-wrapper">
+      <Footer />
+    </div>
+    <search-popup
+      v-if="choose_position"
+      @close="$store.commit('setChoosePosition', false)"
+      :coords="user_coordinates"
+      @clean="$store.commit('setLastUserPos', {})"
+    />
   </div>
 </template>
 
@@ -19,8 +33,9 @@
   import Header from '~/components/global/Header';
   import Footer from '~/components/global/Footer';
   import SearchPopup from '~/components/global/search/SearchPopup';
+  import MobileSettingsModal from '~/components/global/MobileSettingsModal';
 
-  import { mapState } from 'vuex';
+  import { mapState, mapGetters } from 'vuex';
 
   export default {
     middleware: 'error',
@@ -30,11 +45,21 @@
       Preloader,
       Header,
       Footer,
-      SearchPopup
+      SearchPopup,
+      MobileSettingsModal,
+    },
+    data() {
+      return {
+        open_app: false
+      }
     },
 
     computed: {
-      ...mapState(['beaches', 'events', 'choose_position', 'user_coordinates'])
+      ...mapState([
+        'choose_position',
+        'user_coordinates'
+      ]),
+      ...mapGetters(['getMobileSettings'])
     },
 
     methods: {
@@ -51,6 +76,8 @@
     },
 
     mounted() {
+      console.log('Layout mounted')
+
       // let scr = document.createElement('script')
       // scr.type = 'text/javascript';
       // scr.innerHTML ='!function(){var t=document.createElement("script");t.type="text/javascript",t.async=!0,t.src="https://vk.com/js/api/openapi.js?168",t.onload=function()\n' +
@@ -62,10 +89,7 @@
       // document.head.appendChild(scr);
       // document.head.appendChild(noscr);
 
-
-      if (process.client && window) {
-        window.history.scrollRestoration = 'manual';
-      }
+      window.history.scrollRestoration = 'manual';
 
       function watchForHover() {
         let hasHoverClass = false;

@@ -102,7 +102,7 @@
 			},
 
 			updateArrows() {
-				this.showLeft = !this.mySwiper.isBeginning;
+				this.showLeft  = !this.mySwiper.isBeginning;
 				this.showRight = !this.mySwiper.isEnd;
 			},
 

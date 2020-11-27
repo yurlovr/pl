@@ -53,8 +53,9 @@ export default {
     },
 
     mounted () {
-        if (this.sections && this.sections.length > 0)
-            this.mySwiper.init(this.swiperOption);
+        if (this.sections && this.sections.length > 0 && process.browser) {
+          this.mySwiper.init(this.swiperOption);
+        }
 
         window.addEventListener('scroll', this.onScroll, false);
         window.addEventListener('scroll', this.onResize, false);

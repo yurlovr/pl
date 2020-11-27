@@ -27,7 +27,15 @@
 				</div>
 			</div>
 		</section>
-		<BeachEventPtMap :data="data" :additional="additional" :mapData="mapData"/>
+
+    <client-only>
+		  <BeachEventPtMap
+        :data="data"
+        :additional="additional"
+        :mapData="mapData"
+      />
+    </client-only>
+
 		<a v-if="data" :href="'https://yandex.ru/maps/' + yandexTransform(pos)" target="_blank" class="beach-event__pt__right__button banner__card__info-area__button bottom">
 			<span>Проложить маршрут</span>
 		</a>

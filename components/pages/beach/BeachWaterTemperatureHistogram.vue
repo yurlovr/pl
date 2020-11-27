@@ -1,6 +1,6 @@
 <template>
   <div class="beach-page__water-temp" :class="{ active : modalOpen }">
-    <div class="beach-page__water-temp__inner" v-body-scroll-lock="modalOpen">
+    <div class="beach-page__water-temp__inner">
       <div class="beach-page__water-temp__bg" @click="toggleModal()"></div>
       <section class="two-part-layout__card">
         <div class="beach-page__water-temp__title-area" :class="{ active : modalOpen }" @click="toggleModal()">

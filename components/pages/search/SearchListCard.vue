@@ -50,7 +50,7 @@
             </div>
           </div>
           <div class="description-area line-variant">
-            <v-clamp autoresize :max-lines="max">{{htmlKiller(data.desc)}}</v-clamp>
+            <v-clamp autoresize :max-lines="max">{{ htmlKiller(data.desc) }}</v-clamp>
           </div>
         </div>
 
@@ -67,6 +67,7 @@
 <script>
   import AddToFavorites from "../../global/AddToFavorites";
   import VClamp from 'vue-clamp';
+  import _ from 'lodash';
 
   export default {
     name: "SearchListCard",
@@ -80,7 +81,10 @@
     },
     methods: {
       htmlKiller(s) {
-        return s ? s.trim().replace(/<[^>]*>?/gm, '').replace(/&nbsp;/g, ' ') : ''
+        if (!s) return '';
+        return _.unescape(s.trim()
+          .replace(/<\/?[^>]+>/ig, " ")
+          .replace(/&nbsp;/g, ' '));
       },
       onResize() {
         const size = window.innerWidth

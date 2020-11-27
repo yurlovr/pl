@@ -52,7 +52,7 @@
               });
               this.map.behaviors.disable('scrollZoom');
               this.$el.querySelector('.map__zoom-plus').addEventListener('click', () => {
-                if (this.zoom < 15) {
+                if (this.zoom < 18) {
                   this.zoom++;
                   this.map.setZoom(this.zoom);
                 }
@@ -185,7 +185,7 @@
                             document.querySelector(`.slider__arrow-right-balloon`).addEventListener('click', () => this.swiper.slideNext());
                           },
                           clear() {
-                            this.swiper.destroy();
+                            this.swiper && this.swiper.destroy && this.swiper.destroy();
 
                             this.constructor.superclass.clear.call(this);
                           },
@@ -203,7 +203,7 @@
                       balloonPanelMaxMapArea: 0,
                       hintLayout: maps.templateLayoutFactory.createClass("<div class='my-hint features'>" +
                         `<div class='header'>${title}</div><br />` +
-                        `<div class='description'>${description} ${slides.length}</div>` +
+                        `<div class='description'>${description}</div>` +
                         `<div class="beach-event__visitor-pics__slider" style='height: 100%'>
                           <div class="swiper-container" id='balloon-swiper'>
                             <div class="swiper-wrapper">
@@ -252,7 +252,7 @@
                           document.querySelector(`.slider__arrow-right-balloon`).addEventListener('click', () => this.swiper.slideNext());
                         },
                           clear() {
-                            this.swiper.destroy();
+                            this.swiper && this.swiper.destroy && this.swiper.destroy();
 
                             this.constructor.superclass.clear.call(this);
                           },
@@ -302,9 +302,6 @@
                 balloonLayout = maps.templateLayoutFactory.createClass(`
                   <div class="map-popup map-popup--top map-pt__popup">
                       ${this.data.parkings.auto[i].title}
-                    <span class="map-pt__popup__info">
-                      ${this.data.parkings.auto[i].type}
-                    </span>
                     <h4 class="map-pt__popup__subtitle">
                       ${this.data.parkings.auto[i].mode}
                     </h4>
@@ -419,16 +416,7 @@
                       Остановка общественного транспорта
                     </div>
                     <span class="map-pt__popup__info">
-                      Автобусы:
-                    </span>
-                    <h4 class="map-pt__popup__subtitle">
-                      ${this.data.parkings.bus[i].buses || ''}
-                    </h4>
-                    <span class="map-pt__popup__info">
-                      Маршрутное такси:
-                    </span>
-                    <span class="map-pt__popup__subtitle">
-                      ${this.data.parkings.bus[i].taxi || ''}
+                      Автобусы: ${this.data.parkings.bus[i].title || ''}
                     </span>
                   </div>
               `, {
@@ -712,8 +700,6 @@
     },
     beforeDestroy() {
       window.onresize = null
-    },
-    beforeDestroy() {
       this.$bus.$off('showOnMap');
       this.$bus.$off('call-balloon-service')
     }

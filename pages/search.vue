@@ -34,11 +34,14 @@
       </button>
     </div>
     <div class="custom-container search-page__empty" v-if="!getSearchResult || getSearchResult.length <= 1">
-      <div class="favorites-page__visited-empty">К сожалению по Вашему запросу ничего не найдено.<br>Попробуйте изменить
+      <div class="favorites-page__visited-empty" v-show="f_loaded">К сожалению по Вашему запросу ничего не найдено.<br>Попробуйте изменить
         запрос, или начните <a href="/" @click.prevent="$bus.goTo('/', $router)">сначала</a></div>
     </div>
-    <CardGrid :perPage="20" :data="getSearchResult.slice(0, -1)" v-show="mode_option == 'card'"
-              v-if="getSearchResult && getSearchResult.length > 1"/>
+    <CardGrid :perPage="20"
+              :data="getSearchResult.slice(0, -1)"
+              v-show="mode_option == 'card'"
+              v-if="getSearchResult && getSearchResult.length > 1"
+    />
     <search-horizontal-view :perPage="20"
                             :data="getSearchResult.slice(0, -1)"
                             v-show="mode_option == 'list'"
@@ -68,7 +71,7 @@
 
     computed: {
       ...mapGetters('search', ['getSearchResult', 'getRadiusIfCityExists']),
-      ...mapState('search', ['searchParams', 'searchPageResultEventBackup', 'query']),
+      ...mapState('search', ['searchParams', 'searchPageResultEventBackup', 'query', 'f_loaded']),
       ...mapGetters(['mapEntity']),
 
       radius() {
@@ -124,7 +127,7 @@
       }
     },
 
-    mounted() {
+    created() {
       if (this.updateQuery()) return;
 
       this.wait = true;
@@ -169,16 +172,8 @@
       },
 
       updateQuery() {
-        let p = this.$nuxt.$route.fullPath,
-          query = decodeURIComponent(p.replace('/search', '').replace('/', '').replace('?', '').replace('q=', '')).split('&');
-
-        if (!p.includes('?q='))
-          return false;
-
-        if (query[0].length > 0) {
-          this.updateInput(query[0]);
-          this.searchQuery([this.last_coordinates, this.geo_locating]);
-        }
+        this.updateInput(this.$route.query.q || '');
+        this.searchQuery([this.last_coordinates, this.geo_locating]);
       },
 
       updateTags(path) {
@@ -217,8 +212,8 @@
               type: 'select'
             });
             if (path == undefined) this.updateSearchParam({param: 'modes', value: curValue})
-          } else if (curQuery[0] == 'paid') {
-            curValue = this.searchParams.selects.price.options.find(v => v.id === curQuery[1])
+          } else if (curQuery[0] == 'price') {
+            curValue = this.searchParams.selects.price.options.find(v => v.id == curQuery[1])
             if (!curValue) continue;
             this.tags.push({
               param: 'price',
