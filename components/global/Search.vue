@@ -197,23 +197,6 @@
         geoLocating: false
       };
     },
-    beforeDestroy() {
-      this.$bus.$off('changeToggle');
-      this.$bus.$off('showCorrectSelectText');
-      this.$bus.$off('dontShowCorrectSelectText');
-      this.$bus.$off('showBgAndBar');
-      this.$bus.$off('hideBgAndBar');
-      this.$bus.$off('tempShowMobileSearchBar');
-      this.$bus.$off('tempHideMobileSearchBar');
-      this.$bus.$off('toggleMobileSearchBar');
-      this.$bus.$off('showParams');
-      this.$bus.$off('hideParams');
-      this.$bus.$off('updateSearchParam');
-      this.$bus.$off('search');
-      this.$bus.$off('emptySearchParams');
-      this.$bus.$off('updateSearchInput');
-      // window.removeEventListener('resize', this.onResize, true);
-    },
 
     mounted() {
       window.addEventListener('resize', this.onResize);
@@ -254,12 +237,6 @@
 
       // for screens <= 650, the main search will have different design for its bar, so, to show it, another button is clicked
       // and it is caught here
-      this.$bus.$on('toggleMobileSearchBar', () => {
-        if (this.mobileSearchBarShown)
-          this.mobileSearchBarShown = false;
-        else this.mobileSearchBarShown = true;
-      });
-
       // when requested to open the header search from elsewhere, this gets called
       // it shows the header and opens the parameters automatically
       // when the params are closed, the script makes sure to hide the header (tempShowHeader = false)
@@ -304,7 +281,9 @@
         ['updateSearchQuery', 'updateSearchSecondRowParam', 'updateInput', 'updateSearchParam', 'emptySearchParams',
           'updateSearchInput', 'updateParamsShown', 'set_coords', 'set_radius',
           'hoverAutocomplete']),
-
+      toggleMobileShow(){
+        this.mobileSearchBarShown = !this.mobileSearchBarShown
+      },
       showParams() {
         // check, if not the main search (the search in the header) (has labelId), then
         // if the screen size is less than 650px, then open the one in the header by calling an event

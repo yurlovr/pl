@@ -30,6 +30,22 @@ stages:
     - docker build -t $IMAGE_TAG . --build-arg URL_API=$URL_API --compress --cache-from $IMAGE_TAG
     - docker push $IMAGE_TAG 
 
+.build_docker:
+  image: docker:19.03.12
+  stage: build
+  variables:
+    IMAGE_TAG: $CR_ID/front-$ENV:latest
+  before_script:
+    - echo $CR_KEY | docker login --username json_key --password-stdin cr.yandex
+  script:
+    - echo $IMAGE_TAG
+    - docker pull $IMAGE_TAG || true
+    - echo "build image for $URL_API"
+    - docker build -t $IMAGE_TAG . --build-arg URL_API=$URL_API --compress --cache-from $IMAGE_TAG
+    - docker push $IMAGE_TAG     
+  tags:
+    - preprod-docker    
+
 .deploy_template:
   image: alpine:3.11
   stage: deploy
@@ -45,24 +61,29 @@ stages:
     - ssh_run $SSH_PARAMS "$SSH_PRIVATE_KEY" "docker rm krym-$CI_COMMIT_BRANCH || true"
     - ssh_run $SSH_PARAMS "$SSH_PRIVATE_KEY" "docker run -d --name krym-$CI_COMMIT_BRANCH --restart=on-failure:10 -p 127.0.0.1:$PORT:3000 $IMAGE_TAG"       
     # - ssh_run $SSH_PARAMS "$SSH_PRIVATE_KEY" "docker image prune -f" || true   
-    
-    
+        
 build_develop:
   extends:
-    - .build_template
-    - .develop_environment
+    - .build_docker
   only:
     - develop
+  variables:    
+    ENV: dev
+    URL_API: https://backuat.plyazhi.ru/api/app/
 
 deploy_develop:
-  extends: 
-    - .deploy_template
-    - .develop_environment
-  variables: 
-    PORT: 3000
   only:
     - develop
-  needs: ["build_develop"]
+  stage: deploy
+  environment:
+    name: dev
+    url: https://dev.plyazhi.ru/   
+  tags:
+    - preprod-shell
+  script:
+    - docker stack deploy --with-registry-auth -c /home/ubuntu/plyazhi/web.yml web
+  variables:
+    GIT_STRATEGY: none           
 
 build_master:
   extends:

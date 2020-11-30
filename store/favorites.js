@@ -69,14 +69,17 @@ export const getters = {
       ? state.beaches[id]
       : state.events[id]
   },
+  // TODO dont use rootState
   getBeaches: (state, getters, rootState, rootGetters) => {
     const ids = Object.keys(state.beaches)
     return rootGetters.beaches.filter(b => ids.includes(b.beachId))
   },
+  // TODO dont use rootState
   getEvents: (state, getters, rootState, rootGetters) => {
     const ids = Object.keys(state.events)
     return rootGetters.events.filter(b => ids.includes(b.eventId))
   },
+  // TODO dont use rootState
   getVisitedEvents: (state, getters, rootState, rootGetters) => {
     const ids = Object.keys(state.visited)
     return rootGetters.events.filter(b => ids.includes(b.eventId))
