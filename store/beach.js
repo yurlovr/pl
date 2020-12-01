@@ -42,7 +42,6 @@ export const actions = {
         }));
         if (error) return error;
         let beach_id = state.beach.id
-
         const [
           events,
           bars_n_restos,
@@ -60,7 +59,7 @@ export const actions = {
           this.$axios.$get(`/weather/list`),
           this.$axios.$get(`/review/list?entityId=${beach_id}&count=9999`),
           this.$axios.$get(`/socialPhoto/list?entityId=${beach_id}&count=10`),
-          this.$axios.$get(`/banner/list?page=/beach`),
+          this.$axios.$get(`/banner/list?page=/beach/`+id),
           this.$axios.$get('/hotel/list?count=10'),
           this.$axios.$get(`/hotel/beachList?count=10&beachId=${beach_id}`),
         ])
