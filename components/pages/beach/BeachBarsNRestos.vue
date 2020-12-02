@@ -19,7 +19,8 @@
           :key="i+'slider-bar-restor'"
         >
           <div class="beach-page__barsNrestos__subtitle-area">
-            <h3 class="beach-page__barsNrestos__subtitle">{{ item.title }}<span class="bar-distance"
+            <h3 class="beach-page__barsNrestos__subtitle">{{ item.title }}
+              <span class="bar-distance"
                                                                                 v-if="getDistance(item.coordinates)">
                           <br>{{getDistance(item.coordinates).toString().replace(/\./, ',')}} км</span></h3>
             <div class="beach-page__barsNrestos__arrow-controls swiper-bar-display" v-if="data.length != 1">

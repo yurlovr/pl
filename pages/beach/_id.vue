@@ -294,7 +294,8 @@
               content: this.meta.description || stable
             },
             {hid: 'keywords-beach', name: 'keywords', content: this.meta.keywords || stable},
-          ]
+          ],
+          __dangerouslyDisableSanitizers: ['title', 'meta']
         }
       },
 
