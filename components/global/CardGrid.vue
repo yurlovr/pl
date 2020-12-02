@@ -1,6 +1,7 @@
 <template>
 	<section class="card-grid custom-grid-container">
 		<Card :data="card"
+          :index="i"
           v-for="(card, i) in data.slice((page-1)*perPage, Math.min(page*perPage, data.length))"
           :key="card.id || card.eventId || card.beachId || i"
           class="card-grid__card"

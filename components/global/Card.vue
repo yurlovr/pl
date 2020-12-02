@@ -8,8 +8,16 @@
              @load="picLoaded = true" />
         <img v-else v-lazy-load :data-src="data.pic" v-show="this.picLoaded" alt="Фото" class="custom-card__pic"
              @load="picLoaded = true" />
-        <img v-show="!this.picLoaded" class="custom-card__pic"
-             src="~/static/pics/global/pics/slider_height_placeholder.png" />
+        <div v-show="!this.picLoaded"
+             class="custom-card__pic custom-card__pic-placeholder"
+             :class="{
+                'custom-card__pic-placeholder--color2': (index + 1) % 2 === 0,
+                'custom-card__pic-placeholder--color3': (index + 1) % 3 === 0,
+             }"
+
+        >
+          <span class="custom-card__pic-placeholder-text">загрузка изображения</span>
+        </div>
       </a>
       <a v-else :href="data.internal_url" class="custom-card__link" target="_blank">
         <img v-if="data.custom_photo" :src="data.pic" v-show="this.picLoaded" alt="Фото" class="custom-card__pic"
@@ -135,7 +143,7 @@ const today = moment().format('L')
 
 export default {
   name: 'CardComponent',
-  props: ['data', 'showTemp'],
+  props: ['data', 'showTemp', 'index'],
 
   components: {
     VClamp,

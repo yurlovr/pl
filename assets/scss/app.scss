@@ -3736,6 +3736,25 @@ input {
     }
   }
 
+  &__pic-placeholder {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #ddeef0;
+
+    &--color2 {
+      background-color: #fdeacd;
+    }
+
+    &--color3 {
+      background-color: #cbe4e7;
+    }
+  }
+
+  &__pic-placeholder-text {
+    color: #393e48;
+  }
+
   &__price {
     margin-top: 5px;
     font-size: 14px !important;
