@@ -136,7 +136,7 @@
            @mouseover="mouseOnAutoComplete = true" @mouseleave="mouseOnAutoComplete = false">
         <div class="search__autocomplete__inner">
           <span class="search__autocomplete__empty" v-show="autocompleteResults.length == 0">Ничего не найдено</span>
-          <a :href="result.link" @click.prevent="$bus.goTo(result.link, $router)"
+          <a :href="result.link" @click.prevent="autoCompleteRoute(result.link)"
              v-for="(result, _key) in autocompleteResults"
              @mouseover="hoverAutocomplete([_key, true])" @mouseleave="hoverAutocomplete([_key, false])"
           >
@@ -281,6 +281,10 @@
         ['updateSearchQuery', 'updateSearchSecondRowParam', 'updateInput', 'updateSearchParam', 'emptySearchParams',
           'updateSearchInput', 'updateParamsShown', 'set_coords', 'set_radius',
           'hoverAutocomplete']),
+      autoCompleteRoute(link){
+        this.mobileSearchBarShown = false
+        this.$bus.goTo(link, this.$router)
+      },
       toggleMobileShow(){
         this.mobileSearchBarShown = !this.mobileSearchBarShown
       },
