@@ -24,20 +24,27 @@ $classic-span-font-size: 16px;
 .play-back {
 
 }
-.my-flex{
+
+.my-flex {
   display: flex;
 }
-.main-beach-h2-helper{
+
+.main-beach-h2-helper {
   text-decoration: none;
   font-size: 20px;
   font-weight: 900;
   line-height: 120%;
   color: #393e48;
 }
-.cursor-pointer{
+
+.cursor-pointer {
   cursor: pointer;
 }
 
 .opacity-1 {
   opacity: 1 !important;
+}
+
+.object-contain {
+  object-fit: contain !important;
 }

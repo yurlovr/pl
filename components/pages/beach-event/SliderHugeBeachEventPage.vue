@@ -152,7 +152,7 @@
                               @click="$refs.beachZoomModal.showZoomModal(pic)" v-show="zoom_plus_show">
                              <img src="~/static/pics/search/loop_plus.svg">
                         </span>
-                    <div v-if="!pic.includes('youtube')">
+                    <div v-if="!pic.includes('youtube')" class="h-100">
                       <div class="size-stamp" v-if="data.sizes && data.sizes.length">
                         <img src="~/static/pics/beach/size.png">
                         <div class="stamp-text-size">
@@ -160,7 +160,7 @@
                           <b>{{ (data.sizes[i] / 1024 / 1024).toFixed(1) }} МБ</b>
                         </div>
                       </div>
-                      <img v-lazy-load :data-src="pic">
+                      <img v-lazy-load :data-src="pic" class="object-contain">
                     </div>
                     <div v-else class="w-100 h-100 y-block">
                       <!--                    active in modal-->
