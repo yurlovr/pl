@@ -64,6 +64,7 @@ export default {
     })
     this.setType(this.type);
     this.setQuery(this.$router.currentRoute.query);
+    console.log(this.$router.currentRoute, 'this.$router.currentRoute')
   },
 
   methods: {
