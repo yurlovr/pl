@@ -332,7 +332,7 @@
                           </div>
                           <div class="map-popup__info-area">
                               <div class="map-popup__title">${this.mapData[i].name}</div>
-                              <p>${this.mapData[i].type.DESCRIPTION}</p>
+                              <p>${this.mapData[i].type ? (this.mapData[i].type.DESCRIPTION || ''): ''}</p>
                           </div>
                         </a>
                   </div>

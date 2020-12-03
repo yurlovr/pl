@@ -296,6 +296,7 @@
                         // adding customs
 
                         for (let i = 0; i < this.mapData.length; i++) {
+                          console.warn(this.mapData[i], 'stupid')
                           balloonLayout = maps.templateLayoutFactory.createClass(`
                             <div class="map-popup map-popup--bottom">
                               <a target="_blank" href="${this.mapData[i].url}" style="color: #393e48">
@@ -310,7 +311,7 @@
                                 </div>
                                 <div class="map-popup__info-area">
                                     <div class="map-popup__title">${this.mapData[i].name}</div>
-                                    <p>${this.mapData[i].type.DESCRIPTION}</p>
+                                    <p>${this.mapData[i].type ? (this.mapData[i].type.DESCRIPTION || ''): ''}</p>
                                     ${this.mapData[i].description || ''}
                                 </div>
                               </a>
