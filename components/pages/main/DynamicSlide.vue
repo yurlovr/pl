@@ -1,8 +1,8 @@
 <template>
 	<a :href="getLink" @click.prevent="goToSearch()">
-		<img v-lazy-load v-show="picLoaded" :data-src="slide.pic" class="slider-dynamic__slide__pic" @load="picLoaded = true">
+		<img v-lazy-load :data-src="slide.pic" class="slider-dynamic__slide__pic">
 <!--		<img  v-show="!picLoaded" src="~/static/pics/global/pics/dynamic_slide_placeholder.png" class="slider-dynamic__slide__pic">-->
-    <div v-show="!picLoaded" class="slide-placeholder" >
+    <div  class="slide-placeholder" >
       <span class="slide-placeholder__text">загрузка изображения</span>
     </div>
 		<h3 class="slider-dynamic__slide__title">{{ slide.title }}</h3>

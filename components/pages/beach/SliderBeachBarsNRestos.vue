@@ -4,6 +4,9 @@
 			<div class="swiper-wrapper">
 				<div class="swiper-slide" v-for="(pic, i) in data" :key="i">
 					<img v-lazy-load :data-src="pic">
+          <div class="slide-placeholder slide-placeholder--beach-bars-n-restos" >
+            <span class="slide-placeholder__text">загрузка изображения</span>
+          </div>
 				</div>
 			</div>
 		</div>

@@ -4,20 +4,18 @@
       <a v-if="!data.another_place" :href="data.humanLink ? data.humanLink : ( data.mainLink ? data.mainLink : '#')"
          class="custom-card__link"
          @click.prevent="$bus.goTo( data.humanLink ? data.humanLink : ( data.mainLink ? data.mainLink : '#'), $router)">
-        <img v-if="data.custom_photo" :src="data.pic" v-show="this.picLoaded" alt="Фото" class="custom-card__pic"
-             @load="picLoaded = true" />
-        <img v-else v-lazy-load :data-src="data.pic" v-show="this.picLoaded" alt="Фото" class="custom-card__pic"
-             @load="picLoaded = true" />
-        <div v-show="!this.picLoaded" class="custom-card__pic custom-card__pic-placeholder" >
+        <img v-if="data.custom_photo" :src="data.pic" alt="Фото" class="custom-card__pic" />
+        <img v-else v-lazy-load :data-src="data.pic" alt="Фото" class="custom-card__pic" />
+        <div class="custom-card__pic custom-card__pic-placeholder" >
           <span class="custom-card__pic-placeholder-text">загрузка изображения</span>
         </div>
       </a>
       <a v-else :href="data.internal_url" class="custom-card__link" target="_blank">
-        <img v-if="data.custom_photo" :src="data.pic" v-show="this.picLoaded" alt="Фото" class="custom-card__pic"
-             @load="picLoaded = true" />
-        <img v-else v-lazy-load :data-src="data.pic" v-show="this.picLoaded" alt="Фото" class="custom-card__pic"
-             @load="picLoaded = true" />
-        <div v-show="!this.picLoaded" class="custom-card__pic custom-card__pic-placeholder" >
+        <img v-if="data.custom_photo" :src="data.pic" alt="Фото" class="custom-card__pic"
+             />
+        <img v-else v-lazy-load :data-src="data.pic" alt="Фото" class="custom-card__pic"
+              />
+        <div class="custom-card__pic custom-card__pic-placeholder" >
           <span class="custom-card__pic-placeholder-text">загрузка изображения</span>
         </div>
       </a>
