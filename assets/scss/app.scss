@@ -3742,11 +3742,11 @@ input {
     align-items: center;
     background-color: #ddeef0;
 
-    &--color2 {
+    .custom-card:nth-child(3n) & {
       background-color: #fdeacd;
     }
 
-    &--color3 {
+    .custom-card:nth-child(3n +2 ) & {
       background-color: #cbe4e7;
     }
   }
@@ -10374,5 +10374,31 @@ body.touch {
 @media (max-width: 425px) {
   .beach-page .beach-event__map-weather .map__zoom-wrapper {
     display: none;
+  }
+}
+
+.slider-cities {
+  &__slide {
+
+  }
+
+  &__slide-placeholder {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    background-color: #ddeef0;
+
+    .slider-cities__slide:nth-child(3n) & {
+      background-color: #fdeacd;
+    }
+
+    .slider-cities__slide:nth-child(3n +2 ) & {
+      background-color: #cbe4e7;
+    }
+  }
+
+  &__slide-placeholder-text {
+    color: #393e48;
   }
 }

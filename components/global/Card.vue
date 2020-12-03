@@ -8,14 +8,7 @@
              @load="picLoaded = true" />
         <img v-else v-lazy-load :data-src="data.pic" v-show="this.picLoaded" alt="Фото" class="custom-card__pic"
              @load="picLoaded = true" />
-        <div v-show="!this.picLoaded"
-             class="custom-card__pic custom-card__pic-placeholder"
-             :class="{
-                'custom-card__pic-placeholder--color2': (index + 1) % 2 === 0,
-                'custom-card__pic-placeholder--color3': (index + 1) % 3 === 0,
-             }"
-
-        >
+        <div v-show="!this.picLoaded" class="custom-card__pic custom-card__pic-placeholder" >
           <span class="custom-card__pic-placeholder-text">загрузка изображения</span>
         </div>
       </a>
@@ -24,8 +17,9 @@
              @load="picLoaded = true" />
         <img v-else v-lazy-load :data-src="data.pic" v-show="this.picLoaded" alt="Фото" class="custom-card__pic"
              @load="picLoaded = true" />
-        <img v-show="!this.picLoaded" class="custom-card__pic"
-             src="~/static/pics/global/pics/slider_height_placeholder.png" />
+        <div v-show="!this.picLoaded" class="custom-card__pic custom-card__pic-placeholder" >
+          <span class="custom-card__pic-placeholder-text">загрузка изображения</span>
+        </div>
       </a>
       <div class="custom-card__temp-area" v-if="data.tempWater != undefined && showTemp != false">
         <img src="~/static/pics/global/svg/temper_big.svg" alt="Температура" class="big">
@@ -143,7 +137,7 @@ const today = moment().format('L')
 
 export default {
   name: 'CardComponent',
-  props: ['data', 'showTemp', 'index'],
+  props: ['data', 'showTemp'],
 
   components: {
     VClamp,
