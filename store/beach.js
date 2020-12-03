@@ -186,8 +186,8 @@ export const getters = {
     },
   getSections: (state, getters) => {
     const sections = [
-      { title: 'Галерея',                 hash: 'gallery'   },
-      { title: 'Основные характеристики', hash: 'main-info' },
+      { title: 'Галерея',                 hash: 'gallery', show: true   },
+      { title: 'Основные характеристики', hash: 'main-info', show: true },
       { title: 'Инфраструктура',          hash: 'infra',
         show: state.beach.infrastructures.length > 0
       },
@@ -234,7 +234,8 @@ export const getters = {
       },
       {
         title: 'Фото посетителей',
-        hash: 'visitor-pics'
+        hash: 'visitor-pics',
+        show: true
       }
     ]
     return sections

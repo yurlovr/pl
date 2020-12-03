@@ -11,7 +11,7 @@
                         <nuxt-link
                             :to="{path: '#'+section.hash, hash: '#'+section.hash}"
                             class="slider-weather__month beach-page-sections__section"
-                            :class="{ active : section.hash == activeSectionHash }"
+                            :class="{ active : section.hash == activeSectionHash, 'd-none': !section.show }"
                             :style="{ 'margin-right': sections.length <= 8 ? '15px' : '' }"
                         >
                             <span>{{ section.title }}</span>
