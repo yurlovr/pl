@@ -10377,28 +10377,27 @@ body.touch {
   }
 }
 
-.slider-cities {
-  &__slide {
 
+.slide-placeholder {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  background-color: #ddeef0;
+
+  .swiper-slide:nth-child(3n) & {
+    background-color: #fdeacd;
   }
 
-  &__slide-placeholder {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100%;
-    background-color: #ddeef0;
-
-    .slider-cities__slide:nth-child(3n) & {
-      background-color: #fdeacd;
-    }
-
-    .slider-cities__slide:nth-child(3n +2 ) & {
-      background-color: #cbe4e7;
-    }
+  .swiper-slide:nth-child(3n +2 ) & {
+    background-color: #cbe4e7;
   }
 
-  &__slide-placeholder-text {
+  &__text {
     color: #393e48;
   }
 }
+
+
+
+

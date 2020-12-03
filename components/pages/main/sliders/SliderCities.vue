@@ -7,8 +7,8 @@
 						<div class="slider-cities__slide__pic-area">
 							<img v-lazy-load v-if="slide.pic" :data-src="slide.pic" class="slider-cities__slide__pic">
 <!--							<img  v-if="!slide.pic" src="~/static/pics/global/pics/slider_cities_placeholder.png">-->
-              <div v-show="!slide.pic" class="slider-cities__slide-placeholder" >
-                <span class="slider-cities__slide-placeholder-text">загрузка слайда</span>
+              <div v-show="!slide.pic" class="slide-placeholder" >
+                <span class="slide-placeholder__text">загрузка изображения</span>
               </div>
 							<h4 class="slider-cities__slide__title">{{ slide.city }}</h4>
 						</div>
