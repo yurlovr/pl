@@ -31,10 +31,10 @@ export const getters = {
         else if (state.query) {
             if (state.type == 'beach') {
                 if (state.query.popular === null) {
-                    ret.grid.sort((a, b) => a.rating < b.rating);
+                    ret.grid = ret.grid.sort((a, b) => a.rating < b.rating).splice(0, 45);
                 }
                 if (state.query.family === null) {
-                    ret.grid = ret.grid.filter(v => (v.tags && v.tags.find(f => f.title == 'Отдых для всей семьи')));
+                    ret.grid = ret.grid.filter(v => (v.tags && v.tags.find(f => f.title == 'Отдых для всей семьи'))).splice(0, 45);
                 }
                 if (state.query['tags[]'] || state.query['addTags[]']) {
                     let queryTagCount = 0, tags, addTags;

@@ -5,7 +5,7 @@
       <div class="main-page__section-subtitle-area">
         <span class="main-page__section-subtitle">{{ data.subtitle }}</span>
         <a v-if="!outlink" :href="link" @click.prevent="$bus.goTo(link, $router)"
-           class="main-page__section__subtitle-area__see-all">
+          class="main-page__section__subtitle-area__see-all">
           <span>Смотреть все ({{ data.beachNumber }})</span>
         </a>
         <a v-else :href="outlink" target="_blank" class="main-page__section__subtitle-area__see-all">
@@ -30,7 +30,7 @@
 </template>
 
 <script>
-  import SliderBeachEventHotel from '~/components/global/sliders/SliderBeachEventHotel';
+import SliderBeachEventHotel from '~/components/global/sliders/SliderBeachEventHotel';
 
   export default {
     props: ['data', 'outlink'],
@@ -43,6 +43,6 @@
       link() {
         return `/${this.data.showMore.type}-catalog${this.data.showMore.query ? this.data.showMore.query : ''}`;
       }
-    }
+    },
   }
 </script>

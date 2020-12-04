@@ -119,7 +119,6 @@ export const actions = {
 
 export const getters = {
   getBeachesTop: (state) => {
-    // console.log('!!!getBeachesTop', state.beachesTop.data)
     if (!state.beachesTop.data) return null;
     const { list, pagination } = state.beachesTop.data;
     const { geo } = state
