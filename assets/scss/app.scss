@@ -10397,7 +10397,15 @@ body.touch {
     background-color: #fdeacd;
   }
 
+  .search-card-list:nth-child(3n) & {
+    background-color: #fdeacd;
+  }
+
   .swiper-slide:nth-child(3n +2 ) & {
+    background-color: #cbe4e7;
+  }
+
+  .search-card-list:nth-child(3n +2 ) & {
     background-color: #cbe4e7;
   }
 
@@ -10406,7 +10414,7 @@ body.touch {
   }
 }
 
-.swiper-slide, slider-beach-event__right__item {
+.swiper-slide, .slider-beach-event__right__item, .search-card-list{
   img.lazyLoad {
     position: absolute;
     opacity: 0;
