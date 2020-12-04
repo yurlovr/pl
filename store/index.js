@@ -49,8 +49,8 @@ export const actions = {
   async nuxtServerInit({ commit }, { app }) {
     console.log('start load data', new Date())
     const [beaches, events, search, map, settings] = await Promise.all([
-      this.$axios.$get('/beach/list?count=40'),
-      this.$axios.$get('/event/list?count=40'),
+      this.$axios.$get('/beach/list?count=9999'),
+      this.$axios.$get('/event/list?count=9999'),
       this.$axios.$get('search/config'),
       this.$axios.$get('/map-entity/list?count=9999'),
       this.$axios.$get('/settings/list'),
