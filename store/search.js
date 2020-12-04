@@ -411,8 +411,15 @@ export const actions = {
     commit('SET_MY_COORDS', coords);
     commit('SET_MY_CITY', city);
     // if (state.query.length > 0) {
-    let autocompleteRes = await this.$axios.$get(`search/autocomplete${state.query}`),
-      beaches = {
+    let autocompleteRes = null;
+
+    try {
+      autocompleteRes = await this.$axios.$get(`search/autocomplete${state.query}`);
+    } catch (err) {
+      console.error('error during search', err);
+    }
+
+    let beaches = {
         data: {
           list: []
         }
@@ -422,9 +429,15 @@ export const actions = {
           list: []
         }
       };
-    // if (!autocompleteRes.data)
-    //     return;
-    console.warn(autocompleteRes)
+
+
+    if (!autocompleteRes.data || autocompleteRes.data.length === 0) {
+      console.warn('empty search results!')
+      commit('EMPTY_RESULTS')
+      commit('set_loaded', true)
+      return;
+    }
+
     if (autocompleteRes.data && autocompleteRes.data.list) {
       for (let i = 0; i < autocompleteRes.data.list.length; i++) {
         if (rootState.beaches.data.list.find(v => v.ID == autocompleteRes.data.list[i].ID))
