@@ -28,6 +28,7 @@
         },
       beforeDestroy() {
         this.$bus.$off('updateMap', (n) => {
+          // console.log('SearchMap, evt:updateMap off', n);
           unchoose();
           placeMarks(n);
         });
@@ -99,7 +100,7 @@
                             //     iconImageHref: '/pics/global/svg/map_beach_blue.svg'
                             // });
                             // this.chosen = -1;
-                            console.log('unchoose')
+                            // console.log('unchoose')
                             this.map.balloon.close();
                         }
 
@@ -254,7 +255,7 @@
                                   </div>
                                   <div class="map-popup__info-area">
                                       <div class="map-popup__title">${this.mapData[i].name}</div>
-                                      <p>${this.mapData[i].type.DESCRIPTION}</p>
+                                      <p>${(this.mapData[i].type && this.mapData[i].type.hasOwnProperty('DESCRIPTION')) ? this.mapData[i].type.DESCRIPTION : ''}</p>
                                   </div>
                                 </a>
                               </div>
@@ -364,6 +365,7 @@
                         };
 
                         this.$bus.$on('updateMap', (n) => {
+                          // console.log('searchMap, evt: updateMap', n)
                             unchoose();
                             placeMarks(n);
                         });
