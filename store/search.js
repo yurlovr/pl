@@ -416,7 +416,7 @@ export const actions = {
     try {
       autocompleteRes = await this.$axios.$get(`search/autocomplete${state.query}`);
     } catch (err) {
-      console.error('error during search', err);
+      console.error('error during search: ', err);
     }
 
     let beaches = {
@@ -431,8 +431,8 @@ export const actions = {
       };
 
 
-    if (!autocompleteRes.data || autocompleteRes.data.length === 0) {
-      console.warn('empty search results!')
+    if (!autocompleteRes.data || !autocompleteRes.data.hasOwnProperty('list') || !(Array.isArray(autocompleteRes.data.list)) || autocompleteRes.data.list.length === 0) {
+      console.warn('warning: no data or empty search results')
       commit('EMPTY_RESULTS')
       commit('set_loaded', true)
       return;
