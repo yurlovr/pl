@@ -26,7 +26,6 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from 'vuex';
 import Card from '~/components/global/Card';
 import Pagination from '~/components/global/Pagination';
 
@@ -47,14 +46,11 @@ export default {
 
   mounted() {
     this.$bus.$on('pageChanged', (i) => {
-      setTimeout(() => { this.$bus.$emit('updateFavorite'); }, 1);
+      setTimeout(() => { this.$bus.$emit('updateFavorite'); });
     });
   },
 
   methods: {
-    ...mapActions('catalog', [
-      'setPage',
-    ]),
     onChangePage(pageNum) {
       this.$router.push({
         query: {

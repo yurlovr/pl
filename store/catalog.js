@@ -1,4 +1,4 @@
-import { mapBeach } from '~/helpers/mappers';
+import { mapBeach, mapEvent } from '~/helpers/mappers';
 
 export const state = () => ({
   type: null,
@@ -6,6 +6,7 @@ export const state = () => ({
   popularBeach: null,
   allBeaches: null,
   page: null,
+  events: null,
 });
 
 export const mutations = {
@@ -23,7 +24,11 @@ export const mutations = {
     state.allBeaches = data;
   },
   SET_PAGE: (state, data) => {
+    console.log('mutation')
     state.page = +data;
+  },
+  SET_EVENTS: (state, data) => {
+    state.events = data;
   },
 };
 
@@ -48,6 +53,15 @@ export const actions = {
   },
   setPage({ commit }, page) {
     commit('SET_PAGE', page);
+  },
+  async setEvents({ commit }, payload) {
+    const { page, count } = payload;
+    const { data } = await this.$axios.$get(`/event/list?count=${count}&page=${page}`);
+    commit('SET_EVENTS', {
+      ...data,
+      list: data.list.map(mapEvent),
+      title: 'Каталог мероприятий',
+    });
   },
 };
 
@@ -127,4 +141,5 @@ export const getters = {
   getPopularBeaches: (state) => state.popularBeach,
   getAllBeaches: (state) => state.allBeaches,
   getPage: (state) => state.page,
+  getEvents: (state) => state.events,
 };

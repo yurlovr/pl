@@ -17,7 +17,7 @@ eventBus.install = function (Vue) {
 			if (link.split('/')[0] != '')
 				link = `/${link}`;
 				console.log(link)
-			router.push(link)
+			// router.push(link)
 		}, 500);
 	};
 }

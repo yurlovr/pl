@@ -31,11 +31,9 @@ export default {
       'getPage',
     ]),
   },
+
   watchQuery: ['page', 'count'],
 
-  beforeDestroy() {
-    this.setPage(null);
-  },
   methods: {
     ...mapActions('catalog', [
       'setPage',

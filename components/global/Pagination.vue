@@ -26,6 +26,7 @@
     </button>
     <button
       v-for="button in buttons"
+      :key="button"
       class="pagination__button"
       :class="{ 'three-dots': button === '. . .', 'current': button === page }"
       :disabled="button == '. . .' || button == page"

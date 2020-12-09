@@ -102,11 +102,6 @@ export default {
     this.setType(this.type);
     this.setQuery(this.$router.currentRoute.query);
   },
-  watch: {
-    dataGrid(v) {
-      console.log('@@@@@@@@@@@@@@@@@', v)
-    }
-  },
 
   methods: {
     ...mapMutations('catalog', [
