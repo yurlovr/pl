@@ -56,7 +56,6 @@ export default {
       'setPage',
     ]),
     onChangePage(pageNum) {
-      this.setPage(pageNum);
       this.$router.push({
         query: {
           ...this.$route.query,

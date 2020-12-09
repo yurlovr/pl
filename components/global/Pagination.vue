@@ -61,6 +61,8 @@
 </template>
 
 <script>
+import { mapGetters, mapActions } from 'vuex';
+
 export default {
 
   model: {
@@ -71,14 +73,24 @@ export default {
 
   data() {
     return {
-      page: 1,
       buttons: [], // only consists of the middle numbers and ...
     };
   },
 
   computed: {
+    ...mapGetters('catalog', [
+      'getPage',
+    ]),
     lastPage() {
       return Math.ceil(this.totalElems / this.perPage);
+    },
+    page: {
+      get() {
+        return this.getPage;
+      },
+      set(val) {
+        this.setPage(val);
+      },
     },
   },
   watch: {
@@ -98,6 +110,9 @@ export default {
   },
 
   methods: {
+    ...mapActions('catalog', [
+      'setPage',
+    ]),
     changePage(p) {
       if (p > 0 && p < this.lastPage + 1) {
         this.page = p;
@@ -115,14 +130,14 @@ export default {
 
     generatePagination(p) {
       this.buttons = [];
-      if (this.lastPage == 2) return;
+      if (this.lastPage === 2) return;
 
-      if (p == 1) p = 2;
-      else if (p == this.lastPage) p = this.lastPage - 1;
+      if (p === 1) p = 2;
+      else if (p === this.lastPage) p = this.lastPage - 1;
 
       if (p - 2 > 1) this.buttons.push('. . .');
       if (p - 1 > 1) this.buttons.push(p - 1);
-      if (p != 1 && p != this.lastPage); // Math.ceil(totalElems / perPage) is the last page
+      if (p !== 1 && p !== this.lastPage); // Math.ceil(totalElems / perPage) is the last page
       this.buttons.push(p);
       if (p + 1 < this.lastPage) this.buttons.push(p + 1);
       if (p + 2 < this.lastPage) this.buttons.push('. . .');

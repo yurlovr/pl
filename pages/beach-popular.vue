@@ -15,6 +15,9 @@ export default {
   },
   async fetch({ store, query }) {
     const { page, count } = query;
+    if (!store.getters['catalog/getPage']) {
+      store.dispatch('catalog/setPage', page);
+    }
     await store.dispatch('catalog/setPopularBeaches', {
       page,
       count,
@@ -27,10 +30,11 @@ export default {
       'getPage',
     ]),
   },
+
   watchQuery: ['page', 'count'],
 
   beforeDestroy() {
-    this.setPage(1);
+    this.setPage(null);
   },
   methods: {
     ...mapActions('catalog', [

@@ -5,7 +5,7 @@ export const state = () => ({
   query: null,
   popularBeach: null,
   allBeaches: null,
-  page: 1,
+  page: null,
 });
 
 export const mutations = {
@@ -23,7 +23,7 @@ export const mutations = {
     state.allBeaches = data;
   },
   SET_PAGE: (state, data) => {
-    state.page = data;
+    state.page = +data;
   },
 };
 
