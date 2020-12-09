@@ -1,5 +1,4 @@
 import Vue from 'vue';
-import VueRouter from 'vue-router';
 
 const eventBus = {};
 
@@ -17,6 +16,7 @@ eventBus.install = function (Vue) {
 		setTimeout(() => {
 			if (link.split('/')[0] != '')
 				link = `/${link}`;
+				console.log(link)
 			router.push(link)
 		}, 500);
 	};

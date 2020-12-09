@@ -1,40 +1,40 @@
 <template>
-	<div class="preloader" v-body-scroll-lock="preloaderShown">
-		<img  src="~/static/pics/global/svg/logo-blue.svg" alt="НашПляж">
-	</div>
+  <div v-body-scroll-lock="preloaderShown" class="preloader">
+    <img src="~/static/pics/global/svg/logo-blue.svg" alt="НашПляж">
+  </div>
 </template>
 
 <script>
-	export default {
-		data() {
-			return {
-				preloaderShown: true
-			}
-		},
-    beforeDestroy() {
-      this.$bus.$off('mainPageReady')
+export default {
+  data() {
+    return {
+      preloaderShown: true,
+    };
+  },
+  beforeDestroy() {
+    this.$bus.$off('mainPageReady');
+  },
+
+  mounted() {
+    if (this.$router.currentRoute.path != '/') {
+      window.onNuxtReady((app) => {
+        this.hidePreloader();
+      });
+    } else {
+      this.$bus.$on('mainPageReady', () => {
+        this.hidePreloader();
+      });
+    }
+  },
+
+  methods: {
+    hidePreloader() {
+      document.querySelector('.preloader').style.opacity = 0;
+      setTimeout(() => {
+        document.querySelector('.preloader').style.display = 'none';
+        this.preloaderShown = false;
+      }, 1005);
     },
-
-    mounted() {
-			if (this.$router.currentRoute.path != '/') {
-				window.onNuxtReady((app) => {
-					this.hidePreloader();
-				});
-			} else {
-				this.$bus.$on('mainPageReady', () => {
-					this.hidePreloader();
-				})
-			}
-		},
-
-		methods: {
-			hidePreloader() {
-				document.querySelector('.preloader').style.opacity = 0;
-				setTimeout(() => {
-					document.querySelector('.preloader').style.display = 'none';
-					this.preloaderShown = false;
-				}, 1005);
-			}
-		}
-	}
+  },
+};
 </script>

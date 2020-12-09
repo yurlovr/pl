@@ -2,9 +2,9 @@ import {
   mapBeachList,
   mapEntityList,
   mapEventList,
-  mapIDs
-} from "@/helpers/mappers";
-import { mapSettings } from "../helpers/mappers";
+  mapIDs,
+} from '@/helpers/mappers';
+import { mapSettings } from '../helpers/mappers';
 
 export const state = () => ({
   beaches: [],
@@ -18,7 +18,7 @@ export const state = () => ({
   mobile_settings: [],
   isModalViewed: false,
 
-})
+});
 
 export const mutations = {
   SET_ALL_BEACHES: (state, payload) => {
@@ -41,70 +41,70 @@ export const mutations = {
   },
   // TODO Move to settings store module
   SET_MODAL_VIEWED: (state, status = false) => {
-    state.isModalViewed = status
-  }
-}
+    state.isModalViewed = status;
+  },
+};
 
 export const actions = {
-  async nuxtServerInit({ commit }, { app }) {
-    console.log('start load data', new Date())
-    const [beaches, events, search, map, settings] = await Promise.all([
-      this.$axios.$get('/beach/list?count=9999'),
-      this.$axios.$get('/event/list?count=9999'),
-      this.$axios.$get('search/config'),
-      this.$axios.$get('/map-entity/list?count=9999'),
-      this.$axios.$get('/settings/list'),
-    ]);
-    console.log('  end load data', new Date())
+  // async nuxtServerInit({ commit }, { app }) {
+//     const start = new Date().getTime();
+    // const [
+//       // beaches,
+//       events,
+      // search,
+//       map,
+//       settings,
+//     ] = await Promise.all([
+//       // this.$axios.$get('/beach/list?count=10'),
+//       // this.$axios.$get('/event/list?count=10'),
+//       // this.$axios.$get('search/config'),
+//       // this.$axios.$get('/map-entity/list?count=10'),
+//       // this.$axios.$get('/settings/list'),
+//     ]);
+//     console.log(`end load data ${new Date().getTime() - start}ms`);
 
-    commit('SET_ALL_BEACHES', beaches);
-    commit('SET_ALL_EVENTS', events);
-    commit('search/SET_SEARCH', search);
-    commit('SET_MAP_ENTITY', map);
-    commit('SET_MOBILE_SETTINGS', settings);
+//     // commit('SET_ALL_BEACHES', beaches);
+//     // commit('SET_ALL_EVENTS', events);
+//     // commit('search/SET_SEARCH', search);
+//     // commit('SET_MAP_ENTITY', map);
+//     // commit('SET_MOBILE_SETTINGS', settings);
 
-    // TODO Configure cookie plugin for ssr
-    const storeCache = app.$cookies.get('store')
-    const { isModalViewed = false } = storeCache || {};
-    commit('SET_MODAL_VIEWED', isModalViewed)
+//     // TODO Configure cookie plugin for ssr
+//     const storeCache = app.$cookies.get('store');
+//     const { isModalViewed = false } = storeCache || {};
+//     commit('SET_MODAL_VIEWED', isModalViewed);
 
-    commit('setLastUserPos', this.$cookies.get('last_coordinates') || {})
-
-  }
-}
+//     commit('setLastUserPos', this.$cookies.get('last_coordinates') || {});
+  // },
+};
 
 export const getters = {
-  beachIds: (state) => {
+  beachIds: (state) =>
     // console.log('getter beachIds');
-    return mapIDs(state.beaches.data.list)
-  },
+    mapIDs(state.beaches.data.list),
 
-  eventIds: (state) => {
+  eventIds: (state) =>
     // console.log('getter eventIds');
-    return mapIDs(state.events.data.list)
-  },
+    mapIDs(state.events.data.list),
 
-  beaches: (state) => {
+  beaches: (state) =>
     // console.log('getter beaches');
-    return mapBeachList(state.beaches.data.list)
-  },
+    mapBeachList(state.beaches.data.list),
 
-  events: (state) => {
+  events: (state) =>
     // console.log('getter events');
-    return mapEventList(state.events.data.list)
-  },
+    mapEventList(state.events.data.list),
 
-  mapEntity: (state) => {
+  mapEntity: (state) =>
     // console.log('getter mapEntity');
-    return mapEntityList(state.map_entity.data.list)
-  },
+    mapEntityList(state.map_entity.data.list),
 
   // Mobile settings
-  getMobileSettings: state => {
+  getMobileSettings: (state) => {
     // console.log('getMobileSettings', state.mobile_settings.data)
     if (!state.mobile_settings.data) return null;
     const { list } = state.mobile_settings.data;
 
     return list.map(mapSettings);
   },
-}
+};

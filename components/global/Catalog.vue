@@ -1,73 +1,121 @@
 <template>
-  <div class="catalog-page custom-page" v-if="data">
+  <div v-if="dataGrid" class="catalog-page custom-page">
     <div class="catalog-page__title-area custom-container">
-      <h3 class="custom-page__title catalog-page__title">{{ data.title }}</h3>
-      <div class="search-page__title-area__buttons" v-if="data && type == 'beach'">
-        <button class="search-page__title-area__button" :class="{ active: !showCardsOrMap }" @click="showCardsOrMap = false">
-          <img  src="~/static/pics/search/cards_orange.svg" alt="Вид: Карточки" v-show="!showCardsOrMap">
-          <img  src="~/static/pics/search/cards_gray.svg" alt="Вид: Карточки" v-show="showCardsOrMap">
+      <h3 class="custom-page__title catalog-page__title">
+        {{ dataGrid.title }}
+      </h3>
+      <div v-if="dataGrid && type === 'beach'" class="search-page__title-area__buttons">
+        <button
+          class="search-page__title-area__button"
+          :class="{ active: !showCardsOrMap }"
+          @click="showCardsOrMap = false"
+        >
+          <img
+            v-show="!showCardsOrMap"
+            src="~/static/pics/search/cards_orange.svg"
+            alt="Вид: Карточки"
+          >
+          <img
+            v-show="showCardsOrMap"
+            src="~/static/pics/search/cards_gray.svg"
+            alt="Вид: Карточки"
+          >
         </button>
-        <button class="search-page__title-area__button" :class="{ active: showCardsOrMap }" @click="showMap()">
-          <img  src="~/static/pics/search/map_orange.svg" alt="Вид: Карта" v-show="showCardsOrMap">
-          <img  src="~/static/pics/search/map_gray.svg" alt="Вид: Карта" v-show="!showCardsOrMap">
+        <button
+          class="search-page__title-area__button"
+          :class="{ active: showCardsOrMap }"
+          @click="showMap()"
+        >
+          <img
+            v-show="showCardsOrMap"
+            src="~/static/pics/search/map_orange.svg"
+            alt="Вид: Карта"
+          >
+          <img
+            v-show="!showCardsOrMap"
+            src="~/static/pics/search/map_gray.svg"
+            alt="Вид: Карта"
+          >
         </button>
       </div>
     </div>
-    <CardGrid :perPage="20" :data="data.grid" v-if="data.grid" v-show="!showCardsOrMap" />
-    <SearchMapArea :data="data.grid" v-show="showCardsOrMap" v-if="data.grid && data.grid.length > 0 && type == 'beach'" />
+    <CardGrid
+      v-if="dataGrid && dataGrid.list.length"
+      v-show="!showCardsOrMap"
+      :per-page="20"
+      :data="dataGrid"
+    />
+    <!-- <SearchMapArea
+      v-show="showCardsOrMap"
+      v-if="data.grid && data.grid.length > 0 && type === 'beach'"
+      :data="data.grid"
+    /> -->
   </div>
 </template>
 
 <script>
+/* eslint-disable import/no-extraneous-dependencies */
+import { mapMutations, mapActions } from 'vuex';
 import CardGrid from '~/components/global/CardGrid';
 import SearchMapArea from '~/components/pages/search/SearchMapArea';
 
-import { mapGetters, mapMutations } from 'vuex';
-
 export default {
-  props: ['type'],
-
   components: {
     CardGrid,
-    SearchMapArea
+    SearchMapArea,
   },
-
-  computed: {
-    ...mapGetters('catalog', ['data'])
+  props: {
+    type: {
+      type: String,
+      required: true,
+    },
+    dataGrid: {
+      type: Object,
+      required: true,
+    },
   },
-
   data() {
     return {
       showCardsOrMap: false, // cards: false, map: true
       mapShownForTheFirstTime: false,
-      meta: {}
-    }
+      meta: {},
+    };
   },
   head() {
-    const stable = 'ПЛЯЖИ.РУ'
+    const stable = 'ПЛЯЖИ.РУ';
     return {
       title: this.meta.title || stable,
       meta: [
         {
           hid: 'description-beach',
           name: 'description',
-          content: this.meta.description || stable
+          content: this.meta.description || stable,
         },
-        {hid: 'keywords-beach', name: 'keywords', content: this.meta.keywords || stable},
-      ]
-    }
+        { hid: 'keywords-beach', name: 'keywords', content: this.meta.keywords || stable },
+      ],
+    };
   },
-
   async created() {
-    await this.$axios.$get('seo/meta?url=' + this.$route.fullPath).then(res => {
-      this.meta = res.data
-    })
+    await this.$axios.$get(`seo/meta?url=${this.$route.fullPath}`).then((res) => {
+      this.meta = res.data;
+    });
     this.setType(this.type);
     this.setQuery(this.$router.currentRoute.query);
   },
+  watch: {
+    dataGrid(v) {
+      console.log('@@@@@@@@@@@@@@@@@', v)
+    }
+  },
 
   methods: {
-    ...mapMutations('catalog', ['setType', 'setQuery']),
+    ...mapMutations('catalog', [
+      'setType',
+      'setQuery',
+    ]),
+    ...mapActions('catalog', [
+      'setPopularBeaches',
+    ]),
 
     showMap() {
       this.showCardsOrMap = true;
@@ -75,7 +123,7 @@ export default {
         this.mapShownForTheFirstTime = true;
         this.$bus.$emit('updateScrollbar');
       }
-    }
-  }
-}
+    },
+  },
+};
 </script>

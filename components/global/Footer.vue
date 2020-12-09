@@ -14,7 +14,9 @@
         </div>
         <div class="footer__part">
           <h4>Партнерство</h4>
-          <a href="/beach-catalog" @click.prevent="$bus.goTo('/beach-catalog', $router)">Каталог пляжей</a>
+          <nuxt-link :to="{ path: '/beach-catalog', query: { page: 1, count: 20 } }">
+            Каталог пляжей
+          </nuxt-link>
           <a href="/event-catalog" @click.prevent="$bus.goTo('/event-catalog', $router)">Каталог мероприятий</a>
           <a href="/partner-info" @click.prevent="$bus.goTo('/partner-info', $router)">Информация для партнеров</a>
         </div>
@@ -72,13 +74,13 @@
 export default {
   data() {
     return {
-      social_links: []
-    }
+      social_links: [],
+    };
   },
-   created() {
+  created() {
     this.$axios.$get('settings/list').then(res => {
       this.social_links = res.data.list.filter(_ =>!_.CODE.includes('mobile'));
-    })
-  }
-}
+    });
+  },
+};
 </script>

@@ -1,7 +1,7 @@
 <template>
   <Catalog
-    :type="'getAllBeaches'"
-    :data-grid="getAllBeaches"
+    :type="'beach'"
+    :data-grid="getPopularBeaches"
   />
 </template>
 
@@ -13,10 +13,9 @@ export default {
   components: {
     Catalog,
   },
-
   async fetch({ store, query }) {
     const { page, count } = query;
-    await store.dispatch('catalog/setAllBeaches', {
+    await store.dispatch('catalog/setPopularBeaches', {
       page,
       count,
     });
@@ -24,7 +23,7 @@ export default {
 
   computed: {
     ...mapGetters('catalog', [
-      'getAllBeaches',
+      'getPopularBeaches',
       'getPage',
     ]),
   },

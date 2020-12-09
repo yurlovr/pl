@@ -1,55 +1,70 @@
 <template>
-	<section class="card-grid custom-grid-container">
-		<Card :data="card"
-          v-for="(card, i) in data.slice((page-1)*perPage, Math.min(page*perPage, data.length))"
-          :key="card.id || card.eventId || card.beachId || i"
-          class="card-grid__card"
+  <section class="card-grid custom-grid-container">
+    <Card
+      v-for="(card, i) in data.list"
+      :key="card.id || card.eventId || card.beachId || i"
+      :data="card"
+      class="card-grid__card"
     />
-		<h4 v-show="data.length == 0"
-        class="favorites-page__empty favorites-page__empty--card-grid">
-      {{ emptyText ? emptyText : 'Пусто'}}
+    <h4
+      v-show="data.list.length === 0"
+      class="favorites-page__empty favorites-page__empty--card-grid"
+    >
+      {{ emptyText ? emptyText : 'Пусто' }}
     </h4>
-		<div class="pagination-num-wrapper custom-container"
-         v-show="data.length > perPage">
-			<Pagination :perPage="perPage"
-                  :totalElems="data.length"
-                  @changePage="onChangePage"
+    <div
+      v-show="data.pagination.countElements > perPage"
+      class="pagination-num-wrapper custom-container"
+    >
+      <Pagination
+        :per-page="perPage"
+        :total-elems="data.pagination.countElements"
+        @changePage="onChangePage"
       />
-		</div>
-	</section>
+    </div>
+  </section>
 </template>
 
 <script>
-	import Card from '~/components/global/Card';
-	import Pagination from '~/components/global/Pagination';
+import { mapActions, mapGetters } from 'vuex';
+import Card from '~/components/global/Card';
+import Pagination from '~/components/global/Pagination';
 
-	export default {
-		props: ['data', 'perPage', 'emptyText'],
+export default {
 
-		data() {
-			return {
-				page: 1
-			}
-		},
-    beforeDestroy() {
-      this.$bus.$off('pageChanged');
+  components: {
+    Card,
+    Pagination,
+
+  },
+  props: ['data', 'perPage', 'emptyText'],
+
+  computed: {
+  },
+  beforeDestroy() {
+    this.$bus.$off('pageChanged');
+  },
+
+  mounted() {
+    this.$bus.$on('pageChanged', (i) => {
+      setTimeout(() => { this.$bus.$emit('updateFavorite'); }, 1);
+    });
+  },
+
+  methods: {
+    ...mapActions('catalog', [
+      'setPage',
+    ]),
+    onChangePage(pageNum) {
+      this.setPage(pageNum);
+      this.$router.push({
+        query: {
+          ...this.$route.query,
+          page: pageNum,
+          count: this.perPage,
+        },
+      });
     },
-
-    mounted() {
-			this.$bus.$on('pageChanged', i => {
-				setTimeout(() => {this.$bus.$emit('updateFavorite')}, 1);
-			});
-		},
-
-		components: {
-			Card,
-			Pagination
-		},
-
-    methods: {
-		  onChangePage(pageNum) {
-		    this.page = pageNum;
-      }
-    },
-	}
+  },
+};
 </script>

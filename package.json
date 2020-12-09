@@ -45,6 +45,12 @@
   },
   "devDependencies": {
     "@babel/plugin-transform-runtime": "^7.11.5",
+    "@typescript-eslint/eslint-plugin": "^4.9.0",
+    "@typescript-eslint/parser": "^4.9.0",
+    "eslint": "^7.15.0",
+    "eslint-config-airbnb-base": "^14.2.1",
+    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-vue": "^7.2.0",
     "node-sass": "^4.14.1",
     "nuxt-compress": "^3.0.0",
     "sass-loader": "^8.0.2"

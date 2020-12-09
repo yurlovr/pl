@@ -6,10 +6,12 @@ import {
   mapCollection,
   mapPlace,
   mapRest,
-} from "@/helpers/mappers";
+  mapEvent,
+} from '@/helpers/mappers';
 
 export const state = () => ({
   beachesTop: [],
+  events: [],
   citiesTop: [],
   weather: [],
   beachTypes: {},
@@ -20,7 +22,7 @@ export const state = () => ({
   geo: {},
   any_places: [],
   show_mobile_preview: true,
-})
+});
 
 export const mutations = {
   setMobileState: (state, data) => state.show_mobile_preview = data,
@@ -28,65 +30,69 @@ export const mutations = {
     state.beachesTop = payload;
   },
 
-    SET_ANY_PLACES: (state, data) => {
-      state.any_places = data
-    },
+  SET_ANY_PLACES: (state, data) => {
+    state.any_places = data;
+  },
 
-    SET_CITIES: (state, payload) => {
-        state.citiesTop = payload;
-    },
+  SET_CITIES: (state, payload) => {
+    state.citiesTop = payload;
+  },
 
-    SET_WEATHER: (state, payload) => {
-        state.weather = payload;
-    },
+  SET_WEATHER: (state, payload) => {
+    state.weather = payload;
+  },
 
-    SET_COLLECTION: (state, payload) => {
-        state.collection = payload;
-    },
+  SET_COLLECTION: (state, payload) => {
+    state.collection = payload;
+  },
 
-    SET_COLLECTION_LIST: (state, payload) => {
-        state.collectionList = payload;
-    },
+  SET_COLLECTION_LIST: (state, payload) => {
+    state.collectionList = payload;
+  },
 
-    SET_MAP: (state, payload) => {
-        state.map = payload;
-    },
+  SET_MAP: (state, payload) => {
+    state.map = payload;
+  },
 
-    SET_BANNERS: (state, payload) => {
-        state.banners = payload;
+  SET_BANNERS: (state, payload) => {
+    state.banners = payload;
 
-        if (state.banners.data)
-            state.banners.data.list.sort((a,b) => (parseInt(a.POSITION) - parseInt(b.POSITION)));
-    },
+    if (state.banners.data) state.banners.data.list.sort((a, b) => (parseInt(a.POSITION) - parseInt(b.POSITION)));
+  },
 
-    setGeoLocating: (state, payload) => {
-        state.geo.id = payload;
-    },
+  setGeoLocating: (state, payload) => {
+    state.geo.id = payload;
+  },
 
-    SET_GEO_COUNT: (state, payload) => {
-        state.geo.count = payload;
-    },
-}
+  SET_GEO_COUNT: (state, payload) => {
+    state.geo.count = payload;
+  },
+  SET_EVENTS: (state, payload) => {
+    console.log('SET_EVENTS')
+    state.events = payload;
+  },
+};
 
 export const actions = {
-  async getMainPageData({commit, state}) {
-    console.log('')
-    let popularBeachReq = state.geo.id
+  async getMainPageData({ commit, state }) {
+    const popularBeachReq = state.geo.id
       ? this.$axios.$get(`/beach/list?city=${state.geo.id}&count=10`)
       : this.$axios.$get('/beach/top?count=10');
 
     const [
       popularBeach,
       cities,
+      events,
       weather,
       collection,
       collectionList,
       banners,
       map,
-      anyPlaces
+      anyPlaces,
     ] = await Promise.all([
       popularBeachReq,
-      this.$axios.$get('/city/top?count=9999'),
+      this.$axios.$get('/city/top?count=10'),
+      this.$axios.$get('/event/list?count=10'),
       // big query
       // добавить фильтрацию по месяцу
       this.$axios.$get('/weather/list'),
@@ -101,13 +107,13 @@ export const actions = {
       this.$axios.$get('/beach/clusters/'),
       this.$axios.$get('/hotel/list?count=10'),
     ]);
-
     commit('SET_POPULAR_BEACH', popularBeach);
     if (state.geo.id) {
-      commit('SET_GEO_COUNT', state.beachesTop.data ? state.beachesTop.data.list.length : 0)
+      commit('SET_GEO_COUNT', state.beachesTop.data ? state.beachesTop.data.list.length : 0);
     }
 
     commit('SET_CITIES', cities);
+    commit('SET_EVENTS', events);
     commit('SET_WEATHER', weather);
     commit('SET_COLLECTION', collection);
     commit('SET_COLLECTION_LIST', collectionList);
@@ -115,45 +121,45 @@ export const actions = {
     commit('SET_MAP', map);
     commit('SET_ANY_PLACES', anyPlaces);
   },
-}
+};
 
 export const getters = {
   getBeachesTop: (state) => {
     if (!state.beachesTop.data) return null;
     const { list, pagination } = state.beachesTop.data;
-    const { geo } = state
+    const { geo } = state;
 
     const beachSliderCards = list
-      .slice(0, 10)
-      .map(mapBeach)
+      // .slice(0, 10)
+      .map(mapBeach);
 
     // TODO Use query builder instead
-    let query = '?popular&'
+    let query = '?popular&';
     if (geo.id && geo.count && geo.count > 0) {
       query += `city=${geo.id}&`;
     }
     query = query.slice(0, -1); // get rid of last &
 
-    const geoName = (geo.id && geo.count && geo.count != 0 && list[0] && list[0].CITY ? ' ' + list[0].CITY.NAME : '');
+    const geoName = (geo.id && geo.count && geo.count != 0 && list[0] && list[0].CITY ? ` ${list[0].CITY.NAME}` : '');
 
     const beachesTop = {
-      title: 'Самые популярные пляжи' + geoName,
+      title: `Самые популярные пляжи${geoName}`,
       subtitle: 'Пологий берег, плавный вход в воду, безопасность и современная инфраструктура',
       beachNumber: pagination.countElements,
       showMore: {
         type: 'beach',
-        query
+        query,
       },
       beachSliderData: {
         slideNumber: 4,
-        cardData: beachSliderCards
-      }
-    }
+        cardData: beachSliderCards,
+      },
+    };
     return beachesTop;
   },
 
   // Курортные города
-  getCitiesTop: state => {
+  getCitiesTop: (state) => {
     // console.log('!!!getCitiesTop', state.citiesTop.data)
     // let citiesTop = [
     //   {id: 'fake', "city":"Ялта","cityId":"47","beachNumber":3,"pic":google_pic,},
@@ -166,88 +172,88 @@ export const getters = {
     if (!state.citiesTop.data) return null;
     const { list } = state.citiesTop.data;
     return [...list]
-      .sort((a,b) => (a.COUNT_BEACHES < b.COUNT_BEACHES) ? 1 : -1)
+      .sort((a, b) => ((a.COUNT_BEACHES < b.COUNT_BEACHES) ? 1 : -1))
       .slice(0, 10)
-      .map(mapCity)
+      .map(mapCity);
   },
 
-  getMap: state => {
+  getMap: (state) => {
     // console.log('!!!getMap', state.map.data)
     // Карта пляжей
     if (!state.map.data) return null;
-    let clusterCenters = [];
+    const clusterCenters = [];
     let curCluster;
     const ret = {};
     // console.log(state.map.data.list, 'state.map.data.list')
 
+    const clusters = Object.keys(state.map.data.list).map((k) => state.map.data.list[k]);
 
-    let clusters = Object.keys(state.map.data.list).map((k) => state.map.data.list[k]);
-
-      for (let i = 0; i < clusters.length; i++) {
-        curCluster = clusters[i].filter(v => v.COORDINATES != '');
-        if (curCluster && curCluster.length > 0) {
-          clusterCenters.push(
-            curCluster.length != 1 ? ([ curCluster.reduce((a, b) => {
-              if (typeof a === 'object') a = parseFloat(a.COORDINATES.split(',')[0]);
-              return a + parseFloat(b.COORDINATES.split(',')[0]);
-            }) / curCluster.length,
-              curCluster.reduce((a, b) => {
-                if (typeof a === 'object') a = parseFloat(a.COORDINATES.split(',')[1]);
-                return a + parseFloat(b.COORDINATES.split(',')[1]);
-              }) / curCluster.length
-            ]) : curCluster[0].COORDINATES.split(',').map(v => parseFloat(v)));
-        }
+    for (let i = 0; i < clusters.length; i++) {
+      curCluster = clusters[i].filter((v) => v.COORDINATES != '');
+      if (curCluster && curCluster.length > 0) {
+        clusterCenters.push(
+          curCluster.length != 1 ? ([curCluster.reduce((a, b) => {
+            if (typeof a === 'object') a = parseFloat(a.COORDINATES.split(',')[0]);
+            return a + parseFloat(b.COORDINATES.split(',')[0]);
+          }) / curCluster.length,
+          curCluster.reduce((a, b) => {
+            if (typeof a === 'object') a = parseFloat(a.COORDINATES.split(',')[1]);
+            return a + parseFloat(b.COORDINATES.split(',')[1]);
+          }) / curCluster.length,
+          ]) : curCluster[0].COORDINATES.split(',').map((v) => parseFloat(v)),
+        );
       }
-      ret.map = {
-        addressBeaches: []
+    }
+    ret.map = {
+      addressBeaches: [],
+    };
+    if (clusterCenters && clusterCenters.length > 0) {
+      ret.map.center = [
+        clusterCenters.length != 1 ? ([clusterCenters.reduce((a, b) => {
+          if (typeof a === 'object') a = a[0];
+          return a + b[0];
+        }) / clusterCenters.length,
+        clusterCenters.reduce((a, b) => {
+          if (typeof a === 'object') a = a[1];
+          return a + b[1];
+        }) / clusterCenters.length,
+        ]) : clusterCenters[0],
+      ];
+    }
+    for (let i = 0; i < clusters.length; i++) {
+      curCluster = [];
+      for (let j = 0; j < clusters[i].length; j++) {
+        if (!clusters[i][j].COORDINATES || clusters[i][j].COORDINATES && isNaN(clusters[i][j].COORDINATES.split(',').map((v) => parseFloat(v))[0])) continue;
+        curCluster.push({
+          pos: clusters[i][j].COORDINATES ? clusters[i][j].COORDINATES.split(',').map((v) => parseFloat(v)) : null,
+          rating: parseFloat(clusters[i][j].AVERAGE_RATING),
+          title: clusters[i][j].NAME,
+          location: clusters[i][j].CITY ? clusters[i][j].CITY.NAME : null,
+          locationId: clusters[i][j].CITY ? clusters[i][j].CITY.ID : -1,
+          beachId: clusters[i][j].ID,
+          pics: clusters[i][j].PHOTOS && clusters[i][j].PHOTOS.small ? [...clusters[i][j].PHOTOS.small.map((e) => e.path)] : null,
+          showFavorite: true,
+          paid: clusters[i][j].PAID,
+          humanLink: clusters[i][j].CODE || clusters[i][j].ID,
+        });
+      }
+      if (clusterCenters[i] && clusterCenters[i].length > 0) {
+        ret.map.addressBeaches.push({
+          clusterCenter: clusterCenters[i],
+          beaches: curCluster,
+          id: clusters[i][0].CITY ? clusters[i][0].CITY.ID : null,
+        });
+      }
+    }
+    if (state.geo.id && state.geo.count && state.geo.count > 0) {
+      ret.map.geo = {
+        id: ret.map.addressBeaches.findIndex((v) => v.id == state.geo.id),
       };
-      if (clusterCenters && clusterCenters.length > 0) {
-        ret.map.center = [
-          clusterCenters.length != 1 ? ([ clusterCenters.reduce((a, b) => {
-            if (typeof a === 'object') a = a[0];
-            return a + b[0];
-          }) / clusterCenters.length,
-            clusterCenters.reduce((a, b) => {
-              if (typeof a === 'object') a = a[1];
-              return a + b[1];
-            }) / clusterCenters.length
-          ]) : clusterCenters[0]
-        ]
-      }
-      for (let i = 0; i < clusters.length; i++) {
-        curCluster = [];
-        for (let j = 0; j < clusters[i].length; j++) {
-          if (!clusters[i][j].COORDINATES || clusters[i][j].COORDINATES && isNaN(clusters[i][j].COORDINATES.split(',').map(v => parseFloat(v))[0])) continue;
-          curCluster.push({
-            pos: clusters[i][j].COORDINATES ? clusters[i][j].COORDINATES.split(',').map(v => parseFloat(v)) : null,
-            rating: parseFloat(clusters[i][j].AVERAGE_RATING),
-            title: clusters[i][j].NAME,
-            location: clusters[i][j].CITY ? clusters[i][j].CITY.NAME : null,
-            locationId: clusters[i][j].CITY ? clusters[i][j].CITY.ID : -1,
-            beachId: clusters[i][j].ID,
-            pics: clusters[i][j].PHOTOS && clusters[i][j].PHOTOS.small ? [ ...clusters[i][j].PHOTOS.small.map(e=>e.path) ] : null,
-            showFavorite: true,
-            paid: clusters[i][j].PAID,
-            humanLink: clusters[i][j].CODE || clusters[i][j].ID
-          });
-        }
-        if (clusterCenters[i] && clusterCenters[i].length > 0) {
-          ret.map.addressBeaches.push({
-            clusterCenter: clusterCenters[i],
-            beaches: curCluster,
-            id: clusters[i][0].CITY ? clusters[i][0].CITY.ID : null
-          });
-        }
-      }
-      if (state.geo.id && state.geo.count && state.geo.count > 0) {
-        ret.map.geo = {
-          id: ret.map.addressBeaches.findIndex(v => v.id == state.geo.id)
-        }
-      }
-      return ret.map;
+    }
+    return ret.map;
   },
 
-  getBanners: state => {
+  getBanners: (state) => {
     // console.log('!!!getBanners', !!state.banners.data)
     // const fake = [
     //   {id: 'fake', "title":"Z FEST","description":"Приглашаем Вас поучаствовать в самом ярком событии весны – социально-благотворительном фестивале Z FEST, посвященному Досугу нового поколения!","link":"https://uat.plyazhi.ru/event/1930","pic": google_pic,"buttonText":"Присоединяйтесь","rightToLeft":true},
@@ -257,16 +263,15 @@ export const getters = {
     // ];
     if (!state.banners.data) return null;
     return state.banners.data.list.map(mapBanner);
-
   },
 
   // Отдых для всей семьи
-  getFamilyRest: state => {
+  getFamilyRest: (state) => {
     // console.log('!!!getFamilyRest', !!state.collection.data)
     if (!state.collection.data) return null;
     const { list } = state.collection.data;
 
-    let family = list.find(v => v.CODE == 'for_all_family');
+    const family = list.find((v) => v.CODE === 'for_all_family');
     if (!family) return null;
 
     const familyBeaches = family.BEACHES
@@ -279,22 +284,22 @@ export const getters = {
       beachNumber: Math.min(family.COUNT_BEACHES, 45),
       showMore: {
         type: 'beach',
-        query: '?family'
+        query: '?family',
       },
       beachSliderData: {
         slideNumber: 6,
-        cardData: familyBeaches
-      }
-    }
+        cardData: familyBeaches,
+      },
+    };
   },
 
-  getAnotherPlaces: state => {
+  getAnotherPlaces: (state) => {
     // console.log('!!!getAnotherPlaces', !!state.any_places.data)
     if (!state.any_places.data) return null;
     const { list } = state.any_places.data;
     const { countElements } = state.any_places.data.pagination;
 
-    const placeList = list.map(mapPlace)
+    const placeList = list.map(mapPlace);
 
     return {
       title: 'Где остановиться в Крыму',
@@ -302,33 +307,31 @@ export const getters = {
       beachNumber: countElements,
       showMore: {
         type: 'beach',
-        query: '?another'
+        query: '?another',
       },
       beachSliderData: {
         slideNumber: 6,
-        cardData: placeList
-      }
-    }
+        cardData: placeList,
+      },
+    };
   },
 
   // Ближайшие мероприятия
   // TODO Fetch by api
-  getEvents: (state, getters, rootState) => {
-    if (!rootState.mappedEvents) return null;
-
-    return {
+  getEvents: (state) => (
+    {
       title: 'Ближайшие мероприятия на пляжах',
-      beachNumber: Math.min(rootState.mappedEvents.length, 45),
+      beachNumber: state.events.data.list.length,
       showMore: {
         type: 'event',
-        query: null
+        query: null,
       },
       beachSliderData: {
         slideNumber: 4,
-        cardData: rootState.mappedEvents.slice(0, 10)
-      }
+        cardData: state.events.data.list.map(mapEvent),
+      },
     }
-  },
+  ),
 
   // Выберите свой пляж
   // TODO Hardcode this shit
@@ -345,36 +348,35 @@ export const getters = {
     ];
 
     return beachTypes
-      .filter(type => types.includes(type.CODE))
-      .map(type => ({
+      .filter((type) => types.includes(type.CODE))
+      .map((type) => ({
         title: type.NAME,
-        id:    type.EXTERNAL_ID
+        id: type.EXTERNAL_ID,
       }));
   },
 
   // Активный отдых
-  getActiveRest: state => {
+  getActiveRest: (state) => {
     // console.log('!!!getActiveRest', state.collectionList.data)
     if (!state.collectionList.data) return null;
-    const { list } = state.collectionList.data
+    const { list } = state.collectionList.data;
 
-    const collection = list.find(v => v.CODE == 'active-leisure');
+    const collection = list.find((v) => v.CODE === 'active-leisure');
     if (!collection) return null;
 
     return collection.COLLECTIONS.map(mapBeachGroup);
   },
 
-  getWeather: state => {
-    // console.log('!!!getWeather', state.weather.data)
+  getWeather: (state) => {
     if (!state.weather.data) return null;
 
     let curCluster;
-    let weatherData = Object.keys(state.weather.data.list)
+    const weatherData = Object.keys(state.weather.data.list)
       .map((k) => state.weather.data.list[k]);
 
     if (!weatherData) return null;
 
-    const ret = {}
+    const ret = {};
 
     ret.weather = [];
     for (let i = 0; i < weatherData.length; i++) {
@@ -384,8 +386,8 @@ export const getters = {
           city: weatherData[i][j].CITY ? weatherData[i][j].CITY.NAME : null,
           pic: weatherData[i][j].CITY && weatherData[i][j].CITY.PREVIEW_PICTURE ? weatherData[i][j].CITY.PREVIEW_PICTURE : null,
           airTemperature: weatherData[i][j].TEMP ? parseFloat(weatherData[i][j].TEMP.AIR) : null,
-          waterTemperature: weatherData[i][j].TEMP ? parseFloat(weatherData[i][j].TEMP.WATER) : null
-        })
+          waterTemperature: weatherData[i][j].TEMP ? parseFloat(weatherData[i][j].TEMP.WATER) : null,
+        });
       }
       ret.weather.push(curCluster);
     }
@@ -394,14 +396,14 @@ export const getters = {
   },
 
   // Выбирайте по своим желаниям
-  getChooseToYourWishes: state => {
+  getChooseToYourWishes: (state) => {
     // console.log('getChooseToYourWishes', state.collectionList.data)
     if (!state.collectionList.data) return null;
 
-    const { list } = state.collectionList.data
-    const collection = list.find(v => v.CODE == 'choose-to-your-wishes');
+    const { list } = state.collectionList.data;
+    const collection = list.find((v) => v.CODE == 'choose-to-your-wishes');
     if (!collection) return null;
 
     return mapCollection(collection);
   },
-}
+};

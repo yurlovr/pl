@@ -1,16 +1,27 @@
 <template>
   <section class="main-page__beach-slider-area custom-container">
     <div class="main-page__beach-slider-area-wrapper" :class="{ 'no-subtitle' : !data.subtitle }">
-      <h3 class="main-page__section-title" style="margin-bottom: 10px;">{{ data.title }}</h3>
+      <h3 class="main-page__section-title" style="margin-bottom: 10px;">
+        {{ data.title }}
+      </h3>
       <div class="main-page__section-subtitle-area">
         <span class="main-page__section-subtitle">{{ data.subtitle }}</span>
-        <a v-if="!outlink" :href="link" @click.prevent="$bus.goTo(link, $router)"
-          class="main-page__section__subtitle-area__see-all">
+        <nuxt-link
+          v-if="!outlink"
+          :to="{ path: link, query: { page: 1, count: 20 } }"
+          class="main-page__section__subtitle-area__see-all"
+          @click.prevent="$bus.goTo(link, $router)"
+        >
           <span>Смотреть все ({{ data.beachNumber }})</span>
-        </a>
-        <a v-else :href="outlink" target="_blank" class="main-page__section__subtitle-area__see-all">
+        </nuxt-link>
+        <nuxt-link
+          v-else
+          :to="outlink"
+          target="_blank"
+          class="main-page__section__subtitle-area__see-all"
+        >
           <span>Смотреть все ({{ data.beachNumber }})</span>
-        </a>
+        </nuxt-link>
       </div>
     </div>
 
@@ -19,12 +30,22 @@
     </client-only>
 
     <div class="main-page__beach-slider-area__see-all-bottom">
-      <a v-if="!outlink" :href="link" @click.prevent="$bus.goTo(link, $router)" class="main-page__see-all">
+      <nuxt-link
+        v-if="!outlink"
+        :to="link"
+        class="main-page__see-all"
+        @click.prevent="$bus.goTo(link, $router)"
+      >
         <span>Смотреть все ({{ data.beachNumber }})</span>
-      </a>
-      <a v-else :href="outlink" target="_blank" class="main-page__see-all">
+      </nuxt-link>
+      <nuxt-link
+        v-else
+        :to="outlink"
+        target="_blank"
+        class="main-page__see-all"
+      >
         <span>Смотреть все ({{ data.beachNumber }})</span>
-      </a>
+      </nuxt-link>
     </div>
   </section>
 </template>
@@ -32,17 +53,19 @@
 <script>
 import SliderBeachEventHotel from '~/components/global/sliders/SliderBeachEventHotel';
 
-  export default {
-    props: ['data', 'outlink'],
+export default {
 
-    components: {
-      SliderBeachEventHotel
-    },
-
-    computed: {
-      link() {
-        return `/${this.data.showMore.type}-catalog${this.data.showMore.query ? this.data.showMore.query : ''}`;
+  components: {
+    SliderBeachEventHotel,
+  },
+  props: ['data', 'outlink'],
+  computed: {
+    link() {
+      if (this.data.showMore.type === 'beach') {
+        return `/${this.data.showMore.type}-${this.data.showMore.query.replace('?', '')}`;
       }
+      return `/${this.data.showMore.type}-catalog${this.data.showMore.query ? this.data.showMore.query : ''}`;
     },
-  }
+  },
+};
 </script>

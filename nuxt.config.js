@@ -1,39 +1,42 @@
-import {url_api, prom_host, prom_port} from './.env.js';
 import webpack from 'webpack';
+import { url_api, prom_host, prom_port } from './.env.js';
 
 export default {
-  mode: "universal",
+  mode: 'universal',
   /*
    ** Headers of the page
    */
   head: {
     title: 'ПЛЯЖИ.РУ',
-    noscript: [{innerHTML: '<img src="https://vk.com/rtrg?p=VK-RTRG-505686-cbKtO" style="position:fixed; left:-999px;" alt=""/>'}],
+    noscript: [{ innerHTML: '<img src="https://vk.com/rtrg?p=VK-RTRG-505686-cbKtO" style="position:fixed; left:-999px;" alt=""/>' }],
     meta: [{
-      charset: 'utf-8'
+      charset: 'utf-8',
     }, {
       name: 'viewport',
-      content: "width=device-width, initial-scale=1, user-scalable=no"
+      content: 'width=device-width, initial-scale=1, user-scalable=no',
     }, {
       hid: 'description',
       name: 'description',
-      content: process.env.npm_package_description || ''
+      content: process.env.npm_package_description || '',
     }],
     link: [{
       rel: 'icon',
       type: 'image/x-icon',
-      href: '/favicon.ico'
+      href: '/favicon.ico',
     }],
   },
   router: {
     base: '/',
+    scrollBehavior(to, from, savedPosition) {
+      return ({ x: 0, y: 0 });
+    },
     extendRoutes(routes, resolve) {
       routes.push({
         name: 'custom',
         path: '*',
-        component: resolve(__dirname, 'pages/404.vue')
-      })
-    }
+        component: resolve(__dirname, 'pages/404.vue'),
+      });
+    },
   },
   /*
    ** Customize the progress-bar color
@@ -44,7 +47,7 @@ export default {
    */
   css: [{
     src: '~/assets/scss/app.scss',
-    lang: 'scss'
+    lang: 'scss',
   }],
   /*
    ** Plugins to load before mounting the App
@@ -52,18 +55,18 @@ export default {
   plugins: [
     '~/plugins/gtm',
     '~/plugins/sentry',
-    { src: '~/plugins/bus',             ssr: true  },
-    { src: '~/plugins/cookie',          ssr: false },
-    { src: '~/plugins/scroll-lock',     ssr: false },
-    { src: '~/plugins/custom-scroll',   ssr: false },
-    { src: '~/plugins/youtube',         ssr: false },
+    { src: '~/plugins/bus', ssr: true },
+    { src: '~/plugins/cookie', ssr: false },
+    { src: '~/plugins/scroll-lock', ssr: false },
+    { src: '~/plugins/custom-scroll', ssr: false },
+    { src: '~/plugins/youtube', ssr: false },
   ],
   /*
    ** Nuxt.js dev-modules
    *
    */
   buildModules: [
-    '@nuxtjs/gtm'
+    '@nuxtjs/gtm',
   ],
 
   gtm: {
@@ -85,7 +88,7 @@ export default {
 
     noscript: true,
     noscriptId: 'gtm-noscript',
-    noscriptURL: 'https://www.googletagmanager.com/ns.html'
+    noscriptURL: 'https://www.googletagmanager.com/ns.html',
   },
   // render: {
   //   compression: {
@@ -93,69 +96,63 @@ export default {
   //   }
   // },
   generate: {
-    async routes({$axios}) {
-      let beachAsync = await $axios.get(url_api + 'beach/list?count=9999'),
-        beachRoutes = beachAsync.data.data.list.map((b) => {
-          return {
-            route: `/beach/${b.ID}`
-          }
-        });
+    async routes({ $axios }) {
+      const beachAsync = await $axios.get(`${url_api}beach/list?count=9999`);
+      const beachRoutes = beachAsync.data.data.list.map((b) => ({
+        route: `/beach/${b.ID}`,
+      }));
 
-      let eventAsync = await $axios.get(url_api + 'event/list?count=9999'),
-        eventRoutes = eventAsync.data.data.list.map((e) => {
-          return {
-            route: `/event/${e.ID}`
-          }
-        });
+      const eventAsync = await $axios.get(`${url_api}event/list?count=9999`);
+      const eventRoutes = eventAsync.data.data.list.map((e) => ({
+        route: `/event/${e.ID}`,
+      }));
 
-      let infoPagesAsync = await $axios.get(url_api + 'page/list?count=9999'),
-        infoPages = infoPagesAsync.data.data.list.map((e) => {
-          return {
-            route: `/${e.CODE}`
-          }
-        });
+      const infoPagesAsync = await $axios.get(`${url_api}page/list?count=9999`);
+      const infoPages = infoPagesAsync.data.data.list.map((e) => ({
+        route: `/${e.CODE}`,
+      }));
 
       return [
-        ...beachRoutes, ...eventRoutes, ...infoPages
+        ...beachRoutes, ...eventRoutes, ...infoPages,
       ];
     },
 
-    fallback: '/404/index.html'
+    fallback: '/404/index.html',
   },
   /*
    ** Nuxt.js modules
    */
   modules: [
-    "bootstrap-vue/nuxt",
-    "@nuxtjs/axios",
+    'bootstrap-vue/nuxt',
+    '@nuxtjs/axios',
     'cookie-universal-nuxt',
-    ["nuxt-compress", {
-        gzip: {
-          cache: true
-        },
-        brotli: {
-          threshold: 10240
-        }
-      }],
+    ['nuxt-compress', {
+      gzip: {
+        cache: true,
+      },
+      brotli: {
+        threshold: 10240,
+      },
+    }],
     ['@nuxtjs/component-cache', {
-        maxAge: 1000 * 60 * 60
-      }],
+      maxAge: 1000 * 60 * 60,
+    }],
     ['nuxt-lazy-load', {
       images: true,
       directiveOnly: true,
-      defaultImage: '/pics/global/pics/slider_beh_placeholder.png'
+      defaultImage: '/pics/global/pics/slider_beh_placeholder.png',
     }],
     ['@qonfucius/nuxt-prometheus-module', {
-        port: prom_port,
-        host: prom_host,
-        metrics: {
-          collectDefault: true,
-          requestDuration: false,
-        },
-     }],
+      port: prom_port,
+      host: prom_host,
+      metrics: {
+        collectDefault: true,
+        requestDuration: false,
+      },
+    }],
   ],
   axios: {
-    baseURL: url_api
+    baseURL: url_api,
   },
 
   /*
@@ -172,11 +169,11 @@ export default {
     //   analyzerMode: 'server'
     // },
     devtools: true,
-    transpile: ["vue-clamp", "resize-detector"],
+    transpile: ['vue-clamp', 'resize-detector'],
     extend(config, ctx) {
       // Этот код убирает ненужные локали из момента
-      config.plugins.push(new webpack.ContextReplacementPlugin(/moment[\/\\]locale$/, /ru/))
+      config.plugins.push(new webpack.ContextReplacementPlugin(/moment[\/\\]locale$/, /ru/));
       // config.plugins.push(new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/)),
-    }
-  }
-}
+    },
+  },
+};
