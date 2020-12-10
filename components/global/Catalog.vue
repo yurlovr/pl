@@ -42,7 +42,7 @@
     <CardGrid
       v-if="dataGrid && dataGrid.list.length"
       v-show="!showCardsOrMap"
-      :per-page="COUNT_ELEMENTS_ON_PAGE"
+      :per-page="perPage"
       :data="dataGrid"
     />
     <!-- <SearchMapArea
@@ -55,7 +55,7 @@
 
 <script>
 /* eslint-disable import/no-extraneous-dependencies */
-import { mapMutations, mapActions } from 'vuex';
+import { mapMutations, mapActions, mapGetters } from 'vuex';
 import CardGrid from '~/components/global/CardGrid';
 import SearchMapArea from '~/components/pages/search/SearchMapArea';
 import { COUNT_ELEMENTS_ON_PAGE } from '../../const/const';
@@ -97,6 +97,12 @@ export default {
       ],
     };
   },
+  computed: {
+    ...mapGetters('catalog', {
+      perPage: 'getPerPage',
+    }),
+  },
+
   async created() {
     await this.$axios.$get(`seo/meta?url=${this.$route.fullPath}`).then((res) => {
       this.meta = res.data;

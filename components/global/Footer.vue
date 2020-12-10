@@ -24,11 +24,13 @@
           <h4>Партнерство</h4>
           <nuxt-link
             :to="{ path: '/beach-catalog', query: { page: 1, count: COUNT_ELEMENTS_ON_PAGE } }"
+            @click.prevent="clickToLink('/beach-catalog')"
           >
             Каталог пляжей
           </nuxt-link>
           <nuxt-link
             :to="{ path: '/event-catalog', query: { page: 1, count: COUNT_ELEMENTS_ON_PAGE } }"
+            @click.prevent="clickToLink('/event-catalog')"
           >
             Каталог мероприятий
           </nuxt-link>
@@ -105,7 +107,9 @@
 </template>
 
 <script>
+import { mapGetters, mapActions } from 'vuex';
 import { COUNT_ELEMENTS_ON_PAGE } from '../../const/const';
+
 export default {
   data() {
     return {
@@ -113,10 +117,33 @@ export default {
       COUNT_ELEMENTS_ON_PAGE,
     };
   },
+  computed: {
+    ...mapGetters('catalog', {
+      perPage: 'getPerPage',
+    }),
+  },
   created() {
     this.$axios.$get('settings/list').then(res => {
       this.social_links = res.data.list.filter(_ =>!_.CODE.includes('mobile'));
     });
   },
+  methods: {
+    ...mapActions('catalog', [
+      'setPerPage',
+    ]),
+    clickToLink(path) {
+      const count = this.countElement();
+      return {
+        path,
+        query: { page: 1, count },
+      };
+    },
+    countElement() {
+      if (this.perPage !== COUNT_ELEMENTS_ON_PAGE) {
+        this.setPerPage(COUNT_ELEMENTS_ON_PAGE);
+      }
+      return COUNT_ELEMENTS_ON_PAGE;
+    }
+  }
 };
 </script>

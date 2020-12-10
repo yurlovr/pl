@@ -1,4 +1,5 @@
 import { mapBeach, mapEvent } from '~/helpers/mappers';
+import { COUNT_ELEMENTS_ON_PAGE } from '../const/const';
 
 export const state = () => ({
   type: null,
@@ -7,6 +8,7 @@ export const state = () => ({
   allBeaches: null,
   page: null,
   events: null,
+  perPage: COUNT_ELEMENTS_ON_PAGE,
 });
 
 export const mutations = {
@@ -29,6 +31,9 @@ export const mutations = {
   },
   SET_EVENTS: (state, data) => {
     state.events = data;
+  },
+  SET_PER_PAGE: (state, data) => {
+    state.perPage = data;
   },
 };
 
@@ -62,6 +67,9 @@ export const actions = {
       list: data.list.map(mapEvent),
       title: 'Каталог мероприятий',
     });
+  },
+  setPerPage({ commit }, payload) {
+    commit('SET_PER_PAGE', payload);
   },
 };
 
@@ -121,7 +129,7 @@ export const getters = {
         if (state.query.fromBeach) {
           ret.grid = ret.grid.filter((v) => v.beachId != state.query.fromBeach);
         }
-      } else if (state.type == 'event') {
+      } else if (state.type === 'event') {
         if (state.query.beach) {
           ret.grid = ret.grid.filter((v) => v.beachId == state.query.beach);
         }
@@ -142,4 +150,5 @@ export const getters = {
   getAllBeaches: (state) => state.allBeaches,
   getPage: (state) => state.page,
   getEvents: (state) => state.events,
+  getPerPage: (state) => state.perPage,
 };
