@@ -51,10 +51,7 @@
             :data="getEvents"
           />
 
-          <!-- <ChooseBeach
-            v-if="getChooseYourBeach"
-            :data="getChooseYourBeach"
-          /> -->
+          <ChooseBeach />
 
           <!-- <DynamicSliderArea
             v-if="getActiveRest"

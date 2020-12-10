@@ -335,25 +335,25 @@ export const getters = {
 
   // Выберите свой пляж
   // TODO Hardcode this shit
-  getChooseYourBeach: (state, getters, rootState) => {
-    if (!rootState.search.searchConfig) return null;
+  // getChooseYourBeach: (state, getters, rootState) => {
+  //   if (!rootState.search.searchConfig) return null;
 
-    const { beachTypes } = rootState.search.searchConfig.data;
-    if (!beachTypes) return null;
+  //   const { beachTypes } = rootState.search.searchConfig.data;
+  //   if (!beachTypes) return null;
 
-    const types = [
-      'galechnye-plyazhi',
-      'peschanye-plyazhi',
-      'rakushechnye-plyazhi',
-    ];
+  //   const types = [
+  //     'galechnye-plyazhi',
+  //     'peschanye-plyazhi',
+  //     'rakushechnye-plyazhi',
+  //   ];
 
-    return beachTypes
-      .filter((type) => types.includes(type.CODE))
-      .map((type) => ({
-        title: type.NAME,
-        id: type.EXTERNAL_ID,
-      }));
-  },
+  //   return beachTypes
+  //     .filter((type) => types.includes(type.CODE))
+  //     .map((type) => ({
+  //       title: type.NAME,
+  //       id: type.EXTERNAL_ID,
+  //     }));
+  // },
 
   // Активный отдых
   getActiveRest: (state) => {
