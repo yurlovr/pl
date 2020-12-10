@@ -6938,10 +6938,6 @@ input {
               align-items: normal;
               justify-content: normal;
               width: 100%;
-
-              .line-chart {
-                overflow-x: scroll;
-              }
             }
           }
         }
@@ -7285,6 +7281,21 @@ input {
 
 // TABLET OFFICIAL
 @media (max-width: 768px) {
+  .line-chart {
+    overflow-x: scroll;
+  }
+  .line-chart::-webkit-scrollbar {
+    height: 3px;
+  }
+  .line-chart::-webkit-scrollbar-track {
+    border-radius: 10px;
+    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+  }
+  .line-chart::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    background-color: #FF8C00;
+  }
+
   .main-page {
     &__section {
       &-title {

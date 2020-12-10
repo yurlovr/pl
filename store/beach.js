@@ -72,7 +72,12 @@ export const actions = {
         commit('SET_ANNOUNCEMENT_DATA', announcement_data);
         commit('SET_ANY_PLACES',        any_places);
         commit('SET_HOTELS',            hotels);
-
+      /*let {locationId, tags} = state.beach,
+        qs = [];
+      tags.forEach(e => {
+        qs.push('tag[]='+e.id)
+      })
+      commit('SET_SIMILAR_BEACHES', await this.$axios.$get(`/beach/list?city=${locationId}&${qs.join('&')}`));*/
         // commit('SET_SIMILAR_BEACHES', await this.$axios.$get(`/beach/list?city=${state.beach.localtionId}${state.tags.slice(0, -1)}`));
     }
 }

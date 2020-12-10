@@ -8,7 +8,7 @@
           <img  src="~/static/pics/beach/accordion_dropdown_orange.svg">
         </div>
         <hr class="mt-4 mb-4">
-        <div class="beach-page__water-temp__content" :class="{ active : modalOpen }">
+        <div class="beach-page__water-temp" :class="{ active : modalOpen }">
           <!--<div class="beach-page__water-temp__histogram">
             <div class="beach-page__water-temp__histogram__item" v-for="(item, i) in data" :key="i">
               <div class="beach-page__water-temp__histogram__item__bar" :style="{ height: (140 * item / Math.max.apply(null, data) + 'px') }">
@@ -40,7 +40,7 @@
               <span class="slider-weather__slide__temp-C">C</span>
             </div>
           </div>
-          <line-chart :chart-data="chartData" :options="chartData.options" class="line-chart"></line-chart>
+          <line-chart v-if="client_width" :chart-data="chartData" :options="chartData.options" class="line-chart"></line-chart>
         </div>
       </section>
     </div>
@@ -54,8 +54,11 @@ export default {
   components: {
     LineChart
   },
-
-  created () {
+  beforeDestroy() {
+    window.removeEventListener('resize', this.onResize, false);
+  },
+  mounted() {
+    this.onResize()
     this.chartData = {
       labels: ["Янв", "Фев", "Мар", "Апр", "Май", "Июн", "Июл", "Авг", "Сен", "Окт", "Ноя", "Дек"],
       datasets: [
@@ -232,10 +235,12 @@ export default {
             tooltipEl.style.zIndex = 999999;
           }
         },
-        responsive: true,
+        responsive: this.client_width > 768,
         maintainAspectRatio: false
       }
     };
+  },
+  created () {
     let date = new Date();
     this.month = date.getMonth();
   },
@@ -245,7 +250,8 @@ export default {
       modalOpen: false,
       chartData: null,
       gradientFill: null,
-      month: null
+      month: null,
+      client_width: null
     };
   },
 
@@ -290,7 +296,9 @@ export default {
 
       this.modalOpen = !this.modalOpen;
     },
-
+    onResize(){
+      this.client_width = window.innerWidth
+    }
   }
 }
 </script>
