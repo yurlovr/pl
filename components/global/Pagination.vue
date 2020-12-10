@@ -107,6 +107,9 @@ export default {
   },
 
   mounted() {
+    if (this.page !== 1) {
+      this.page = +this.$route.query.page;
+    }
     setTimeout(() => this.generatePagination(this.page), 1);
   },
 

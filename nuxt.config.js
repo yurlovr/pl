@@ -26,7 +26,6 @@ export default {
     }],
   },
   router: {
-    middleware: ['page'],
     base: '/',
     extendRoutes(routes, resolve) {
       routes.push({
@@ -93,30 +92,30 @@ export default {
   //
   //   }
   // },
-  // generate: {
-  //   async routes({ $axios }) {
-  //     const beachAsync = await $axios.get(`${url_api}beach/list?count=9999`);
-  //     const beachRoutes = beachAsync.data.data.list.map((b) => ({
-  //       route: `/beach/${b.ID}`,
-  //     }));
+  generate: {
+    async routes({ $axios }) {
+      const beachAsync = await $axios.get(`${url_api}beach/list?count=9999`);
+      const beachRoutes = beachAsync.data.data.list.map((b) => ({
+        route: `/beach/${b.ID}`,
+      }));
 
-  //     const eventAsync = await $axios.get(`${url_api}event/list?count=9999`);
-  //     const eventRoutes = eventAsync.data.data.list.map((e) => ({
-  //       route: `/event/${e.ID}`,
-  //     }));
+      const eventAsync = await $axios.get(`${url_api}event/list?count=9999`);
+      const eventRoutes = eventAsync.data.data.list.map((e) => ({
+        route: `/event/${e.ID}`,
+      }));
 
-  //     const infoPagesAsync = await $axios.get(`${url_api}page/list?count=9999`);
-  //     const infoPages = infoPagesAsync.data.data.list.map((e) => ({
-  //       route: `/${e.CODE}`,
-  //     }));
+      const infoPagesAsync = await $axios.get(`${url_api}page/list?count=9999`);
+      const infoPages = infoPagesAsync.data.data.list.map((e) => ({
+        route: `/${e.CODE}`,
+      }));
 
-  //     return [
-  //       ...beachRoutes, ...eventRoutes, ...infoPages,
-  //     ];
-  //   },
+      return [
+        ...beachRoutes, ...eventRoutes, ...infoPages,
+      ];
+    },
 
-  //   fallback: '/404/index.html',
-  // },
+    fallback: '/404/index.html',
+  },
   /*
    ** Nuxt.js modules
    */

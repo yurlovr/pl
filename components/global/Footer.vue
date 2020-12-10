@@ -22,10 +22,14 @@
         </div>
         <div class="footer__part">
           <h4>Партнерство</h4>
-          <nuxt-link :to="{ path: '/beach-catalog', query: { page: 1, count: 20 } }">
+          <nuxt-link
+            :to="{ path: '/beach-catalog', query: { page: 1, count: COUNT_ELEMENTS_ON_PAGE } }"
+          >
             Каталог пляжей
           </nuxt-link>
-          <nuxt-link :to="{ path: '/event-catalog', query: { page: 1, count: 2 } }">
+          <nuxt-link
+            :to="{ path: '/event-catalog', query: { page: 1, count: COUNT_ELEMENTS_ON_PAGE } }"
+          >
             Каталог мероприятий
           </nuxt-link>
           <nuxt-link :to="'/partner-info'">
@@ -101,10 +105,12 @@
 </template>
 
 <script>
+import { COUNT_ELEMENTS_ON_PAGE } from '../../const/const';
 export default {
   data() {
     return {
       social_links: [],
+      COUNT_ELEMENTS_ON_PAGE,
     };
   },
   created() {

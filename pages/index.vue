@@ -266,6 +266,7 @@ export default {
     window.removeEventListener('scroll', this.onScroll, false);
     window.removeEventListener('resize', this.onResize, false);
     this.$bus.$emit('showHeaderBgAndBar');
+    console.log('beforeRouteLeave')
     next();
   },
 };

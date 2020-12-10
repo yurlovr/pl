@@ -42,7 +42,7 @@
     <CardGrid
       v-if="dataGrid && dataGrid.list.length"
       v-show="!showCardsOrMap"
-      :per-page="20"
+      :per-page="COUNT_ELEMENTS_ON_PAGE"
       :data="dataGrid"
     />
     <!-- <SearchMapArea
@@ -58,6 +58,7 @@
 import { mapMutations, mapActions } from 'vuex';
 import CardGrid from '~/components/global/CardGrid';
 import SearchMapArea from '~/components/pages/search/SearchMapArea';
+import { COUNT_ELEMENTS_ON_PAGE } from '../../const/const';
 
 export default {
   components: {
@@ -79,6 +80,7 @@ export default {
       showCardsOrMap: false, // cards: false, map: true
       mapShownForTheFirstTime: false,
       meta: {},
+      COUNT_ELEMENTS_ON_PAGE,
     };
   },
   head() {
