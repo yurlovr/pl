@@ -39,7 +39,7 @@
             :map-data="mapEntity"
           /> -->
 
-          <Banner :index="2" class="banner-1" />
+          <!-- <Banner :index="2" class="banner-1" /> -->
 <!--
           <div v-if="getFamilyRest" class="main-page__white-wrapper">
             <BeachSliderArea :data="getFamilyRest" class="main-page__family-rest" />
@@ -75,22 +75,20 @@
               outlink="https://nash.travel/hotel"
             />
           </div> -->
-
+<!--
           <Banner
             :index="0"
             class="banner-2"
           />
 
-          <!-- <BeachType
-            v-if="getChooseToYourWishes"
-            :data="getChooseToYourWishes"
-          /> -->
+          <GetBeachType />
 
           <Banner
             :index="1"
             :last-word-yellow="true"
             class="banner-3"
-          />
+          /> -->
+          <BannersBlock />
         </div>
       </LazyHydrate>
     </div>
@@ -105,9 +103,7 @@ import Search from '~/components/global/Search';
 import Welcome from '~/components/pages/main/Welcome';
 import BeachSliderAreaMoment from '~/components/global/BeachSliderArea';
 import Cities from '~/components/pages/main/Cities';
-// import Banner from '~/components/pages/main/Banner';
 // import ChooseBeach from '~/components/pages/main/ChooseBeach';
-// import BeachType from '~/components/pages/main/BeachType';
 // import WeatherSliderArea from '~/components/pages/main/WeatherSliderArea';
 // import DynamicSliderArea from '~/components/pages/main/DynamicSliderArea';
 // import MapArea from '~/components/pages/main/MapArea';
@@ -122,9 +118,10 @@ export default {
     BeachSliderArea: () => import('~/components/global/BeachSliderArea'),
     Banner: () => import('~/components/pages/main/Banner'),
     ChooseBeach: () => import('~/components/pages/main/ChooseBeach'),
-    BeachType: () => import('~/components/pages/main/BeachType'),
+    GetBeachType: () => import('~/components/pages/main/GetBeachType.vue'),
     WeatherSliderArea: () => import('~/components/pages/main/WeatherSliderArea'),
     DynamicSliderArea: () => import('~/components/pages/main/DynamicSliderArea'),
+    BannersBlock: () => import('~/components/pages/main/BannersBlock'),
     LazyHydrate,
   },
 

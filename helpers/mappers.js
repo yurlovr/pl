@@ -374,17 +374,6 @@ export function mapIDs(list = []) {
   return list.map((i) => i.ID);
 }
 
-/**
- * Map Collections of groups
- * TODO Тут явно чтото не то..
- */
-export function mapCollection(item) {
-  // TODO Костыль!?
-  return {
-    title: item.NAME,
-    cards: mapBeachGroupList(item.COLLECTIONS),
-  };
-}
 export function mapCollectionList(list = []) {
   return list.map(mapCollection);
 }
@@ -409,11 +398,25 @@ export function mapBeachGroup(item) {
     pic: item.PREVIEW_PICTURE ? (item.PREVIEW_PICTURE) : null,
     beachNumber: item.COUNT_BEACHES ? item.COUNT_BEACHES : 0,
     description: item.DESCRIPTION,
+    id: item.ID,
     filter: mapSearchFilter(item.SEARCH_FILTER),
   };
 }
 export function mapBeachGroupList(list = []) {
+  console.log(list)
   return list.map(mapBeachGroup);
+}
+
+/**
+ * Map Collections of groups
+ * TODO Тут явно чтото не то..
+ */
+export function mapCollection(item) {
+  // TODO Костыль!?
+  return {
+    title: item.NAME,
+    cards: mapBeachGroupList(item.COLLECTIONS),
+  };
 }
 
 /**
@@ -498,7 +501,7 @@ export function mapBanner(item) {
     pic: item.PREVIEW_PICTURE,
     buttonText: item.BUTTON_NAME,
     // by default pic is on the left
-    rightToLeft: item.PICTURE_POSITION == 'right',
+    rightToLeft: item.PICTURE_POSITION === 'right',
   };
 }
 

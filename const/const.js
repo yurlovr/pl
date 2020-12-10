@@ -20,3 +20,9 @@ export const TYPE_BEACHES = [
 
   },
 ];
+
+export const TAGS = {
+  CITY_BEACHES: 16,
+  WILD_BEACHES: 17,
+  CHOOSE_WISHES: 18,
+};

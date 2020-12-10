@@ -8,6 +8,7 @@ import {
   mapRest,
   mapEvent,
 } from '@/helpers/mappers';
+import { TAGS } from '../const/const';
 
 export const state = () => ({
   beachesTop: [],
@@ -16,12 +17,12 @@ export const state = () => ({
   weather: [],
   beachTypes: {},
   collection: {},
-  collectionList: {},
-  banners: {},
+  banners: null,
   map: {},
   geo: {},
   any_places: [],
   show_mobile_preview: true,
+  chooseToYourWishes: null,
 });
 
 export const mutations = {
@@ -46,18 +47,16 @@ export const mutations = {
     state.collection = payload;
   },
 
-  SET_COLLECTION_LIST: (state, payload) => {
-    state.collectionList = payload;
-  },
-
   SET_MAP: (state, payload) => {
     state.map = payload;
   },
 
   SET_BANNERS: (state, payload) => {
-    state.banners = payload;
+    // state.banners.data.list.map(mapBanner)
+    state.banners = payload.data.list.map(mapBanner)
+      .sort((a, b) => (parseInt(a.POSITION, 10) - parseInt(b.POSITION, 10)));
 
-    if (state.banners.data) state.banners.data.list.sort((a, b) => (parseInt(a.POSITION) - parseInt(b.POSITION)));
+    // if (state.banners.data) state.banners.data.list.sort((a, b) => (parseInt(a.POSITION) - parseInt(b.POSITION)));
   },
 
   setGeoLocating: (state, payload) => {
@@ -68,8 +67,10 @@ export const mutations = {
     state.geo.count = payload;
   },
   SET_EVENTS: (state, payload) => {
-    console.log('SET_EVENTS')
     state.events = payload;
+  },
+  SET_CHOOSE_TO_YOUR_WISHES: (state, payload) => {
+    state.chooseToYourWishes = mapCollection(payload);
   },
 };
 
@@ -85,8 +86,7 @@ export const actions = {
       events,
       weather,
       collection,
-      collectionList,
-      banners,
+      // banners,
       map,
       anyPlaces,
     ] = await Promise.all([
@@ -96,14 +96,9 @@ export const actions = {
       // big query
       // добавить фильтрацию по месяцу
       this.$axios.$get('/weather/list'),
-      // big query
-      // убрать объекты пляжей
       // смысла тут запрашивать нету
       this.$axios.$get('/collection/list/'),
-      // big query
-      this.$axios.$get('/collectionList/list/'),
-      //
-      this.$axios.$get('/banner/list/'),
+      // this.$axios.$get('/banner/list/'),
       this.$axios.$get('/beach/clusters/'),
       this.$axios.$get('/hotel/list?count=10'),
     ]);
@@ -116,10 +111,17 @@ export const actions = {
     commit('SET_EVENTS', events);
     commit('SET_WEATHER', weather);
     commit('SET_COLLECTION', collection);
-    commit('SET_COLLECTION_LIST', collectionList);
-    commit('SET_BANNERS', banners);
+    // commit('SET_BANNERS', banners);
     commit('SET_MAP', map);
     commit('SET_ANY_PLACES', anyPlaces);
+  },
+  async setChooseToYourWishes({ commit }) {
+    const result = await this.$axios.$get(`/collectionList/item?id=${TAGS.CHOOSE_WISHES}`);
+    commit('SET_CHOOSE_TO_YOUR_WISHES', result.data.item);
+  },
+  async setBanners({ commit }) {
+    const banners = await this.$axios.$get('/banner/list/');
+    commit('SET_BANNERS', banners);
   },
 };
 
@@ -253,17 +255,7 @@ export const getters = {
     return ret.map;
   },
 
-  getBanners: (state) => {
-    // console.log('!!!getBanners', !!state.banners.data)
-    // const fake = [
-    //   {id: 'fake', "title":"Z FEST","description":"Приглашаем Вас поучаствовать в самом ярком событии весны – социально-благотворительном фестивале Z FEST, посвященному Досугу нового поколения!","link":"https://uat.plyazhi.ru/event/1930","pic": google_pic,"buttonText":"Присоединяйтесь","rightToLeft":true},
-    //   {id: 'fake', "title":"День рождения Mriya Resort & SPA","description":"Яркие декорации, удивительные персонажи и незабываемые развлечения — откройте для себя чудесный мир Mriya и почувствуйте силу нашего гостеприимства и радушия!","link":"https://uat.plyazhi.ru/event/1945","pic":google_pic,"buttonText":"Подробнее","rightToLeft":true},
-    //   {id: 'fake', "title":"Шесть чувств","description":"Японский сад, предназначенный для медитаций, раздумий и расслабления,\r\nпредмет особой гордости отеля Mriya Resort &amp; Spa","link":"https://uat.plyazhi.ru/beach/1939","pic":google_pic,"buttonText":"Подробнее","rightToLeft":true},
-    //   {id: 'fake', "title":"Праздник Непутна","description":"","link":"https://uat.plyazhi.ru/event/2265","pic":google_pic,"buttonText":"продолжить","rightToLeft":false}
-    // ];
-    if (!state.banners.data) return null;
-    return state.banners.data.list.map(mapBanner);
-  },
+  getBanners: (state) => state.banners,
 
   // Отдых для всей семьи
   getFamilyRest: (state) => {
@@ -396,14 +388,5 @@ export const getters = {
   },
 
   // Выбирайте по своим желаниям
-  getChooseToYourWishes: (state) => {
-    // console.log('getChooseToYourWishes', state.collectionList.data)
-    if (!state.collectionList.data) return null;
-
-    const { list } = state.collectionList.data;
-    const collection = list.find((v) => v.CODE == 'choose-to-your-wishes');
-    if (!collection) return null;
-
-    return mapCollection(collection);
-  },
+  getChooseToYourWishes: (state) => state.chooseToYourWishes,
 };
