@@ -29,6 +29,9 @@
           class="custom-card__pic"
           src="~/static/pics/global/pics/slider_height_placeholder.png"
         >
+        <!-- <div v-show="!picLoaded" class="custom-card__pic custom-card__pic-placeholder" >
+          <span class="custom-card__pic-placeholder-text">загрузка изображения</span>
+        </div> -->
       </a>
       <a
         v-else
@@ -58,6 +61,9 @@
           class="custom-card__pic"
           src="~/static/pics/global/pics/slider_height_placeholder.png"
         >
+        <!-- <div v-show="!picLoaded" class="custom-card__pic custom-card__pic-placeholder" >
+          <span class="custom-card__pic-placeholder-text">загрузка изображения</span>
+        </div> -->
       </a>
       <div v-if="data.tempWater !== undefined && showTemp !== false" class="custom-card__temp-area">
         <img
@@ -281,7 +287,7 @@ export default {
       'addVisited',
     ]),
     distanceValue(d) {
-      if (d && d.length == 2 && Object.keys(this.last_coordinates).length) {
+      if (d && d.length === 2 && Object.keys(this.last_coordinates).length) {
         const lat2 = d[0]; const lng2 = d[1];
         const { lat, lng } = this.last_coordinates;
         return Number(getDistanceFromLatLonInKm(lat, lng, Number(lat2), Number(lng2)).toFixed(1)).toString().replace(/\./, ',');

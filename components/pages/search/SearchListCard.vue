@@ -4,10 +4,12 @@
       <a :href="data.humanLink ? data.humanLink : ( data.mainLink ? data.mainLink : '#')"
          @click.prevent="$bus.goTo( data.humanLink ? data.humanLink : ( data.mainLink ? data.mainLink : '#'), $router)"
       >
-        <img v-lazy-load :data-src="data.pic" v-show="this.picLoaded" alt="Фото" class="custom-card__pic"
-             @load="picLoaded = true">
-        <img v-show="!this.picLoaded" class="custom-card__pic"
-             src="~/static/pics/global/pics/slider_beh_placeholder.png">
+        <img v-lazy-load :data-src="data.pic" alt="Фото" class="custom-card__pic">
+        <div class="slide-placeholder" >
+          <span class="slide-placeholder__text">загрузка изображения</span>
+        </div>
+<!--        <img v-show="!this.picLoaded" class="custom-card__pic"-->
+<!--             src="~/static/pics/global/pics/slider_beh_placeholder.png">-->
       </a>
       <div class="custom-card__temp-area" v-if="data.tempWater != undefined && showTemp != false">
         <img src="~/static/pics/global/svg/temper_big.svg" alt="Температура" class="big">

@@ -8,13 +8,18 @@
           <div class="swiper-slide" v-for="(review, i) in data">
             <div class="beach-event__visitor-pics__user-area">
               <img :data-src="review.avatar" v-lazy-load>
+
               <div class="beach-event__visitor-pics__user-area__nickname-wrapper">
                 <span>{{ review.name }}</span>
               </div>
             </div>
             <div class="beach-event__visitor-pics__pic-area">
-              <img :data-src="review.pic" v-lazy-load>
+              <img :data-src="review.pic" v-lazy-load class="visitor-photo">
+              <div class="slide-placeholder" >
+                <span class="slide-placeholder__text">загрузка изображения</span>
+              </div>
             </div>
+
             <div class="beach-event__visitor-pics__comment-area">
               <span v-html="review.comment"></span>
             </div>

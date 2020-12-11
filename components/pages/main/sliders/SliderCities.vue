@@ -5,8 +5,11 @@
 				<div class="swiper-slide slider-cities__slide" v-for="slide in data">
 					<a :href="`/search?city=${slide.cityId}`" @click.prevent="searchCity(slide)" class="slider__slide__link" v-if="slide.id !== 'fake'">
 						<div class="slider-cities__slide__pic-area">
+              <img  v-if="!slide.pic" src="~/static/pics/global/pics/slider_cities_placeholder.png">
 							<img v-lazy-load v-if="slide.pic" :data-src="slide.pic" class="slider-cities__slide__pic">
-							<img  v-if="!slide.pic" src="~/static/pics/global/pics/slider_cities_placeholder.png">
+              <div class="slide-placeholder" >
+                <span class="slide-placeholder__text">загрузка изображения</span>
+              </div>
 							<h4 class="slider-cities__slide__title">{{ slide.city }}</h4>
 						</div>
 						<div class="slider-cities__slide__info-area">

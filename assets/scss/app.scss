@@ -3736,6 +3736,33 @@ input {
     }
   }
 
+  &__pic-placeholder {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #ddeef0;
+
+    .custom-card:nth-child(3n) & {
+      background-color: #fdeacd;
+    }
+
+    .custom-card:nth-child(3n +2 ) & {
+      background-color: #cbe4e7;
+    }
+  }
+
+  &__pic-placeholder-text {
+    color: #393e48;
+  }
+
+  img.isLoading {
+    display: none;
+  }
+
+  img.isLoaded + .custom-card__pic-placeholder {
+    display: none;
+  }
+
   &__price {
     margin-top: 5px;
     font-size: 14px !important;
@@ -10357,3 +10384,102 @@ body.touch {
     display: none;
   }
 }
+
+
+.slide-placeholder {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  background-color: #ddeef0;
+
+  .swiper-slide:nth-child(3n) & {
+    background-color: #fdeacd;
+  }
+
+  .search-card-list:nth-child(3n) & {
+    background-color: #fdeacd;
+  }
+
+  .swiper-slide:nth-child(3n +2 ) & {
+    background-color: #cbe4e7;
+  }
+
+  .search-card-list:nth-child(3n +2 ) & {
+    background-color: #cbe4e7;
+  }
+
+  &__text {
+    color: #393e48;
+  }
+}
+
+.swiper-slide, .slider-beach-event__right__item, .search-card-list{
+  img.lazyLoad {
+    position: absolute;
+    opacity: 0;
+  }
+
+  img.isLoading {
+    display: none;
+  }
+
+  img.isLoaded {
+    position: inherit;
+    opacity: 1;
+  }
+
+  img.isLoading + .slide-placeholder {
+    display: flex;
+  }
+
+  img.isLoaded + .slide-placeholder {
+    display: none;
+  }
+}
+
+.slide-placeholder {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  background-color: #ddeef0;
+
+  .slider-beach-event__right__item:nth-child(3n) & {
+    background-color: #fdeacd;
+  }
+
+  .slider-beach-event__right__item:nth-child(3n +2 ) & {
+    background-color: #cbe4e7;
+  }
+
+  &__text {
+    color: #393e48;
+  }
+
+  &--weather {
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
+    margin-bottom: 10px;
+
+    .slide-placeholder__text {
+      font-size: 10px;
+      text-align: center;
+    }
+  }
+
+  &--beach-bars-n-restos {
+    min-height: 250px;
+    border-radius: 12px;
+  }
+
+  &--beach-modal-big {
+    min-height: 65vh;
+  }
+}
+
+
+
+
+
