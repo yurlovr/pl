@@ -1,7 +1,8 @@
 <template>
-  <BeachType
-    v-if="getChooseToYourWishes"
-    :data="getChooseToYourWishes"
+  <BeachSliderArea
+    v-if="getEvents"
+    class="main-page__beach-events"
+    :data="getEvents"
   />
 </template>
 
@@ -10,24 +11,21 @@ import { mapGetters, mapActions } from 'vuex';
 
 export default {
   components: {
-    BeachType: () => import('./BeachType.vue'),
+    BeachSliderArea: () => import('~/components/global/BeachSliderArea'),
   },
-
   async fetch() {
-    if (!this.getChooseToYourWishes) {
-      this.setChooseToYourWishes();
+    if (!this.getEvents) {
+      this.setEvents();
     }
   },
-
   computed: {
     ...mapGetters('main', [
-      'getChooseToYourWishes',
+      'getEvents',
     ]),
   },
-
   methods: {
     ...mapActions('main', [
-      'setChooseToYourWishes',
+      'setEvents',
     ]),
   },
 };

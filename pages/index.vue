@@ -40,29 +40,19 @@
           /> -->
 
           <!-- <Banner :index="2" class="banner-1" /> -->
-<!--
-          <div v-if="getFamilyRest" class="main-page__white-wrapper">
-            <BeachSliderArea :data="getFamilyRest" class="main-page__family-rest" />
-          </div> -->
+          <FamilyRest />
 
-          <BeachSliderArea
-            v-if="getEvents"
+          <Events
             class="main-page__beach-events"
-            :data="getEvents"
           />
+
 
           <ChooseBeach />
 
-          <!-- <DynamicSliderArea
-            v-if="getActiveRest"
-            :data="getActiveRest"
-          /> -->
+          <DynamicSliderArea />
 
           <div class="main-page__white-wrapper">
-            <WeatherSliderArea
-              v-if="getWeather"
-              :data="getWeather"
-            />
+            <WeatherSliderArea />
           </div>
 <!--
           <div
@@ -75,19 +65,6 @@
               outlink="https://nash.travel/hotel"
             />
           </div> -->
-<!--
-          <Banner
-            :index="0"
-            class="banner-2"
-          />
-
-          <GetBeachType />
-
-          <Banner
-            :index="1"
-            :last-word-yellow="true"
-            class="banner-3"
-          /> -->
           <BannersBlock />
         </div>
       </LazyHydrate>
@@ -96,17 +73,12 @@
 </template>
 
 <script>
-import Vue from 'vue';
 import LazyHydrate from 'vue-lazy-hydration';
 import { mapActions, mapGetters, mapMutations } from 'vuex';
 import Search from '~/components/global/Search';
 import Welcome from '~/components/pages/main/Welcome';
 import BeachSliderAreaMoment from '~/components/global/BeachSliderArea';
 import Cities from '~/components/pages/main/Cities';
-// import ChooseBeach from '~/components/pages/main/ChooseBeach';
-// import WeatherSliderArea from '~/components/pages/main/WeatherSliderArea';
-// import DynamicSliderArea from '~/components/pages/main/DynamicSliderArea';
-// import MapArea from '~/components/pages/main/MapArea';
 
 export default {
   components: {
@@ -115,13 +87,14 @@ export default {
     BeachSliderAreaMoment,
     Cities,
     // MapArea: () => import('~/components/pages/main/MapArea'),
-    BeachSliderArea: () => import('~/components/global/BeachSliderArea'),
-    Banner: () => import('~/components/pages/main/Banner'),
+    // BeachSliderArea: () => import('~/components/global/BeachSliderArea'),
+    // Banner: () => import('~/components/pages/main/Banner.vue'),
     ChooseBeach: () => import('~/components/pages/main/ChooseBeach'),
-    GetBeachType: () => import('~/components/pages/main/GetBeachType.vue'),
     WeatherSliderArea: () => import('~/components/pages/main/WeatherSliderArea'),
     DynamicSliderArea: () => import('~/components/pages/main/DynamicSliderArea'),
     BannersBlock: () => import('~/components/pages/main/BannersBlock'),
+    Events: () => import('~/components/pages/main/Events'),
+    FamilyRest: () => import('~/components/pages/main/FamilyRest'),
     LazyHydrate,
   },
 
@@ -130,7 +103,6 @@ export default {
   // },
 
   data() {
-    // console.log('2 hook data')
     return {
       meta: null,
       bgAndBarShown: false,
@@ -148,7 +120,6 @@ export default {
   },
 
   head() {
-    // console.log('5 hook head')
     const meta = this.meta || {};
     const stable = 'ПЛЯЖИ.РУ';
     return {
@@ -164,37 +135,8 @@ export default {
     ...mapGetters('main', [
       'getBeachesTop',
       'getCitiesTop',
-      'getEvents',
-      'getWeather',
     ]),
-    // ...mapGetters('main', [
-    //   'getBeachesTop',
-    //   'getCitiesTop',
-    //   'getMap',
-    //   'getBanners',
-    //   'getFamilyRest',
-    //   'getAnotherPlaces',
-    //   'getEvents',
-    //   'getChooseYourBeach',
-    //   'getActiveRest',
-    //   'getChooseToYourWishes',
-    //   'getWeather',
-    // ]),
     ...mapGetters(['mapEntity']),
-  },
-
-  async created() {
-    // console.log('3 hook created')
-  },
-
-  beforeMount() {
-    // TODO Вынести куданибудь в одно место
-    // выдывать надо как только process.browser станет тру
-    if (process.browser) {
-      require('swiper/dist/css/swiper.css');
-      const VueAwesomeSwiper = require('vue-awesome-swiper/dist/ssr');
-      Vue.use(VueAwesomeSwiper);
-    }
   },
 
   mounted() {

@@ -57,6 +57,7 @@ export default {
     { src: '~/plugins/scroll-lock', ssr: false },
     { src: '~/plugins/custom-scroll', ssr: false },
     { src: '~/plugins/youtube', ssr: false },
+    { src: '~/plugins/swiper', ssr: false },
   ],
   /*
    ** Nuxt.js dev-modules

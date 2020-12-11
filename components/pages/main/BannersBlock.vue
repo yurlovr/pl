@@ -26,15 +26,16 @@ export default {
     GetBeachType: () => import('./GetBeachType.vue'),
   },
 
+  async fetch() {
+    if (!this.getBanners) {
+      this.setBanners();
+    }
+  },
+
   computed: {
     ...mapGetters('main', [
       'getBanners',
     ]),
-  },
-  mounted() {
-    if (!this.getBanners) {
-      this.setBanners();
-    }
   },
   methods: {
     ...mapActions('main', [

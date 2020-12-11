@@ -25,4 +25,21 @@ export const TAGS = {
   CITY_BEACHES: 16,
   WILD_BEACHES: 17,
   CHOOSE_WISHES: 18,
+  ACTIVE_REST: 15,
+  FAMILY_REST: 1835,
 };
+
+export const MONTHS = [
+  'январь',
+  'февраль',
+  'март',
+  'апрель',
+  'май',
+  'июнь',
+  'июль',
+  'август',
+  'сентябрь',
+  'октябрь',
+  'ноябрь',
+  'декабрь',
+];

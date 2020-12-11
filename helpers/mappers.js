@@ -403,7 +403,6 @@ export function mapBeachGroup(item) {
   };
 }
 export function mapBeachGroupList(list = []) {
-  console.log(list)
   return list.map(mapBeachGroup);
 }
 
@@ -415,6 +414,8 @@ export function mapCollection(item) {
   // TODO Костыль!?
   return {
     title: item.NAME,
+    description: item.PREVIEW_DESCRIPTION || '',
+    id: item.ID,
     cards: mapBeachGroupList(item.COLLECTIONS),
   };
 }

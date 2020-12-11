@@ -12,17 +12,18 @@ import { TAGS } from '../const/const';
 
 export const state = () => ({
   beachesTop: [],
-  events: [],
+  events: null,
   citiesTop: [],
-  weather: [],
+  weather: null,
   beachTypes: {},
-  collection: {},
   banners: null,
   map: {},
   geo: {},
   any_places: [],
   show_mobile_preview: true,
   chooseToYourWishes: null,
+  activeRest: null,
+  familyRest: null,
 });
 
 export const mutations = {
@@ -52,11 +53,8 @@ export const mutations = {
   },
 
   SET_BANNERS: (state, payload) => {
-    // state.banners.data.list.map(mapBanner)
     state.banners = payload.data.list.map(mapBanner)
       .sort((a, b) => (parseInt(a.POSITION, 10) - parseInt(b.POSITION, 10)));
-
-    // if (state.banners.data) state.banners.data.list.sort((a, b) => (parseInt(a.POSITION) - parseInt(b.POSITION)));
   },
 
   setGeoLocating: (state, payload) => {
@@ -72,6 +70,26 @@ export const mutations = {
   SET_CHOOSE_TO_YOUR_WISHES: (state, payload) => {
     state.chooseToYourWishes = mapCollection(payload);
   },
+  SET_ACTIVE_REST: (state, payload) => {
+    state.activeRest = mapCollection(payload.data.item);
+  },
+  SET_FAMILY_REST: (state, payload) => {
+    const beaches = payload.data.list.map(mapRest);
+    const beachNumber = payload.data.pagination.countElements;
+    state.familyRest = {
+      title: 'Отдых для всей семьи',
+      subtitle: 'Пологий берег, плавный вход в воду, безопасность и современная инфраструктура',
+      beachNumber,
+      showMore: {
+        type: 'beach',
+        query: '?family',
+      },
+      beachSliderData: {
+        slideNumber: 6,
+        cardData: beaches,
+      },
+    };
+  },
 };
 
 export const actions = {
@@ -83,22 +101,11 @@ export const actions = {
     const [
       popularBeach,
       cities,
-      events,
-      weather,
-      collection,
-      // banners,
       map,
       anyPlaces,
     ] = await Promise.all([
       popularBeachReq,
       this.$axios.$get('/city/top?count=10'),
-      this.$axios.$get('/event/list?count=10'),
-      // big query
-      // добавить фильтрацию по месяцу
-      this.$axios.$get('/weather/list'),
-      // смысла тут запрашивать нету
-      this.$axios.$get('/collection/list/'),
-      // this.$axios.$get('/banner/list/'),
       this.$axios.$get('/beach/clusters/'),
       this.$axios.$get('/hotel/list?count=10'),
     ]);
@@ -106,12 +113,7 @@ export const actions = {
     if (state.geo.id) {
       commit('SET_GEO_COUNT', state.beachesTop.data ? state.beachesTop.data.list.length : 0);
     }
-
     commit('SET_CITIES', cities);
-    commit('SET_EVENTS', events);
-    commit('SET_WEATHER', weather);
-    commit('SET_COLLECTION', collection);
-    // commit('SET_BANNERS', banners);
     commit('SET_MAP', map);
     commit('SET_ANY_PLACES', anyPlaces);
   },
@@ -122,6 +124,25 @@ export const actions = {
   async setBanners({ commit }) {
     const banners = await this.$axios.$get('/banner/list/');
     commit('SET_BANNERS', banners);
+  },
+  async setActiveRest({ commit }) {
+    const active = await this.$axios.$get(`/collectionList/item?id=${TAGS.ACTIVE_REST}`);
+    commit('SET_ACTIVE_REST', active);
+  },
+
+  async setWeather({ commit }) {
+    const weather = await this.$axios.$get('/weather/list');
+    commit('SET_WEATHER', weather);
+  },
+
+  async setEvents({ commit }) {
+    const events = await this.$axios.$get('/event/list?count=10');
+    commit('SET_EVENTS', events);
+  },
+
+  async setFamilyRest({ commit }) {
+    const familyRest = await this.$axios.$get(`/beach/list?tags=${TAGS.FAMILY_REST}`);
+    commit('SET_FAMILY_REST', familyRest);
   },
 };
 
@@ -258,32 +279,7 @@ export const getters = {
   getBanners: (state) => state.banners,
 
   // Отдых для всей семьи
-  getFamilyRest: (state) => {
-    // console.log('!!!getFamilyRest', !!state.collection.data)
-    if (!state.collection.data) return null;
-    const { list } = state.collection.data;
-
-    const family = list.find((v) => v.CODE === 'for_all_family');
-    if (!family) return null;
-
-    const familyBeaches = family.BEACHES
-      .slice(0, 10)
-      .map(mapRest);
-
-    return {
-      title: 'Отдых для всей семьи',
-      subtitle: 'Пологий берег, плавный вход в воду, безопасность и современная инфраструктура',
-      beachNumber: Math.min(family.COUNT_BEACHES, 45),
-      showMore: {
-        type: 'beach',
-        query: '?family',
-      },
-      beachSliderData: {
-        slideNumber: 6,
-        cardData: familyBeaches,
-      },
-    };
-  },
+  getFamilyRest: (state) => state.familyRest,
 
   getAnotherPlaces: (state) => {
     // console.log('!!!getAnotherPlaces', !!state.any_places.data)
@@ -310,8 +306,9 @@ export const getters = {
 
   // Ближайшие мероприятия
   // TODO Fetch by api
-  getEvents: (state) => (
-    {
+  getEvents: (state) => {
+    if (!state.events) return null;
+    return {
       title: 'Ближайшие мероприятия на пляжах',
       beachNumber: state.events.data.list.length,
       showMore: {
@@ -322,8 +319,8 @@ export const getters = {
         slideNumber: 4,
         cardData: state.events.data.list.map(mapEvent),
       },
-    }
-  ),
+    };
+  },
 
   // Выберите свой пляж
   // TODO Hardcode this shit
@@ -347,20 +344,8 @@ export const getters = {
   //     }));
   // },
 
-  // Активный отдых
-  getActiveRest: (state) => {
-    // console.log('!!!getActiveRest', state.collectionList.data)
-    if (!state.collectionList.data) return null;
-    const { list } = state.collectionList.data;
-
-    const collection = list.find((v) => v.CODE === 'active-leisure');
-    if (!collection) return null;
-
-    return collection.COLLECTIONS.map(mapBeachGroup);
-  },
-
   getWeather: (state) => {
-    if (!state.weather.data) return null;
+    if (!state.weather) return null;
 
     let curCluster;
     const weatherData = Object.keys(state.weather.data.list)
@@ -389,4 +374,6 @@ export const getters = {
 
   // Выбирайте по своим желаниям
   getChooseToYourWishes: (state) => state.chooseToYourWishes,
+  // Активный отдых
+  getActiveRest: (state) => state.activeRest,
 };

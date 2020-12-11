@@ -1,19 +1,47 @@
 <template>
-	<section class="main-page__dynamic-slider-area custom-container">
-		<h3 class="main-page__section-title" style="margin-bottom: 10px;">Активный отдых</h3>
-		<span class="main-page__section-subtitle">Наша подборка основанная на водных активностях</span>
-		<SliderDynamic :data="data" />
-	</section>
+  <section
+    v-if="getActiveRest"
+    class="main-page__dynamic-slider-area custom-container"
+  >
+    <h3 class="main-page__section-title mb">
+      {{ getActiveRest.title }}
+    </h3>
+    <span class="main-page__section-subtitle">
+      {{ getActiveRest.description }}
+    </span>
+    <SliderDynamic :data="getActiveRest.cards" />
+  </section>
 </template>
 
 <script>
-	import SliderDynamic from '~/components/pages/main/sliders/SliderDynamic';
+import { mapGetters, mapActions } from 'vuex';
+import SliderDynamic from '~/components/pages/main/sliders/SliderDynamic';
 
-	export default {
-		props: ['data'],
+export default {
 
-		components: {
-			SliderDynamic
-		}
-	}
+  components: {
+    SliderDynamic,
+  },
+  async fetch() {
+    if (!this.getActiveRest) {
+      await this.setActiveRest();
+    }
+  },
+  computed: {
+    ...mapGetters('main', [
+      'getActiveRest',
+    ]),
+  },
+
+  methods: {
+    ...mapActions('main', [
+      'setActiveRest',
+    ]),
+  },
+};
 </script>
+<style lang="scss" scoped>
+  .mb {
+    margin-bottom: 10px;
+  }
+</style>
