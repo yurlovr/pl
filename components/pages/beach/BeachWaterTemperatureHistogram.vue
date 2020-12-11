@@ -20,7 +20,7 @@
               <span class="beach-page__water-temp__histogram__item__title">{{ getMonth(i+1) }}</span>
             </div>
           </div>-->
-          <div class="beach-page__water-temp__info">
+<!--          <div class="beach-page__water-temp__info">
             <div class="slider-weather__part__info slider-weather__part__temperature-text beach-page__water-temp__text mb-0">
               <img  src="~/static/pics/global/svg/temp_air.svg">
               <span>Среднемесячная температура воздуха</span>
@@ -38,6 +38,30 @@
               <span class="slider-weather__slide__temp-number" style="color: #115C91">{{ (data[month].toFixed(0) > 0 ? '+ ' : '') + data[month].toFixed(0) }}</span>
               <span class="slider-weather__slide__temp-o"><span>o</span></span>
               <span class="slider-weather__slide__temp-C">C</span>
+            </div>
+          </div>-->
+          <div class="weather-block-beach">
+            <div class="wthr-block air">
+              <div class="wthr-info-desc">
+                <img  src="~/static/pics/global/svg/temp_air.svg">
+                <span class="wthr-text">Среднемесячная температура воздуха</span>
+              </div>
+              <div class="d-flex justify-content-center align-items-center">
+                <span class="slider-weather__slide__temp-number">{{ (dataAir[month].toFixed(0) > 0 ? '+ ' : '') + dataAir[month].toFixed(0) }}</span>
+                <span class="tmpr-zero"><span class="z-zero">o</span></span>
+                <span class="slider-weather__slide__temp-C">C</span>
+              </div>
+            </div>
+            <div class="wthr-block">
+              <div class="wthr-info-desc">
+                <img  src="~/static/pics/global/svg/temp_air.svg">
+                <span class="wthr-text">Среднемесячная температура воды</span>
+              </div>
+              <div class="d-flex justify-content-center align-items-center">
+                <span class="slider-weather__slide__temp-number" style="color: #115C91">{{ (data[month].toFixed(0) > 0 ? '+ ' : '') + data[month].toFixed(0) }}</span>
+                <span class="tmpr-zero"><span class="z-zero">o</span></span>
+                <span class="slider-weather__slide__temp-C">C</span>
+              </div>
             </div>
           </div>
           <line-chart v-if="client_width" :chart-data="chartData" :options="chartData.options" class="line-chart"></line-chart>

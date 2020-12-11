@@ -7281,6 +7281,15 @@ input {
 
 // TABLET OFFICIAL
 @media (max-width: 768px) {
+  .weather-block-beach {
+    flex-direction: column;
+    align-items: baseline;
+    margin-bottom: 40px !important;
+
+    .air {
+      margin-bottom: 40px;
+    }
+  }
   .line-chart {
     overflow-x: scroll;
   }
@@ -10367,4 +10376,45 @@ body.touch {
   .beach-page .beach-event__map-weather .map__zoom-wrapper {
     display: none;
   }
+}
+//weather
+.weather-block-beach {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 66px;
+}
+.wthr-info-desc {
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  max-width: 160px;
+  margin-right: 24px;
+
+  .wthr-text {
+    font-size: 12px;
+    line-height: 14px;
+    color: #4a4a4a;
+  }
+  img {
+    margin-right: 10px;
+  }
+}
+.tmpr-zero {
+  font-weight: 500;
+  font-size: 10px;
+  position: relative;
+  width: 7px;
+  height: 12px;
+  color: #73767D;
+}
+.z-zero {
+  position: absolute;
+  top: -5px;
+  left: 1px;
+  line-height: 0;
+}
+.wthr-block {
+  display: flex;
+  justify-content: space-between;
 }
