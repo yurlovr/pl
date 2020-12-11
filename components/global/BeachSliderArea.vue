@@ -8,7 +8,7 @@
         <span class="main-page__section-subtitle">{{ data.subtitle }}</span>
         <nuxt-link
           v-if="!outlink"
-          :to="{ path: link, query: { page: 1, count: 20 } }"
+          :to="{ path: link, query: { page: 1, count: getPerPage } }"
           class="main-page__section__subtitle-area__see-all"
           @click.prevent="$bus.goTo(link, $router)"
         >
@@ -51,6 +51,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
 import SliderBeachEventHotel from '~/components/global/sliders/SliderBeachEventHotel';
 
 export default {
@@ -60,9 +61,12 @@ export default {
   },
   props: ['data', 'outlink'],
   computed: {
+    ...mapGetters('catalog', [
+      'getPerPage',
+    ]),
     link() {
       if (this.data.showMore.type === 'beach') {
-        return `/${this.data.showMore.type}-${this.data.showMore.query.replace('?', '')}`;
+        return `/${this.data.showMore.type}-${this.data.showMore.query.replace('?', '')}`
       }
       return `/${this.data.showMore.type}-catalog${this.data.showMore.query ? this.data.showMore.query : ''}`;
     },
