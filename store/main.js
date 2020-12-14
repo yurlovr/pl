@@ -13,13 +13,13 @@ import { TAGS } from '../const/const';
 export const state = () => ({
   beachesTop: [],
   events: null,
-  citiesTop: [],
+  citiesTop: null,
   weather: null,
   beachTypes: {},
   banners: null,
   map: {},
   geo: {},
-  any_places: [],
+  anyPlaces: null,
   show_mobile_preview: true,
   chooseToYourWishes: null,
   activeRest: null,
@@ -32,21 +32,41 @@ export const mutations = {
     state.beachesTop = payload;
   },
 
-  SET_ANY_PLACES: (state, data) => {
-    state.any_places = data;
+  SET_ANY_PLACES: (state, payload) => {
+    const { list } = payload.data;
+    const { countElements } = payload.data.pagination;
+
+    const placeList = list.map(mapPlace);
+
+    state.anyPlaces = {
+      title: 'Где остановиться в Крыму',
+      subtitle: 'Наша подборка отелей, основанная на ваших отзывах',
+      beachNumber: countElements,
+      showMore: {
+        type: 'beach',
+        query: '?another',
+      },
+      beachSliderData: {
+        slideNumber: 6,
+        cardData: placeList,
+      },
+    };
   },
 
   SET_CITIES: (state, payload) => {
-    state.citiesTop = payload;
+    const { list } = payload.data;
+    state.citiesTop = list
+      .sort((a, b) => ((a.COUNT_BEACHES < b.COUNT_BEACHES) ? 1 : -1))
+      .map(mapCity);
   },
 
   SET_WEATHER: (state, payload) => {
     state.weather = payload;
   },
 
-  SET_COLLECTION: (state, payload) => {
-    state.collection = payload;
-  },
+  // SET_COLLECTION: (state, payload) => {
+  //   state.collection = payload;
+  // },
 
   SET_MAP: (state, payload) => {
     state.map = payload;
@@ -65,7 +85,19 @@ export const mutations = {
     state.geo.count = payload;
   },
   SET_EVENTS: (state, payload) => {
-    state.events = payload;
+    const events = payload.data.list.map(mapEvent);
+    state.events = {
+      title: 'Ближайшие мероприятия на пляжах',
+      beachNumber: events.length,
+      showMore: {
+        type: 'event',
+        query: null,
+      },
+      beachSliderData: {
+        slideNumber: 4,
+        cardData: events,
+      },
+    };
   },
   SET_CHOOSE_TO_YOUR_WISHES: (state, payload) => {
     state.chooseToYourWishes = mapCollection(payload);
@@ -100,22 +132,19 @@ export const actions = {
 
     const [
       popularBeach,
-      cities,
       map,
-      anyPlaces,
+      // anyPlaces,
     ] = await Promise.all([
       popularBeachReq,
-      this.$axios.$get('/city/top?count=10'),
       this.$axios.$get('/beach/clusters/'),
-      this.$axios.$get('/hotel/list?count=10'),
+      // this.$axios.$get('/hotel/list?count=10'),
     ]);
     commit('SET_POPULAR_BEACH', popularBeach);
     if (state.geo.id) {
       commit('SET_GEO_COUNT', state.beachesTop.data ? state.beachesTop.data.list.length : 0);
     }
-    commit('SET_CITIES', cities);
     commit('SET_MAP', map);
-    commit('SET_ANY_PLACES', anyPlaces);
+    // commit('SET_ANY_PLACES', anyPlaces);
   },
   async setChooseToYourWishes({ commit }) {
     const result = await this.$axios.$get(`/collectionList/item?id=${TAGS.CHOOSE_WISHES}`);
@@ -143,6 +172,15 @@ export const actions = {
   async setFamilyRest({ commit }) {
     const familyRest = await this.$axios.$get(`/beach/list?tags=${TAGS.FAMILY_REST}`);
     commit('SET_FAMILY_REST', familyRest);
+  },
+  async setCities({ commit }) {
+    const cities = await this.$axios.$get('/city/top?count=10');
+    commit('SET_CITIES', cities);
+  },
+  async setAnyPlaces({ commit }) {
+    // поменять адрес запроса
+    const anyPlaces = await this.$axios.$get('https://crimea.air-dev.agency/api/app/hotel/list?count=10');
+    commit('SET_ANY_PLACES', anyPlaces);
   },
 };
 
@@ -182,23 +220,7 @@ export const getters = {
   },
 
   // Курортные города
-  getCitiesTop: (state) => {
-    // console.log('!!!getCitiesTop', state.citiesTop.data)
-    // let citiesTop = [
-    //   {id: 'fake', "city":"Ялта","cityId":"47","beachNumber":3,"pic":google_pic,},
-    //   {id: 'fake', "city":"Киев","cityId":"2012","beachNumber":1,"pic":google_pic,},
-    //   {id: 'fake', "city":"Севастополь","cityId":"1856","beachNumber":1,"pic":google_pic,},
-    //   {id: 'fake', "city":"село Поповка","cityId":"51","beachNumber":1,"pic":google_pic,},
-    //   {id: 'fake', "city":"Форос","cityId":"46","beachNumber":1,"pic":google_pic,},
-    // ]
-
-    if (!state.citiesTop.data) return null;
-    const { list } = state.citiesTop.data;
-    return [...list]
-      .sort((a, b) => ((a.COUNT_BEACHES < b.COUNT_BEACHES) ? 1 : -1))
-      .slice(0, 10)
-      .map(mapCity);
-  },
+  getCitiesTop: (state) => state.citiesTop,
 
   getMap: (state) => {
     // console.log('!!!getMap', state.map.data)
@@ -281,46 +303,11 @@ export const getters = {
   // Отдых для всей семьи
   getFamilyRest: (state) => state.familyRest,
 
-  getAnotherPlaces: (state) => {
-    // console.log('!!!getAnotherPlaces', !!state.any_places.data)
-    if (!state.any_places.data) return null;
-    const { list } = state.any_places.data;
-    const { countElements } = state.any_places.data.pagination;
-
-    const placeList = list.map(mapPlace);
-
-    return {
-      title: 'Где остановиться в Крыму',
-      subtitle: 'Наша подборка отелей, основанная на ваших отзывах',
-      beachNumber: countElements,
-      showMore: {
-        type: 'beach',
-        query: '?another',
-      },
-      beachSliderData: {
-        slideNumber: 6,
-        cardData: placeList,
-      },
-    };
-  },
+  getAnotherPlaces: (state) => state.anyPlaces,
 
   // Ближайшие мероприятия
   // TODO Fetch by api
-  getEvents: (state) => {
-    if (!state.events) return null;
-    return {
-      title: 'Ближайшие мероприятия на пляжах',
-      beachNumber: state.events.data.list.length,
-      showMore: {
-        type: 'event',
-        query: null,
-      },
-      beachSliderData: {
-        slideNumber: 4,
-        cardData: state.events.data.list.map(mapEvent),
-      },
-    };
-  },
+  getEvents: (state) => state.events,
 
   // Выберите свой пляж
   // TODO Hardcode this shit

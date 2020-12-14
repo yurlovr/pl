@@ -14,25 +14,19 @@
       >
       <div class="main-page__welcome__gradient" />
       <Welcome />
-
       <!-- <Search
         v-show="!(bgAndBarShown || tempBgAndBarShown)"
         class="main-page__welcome__search"
         label-id="1"
       /> -->
-
       <BeachSliderAreaMoment
         v-if="getBeachesTop"
         class="main-page__popular-beaches"
         :data="getBeachesTop"
       />
-      <Cities
-        v-if="getCitiesTop"
-        :data="getCitiesTop"
-      />
-
       <LazyHydrate when-visible>
         <div>
+          <GetCities />
           <!-- <MapArea
             v-if="getMap"
             :data="getMap"
@@ -45,26 +39,12 @@
           <Events
             class="main-page__beach-events"
           />
-
-
           <ChooseBeach />
-
           <DynamicSliderArea />
-
           <div class="main-page__white-wrapper">
             <WeatherSliderArea />
           </div>
-<!--
-          <div
-            v-if="getAnotherPlaces && getAnotherPlaces.beachNumber > 0"
-            class="main-page__white-wrapper"
-          >
-            <BeachSliderArea
-              :data="getAnotherPlaces"
-              class="main-page__family-rest"
-              outlink="https://nash.travel/hotel"
-            />
-          </div> -->
+          <AnyPlaces />
           <BannersBlock />
         </div>
       </LazyHydrate>
@@ -78,14 +58,13 @@ import { mapActions, mapGetters, mapMutations } from 'vuex';
 import Search from '~/components/global/Search';
 import Welcome from '~/components/pages/main/Welcome';
 import BeachSliderAreaMoment from '~/components/global/BeachSliderArea';
-import Cities from '~/components/pages/main/Cities';
 
 export default {
   components: {
     Welcome,
     Search,
     BeachSliderAreaMoment,
-    Cities,
+    // Cities,
     // MapArea: () => import('~/components/pages/main/MapArea'),
     // BeachSliderArea: () => import('~/components/global/BeachSliderArea'),
     // Banner: () => import('~/components/pages/main/Banner.vue'),
@@ -95,12 +74,10 @@ export default {
     BannersBlock: () => import('~/components/pages/main/BannersBlock'),
     Events: () => import('~/components/pages/main/Events'),
     FamilyRest: () => import('~/components/pages/main/FamilyRest'),
+    GetCities: () => import('~/components/pages/main/GetCities'),
+    AnyPlaces: () => import('~/components/pages/main/AnyPlaces'),
     LazyHydrate,
   },
-
-  // async asyncData({ $axios, route }) {
-  //   // console.log('1 hook asyncData')
-  // },
 
   data() {
     return {
@@ -134,7 +111,6 @@ export default {
   computed: {
     ...mapGetters('main', [
       'getBeachesTop',
-      'getCitiesTop',
     ]),
     ...mapGetters(['mapEntity']),
   },
@@ -178,7 +154,6 @@ export default {
       // }
 
       const scrollTop = window.scrollY || document.body.scrollTop || document.documentElement.scrollTop;
-      console.log(scrollTop)
 
       // show or hide the search background and the bar depending on the scroll
       if (window.innerWidth > 900 && scrollTop >= 346 || window.innerWidth <= 900 && window.innerWidth > 800 && scrollTop >= 230 || window.innerWidth <= 800 && window.innerWidth > 650 && scrollTop >= 245 || window.innerWidth <= 650 && scrollTop >= 20) {

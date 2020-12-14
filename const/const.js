@@ -43,3 +43,4 @@ export const MONTHS = [
   'ноябрь',
   'декабрь',
 ];
+export const OUT_LINKS_HOTEL = 'https://nash.travel/hotel';

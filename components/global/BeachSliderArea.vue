@@ -14,14 +14,14 @@
         >
           <span>Смотреть все ({{ data.beachNumber }})</span>
         </nuxt-link>
-        <nuxt-link
+        <a
           v-else
-          :to="outlink"
+          :href="outlink"
           target="_blank"
           class="main-page__section__subtitle-area__see-all"
         >
           <span>Смотреть все ({{ data.beachNumber }})</span>
-        </nuxt-link>
+        </a>
       </div>
     </div>
 
