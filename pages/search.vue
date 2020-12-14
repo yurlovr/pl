@@ -5,7 +5,7 @@
         Результаты поиска {{ radius ? `(в радиусе
         ${radius} км)`: '' }}
       </h3>
-      <div v-if="getSearchResult && getSearchResult.length > 1" class="search-page__title-area__buttons">
+      <!-- <div v-if="getSearchResult && getSearchResult.length > 1" class="search-page__title-area__buttons">
         <button
           class="search-page__title-area__button"
           :class="{ active: mode_option == 'list' }"
@@ -56,7 +56,7 @@
             alt="Вид: Карта"
           >
         </button>
-      </div>
+      </div> -->
     </div>
     <SearchTags v-if=" tags && tags.length > 0" :tags="tags" />
     <div
@@ -78,22 +78,30 @@
         Мероприятия
       </button>
     </div>
-    <div v-if="!getSearchResult || getSearchResult.length <= 1" class="custom-container search-page__empty">
-      <div v-show="f_loaded" class="favorites-page__visited-empty">
+    <div
+      v-if="!getSearchResultCity || getSearchResultCity.length <= 1"
+      class="custom-container search-page__empty"
+    >
+      <!-- <div v-show="f_loaded" class="favorites-page__visited-empty">
         К сожалению по Вашему запросу ничего не найдено.<br>Попробуйте изменить
-        запрос, или начните <a href="/" @click.prevent="$bus.goTo('/', $router)">сначала</a>
-      </div>
+        запрос, или начните
+        <nuxt-link
+          :to="'/'"
+        >
+          сначала
+        </nuxt-link>
+      </div> -->
     </div>
     <CardGrid
       v-show="mode_option == 'card'"
-      v-if="getSearchResult && getSearchResult.length > 1"
-      :per-page="20"
-      :data="getSearchResult.slice(0, -1)"
+      v-if="getSearchResultCity && getSearchResultCity.length > 1"
+      :per-page="COUNT_ELEMENTS_ON_PAGE"
+      :data="getSearchResultCity"
     />
-    <search-horizontal-view
+    <!-- <search-horizontal-view
       v-show="mode_option == 'list'"
       v-if="getSearchResult && getSearchResult.length > 1"
-      :per-page="20"
+      :per-page="COUNT_ELEMENTS_ON_PAGE"
       :data="getSearchResult.slice(0, -1)"
     />
     <SearchMapArea
@@ -101,7 +109,7 @@
       v-if="getSearchResult && getSearchResult.length > 1"
       :data="getSearchResult.slice(0, -1)"
       :map-data="mapEntity"
-    />
+    /> -->
   </div>
 </template>
 
@@ -114,6 +122,7 @@ import SearchMapArea from '~/components/pages/search/SearchMapArea';
 import CardGrid from '~/components/global/CardGrid';
 
 import SearchHorizontalView from '../components/pages/search/SearchHorizontalView';
+import { COUNT_ELEMENTS_ON_PAGE } from '~/const/const';
 
 export default {
   name: 'MainSearch',
@@ -124,9 +133,23 @@ export default {
     SearchMapArea,
   },
 
+  async fetch() {
+    const { query } = this.$route;
+    console.log('query', query)
+    this.setSearchCityQuery(query);
+  },
   computed: {
-    ...mapGetters('search', ['getSearchResult', 'getRadiusIfCityExists']),
-    ...mapState('search', ['searchParams', 'searchPageResultEventBackup', 'query', 'f_loaded']),
+    ...mapGetters('search', [
+      'getSearchResult',
+      'getRadiusIfCityExists',
+      'getSearchResultCity',
+    ]),
+    ...mapState('search', [
+      'searchParams',
+      'searchPageResultEventBackup',
+      'query',
+      'f_loaded',
+    ]),
     ...mapGetters(['mapEntity']),
 
     radius() {
@@ -134,18 +157,18 @@ export default {
     },
   },
 
-  watch: {
-    query(n, o) {
-      if (n != o && !this.wait) {
-        this.updateTags(n);
-        this.$bus.$emit('updateMap');
-      }
-    },
+  // watch: {
+  //   query(n, o) {
+  //     if (n != o && !this.wait) {
+  //       this.updateTags(n);
+  //       this.$bus.$emit('updateMap');
+  //     }
+  //   },
 
-    getSearchResult(n, o) {
-      this.$bus.$emit('updateMap', n);
-    },
-  },
+  //   getSearchResult(n, o) {
+  //     this.$bus.$emit('updateMap', n);
+  //   },
+  // },
   async asyncData({ $axios, route }) {
     const { data } = await $axios.$get(`seo/meta?url=${route.fullPath}`);
     return {
@@ -164,6 +187,7 @@ export default {
       showBeachesOrEvents: false, // beaches: false, events: true,
       last_coordinates: this.$cookies.get('last_coordinates') || {},
       geo_locating: this.$cookies.get('geo_locating') || -1,
+      COUNT_ELEMENTS_ON_PAGE,
     };
   },
 
@@ -182,23 +206,27 @@ export default {
     };
   },
 
-  created() {
-    if (this.updateQuery()) return;
+  // created() {
+  //   if (this.updateQuery()) return;
 
-    this.wait = true;
-    this.updateTags();
+  //   this.wait = true;
+  //   this.updateTags();
 
-    if (this.tags.length > 0) {
-      this.search([this.last_coordinates, this.geo_locating]);
-    }
-    setTimeout(() => {
-      this.wait = false;
-    }, 10);
-  },
+  //   if (this.tags.length > 0) {
+  //     this.search([this.last_coordinates, this.geo_locating]);
+  //   }
+  //   setTimeout(() => {
+  //     this.wait = false;
+  //   }, 10);
+  // },
 
   methods: {
     ...mapMutations('search', ['updateSearchParam', 'updateInput', 'showBeaches', 'showEvents']),
-    ...mapActions('search', ['search', 'searchQuery']),
+    ...mapActions('search', [
+      'search',
+      'searchQuery',
+      'setSearchCityQuery',
+    ]),
 
     showHorizontal() {
       this.mode_option = 'list';

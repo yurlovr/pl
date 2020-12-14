@@ -1,6 +1,12 @@
 <template>
-  <div v-body-scroll-lock="preloaderShown" class="preloader">
-    <img src="~/static/pics/global/svg/logo-blue.svg" alt="НашПляж">
+  <div
+    v-if="loading"
+    class="preloader"
+  >
+    <img
+      src="~/static/pics/global/svg/logo-blue.svg"
+      alt="НашПляж"
+    >
   </div>
 </template>
 
@@ -8,32 +14,16 @@
 export default {
   data() {
     return {
-      preloaderShown: true,
+      loading: false,
     };
-  },
-  beforeDestroy() {
-    this.$bus.$off('mainPageReady');
-  },
-
-  mounted() {
-    if (this.$router.currentRoute.path != '/') {
-      window.onNuxtReady((app) => {
-        this.hidePreloader();
-      });
-    } else {
-      this.$bus.$on('mainPageReady', () => {
-        this.hidePreloader();
-      });
-    }
   },
 
   methods: {
-    hidePreloader() {
-      document.querySelector('.preloader').style.opacity = 0;
-      setTimeout(() => {
-        document.querySelector('.preloader').style.display = 'none';
-        this.preloaderShown = false;
-      }, 1005);
+    start() {
+      this.loading = true;
+    },
+    finish() {
+      this.loading = false;
     },
   },
 };

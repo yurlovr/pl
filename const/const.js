@@ -1,4 +1,5 @@
-export const COUNT_ELEMENTS_ON_PAGE = 3;
+export const COUNT_ELEMENTS_ON_PAGE = 20;
+export const COUNT_ELEMENTS_BEACH = 12;
 
 export const TYPE_BEACHES = [
   {

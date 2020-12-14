@@ -1,7 +1,35 @@
 <template>
   <div v-if="data" class="custom-card">
     <div class="custom-card__pic-area">
-      <a
+      <nuxt-link
+        v-if="!data.another_place"
+        :to="{ path: data.humanLink ? data.humanLink : ( data.mainLink ? data.mainLink : '#')}"
+        class="custom-card__link"
+      >
+        <img
+          v-if="data.custom_photo"
+          v-show="picLoaded"
+          :src="data.pic"
+          alt="Фото"
+          class="custom-card__pic"
+          @load="picLoaded = true"
+        >
+        <img
+          v-else
+          v-show="picLoaded"
+          v-lazy-load
+          :data-src="data.pic"
+          alt="Фото"
+          class="custom-card__pic"
+          @load="picLoaded = true"
+        >
+        <img
+          v-show="!picLoaded"
+          class="custom-card__pic"
+          src="~/static/pics/global/pics/slider_height_placeholder.png"
+        >
+      </nuxt-link>
+      <!-- <a
         v-if="!data.another_place"
         :href="data.humanLink ? data.humanLink : ( data.mainLink ? data.mainLink : '#')"
         class="custom-card__link"
@@ -29,10 +57,7 @@
           class="custom-card__pic"
           src="~/static/pics/global/pics/slider_height_placeholder.png"
         >
-        <!-- <div v-show="!picLoaded" class="custom-card__pic custom-card__pic-placeholder" >
-          <span class="custom-card__pic-placeholder-text">загрузка изображения</span>
-        </div> -->
-      </a>
+      </a> -->
       <a
         v-else
         :href="data.internal_url"
@@ -125,14 +150,12 @@
         <span>{{ formattedDate(data.date) }}</span>
       </div>
       <div>
-        <a
+        <nuxt-link
           v-if="!data.another_place"
-          :href="data.humanLink ? data.humanLink : ( data.mainLink ? data.mainLink : '#')"
+          :to="{path: data.humanLink ? data.humanLink : ( data.mainLink ? data.mainLink : '#' )}"
           class="custom-card__title"
           :style="{ 'font-size': data.beach ? '18px' : '20px' }"
-          @click.prevent="$bus.goTo( data.humanLink ? data.humanLink : ( data.mainLink ? data.mainLink : '#'), $router)"
         >
-
           <client-only>
             <v-clamp
               autoresize
@@ -140,8 +163,7 @@
               v-html="data.title"
             />
           </client-only>
-
-        </a>
+        </nuxt-link>
         <a
           v-else
           :href="data.internal_url"

@@ -36,8 +36,8 @@
     </button>
     <button
       class="pagination__button"
-      :class="{ 'current': page == lastPage }"
-      :disabled="page == lastPage"
+      :class="{ 'current': page === lastPage }"
+      :disabled="page === lastPage"
       @click="changePage(lastPage)"
     >
       <span>{{ lastPage }}</span>
@@ -48,7 +48,7 @@
       @click="changePage(page+1)"
     >
       <img
-        v-show="page == lastPage"
+        v-show="page === lastPage"
         alt="Вперед"
         src="~/static/pics/global/svg/pagination_next_gray.svg"
       >

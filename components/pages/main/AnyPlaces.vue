@@ -27,9 +27,10 @@ export default {
 
   async fetch() {
     if (!this.getAnotherPlaces) {
-      this.setAnyPlaces();
+      await this.setAnyPlaces();
     }
   },
+
   computed: {
     ...mapGetters('main', [
       'getAnotherPlaces',

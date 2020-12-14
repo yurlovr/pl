@@ -151,7 +151,7 @@ export const actions = {
     commit('SET_CHOOSE_TO_YOUR_WISHES', result.data.item);
   },
   async setBanners({ commit }) {
-    const banners = await this.$axios.$get('/banner/list/');
+    const banners = await this.$axios.$get('/banner/list');
     commit('SET_BANNERS', banners);
   },
   async setActiveRest({ commit }) {

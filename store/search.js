@@ -1,4 +1,5 @@
 import {getDistanceFromLatLonInKm} from "../assets/calcDistance";
+import { mapBeach } from '~/helpers/mappers';
 
 export const state = () => ({
   my_coords: {},
@@ -10,116 +11,116 @@ export const state = () => ({
       cities: {
         value: {
           title: 'Любой город',
-          id: -1
+          id: -1,
         },
         param: 'cities',
         options: [
           {
             title: 'Любой город',
-            id: -1
-          }
-        ]
+            id: -1,
+          },
+        ],
       },
       beachTypes: {
         value: {
           title: 'Тип пляжа',
-          id: -1
+          id: -1,
         },
         param: 'beachTypes',
         options: [
           {
             title: 'Тип пляжа',
-            id: -1
-          }
-        ]
+            id: -1,
+          },
+        ],
       },
       modes: {
         value: {
           title: 'Режим работы',
-          id: -1
+          id: -1,
         },
         param: 'modes',
         id: -1,
         options: [
           {
             title: 'Режим работы',
-            id: -1
-          }
-        ]
+            id: -1,
+          },
+        ],
       },
       price: {
         value: {
           title: 'Стоимость',
-          id: -1
+          id: -1,
         },
         param: 'price',
         options: [
           {
             title: 'Стоимость',
-            id: -1
+            id: -1,
           },
-        ]
+        ],
       },
       searchBeachLengthFrom: {
         value: {
           title: 'Протяженность линии от, м',
-          id: -1
+          id: -1,
         },
         param: 'searchBeachLengthFrom',
         options: [
           {
             title: 'Протяженность линии от, м',
-            id: -1
-          }
-        ]
+            id: -1,
+          },
+        ],
       },
       searchBeachLengthTo: {
         value: {
           title: 'До',
-          id: -1
+          id: -1,
         },
         param: 'searchBeachLengthTo',
         options: [
           {
             title: 'До',
-            id: -1
-          }
-        ]
+            id: -1,
+          },
+        ],
       },
       searchWaterTempFrom: {
         value: {
           title: 'Температура воды от, °C',
-          id: -1
+          id: -1,
         },
         param: 'searchWaterTempFrom',
         options: [
           {
             title: 'Температура воды от, °C',
-            id: -1
-          }
-        ]
+            id: -1,
+          },
+        ],
       },
       searchWaterTempTo: {
         value: {
           title: 'До',
-          id: -1
+          id: -1,
         },
         param: 'searchWaterTempTo',
         options: [
           {
             title: 'До',
-            id: -1
-          }
-        ]
-      }
+            id: -1,
+          },
+        ],
+      },
     },
 
     checkboxes: {
       tags: [],
       addTags: [],
       services: [],
-      infrastructures: []
-    }
+      infrastructures: [],
+    },
   },
   searchConfig: {},
   searchPageResultEventBackup: [],
@@ -132,11 +133,12 @@ export const state = () => ({
   init: false, // SET_SEARCH gets called twice, so I will check if it's init or not to not call it the second time
   coords: {
     lat: 52.9760256,
-    lng: 36.077568
+    lng: 36.077568,
   },
   radius: null,
   f_loaded: false,
-})
+  searchResultCity: null,
+});
 
 export const mutations = {
   set_coords: (state, pos) => state.coords = pos,
@@ -264,7 +266,7 @@ export const mutations = {
     state.searchParams.selects[payload.param].options.push('lol');
     state.searchParams.selects[payload.param].options.pop();
 
-    if (state.searchParams.selects[payload.param].value.id == -1)
+    if (state.searchParams.selects[payload.param].value.id === -1)
       state.searchParams.selects[payload.param].value.title = payload.title;
   },
 
@@ -297,7 +299,7 @@ export const mutations = {
   },
 
   hoverAutocomplete(state, [index, value, field = 'hover']) {
-    console.log(index, value, 'index, value', state.autocompleteResults)
+    console.log(index, value, 'index, value', state.autocompleteResults);
     state.autocompleteResults[index][field] = value;
   },
 
@@ -392,8 +394,15 @@ export const mutations = {
     state.searchParams.checkboxes.addTags.forEach(v => v.value = false);
     state.searchParams.checkboxes.services.forEach(v => v.value = false);
     state.searchParams.checkboxes.infrastructures.forEach(v => v.value = false);
-  }
-}
+  },
+  SET_SEARCH_RESULT_CITY(state, payload) {
+    const list = payload.list.map(mapBeach);
+    state.searchResultCity = {
+      ...payload,
+      list,
+    };
+  },
+};
 
 export const actions = {
   async search({commit, state}, [coords = null, city = -1]) {
@@ -472,8 +481,14 @@ export const actions = {
   async updateSearchInput({commit}, input) {
     commit('updateSearchInput', input);
     commit('emptySearchParams');
-  }
-}
+  },
+  async setSearchCityQuery({ commit }, payload) {
+    const { city, page, count } = payload;
+    const { data } = await this.$axios.$get(`search/filter?city=${city}&page=${page}&count=${count}`);
+    console.log('DATA', data)
+    commit('SET_SEARCH_RESULT_CITY', data);
+  },
+};
 
 export const getters = {
   getRadiusIfCityExists: state => {
@@ -554,7 +569,6 @@ export const getters = {
     return ret;
   },
 
-  paramsShown: (state) => {
-    return state.paramsShown;
-  }
-}
+  paramsShown: (state) => state.paramsShown,
+  getSearchResultCity: (state) => state.searchResultCity,
+};

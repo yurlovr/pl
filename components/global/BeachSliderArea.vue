@@ -66,7 +66,7 @@ export default {
     ]),
     link() {
       if (this.data.showMore.type === 'beach') {
-        return `/${this.data.showMore.type}-${this.data.showMore.query.replace('?', '')}`
+        return `/${this.data.showMore.type}-${this.data.showMore.query.replace('?', '')}`;
       }
       return `/${this.data.showMore.type}-catalog${this.data.showMore.query ? this.data.showMore.query : ''}`;
     },

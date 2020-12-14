@@ -5,11 +5,13 @@
         <div
           v-for="slide in data"
           :key="slide.id"
-          class="swiper-slide slider-cities__slide">
-          <a
-            :href="`/search?city=${slide.cityId}`"
+          class="swiper-slide slider-cities__slide"
+        >
+          <nuxt-link
+            :to="{ path: '/search-city',
+                   query: {city: slide.cityId, page: 1, count: COUNT_ELEMENTS_BEACH}
+            }"
             class="slider__slide__link"
-            @click.prevent="searchCity(slide)"
           >
             <div class="slider-cities__slide__pic-area">
               <img
@@ -36,13 +38,10 @@
                 {{ slide.beachNumber }}
               </span>
               <span class="slider-cities__slide__beach">
-                {{ getBeachText (slide.beachNumber) }}
+                {{ plural(slide.beachNumber, 'пляж', 'пляжа', 'пляжей') }}
               </span>
             </div>
-          </a>
-          <!-- <a v-else class="pointer-events-none slider__slide__link">
-            <div class="slider-cities__slide__pic-area despondency" />
-          </a> -->
+          </nuxt-link>
         </div>
       </div>
     </div>
@@ -81,10 +80,17 @@
 </template>
 
 <script>
-import Vue from 'vue';
+// import Vue from 'vue';
+import { plural } from '~/helpers'
+import { COUNT_ELEMENTS_BEACH } from '~/const/const';
 
 export default {
-  props: ['data'],
+  props: {
+    data: {
+      type: Array,
+      required: true,
+    },
+  },
 
   data() {
     return {
@@ -114,15 +120,8 @@ export default {
       showRight: false,
       showArrows: true,
       activeIndex: 0,
+      COUNT_ELEMENTS_BEACH,
     };
-  },
-
-  beforeMount() {
-    if (process.browser) {
-      require('swiper/dist/css/swiper.css');
-      const VueAwesomeSwiper = require('vue-awesome-swiper/dist/ssr');
-      Vue.use(VueAwesomeSwiper);
-    }
   },
 
   mounted() {
@@ -143,14 +142,7 @@ export default {
   },
 
   methods: {
-    getBeachText(i) {
-      let num = i % 100;
-      if (num >= 5 && num % 100 <= 20) return 'пляжей';
-      num %= 10;
-      if (num % 10 === 1) return 'пляж';
-      if (num >= 2 && num <= 4) return 'пляжа';
-      return 'пляжей';
-    },
+    plural,
     onResize() {
       if (window.innerWidth < 1150) {
         this.showArrows = false;
@@ -162,12 +154,6 @@ export default {
     updateArrows() {
       this.showLeft = !this.mySwiper.isBeginning;
       this.showRight = !this.mySwiper.isEnd;
-    },
-
-    searchCity(data) {
-      this.$bus.$emit('emptySearchParams');
-      this.$bus.$emit('updateSearchParam', { param: 'cities', value: { title: data.city, id: data.cityId } });
-      setTimeout(() => { this.$bus.$emit('search'); }, 1);
     },
   },
 };

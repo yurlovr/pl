@@ -15,7 +15,7 @@ export default {
 
   async fetch() {
     if (!this.getChooseToYourWishes) {
-      this.setChooseToYourWishes();
+      await this.setChooseToYourWishes();
     }
   },
 

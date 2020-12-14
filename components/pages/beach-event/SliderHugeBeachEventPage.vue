@@ -260,14 +260,14 @@ export default {
     CoolLightBox,
   },
 
-  beforeMount() {
-    if (process.browser) {
-      require('swiper/dist/css/swiper.css');
-      const VueAwesomeSwiper = require('vue-awesome-swiper/dist/ssr');
-      Vue.use(VueAwesomeSwiper);
-      Vue.use(VueZoomer);
-    }
-  },
+  // beforeMount() {
+  //   if (process.browser) {
+  //     require('swiper/dist/css/swiper.css');
+  //     const VueAwesomeSwiper = require('vue-awesome-swiper/dist/ssr');
+  //     Vue.use(VueAwesomeSwiper);
+  //     Vue.use(VueZoomer);
+  //   }
+  // },
 
   computed: {
     getRightPicsHeight() {

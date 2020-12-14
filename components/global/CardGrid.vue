@@ -10,7 +10,7 @@
       v-show="data.list.length === 0"
       class="favorites-page__empty favorites-page__empty--card-grid"
     >
-      {{ emptyText ? emptyText : 'Пусто' }}
+      {{ emptyText ? emptyText : '' }}
     </h4>
     <div
       v-show="data.pagination.countElements > perPage"
