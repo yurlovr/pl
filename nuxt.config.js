@@ -38,7 +38,11 @@ export default {
   /*
    ** Customize the progress-bar color
    */
-  loading: false,
+  // loading: {
+  //   color: 'blue',
+  //   height: '5px',
+  // },
+  loading: '~/components/global/Preloader.vue',
   /*
    ** Global CSS
    */
