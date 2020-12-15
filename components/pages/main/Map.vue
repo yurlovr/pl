@@ -296,7 +296,6 @@
                         // adding customs
 
                         for (let i = 0; i < this.mapData.length; i++) {
-                          console.warn(this.mapData[i], 'stupid')
                           balloonLayout = maps.templateLayoutFactory.createClass(`
                             <div class="map-popup map-popup--bottom">
                               <a target="_blank" href="${this.mapData[i].url}" style="color: #393e48">

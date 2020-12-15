@@ -99,7 +99,7 @@
                             //     iconImageHref: '/pics/global/svg/map_beach_blue.svg'
                             // });
                             // this.chosen = -1;
-                            console.log('unchoose')
+                            // console.log('unchoose')
                             this.map.balloon.close();
                         }
 

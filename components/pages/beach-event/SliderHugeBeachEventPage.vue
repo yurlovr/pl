@@ -60,7 +60,10 @@
           <div class="swiper-wrapper">
             <div class="swiper-slide" v-for="(pic, i) in data.medium_pics" :key="i">
               <img v-lazy-load :data-src="pic" v-if="!pic.includes('youtube')">
-              <div v-else class="w-100 h-100">
+              <div class="slide-placeholder" >
+                <span class="slide-placeholder__text">загрузка изображения</span>
+              </div>
+              <div v-if="pic.includes('youtube')" class="w-100 h-100">
                 <no-ssr>
                   <!--                  desktop logic-->
                   <video-youtube v-if="mobile > 768" :key="i+'gui'" :url="pic" :reference="'v'+i"/>
@@ -108,6 +111,9 @@
            :style="{ height: getRightPicsHeight }">
         <div class="slider-beach-event__right__item__inner" @click="openModal(i)" v-if="!pic.includes('youtube')">
           <img v-lazy-load :data-src="pic">
+          <div class="slide-placeholder" >
+            <p class="slide-placeholder__text">загрузка изображения</p>
+          </div>
           <span v-if="i == 6 && data.medium_pics.length - 7 > 0">+{{ data.medium_pics.length - 7 }}</span>
         </div>
         <!--        page-->
@@ -161,6 +167,9 @@
                         </div>
                       </div>
                       <img v-lazy-load :data-src="pic" class="object-contain">
+                      <div class="slide-placeholder slide-placeholder--beach-modal-big" >
+                        <span class="slide-placeholder__text">загрузка изображения</span>
+                      </div>
                     </div>
                     <div v-else class="w-100 h-100 y-block">
                       <!--                    active in modal-->
@@ -193,8 +202,11 @@
                 <div class="swiper-slide" v-for="(pic, i) in data.pics" :key="i" :class="{ active: activeIndex == i }"
                      @click="() => { mySwiperModal.slideTo(i); }">
                   <img v-lazy-load :data-src="pic" v-if="!pic.includes('youtube')">
+                  <div class="slide-placeholder slide-placeholder--big-modal-right" >
+                    <span class="slide-placeholder__text">загрузка изображения</span>
+                  </div>
                   <!--                  modal true-->
-                  <div v-else class="w-100 h-100">
+                  <div v-if="pic.includes('youtube')" class="w-100 h-100">
                     <div class="slider-beach-event__right__item__inner" @click="openModal(i)">
                       <div class="w-100 h-100 overflow-hidden position-relative">
                         <div
@@ -278,6 +290,7 @@ export default {
       interval_plus: null,
       index: null,
       mobile: 1024,
+      picLoaded: false,
       swiperOption: {
         spaceBetween: 20,
         slidesPerView: 1,

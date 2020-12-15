@@ -24,7 +24,7 @@
     </div>
     <SearchTags :tags="tags" v-if=" tags && tags.length > 0"/>
     <div class="favorites-page__favorites-types custom-container"
-         v-show="searchPageResultEventBackup.data && searchPageResultEventBackup.data.list.length > 0">
+         v-show="getSearchResult">
       <button class="favorites-page__favorites-type" @click="showOnlyBeaches()"
               :class="{ active: !showBeachesOrEvents }">
         Пляжи
