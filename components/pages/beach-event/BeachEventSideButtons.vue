@@ -1,75 +1,132 @@
 <template>
   <div class="beach-event__side-buttons">
     <transition name="bounce">
-      <a :href="`mailto:${data.email || ''}?subject=Ссылка%20на%20пляж%20|%20Наш%20пляж&body=${link}`"
-         v-show="showShare">
+      <a
+        v-show="showShare"
+        :href="`mailto:${data.email || ''}?subject=Ссылка%20на%20пляж%20|%20Наш%20пляж&body=${link}`"
+      >
         <img src="~/static/pics/global/svg/mail.svg">
       </a>
     </transition>
-    <transition name="bounce" v-if="data.telegram">
-      <a :href="`tg://resolve?domain=${data.telegram.split('/').slice(-1)[0]}`" v-show="showShare">
+    <transition
+      v-if="data.telegram"
+      name="bounce"
+    >
+      <a
+        v-show="showShare"
+        :href="`tg://resolve?domain=${data.telegram.split('/').slice(-1)[0]}`"
+      >
         <img src="~/static/pics/global/svg/telegram-side.svg">
       </a>
     </transition>
-    <button class="bg-orange" @click="showShare = !showShare">
-      <img src="~/static/pics/global/svg/cross.svg" v-show="showShare">
-      <img src="~/static/pics/global/svg/share.svg" v-show="!showShare">
+    <button
+      class="bg-orange"
+      @click="showShare = !showShare"
+    >
+      <img
+        v-show="showShare"
+        src="~/static/pics/global/svg/cross.svg"
+      >
+      <img
+        v-show="!showShare"
+        src="~/static/pics/global/svg/share.svg"
+      >
     </button>
-    <button class="bg-blue" @click="showPave = !showPave" v-if="data.pos && !dontShowPave">
-      <img src="~/static/pics/global/svg/cross.svg" v-show="showPave">
-      <img src="~/static/pics/global/svg/pave_way.svg" v-show="!showPave">
+    <button
+      v-if="data.pos && !dontShowPave"
+      class="bg-blue"
+      @click="showPave = !showPave"
+    >
+      <img
+        v-show="showPave"
+        src="~/static/pics/global/svg/cross.svg"
+      >
+      <img
+        v-show="!showPave"
+        src="~/static/pics/global/svg/pave_way.svg"
+      >
     </button>
-    <transition name="bounce" v-if="data.pos && yandexTransform(data.pos)">
-      <a target="_blank" :href="'https://yandex.ru/maps/' + yandexTransform(data.pos)" v-show="showPave"
-         class="btn-ymaps">
+    <transition
+      v-if="pos && yandexTransform(data.pos)"
+      name="bounce"
+    >
+      <a
+        v-show="showPave"
+        target="_blank"
+        :href="'https://yandex.ru/maps/' + yandexTransform(data.pos)"
+        class="btn-ymaps"
+      >
         <img src="~/static/pics/global/svg/ymaps.svg">
       </a>
     </transition>
-    <transition name="bounce" v-if="data.pos && yandexTransform(data.pos, true)">
-      <a :href="`yandexnavi://build_route_on_map?` + yandexTransform(data.pos, true) " v-show="showPave"
-         class="btn-display">
+    <transition
+      v-if="pos && yandexTransform(data.pos, true)"
+      name="bounce"
+    >
+      <a
+        v-show="showPave"
+        :href="`yandexnavi://build_route_on_map?` + yandexTransform(data.pos, true) "
+        class="btn-display"
+      >
         <img src="~/static/pics/global/svg/yandex.svg">
       </a>
     </transition>
   </div>
 </template>
 <script>
-  export default {
-    props: ['data', 'dontShowPave'],
-    data() {
-      return {
-        showShare: false,
-        showPave: false,
-        link: ''
-      };
+import { mapGetters } from 'vuex';
+
+export default {
+  props: {
+    dontShowPave: {
+      type: Boolean,
+      required: true,
     },
-    computed: {
-      last_coordinates() {
-        let cookie_coords = this.$cookies.get('last_coordinates') || {},
-          route_coords = this.$route.params && this.$route.params.coordinates ? this.$route.params.coordinates : {}
-        if (Object.values(cookie_coords).length) {
-          return cookie_coords
-        }
-        return route_coords ? (() => {
-          let obj = Object.values(route_coords);
-          return obj.length == 2 ? {lat: obj[0], lng: obj[1]} : {}
-        })() : {}
+    data: {
+      type: Object,
+      required: true,
+    },
+  },
+  data() {
+    return {
+      showShare: false,
+      showPave: false,
+      link: '',
+    };
+  },
+  computed: {
+    ...mapGetters('event', {
+      email: 'getEmail',
+      telegram: 'getTelegram',
+      pos: 'getPosition',
+    }),
+    lastCoordinates() {
+      const cookieCoords = this.$cookies.get('last_coordinates') || {};
+      const routeCoords = this.$route.params && this.$route.params.coordinates
+        ? this.$route.params.coordinates
+        : {};
+      if (Object.values(cookieCoords).length) {
+        return cookieCoords;
       }
+      return routeCoords ? (() => {
+        const obj = Object.values(routeCoords);
+        return obj.length === 2 ? { lat: obj[0], lng: obj[1] } : {};
+      })() : {};
     },
-    methods: {
-      yandexTransform(pos, navi = false) {
-        if (!navi) {
-          const user_pos = Object.values(this.last_coordinates).join(','),
-            beach_pos = pos.join(',')
-          return '?rtext=' + user_pos + '~' + beach_pos + '&rtt=auto&z=12'
-        }
-        const user_pos = Object.values(this.last_coordinates)
-        console.log(`lat_from=${user_pos[0]}&lon_from=${user_pos[1]}&lan_to=${pos[0]}&lon_to=${pos[1]}`, 'ffff')
-        return `lat_from=${user_pos[0]}&lon_from=${user_pos[1]}&lat_to=${pos[0]}&lon_to=${pos[1]}`;
+  },
+  mounted() {
+    this.link = window.location.href;
+  },
+  methods: {
+    yandexTransform(pos, navi = false) {
+      if (!navi) {
+        const userPos = Object.values(this.lastCoordinates).join(',');
+        const beachPos = pos.join(',');
+        return `?rtext=${userPos}~${beachPos}&rtt=auto&z=12`;
       }
+      const userPos = Object.values(this.lastCoordinates);
+      return `lat_from=${userPos[0]}&lon_from=${userPos[1]}&lat_to=${pos[0]}&lon_to=${pos[1]}`;
     },
-    mounted() {
-      this.link = window.location.href;
-    }
-  }
+  },
+};
 </script>

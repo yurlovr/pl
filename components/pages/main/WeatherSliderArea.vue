@@ -66,7 +66,6 @@ export default {
   data() {
     return {
       // mobileMonthSlider: false,
-      activeMonth: -1,
       MONTHS,
       swiperOption: {
         freeMode: true,
@@ -79,11 +78,11 @@ export default {
           },
         },
       },
+      activeMonth: new Date().getMonth(),
     };
   },
 
   mounted() {
-    this.activeMonth = new Date().getMonth();
     this.mySwiper.init(this.swiperOption);
   },
 

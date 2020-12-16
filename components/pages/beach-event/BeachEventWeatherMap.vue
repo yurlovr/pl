@@ -1,33 +1,24 @@
 <template>
-  <div class="beach-event__map-weather">
-    <div class="beach-event__map-weather__map-card">
-      <div class="map__zoom-wrapper">
-        <button class="map__zoom map__zoom-plus">
-          <img src="~/static/pics/global/svg/plus.svg">
-        </button>
-        <button class="map__zoom map__zoom-minus">
-          <img src="~/static/pics/global/svg/minus.svg">
-        </button>
-      </div>
-      <div class="map" />
-      <div
-        v-if="data.pos"
-        class="beach-event__map-weather__map-card__button-area"
-      >
-        <a
-          target="_blank"
-          :href="`https://yandex.ru/maps/?pt=
-            ${data.pos[1]}%2C${data.pos[0]}&z=18`"
-          class="banner__card__info-area__button"
-        >
-          <span>Перейти на карту</span>
-        </a>
-        <!-- <span @click.stop="goto">Перейти на panto</span> -->
-      </div>
+  <div class="beach-event__map-weather__map-card">
+    <div class="map__zoom-wrapper">
+      <button class="map__zoom map__zoom-plus">
+        <img src="~/static/pics/global/svg/plus.svg">
+      </button>
+      <button class="map__zoom map__zoom-minus">
+        <img src="~/static/pics/global/svg/minus.svg">
+      </button>
     </div>
-    <Weather
-      :weather="beach ? data : data.weather"
-    />
+    <div class="map" />
+    <div v-if="data.pos" class="beach-event__map-weather__map-card__button-area">
+      <a
+        target="_blank"
+        :href="`https://yandex.ru/maps/?pt=${data.pos[1]}%2C${data.pos[0]}&z=18`"
+        class="banner__card__info-area__button"
+      >
+        <span>Перейти на карту</span>
+      </a>
+      <!-- <span @click.stop="goto">Перейти на panto</span> -->
+    </div>
   </div>
 </template>
 
@@ -35,11 +26,7 @@
 import ymaps from 'ymaps';
 
 export default {
-  components: {
-    Weather: () => import('./Weather'),
-  },
-  props: ['data', 'additional', 'mapData', 'beach'],
-
+  props: ['mapData', 'additional', 'position'],
   data() {
     return {
       map: null,
@@ -47,7 +34,6 @@ export default {
       chosenObject: -1,
     };
   },
-
   async mounted() {
     // making the map
     this.initMap();
@@ -62,7 +48,6 @@ export default {
   beforeDestroy() {
     this.$bus.$off('call-balloon-weather');
   },
-
   methods: {
     goto(i, coords = [45.32, 33.03]) {
       console.warn(this.map, i, coords, 'почему у нас весь сайт в логах?');
@@ -100,15 +85,48 @@ export default {
             });
             if (this.data.pos) {
               // this.map.behaviors.disable('drag');
+
               const icon = maps.templateLayoutFactory.createClass(
                 `<div class="map__beach-icon">
-                    <div class="map__beach-caption">${this.data.title || this.data.weather.title}</div>
+                    <div class="map__beach-caption">${this.data.title}</div>
                   </div>`,
               );
               const objectManager = new maps.ObjectManager({
                 geoObjectOpenBalloonOnClick: true,
               });
               this.map.geoObjects.add(objectManager);
+              /* let emit_data = {
+                    pic: "https://crimea.air-dev.agency/upload/iblock/2c5/2c56d3fbff9b56fabe97a74f461e77f8.png",
+                    title: "Пункт медицинской помощи",
+                    pos: [45.32, 33.03]
+                  },
+                  _em = {
+                    type: "Feature",
+                    id: 1,
+                    geometry: {
+                      type: "Point",
+                      coordinates: emit_data.pos
+                    },
+                    options: {
+                      iconLayout: 'default#imageWithContent',
+                      iconImageHref: emit_data.pic,
+                      iconContentLayout: maps.templateLayoutFactory.createClass(
+                        `<div class="map__beach-icon">
+                    <div class="map__beach-caption">${emit_data.title}</div>
+                  </div>`),
+                      iconImageSize: [46, 60],
+                      iconImageOffset: [-18, -50],
+                      hintLayout: maps.templateLayoutFactory.createClass("<div class='my-hint'>" +
+                        `<b>${emit_data.title}</b><br />` +
+                        "</div>"
+                      )
+                    },
+                    properties: {
+                      balloonContentBody: "<div class='my-balloon'>" +
+                        `<b>${emit_data.title}</b><br />` +
+                        "</div>"
+                    }
+                  } */
               const main = {
                 type: 'Feature',
                 id: 0,
@@ -188,14 +206,14 @@ export default {
                               <div class="map-popup__slider">
                                   <div class="swiper-container" id="balloon-swiper">
                                       <div class="swiper-wrapper">
-                                          <img class="map__img" src="${this.mapData[i].preview}" alt="">
+                                         <img class="map__img" src="${this.mapData[i].preview}" alt="">
                                       </div>
                                   </div>
                               </div>
                           </div>
                           <div class="map-popup__info-area">
                               <div class="map-popup__title">${this.mapData[i].name}</div>
-                              <p>${this.mapData[i].type ? this.mapData[i].type.DESCRIPTION : ''}</p>
+                              <p>${this.mapData[i].type.DESCRIPTION}</p>
                           </div>
                         </a>
                   </div>
@@ -203,6 +221,7 @@ export default {
                   build() {
                     this.constructor.superclass.build.call(this);
                   },
+
                   clear() {
                     this.constructor.superclass.clear.call(this);
                   },
@@ -250,6 +269,16 @@ export default {
               }
             }
 
+            const closeBalloon = () => {
+              customObjectManager.objects.setObjectOptions(this.chosenObject, {
+                iconImageHref: '/pics/global/svg/beach_blue.svg',
+                iconImageOffset: [-18, -50],
+                iconImageSize: [27, 40],
+              });
+              this.chosenObject = -1;
+              this.map.balloon.close();
+            };
+
             const customObjectEvent = (e) => {
               const objectId = e.get('objectId');
               if (e.get('type') == 'mouseenter') {
@@ -291,15 +320,15 @@ export default {
               }
             };
             customObjectManager.objects.events.add(['mouseenter', 'mouseleave', 'click'], customObjectEvent);
-            const closeBalloon = () => {
-              customObjectManager.objects.setObjectOptions(this.chosenObject, {
-                iconImageHref: '/pics/global/svg/beach_blue.svg',
-                iconImageOffset: [-18, -50],
-                iconImageSize: [27, 40],
-              });
-              this.chosenObject = -1;
-              this.map.balloon.close();
-            };
+            // const closeBalloon = () => {
+            //   customObjectManager.objects.setObjectOptions(this.chosenObject, {
+            //     iconImageHref: '/pics/global/svg/beach_blue.svg',
+            //     iconImageOffset: [-18, -50],
+            //     iconImageSize: [27, 40],
+            //   });
+            //   this.chosenObject = -1;
+            //   this.map.balloon.close();
+            // };
               // closing balloon on map click
             this.map.events.add('click', (e) => {
               if (e.get('target') === this.map) {
@@ -317,3 +346,7 @@ export default {
   },
 };
 </script>
+
+<style>
+
+</style>

@@ -2,6 +2,7 @@
   <div>
     <p v-if="$fetchState.pending">
     <!-- Fetching data -->
+      ЗАПРОС
     </p>
     <p v-else-if="$fetchState.error">
     <!-- error message here -->
@@ -24,7 +25,9 @@
         class="main-page__popular-beaches"
         :data="getBeachesTop"
       />
-      <LazyHydrate when-visible>
+      <LazyHydrate
+        when-visible
+      >
         <div>
           <GetCities />
           <!-- <MapArea

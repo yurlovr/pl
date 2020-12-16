@@ -21,6 +21,7 @@
         <!-- Sidebar actions -->
         <BeachEventSideButtons
           :data="beach"
+          :dont-show-pave="true"
         />
       </div>
 
@@ -62,6 +63,7 @@
           <BeachEventMapWeather
             :data="beach"
             :location-data="beach"
+            :beach="true"
             class="beach-event__map-weather__tablet"
           />
 
@@ -69,8 +71,7 @@
           <BeachEventAbout
             v-if="beach.desc && beach.desc.length > 1"
             id="about"
-            :data="beach.desc"
-            :title="'О пляже'"
+            :data="{about: beach.desc, title: 'О пляже'}"
           />
 
           <!-- Weather mobile?? -->
@@ -79,6 +80,7 @@
             v-if="beach.pos.length > 0"
             :data="beach"
             :location-data="beach"
+            :beach="true"
             class="beach-event__map-weather__mobile"
           />
 
@@ -166,6 +168,7 @@
             v-if="beach.pos.length > 0"
             :location-data="beach"
             :data="beach"
+            :beach="true"
             class="beach-event__map-weather__desktop"
           />
 

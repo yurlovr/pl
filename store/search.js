@@ -402,6 +402,9 @@ export const mutations = {
       list,
     };
   },
+  SET_TAGS(state, payload) {
+    state.tags = payload;
+  },
 };
 
 export const actions = {
@@ -485,8 +488,29 @@ export const actions = {
   async setSearchCityQuery({ commit }, payload) {
     const { city, page, count } = payload;
     const { data } = await this.$axios.$get(`search/filter?city=${city}&page=${page}&count=${count}`);
-    console.log('DATA', data)
     commit('SET_SEARCH_RESULT_CITY', data);
+  },
+  setTags({ state, commit }, query) {
+    let tags = [];
+    if (Object.keys(query).length === 1 && query.city) {
+      tags = tags.concat({
+        param: 'cities',
+        value: {
+          title: state.searchResultCity.list[0].location,
+        },
+        default: null,
+        type: 'select',
+      });
+    }
+    commit('SET_TAGS', tags);
+  },
+  updateSearchTags({ state, commit }, payload) {
+    let result = state.tags;
+    const { param, currentValue, value } = payload;
+    if (param === 'cities' && !value) {
+      result = result.filter((item) => item.value.title.toLowerCase() !== currentValue.title.toLowerCase());
+    }
+    commit('SET_TAGS', result);
   },
 };
 
@@ -571,4 +595,5 @@ export const getters = {
 
   paramsShown: (state) => state.paramsShown,
   getSearchResultCity: (state) => state.searchResultCity,
+  getTags: (state) => state.tags,
 };

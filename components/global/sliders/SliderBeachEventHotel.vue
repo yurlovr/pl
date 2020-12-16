@@ -53,7 +53,6 @@
 </template>
 
 <script>
-import Vue from 'vue';
 import Card from '~/components/global/Card';
 import DespodencyCard from '../DespodencyCard';
 
@@ -63,12 +62,6 @@ export default {
     Card,
     DespodencyCard,
   },
-  // TODO Swiper по хорошему надо обновить, и использовать одну версию
-  // + там есть плюшки с автодестроем
-  // beforeRouteLeave(to, from, next) {
-  //   this.mySwiper && this.mySwiper.destroy && this.mySwiper.destroy(false, false);
-  //   next();
-  // },
   props: {
     data: {
       type: Object,

@@ -1,10 +1,13 @@
 <template>
   <div>
     <div v-swiper:mySwiper="swiperOption">
-      <div class="swiper-wrapper">
+      <div
+        v-if="slideData"
+        class="swiper-wrapper"
+      >
         <div
-          v-for="(slide, key) in slideData"
-          :key="key"
+          v-for="(slide) in slideData"
+          :key="slide.id"
           class="swiper-slide slider-weather__slide"
         >
           <div class="slider-weather__slide__pic-area">
@@ -41,13 +44,16 @@
         </div>
       </div>
     </div>
-    <div class="pagination-wrapper">
+    <div
+      v-if="slideData"
+      class="pagination-wrapper"
+    >
       <div class="custom-pagination">
         <button
           v-for="(b,i) in slideData.length - minus"
           :key="i"
           class="custom-pagination-bullet"
-          :class="{ 'custom-pagination-bullet-active' : i == activeIndex }"
+          :class="{ 'custom-pagination-bullet-active' : i === activeIndex }"
           @click="mySwiper.slideTo(i)"
         />
       </div>
@@ -85,7 +91,7 @@ export default {
         spaceBetween: 50,
         slidesPerView: 6,
         observer: true,
-        observeParents: true,
+        // observeParents: false,
         init: false,
         breakpoints: {
           900: {
@@ -138,22 +144,26 @@ export default {
       'getWeather',
     ]),
     slideData() {
-      return this.getWeather ? this.getWeather[this.activeMonth] : [];
+      return this.getWeather ? this.getWeather[this.activeMonth] : null;
     },
   },
+  beforeDestroy() {
+    this.mySwiper.destroy(false, false);
+  },
   mounted() {
-    console.log(this.mySwiper)
-    this.mySwiper.on('imagesReady', () => {
-      window.addEventListener('resize', this.onResize);
-      this.onResize();
-    });
+    if (this.slideData) {
+      this.mySwiper.on('imagesReady', () => {
+        window.addEventListener('resize', this.onResize);
+        this.onResize();
+      });
 
-    this.mySwiper.on('slideChange', () => {
+      this.mySwiper.on('slideChange', () => {
+        this.updateArrows();
+        this.activeIndex = this.mySwiper.activeIndex;
+      });
+      this.mySwiper.init(this.swiperOption);
       this.updateArrows();
-      this.activeIndex = this.mySwiper.activeIndex;
-    });
-    this.mySwiper.init(this.swiperOption);
-    this.updateArrows();
+    }
   },
 
   methods: {

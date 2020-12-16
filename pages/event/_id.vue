@@ -1,185 +1,138 @@
 <template>
-	<div class="beach-page custom-page">
-		<div class="beach-page__container custom-container">
-
+  <div class="beach-page custom-page">
+    <div class="beach-page__container custom-container">
       <client-only>
-			  <BeachEventSections
-          :sections="eventData.sections"
-          class="beach-page-sections event-page-sections"
-        />
-			  <SliderHugeBeachEventPage
-          :data="eventData.hugeSliderData"
+        <BeachEventSectionsWrapper />
+        <BeachEventHugeWrapper
           id="gallery"
         />
       </client-only>
 
-			<div class="custom-container-inner">
-				<BeachEventSideButtons class="event-page__side-buttons"
-                               :data="eventData.sideMapWeatherData"
-                               :dontShowPave="true" />
-			</div>
-			<div class="two-part-layout">
-				<main class="two-part-layout__left">
-					<button class="event-page__hearts"
-                  @click="updateHeart()"
-          >
-						<img src="~/static/pics/global/svg/heart_button_unclicked.svg"
-                 v-show="!favorite" />
-						<img src="~/static/pics/global/svg/heart_button_clicked.svg"
-                 v-show="favorite" />
-						<span>({{ eventData.mainData.likes + (favorite ? 1 : 0) }}) Добавить в избранное</span>
-					</button>
-					<BeachEventMainInfo id="main-info"
-                              :data="eventData.mainData"
-                              class="event-page__main-info" />
-<!--          //ранее тут отображалась инфрастуктура-->
-<!--					<BeachQuickData id="infra" :title="'Инфраструктура'" :data="eventData.infraData" v-if="eventData.infraData.length > 0" />-->
-					<BeachEventAbout id="about"
-                           :title="'О мероприятии'"
-                           :data="eventData.about"
-                           v-if="eventData.about.length > 0" />
-					<BeachEventParkingsTransport id="pt" :data="eventData.ptData"
-                                       :mapData="eventData.map_entity"
-                                       v-if="eventData.ptData.parkings.auto.length > 0 || eventData.ptData.parkings.bus.length > 0" />
-					<client-only>
-            <BeachEventReviews
+      <div class="custom-container-inner">
+        <BeachEventSideButtonsWrapper />
+      </div>
+      <div class="two-part-layout">
+        <main class="two-part-layout__left">
+          <BeachEventMainInfoWrapper
+            id="main-info"
+          />
+          <!-- <BeachEventInfraWrapper
+            id="infra"
+          /> -->
+          <BeachEventAboutWrapper
+            id="about"
+          />
+          <BeachEventTransportWrapper
+            id="pt"
+          />
+          <client-only>
+            <BeachEventReviewsWrapper
               id="reviews"
-              :typeId="eventData.mainData.eventId"
-              :data="eventData.reviews"
-              :type="'event'"
-              class="beach-page__cardless-area"
             />
           </client-only>
+        </main>
 
-				</main>
-
-				<aside class="two-part-layout__right">
-					<BeachEventMapWeather :data="eventData.sideMapWeatherData"
-                                :mapData="eventData.map_entity"
-                                v-if="eventData.sideMapWeatherData.pos.length > 0"
-                                class="beach-event__map-weather__desktop" />
-					<AnnouncementCard :data="eventData.announcementData" />
-				</aside>
-
-			</div>
-		</div>
-		<div class="main-page__white-wrapper beach-event__visitor-pics-wrapper">
-      <client-only>
-        <BeachEventVisitorPics
-          id="visitor-pics"
-          :data="eventData.visitorPics"
-          :type="'event'"
-          :typeId="eventData.mainData.eventId"
-        />
-      </client-only>
-		</div>
-		<BeachSliderArea
-      id="other-events"
-      class="beach-event__similar-beaches"
-      :data="eventData.otherEvents"
-      v-if="eventData.otherEvents.beachNumber > 0"
-    />
-    <div class="main-page__white-wrapper"
-         v-if="eventData.another_places && eventData.another_places.beachNumber > 0">
-      <BeachSliderArea
-        :data="eventData.another_places"
-        class="main-page__family-rest"
-        outlink="https://nash.travel/hotel"
-      />
+        <aside class="two-part-layout__right">
+          <BeachEventWeatherWrapper />
+          <BeachEventAnnouncemetWrapper />
+        </aside>
+      </div>
     </div>
-    <div class="main-page__white-wrapper"
-         v-if="eventData.hotels && eventData.hotels.beachNumber > 0">
-      <BeachSliderArea
-        :data="eventData.hotels"
-        class="main-page__family-rest"
-        outlink="https://nash.travel/hotel"
+    <client-only>
+      <BeachEventVisitorWrapper
+        id="visitor-pics"
       />
-    </div>
-	</div>
+    </client-only>
+    <BeachEventAnotherPlace />
+    <BeachEventHotels />
+  </div>
 </template>
 
 <script>
-  import { mapGetters } from 'vuex';
+import { mapGetters } from 'vuex';
+import BeachEventHotels from '~/components/pages/beach-event/BeachEventHotels';
+import BeachEventAnotherPlace from '~/components/pages/beach-event/BeachEventAnotherPlace';
+import BeachEventVisitorWrapper from '~/components/pages/beach-event/BeachEventVisitorWrapper';
+import BeachEventReviewsWrapper from '~/components/pages/beach-event/BeachEventReviewsWrapper';
+// import BeachEventInfraWrapper from '~/components/pages/beach-event/BeachEventInfraWrapper';
+import BeachEventTransportWrapper from '~/components/pages/beach-event/BeachEventTransportWrapper';
+import BeachEventWeatherWrapper from '~/components/pages/beach-event/BeachEventWeatherWrapper';
+import BeachEventHugeWrapper from '~/components/pages/beach-event/BeachEventHugeWrapper';
+import BeachEventSectionsWrapper from '~/components/pages/beach-event/BeachEventSectionsWrapper';
+import BeachEventSideButtonsWrapper from '~/components/pages/beach-event/BeachEventSideButtonsWrapper';
+import BeachEventMainInfoWrapper from '~/components/pages/beach-event/BeachEventMainInfoWrapper';
+import BeachEventAboutWrapper from '~/components/pages/beach-event/BeachEventAboutWrapper';
+import BeachEventAnnouncemetWrapper from '~/components/pages/beach-event/BeachEventAnnouncemetWrapper';
 
-	import BeachEventSections          from '~/components/pages/beach-event/BeachEventSections';
-	import SliderHugeBeachEventPage    from '~/components/pages/beach-event/SliderHugeBeachEventPage';
-	import BeachEventMapWeather        from '~/components/pages/beach-event/BeachEventMapWeather';
-	import BeachEventSideButtons       from '~/components/pages/beach-event/BeachEventSideButtons';
-	import BeachEventMainInfo          from '~/components/pages/beach-event/BeachEventMainInfo';
-	import BeachEventVisitorPics       from '~/components/pages/beach-event/BeachEventVisitorPics';
-	import BeachEventParkingsTransport from '~/components/pages/beach-event/BeachEventParkingsTransport';
-	import BeachEventAbout             from '~/components/pages/beach-event/BeachEventAbout';
-	import BeachEventReviews           from '~/components/pages/beach-event/BeachEventReviews';
-  import AnnouncementCard            from '~/components/global/AnnouncementCard';
-  import BeachSliderArea             from '~/components/global/BeachSliderArea';
+export default {
+  components: {
+    BeachEventHotels,
+    BeachEventAnotherPlace,
+    BeachEventVisitorWrapper,
+    BeachEventReviewsWrapper,
+    // BeachEventInfraWrapper,
+    BeachEventTransportWrapper,
+    BeachEventWeatherWrapper,
+    BeachEventHugeWrapper,
+    BeachEventSectionsWrapper,
+    BeachEventSideButtonsWrapper,
+    BeachEventMainInfoWrapper,
+    BeachEventAboutWrapper,
+    BeachEventAnnouncemetWrapper,
+  },
+  async asyncData({ $axios, route }) {
+    const { data } = await $axios.$get(`seo/meta?url=/event/${route.params.id}`);
+    return { meta: data };
+  },
+  data() {
+    return {
+      favorite: false,
+    };
+  },
 
-	export default {
-		components: {
-			BeachEventSections,
-			SliderHugeBeachEventPage,
-			AnnouncementCard,
-			BeachEventMainInfo,
-			BeachSliderArea,
-			BeachEventAbout,
-			BeachEventParkingsTransport,
-			BeachEventReviews,
-			BeachEventVisitorPics,
-			BeachEventMapWeather,
-			BeachEventSideButtons,
-			// BeachQuickData
-		},
-    data() {
-			return {
-				favorite: false,
-			}
-		},
-    async asyncData({ $axios, route }) {
-      const { data } = await $axios.$get('seo/meta?url=/event/'+ route.params.id)
-      return { meta: data }
+  async fetch({ store, params, redirect }) {
+    await store.dispatch('event/setDefaultState');
+    const res = await store.dispatch('event/getEvent', params.id);
+    if (res === 404) redirect('/404');
+    await store.dispatch('event/setMapEntity');
+  },
+  head() {
+    const stable = 'ПЛЯЖИ.РУ';
+    return {
+      title: this.meta.title || stable,
+      meta: [
+        { hid: 'description-event', name: 'description', content: this.meta.description || stable },
+        { hid: 'keywords-event', name: 'keywords', content: this.meta.keywords || stable },
+      ],
+    };
+  },
+  // beforeDestroy() {
+	// 	  // TODO Use favorites store instead
+  //   this.$bus.$off('pToggleFavorites');
+  // },
+  computed: {
+    ...mapGetters('event', [
+      'getWeatherData',
+      'getMapEntity',
+    ]),
+    // ...mapGetters(['mapEntity']),
+  },
+
+  mounted() {
+    // TODO Use favorites store instead
+    // this.$bus.$on('pToggleFavorites', () => {
+    //   this.favorite = !this.favorite;
+    // });
+
+    // if (this.eventData.mainData.eventId && this.$cookies.get(`favorites.events.${this.eventData.mainData.eventId}`)) {
+    //   this.favorite = true;
+    // }
+  },
+
+  methods: {
+    updateHeart() {
+      this.$bus.$emit('cToggleFavorites');
     },
-    head() {
-      const stable = 'ПЛЯЖИ.РУ'
-      return {
-        title: this.meta.title || stable,
-        meta: [
-          { hid: 'description-event', name: 'description', content: this.meta.description || stable },
-          { hid: 'keywords-event',    name: 'keywords',    content: this.meta.keywords || stable },
-        ]
-      }
-    },
-    beforeDestroy() {
-		  // TODO Use favorites store instead
-      this.$bus.$off('pToggleFavorites')
-    },
-
-    mounted() {
-      // TODO Use favorites store instead
-			this.$bus.$on('pToggleFavorites', () => {
-				this.favorite = !this.favorite;
-			})
-
-			if (this.eventData.mainData.eventId && this.$cookies.get(`favorites.events.${this.eventData.mainData.eventId}`)) {
-        this.favorite = true;
-      }
-		},
-
-		methods: {
-			updateHeart() {
-				this.$bus.$emit('cToggleFavorites');
-			}
-		},
-
-		async fetch({ store, params, redirect }) {
-			let res = await store.dispatch('event/getEvent', params.id);
-			if (res == 404) redirect('/404');
-		},
-
-		computed: {
-      ...mapGetters('event', ['eventData']),
-      ...mapGetters(['mapEntity']),
-		},
-    async created() {
-      this.eventData.map_entity = this.mapEntity;
-    }
-	}
+  },
+};
 </script>

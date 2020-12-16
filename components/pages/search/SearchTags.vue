@@ -2,7 +2,7 @@
   <div class="search-page__tags">
     <div class="search-page__desktop-tablet custom-container">
       <SearchTag
-        v-for="(tag, i) in tags"
+        v-for="(tag, i) in getTags"
         :key="i"
         :tag="tag"
       />
@@ -11,7 +11,7 @@
       <div v-swiper:mySwiper="swiperOption">
         <div class="swiper-wrapper">
           <SearchTag
-            v-for="(tag, i) in tags"
+            v-for="(tag, i) in getTags"
             :key="i"
             class="swiper-slide"
             :tag="tag"
@@ -23,15 +23,19 @@
 </template>
 
 <script>
-import Vue from 'vue';
+import { mapGetters } from 'vuex';
 import SearchTag from '~/components/pages/search/SearchTag';
 
 export default {
-
   components: {
     SearchTag,
   },
-  props: ['tags'],
+  // props: {
+  //   tags: {
+  //     type: Array,
+  //     required: true,
+  //   },
+  // },
 
   data() {
     return {
@@ -45,21 +49,27 @@ export default {
     };
   },
 
-  // beforeMount() {
-  //   if (process.browser) {
-  //     require('swiper/dist/css/swiper.css');
-  //     const VueAwesomeSwiper = require('vue-awesome-swiper/dist/ssr');
-  //     Vue.use(VueAwesomeSwiper);
-  //   }
-  // },
+  computed: {
+    ...mapGetters('search', [
+      'getTags',
+    ]),
+  },
+
+  watch: {
+    getTags(v) {
+      if (!v.length) {
+        this.$router.push('/');
+      }
+    },
+  },
 
   mounted() {
     this.mySwiper.init(this.swiperOption);
 
-    this.$bus.$on('updateSearchTagsSlider', () => { if (this.mySwiper) this.mySwiper.update(); });
+    // this.$bus.$on('updateSearchTagsSlider', () => { if (this.mySwiper) this.mySwiper.update(); });
   },
-  beforeDestroy() {
-    this.$bus.$off('updateSearchTagsSlider');
-  },
+  // beforeDestroy() {
+  //   this.$bus.$off('updateSearchTagsSlider');
+  // },
 };
 </script>

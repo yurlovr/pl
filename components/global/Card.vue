@@ -201,7 +201,7 @@
           v-else
           class="custom-card__location"
           :style="{ 'font-size': data.beach ? '10px' : '12px' }"
-        >{{ data.geo_string }}</a>
+        >{{ data.geo_string.replace(',', '') }}</a>
         <div v-if="!data.another_place">
           <a
             v-if="data.price"
