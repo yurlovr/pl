@@ -52,6 +52,7 @@ function defaultState() {
     position: [],
     infra: null,
     mapEntity: null,
+    error: false,
   };
 }
 
@@ -90,64 +91,71 @@ export const mutations = {
     };
   },
   SET_EVENT: (state, payload) => {
-    state.event = payload;
-    const { item } = payload.data;
+    // state.event = payload;
+    const { event, city, beach } = payload;
+    const eventItem = event?.data?.item;
+    const cityItem = city?.data?.item;
+    const beachItem = beach?.data?.item;
+    if (!eventItem && !cityItem && !beachItem) {
+      state.error = true;
+    }
     // убрать в маппер
+    const { WEATHER } = eventItem;
+
     const sideMapWeatherData = {
-      title: item.BEACH ? item.BEACH.NAME : null,
-      date: item.BEACH ? item.BEACH.WEATHER.DATE : null,
-      waterTemp: item.BEACH?.WEATHER?.TEMP?.WATER,
-      airTemp: item.BEACH?.WEATHER?.TEMP?.AIR,
-      sunriseTime: item.BEACH?.WEATHER?.SUNRISE,
-      sunsetTime: item.BEACH?.WEATHER?.SUNSET,
-      windSpeed: item.BEACH?.WEATHER?.WIND,
-      humidity: item.BEACH?.WEATHER?.HUMIDITY,
-      precipitation: item.BEACH?.WEATHER?.PRECIPITATION,
+      title: cityItem?.NAME || '',
+      date: WEATHER?.WEATHER_DATE || '',
+      waterTemp: WEATHER?.TEMP_WATER || '',
+      airTemp: WEATHER?.TEMP_AIR || '',
+      sunriseTime: WEATHER?.SUNRISE || '',
+      sunsetTime: WEATHER?.SUNSET || '',
+      windSpeed: WEATHER?.WIND || '',
+      humidity: WEATHER?.HUMIDITY || '',
+      precipitation: WEATHER?.PRECIPITATION || '',
     };
     const about = {
       title: 'О мероприятии',
-      about: item.DESCRIPTION,
+      about: eventItem.DESCRIPTION,
     };
 
     const mainInfo = {
-      title: item.NAME,
-      date: dataAndTimeTransform(state.event.data.item.ACTIVE_FROM, state.event.data.item.ACTIVE_TO, 'date'),
-      likes: item.COUNT_FAVORITES,
-      location: item.BEACH?.CITY?.NAME,
-      locationId: item.BEACH?.CITY?.ID,
-      eventId: item.ID,
-      price: item.PRICE || null,
-      beachSeabedType: item.BEACH?.PARAMETERS?.P_BOTTOM?.NAME,
-      time: item.EVENT_TIME ? item.EVENT_TIME : dataAndTimeTransform(item.ACTIVE_FROM, item.ACTIVE_TO, 'time'),
+      title: eventItem.NAME,
+      date: dataAndTimeTransform(eventItem.ACTIVE_FROM, eventItem.ACTIVE_TO, 'date'),
+      likes: eventItem.COUNT_FAVORITES,
+      location: cityItem?.NAME,
+      locationId: cityItem?.CITIES,
+      eventId: eventItem.ID,
+      price: eventItem.PRICE || null,
+      beachSeabedType: beachItem.PARAMETERS?.P_BOTTOM?.NAME,
+      time: eventItem.EVENT_TIME ? eventItem.EVENT_TIME : dataAndTimeTransform(eventItem.ACTIVE_FROM, eventItem.ACTIVE_TO, 'time'),
     };
 
-    const parkings = item.BEACH.INFRASTRUCTURES.filter((v) => v.CODE === 'parkovka').map((_, i, parkings) => (
-      {
-        pos: parkings[i].COORDINATES ? parkings[i].COORDINATES.split(',').map(Number) : [],
-        title: parkings[i].DESCRIPTION,
-        type: 'Автомобильная парковка',
-        mode: '',
-        address: '',
-        price: '',
-        iconMap: parkings[i].ICON_ON_MAP,
-        icon: parkings[i].ICON,
-      }
-    ));
-    const stops = item.BEACH.INFRASTRUCTURES.filter(
-      (v) => v.CODE === 'ostanovki-obshchestvennogo-transporta')
+    const parkings = beachItem.INFRASTRUCTURES.filter((v) => v.CODE === 'parkovka')
+      .map((_, i, parkings) => (
+        {
+          pos: parkings[i].COORDINATES ? parkings[i].COORDINATES.split(',').map(Number) : [],
+          title: parkings[i].DESCRIPTION,
+          type: 'Автомобильная парковка',
+          mode: '',
+          address: '',
+          price: '',
+          iconMap: parkings[i].ICON_ON_MAP,
+          icon: parkings[i].ICON,
+        }
+      ));
+    const stops = beachItem.INFRASTRUCTURES.filter((v) => v.CODE === 'ostanovki-obshchestvennogo-transporta')
       .map((_, i, stops) => (
         {
           pos: stops[i].COORDINATES ? stops[i].COORDINATES.split(',').map(Number) : [],
           title: stops[i].DESCRIPTION,
           buses: '',
           taxi: '',
-        }
-      ));
+        }));
     const hugeSlider = {
-      title: item.NAME,
+      title: eventItem.NAME,
       isBeachClosed: false,
-      pics: item.PHOTOS.reference.map((e) => e.path),
-      medium_pics: item.PHOTOS.medium.map((e) => e.path),
+      pics: eventItem.PHOTOS.reference.map((e) => e.path),
+      medium_pics: eventItem.PHOTOS.medium.map((e) => e.path),
       goldMedal: null,
       blueMedal: null,
     };
@@ -156,28 +164,29 @@ export const mutations = {
       hash: 'main-info',
     });
 
-    state.infra = item.BEACH.INFRASTRUCTURES
+    state.infra = beachItem.INFRASTRUCTURES
       .filter((v) => v.CODE !== 'parkovka' && v.CODE !== 'ostanovki-obshchestvennogo-transporta')
       .map((item) => ({
         title: item.NAME,
         pic: item.ICON,
+        id: item.ID,
       }));
 
-    // if (state.infra.length) {
-    //   state.sections = state.sections.concat({
-    //     title: 'Инфраструктура',
-    //     hash: 'infra',
-    //   });
-    // }
+    if (state.infra.length) {
+      state.sections = state.sections.concat({
+        title: 'Инфраструктура',
+        hash: 'infra',
+      });
+    }
 
-    state.position = item.BEACH && item.BEACH.COORDINATES !== ''
-      ? item.BEACH.COORDINATES.split(',').map((v) => parseFloat(v))
+    state.position = beachItem.COORDINATES
+      ? beachItem.COORDINATES.split(',').map((v) => parseFloat(v))
       : [];
-    state.email = item.BEACH?.CONTACT?.EMAIL;
-    state.telegram = item.CONTACT?.TELEGRAM;
+    state.email = beachItem?.CONTACT?.EMAIL;
+    state.telegram = beachItem?.CONTACT?.TELEGRAM;
     state.parkings = {
-      title: item.BEACH?.NAME,
-      pos: item.BEACH && item.BEACH.COORDINATES !== '' ? item.BEACH.COORDINATES.split(',')
+      title: beachItem.NAME,
+      pos: beachItem.COORDINATES ? beachItem.COORDINATES.split(',')
         .map((v) => parseFloat(v)) : null,
       auto: parkings,
       bus: stops,
@@ -304,17 +313,22 @@ export const actions = {
   setDefaultState({ commit }) {
     commit('SET_DEFAULT_STATE');
   },
-  async getEvent({ commit, state }, id) {
-    let error;
-    const resp = await this.$axios.$get(`/event/item?id=${id}`).catch(e => {
-      error = 404;
-      return {};
-    });
+  async getEvent({ commit }, id) {
+    let event = null;
+    let beach = null;
+    let city = null;
+    let eventId = null;
+    try {
+      event = await this.$axios.$get(`/event/item?id=${id}`);
+      const { BEACH, CITIES, ID } = event.data.item;
+      eventId = ID;
+      beach = await this.$axios.$get(`/beach/item?id=${BEACH}`);
+      city = await this.$axios.$get(`/city/item?id=${CITIES}`);
+    } catch (error) {
+      console.log(error);
+    }
+    commit('SET_EVENT', { event, beach, city });
 
-    if (error) return error;
-    commit('SET_EVENT', resp);
-
-    const eventId = state.event.data.item.ID;
     commit('SET_EVENT_ID', eventId);
   },
   async setAnnouncement({ commit }, page) {
@@ -391,4 +405,5 @@ export const getters = {
   getVisitorPics: (state) => state.visitorPics,
   getInfra: (state) => state.infra,
   getMapEntity: (state) => state.mapEntity,
+  getError: (state) => state.error,
 };

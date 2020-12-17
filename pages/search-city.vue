@@ -189,18 +189,6 @@ export default {
     ...mapGetters('search', [
       'getSearchResultCity',
     ]),
-    // tags() {
-    //   return this.getSearchResultCity && this.getSearchResultCity.list.length
-    //     ? [{
-    //       param: 'cities',
-    //       value: {
-    //         title: this.getSearchResultCity.list[0].location,
-    //       },
-    //       default: '',
-    //       type: 'select',
-    //     }]
-    //     : null;
-    // },
   },
 
   watchQuery: ['city', 'page', 'count'],

@@ -18,14 +18,15 @@
             class="swiper-slide"
             :class="{ active : section.hash === activeSectionHash }"
           >
-            <nuxt-link
-              :to="{path: '#'+section.hash, hash: '#'+section.hash}"
+            <a
+              :href="`#${section.hash}`"
               class="slider-weather__month beach-page-sections__section"
               :class="{ active : section.hash == activeSectionHash }"
               :style="{ 'margin-right': sections.length <= 8 ? '15px' : '' }"
+              @click.prevent="goTo(`#${section.hash}`)"
             >
               <span>{{ section.title }}</span>
-            </nuxt-link>
+            </a>
           </div>
         </div>
       </div>
@@ -55,6 +56,7 @@ export default {
       },
       margin: 300,
       atTop: true,
+      dontScroll: true,
     };
   },
 
@@ -63,7 +65,7 @@ export default {
       this.mySwiper.init(this.swiperOption);
     }
 
-    window.addEventListener('scroll', this.onScroll, false);
+    window.addEventListener('scroll', this.onScroll, );
     window.addEventListener('scroll', this.onResize, false);
     this.onResize();
     // this.onScroll();
@@ -75,6 +77,12 @@ export default {
 
   methods: {
     onScroll() {
+      if (this.dontScroll) {
+        setTimeout(() => {
+          this.dontScroll = false;
+        }, 100);
+        return;
+      }
       let bounding;
       if (this.sections) {
         for (let i = 0; i < this.sections.length; i++) {
@@ -104,7 +112,16 @@ export default {
     onResize() {
       if (window.innerWidth > 500) this.margin = 300;
       else this.margin = 200;
-      // this.onScroll();
+      this.onScroll();
+    },
+    goTo(hash) {
+      const el = document.querySelector(hash);
+      this.dontScroll = true;
+      if (this.atTop) {
+        this.atTop = false;
+      }
+      el.scrollIntoView({ block: 'center', behavior: 'smooth' });
+      this.activeSectionHash = hash.replace('#', '');
     },
   },
 };

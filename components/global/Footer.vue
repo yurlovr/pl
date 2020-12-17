@@ -123,9 +123,9 @@ export default {
     }),
   },
   created() {
-    this.$axios.$get('settings/list').then(res => {
-      this.social_links = res.data.list.filter(_ =>!_.CODE.includes('mobile'));
-    });
+    // this.$axios.$get('settings/list').then(res => {
+    //   this.social_links = res.data.list.filter(_ =>!_.CODE.includes('mobile'));
+    // });
   },
   methods: {
     ...mapActions('catalog', [

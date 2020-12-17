@@ -1,5 +1,8 @@
 <template>
-  <section class="two-part-layout__card beach-page__quick-data-wrapper">
+  <section
+    id="infra"
+    class="two-part-layout__card beach-page__quick-data-wrapper"
+  >
     <div class="beach-page__quick-data">
       <h2 class="two-part-layout__card__title beach-page__quick-data__title">{{ title }}</h2>
       <div class="beach-page__quick-data__items" :class="{ active: open || data && data.length && data.length <= 4 }">

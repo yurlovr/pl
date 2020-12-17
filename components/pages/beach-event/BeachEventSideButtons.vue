@@ -80,7 +80,7 @@ export default {
   props: {
     dontShowPave: {
       type: Boolean,
-      required: true,
+      default: false,
     },
     data: {
       type: Object,

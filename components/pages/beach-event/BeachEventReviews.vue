@@ -1,5 +1,6 @@
 <template>
   <section
+    id="reviews"
     class="beach-event__reviews"
     :class="{ empty: data && !data.length }"
   >

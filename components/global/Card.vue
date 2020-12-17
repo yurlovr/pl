@@ -6,7 +6,7 @@
         :to="{ path: data.humanLink ? data.humanLink : ( data.mainLink ? data.mainLink : '#')}"
         class="custom-card__link"
       >
-        <img
+        <!-- <img
           v-if="data.custom_photo"
           v-show="picLoaded"
           :src="data.pic"
@@ -27,7 +27,26 @@
           v-show="!picLoaded"
           class="custom-card__pic"
           src="~/static/pics/global/pics/slider_height_placeholder.png"
+        > -->
+        <img
+          v-if="data.custom_photo"
+          :src="data.pic"
+          alt="Фото"
+          class="custom-card__pic"
         >
+        <img
+          v-else
+          v-lazy-load
+          :data-src="data.pic"
+          alt="Фото"
+          class="custom-card__pic"
+        >
+        <div class="custom-card__pic custom-card__pic-placeholder">
+          <img
+            class="custom-card__pic"
+            src="~/static/pics/global/pics/slider_height_placeholder.png"
+          >
+        </div>
       </nuxt-link>
       <!-- <a
         v-if="!data.another_place"
@@ -86,9 +105,7 @@
           class="custom-card__pic"
           src="~/static/pics/global/pics/slider_height_placeholder.png"
         >
-        <!-- <div v-show="!picLoaded" class="custom-card__pic custom-card__pic-placeholder" >
-          <span class="custom-card__pic-placeholder-text">загрузка изображения</span>
-        </div> -->
+
       </a>
       <div v-if="data.tempWater !== undefined && showTemp !== false" class="custom-card__temp-area">
         <img

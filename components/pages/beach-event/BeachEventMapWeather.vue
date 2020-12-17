@@ -26,6 +26,7 @@
       </div>
     </div>
     <Weather
+      v-if="showWeatherBlock"
       :weather="beach ? data : data.weather"
     />
   </div>
@@ -46,6 +47,16 @@ export default {
       zoom: 15,
       chosenObject: -1,
     };
+  },
+
+  computed: {
+    showWeatherBlock() {
+      if (this.beach) {
+        // поправить для пляжа, так как нужно проверять определенные свойства
+        return !!Object.keys(this.data).filter((key) => this.data[key]).length;
+      }
+      return !!Object.keys(this.data.weather).filter((key) => this.data.weather[key]).length;
+    },
   },
 
   async mounted() {

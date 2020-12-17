@@ -179,9 +179,10 @@ export default {
       required: true,
     },
   },
+
   methods: {
     precipitationText(type) {
-      switch (type) {
+      switch (+type) {
         case 0:
           return 'Без осадков';
         case 0.25:

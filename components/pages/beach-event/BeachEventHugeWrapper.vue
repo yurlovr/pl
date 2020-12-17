@@ -1,5 +1,6 @@
 <template>
   <SliderHugeBeachEventPage
+    v-if="data"
     id="gallery"
     :data="data"
   />

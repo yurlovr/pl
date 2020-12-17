@@ -1,5 +1,8 @@
 <template>
-  <section class="two-part-layout__card">
+  <section
+    id="main-info"
+    class="two-part-layout__card"
+  >
     <div class="beach-event__main-info">
       <div class="search-page__map-area__card__title-area beach-event__main-info__title-area">
         <div class="beach-event__main-info__title-area__left">

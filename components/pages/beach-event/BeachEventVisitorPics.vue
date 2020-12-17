@@ -1,5 +1,6 @@
 <template>
   <div
+    id="visitor-pics"
     class="beach-event__visitor-pics custom-container"
     :class="{ empty: data && data.length === 0 }"
   >

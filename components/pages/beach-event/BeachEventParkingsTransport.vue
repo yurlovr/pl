@@ -1,6 +1,7 @@
 <template>
   <div
     v-if="data.auto.length || data.bus.length"
+    id="pt"
     class="beach-event__pt-wrapper"
   >
     <section class="two-part-layout__card">

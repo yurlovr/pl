@@ -1,5 +1,8 @@
 <template>
-  <div class="slider-beach-event">
+  <div
+    id="gallery"
+    class="slider-beach-event"
+  >
     <div class="slider-beach-event__left">
       <div class="slider-beach-event__left__inner">
         <div class="position-absolute d-flex icon-group">

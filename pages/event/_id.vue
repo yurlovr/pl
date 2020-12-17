@@ -3,9 +3,7 @@
     <div class="beach-page__container custom-container">
       <client-only>
         <BeachEventSectionsWrapper />
-        <BeachEventHugeWrapper
-          id="gallery"
-        />
+        <BeachEventHugeWrapper />
       </client-only>
 
       <div class="custom-container-inner">
@@ -13,22 +11,12 @@
       </div>
       <div class="two-part-layout">
         <main class="two-part-layout__left">
-          <BeachEventMainInfoWrapper
-            id="main-info"
-          />
-          <!-- <BeachEventInfraWrapper
-            id="infra"
-          /> -->
-          <BeachEventAboutWrapper
-            id="about"
-          />
-          <BeachEventTransportWrapper
-            id="pt"
-          />
+          <BeachEventMainInfoWrapper />
+          <BeachEventInfraWrapper />
+          <BeachEventAboutWrapper />
+          <BeachEventTransportWrapper />
           <client-only>
-            <BeachEventReviewsWrapper
-              id="reviews"
-            />
+            <BeachEventReviewsWrapper />
           </client-only>
         </main>
 
@@ -39,9 +27,7 @@
       </div>
     </div>
     <client-only>
-      <BeachEventVisitorWrapper
-        id="visitor-pics"
-      />
+      <BeachEventVisitorWrapper />
     </client-only>
     <BeachEventAnotherPlace />
     <BeachEventHotels />
@@ -54,7 +40,7 @@ import BeachEventHotels from '~/components/pages/beach-event/BeachEventHotels';
 import BeachEventAnotherPlace from '~/components/pages/beach-event/BeachEventAnotherPlace';
 import BeachEventVisitorWrapper from '~/components/pages/beach-event/BeachEventVisitorWrapper';
 import BeachEventReviewsWrapper from '~/components/pages/beach-event/BeachEventReviewsWrapper';
-// import BeachEventInfraWrapper from '~/components/pages/beach-event/BeachEventInfraWrapper';
+import BeachEventInfraWrapper from '~/components/pages/beach-event/BeachEventInfraWrapper';
 import BeachEventTransportWrapper from '~/components/pages/beach-event/BeachEventTransportWrapper';
 import BeachEventWeatherWrapper from '~/components/pages/beach-event/BeachEventWeatherWrapper';
 import BeachEventHugeWrapper from '~/components/pages/beach-event/BeachEventHugeWrapper';
@@ -70,7 +56,7 @@ export default {
     BeachEventAnotherPlace,
     BeachEventVisitorWrapper,
     BeachEventReviewsWrapper,
-    // BeachEventInfraWrapper,
+    BeachEventInfraWrapper,
     BeachEventTransportWrapper,
     BeachEventWeatherWrapper,
     BeachEventHugeWrapper,
@@ -92,8 +78,8 @@ export default {
 
   async fetch({ store, params, redirect }) {
     await store.dispatch('event/setDefaultState');
-    const res = await store.dispatch('event/getEvent', params.id);
-    if (res === 404) redirect('/404');
+    await store.dispatch('event/getEvent', params.id);
+    if (store.getters['event/getError']) redirect('/404');
     await store.dispatch('event/setMapEntity');
   },
   head() {
@@ -110,12 +96,13 @@ export default {
 	// 	  // TODO Use favorites store instead
   //   this.$bus.$off('pToggleFavorites');
   // },
+
   computed: {
     ...mapGetters('event', [
       'getWeatherData',
       'getMapEntity',
+      'getError',
     ]),
-    // ...mapGetters(['mapEntity']),
   },
 
   mounted() {

@@ -1,6 +1,7 @@
 <template>
   <section
     v-if="data.about"
+    id="about"
     class="two-part-layout__card"
   >
     <h2 class="two-part-layout__card__title beach-event__about__title">

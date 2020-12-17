@@ -136,7 +136,7 @@ export const actions = {
       // anyPlaces,
     ] = await Promise.all([
       popularBeachReq,
-      this.$axios.$get('/beach/clusters/'),
+      // this.$axios.$get('/beach/clusters/'),
       // this.$axios.$get('/hotel/list?count=10'),
     ]);
     commit('SET_POPULAR_BEACH', popularBeach);
