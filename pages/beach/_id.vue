@@ -10,7 +10,6 @@
 
         <!-- Main gallery slider -->
         <SliderHugeBeachEventPage
-          id="gallery"
           :data="beach"
           @call-modal="changeModalState"
         />
@@ -30,7 +29,6 @@
         <main class="two-part-layout__left">
           <!-- Main info -->
           <BeachEventMainInfo
-            id="main-info"
             :data="beach"
           />
 
@@ -52,7 +50,6 @@
           <!-- Infrastructure -->
           <BeachQuickData
             v-if="beach.infrastructures.length > 0"
-            id="infra"
             :title="'Инфраструктура пляжа'"
             :data="beach.infrastructures"
             action="service"
@@ -70,7 +67,6 @@
           <!-- About -->
           <BeachEventAbout
             v-if="beach.desc && beach.desc.length > 1"
-            id="about"
             :data="{about: beach.desc, title: 'О пляже'}"
           />
 
@@ -85,13 +81,14 @@
           />
 
           <!-- Services -->
-          <BeachQuickData
-            v-if="beach.services.length > 0"
-            id="services"
-            :title="'Услуги и аренда'"
-            :data="beach.services"
-            action="service"
-          />
+          <div id="services">
+            <BeachQuickData
+              v-if="beach.services.length > 0"
+              :title="'Услуги и аренда'"
+              :data="beach.services"
+              action="service"
+            />
+          </div>
 
           <!-- Transport map  -->
           <!--          <BeachEventParkingsTransport-->
@@ -112,7 +109,6 @@
           <!-- Events Slider -->
           <BeachEvents
             v-if="getEvents.cardData.length > 0"
-            id="events"
             :show-temp="false"
             :data="getEvents"
             class="beach-page__cardless-area"
@@ -121,7 +117,6 @@
           <!-- Places -->
           <BeachBarsNRestos
             v-if="barsNRestos.length > 0"
-            id="barsNRestos"
             :data="barsNRestos"
             class="beach-page__cardless-area"
           />
@@ -137,7 +132,6 @@
           <client-only>
             <!-- Testimonials -->
             <BeachEventReviews
-              id="reviews"
               :type-id="beach.beachId"
               :data="reviews"
               :type="'beach'"
@@ -195,21 +189,19 @@
     <div class="main-page__white-wrapper beach-event__visitor-pics-wrapper">
       <client-only>
         <BeachEventVisitorPics
-          id="visitor-pics"
           :data="visitorPics"
           :type="'beach'"
           :type-id="beach.beachId"
         />
       </client-only>
     </div>
-
-    <BeachSliderArea
-      v-if="getSimilarBeaches && getSimilarBeaches.beachNumber"
-      id="similar-beaches"
-      class="beach-event__similar-beaches"
-      :data="getSimilarBeaches"
-    />
-
+    <div id="similar-beaches">
+      <BeachSliderArea
+        v-if="getSimilarBeaches && getSimilarBeaches.beachNumber"
+        class="beach-event__similar-beaches"
+        :data="getSimilarBeaches"
+      />
+    </div>
     <iframe360
       v-if="show_pano"
       :url="beach.panorama"

@@ -5,12 +5,12 @@
       class="search__bg"
       @click="updateParamsShown(false)"
     />
-    <div class="header__bg" :class="{ active : (bgAndBarShown || tempBgAndBarShown) }" />
+    <!-- <div class="header__bg" :class="{ active : (bgAndBarShown || tempBgAndBarShown) }" /> -->
     <div class="header__inner custom-container">
       <nuxt-link to="/">
         <img src="~/static/pics/global/svg/logo-white.svg" alt="НашПляж">
       </nuxt-link>
-      <Search v-show="(bgAndBarShown || tempBgAndBarShown)" ref="searchGeneral" />
+      <!-- <Search v-show="(bgAndBarShown || tempBgAndBarShown)" ref="searchGeneral" /> -->
       <div class="header__left">
         <button
           v-show="(bgAndBarShown || tempBgAndBarShown)"

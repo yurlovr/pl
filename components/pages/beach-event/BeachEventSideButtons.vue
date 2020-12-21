@@ -1,6 +1,12 @@
 <template>
-  <div class="beach-event__side-buttons">
-    <transition name="bounce">
+  <div
+    v-if="data.email || data.telegram || data.pos.length && !dontShowPave"
+    class="beach-event__side-buttons"
+  >
+    <transition
+      v-if="data.email"
+      name="bounce"
+    >
       <a
         v-show="showShare"
         :href="`mailto:${data.email || ''}?subject=Ссылка%20на%20пляж%20|%20Наш%20пляж&body=${link}`"

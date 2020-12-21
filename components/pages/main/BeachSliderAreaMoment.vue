@@ -1,12 +1,14 @@
 <template>
-  <div>
+  <div
+    class="main-page__popular-beaches"
+  >
     <div
-      v-if="!getCitiesTop"
+      v-if="!getBeachesTop"
       class="empty"
     />
-    <Cities
+    <BeachSliderArea
       v-else
-      :data="getCitiesTop"
+      :data="getBeachesTop"
     />
   </div>
 </template>
@@ -16,21 +18,21 @@ import { mapGetters, mapActions } from 'vuex';
 
 export default {
   components: {
-    Cities: () => import('./Cities'),
+    BeachSliderArea: () => import('~/components/global/BeachSliderArea'),
   },
   async fetch() {
-    if (!this.getCitiesTop) {
-      await this.setCities();
+    if (!this.getBeachesTop) {
+      await this.getMainPageData();
     }
   },
   computed: {
     ...mapGetters('main', [
-      'getCitiesTop',
+      'getBeachesTop',
     ]),
   },
   methods: {
     ...mapActions('main', [
-      'setCities',
+      'getMainPageData',
     ]),
   },
 };

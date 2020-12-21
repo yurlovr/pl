@@ -1,9 +1,17 @@
 <template>
   <div
-    v-if="getFamilyRest"
     class="main-page__white-wrapper"
   >
+    <BlockPlug
+      v-if="!getFamilyRest"
+      class="main-page__family-rest"
+      :height="621"
+      :text="PLUG_TITLE.FAMILY_REST"
+      :class-name="'main-page__beach-slider-area custom-container'"
+      :show-loader="true"
+    />
     <BeachSliderArea
+      v-else
       :data="getFamilyRest"
       class="main-page__family-rest"
     />
@@ -12,10 +20,17 @@
 
 <script>
 import { mapGetters, mapActions } from 'vuex';
+import { PLUG_TITLE } from '~/const/const';
 
 export default {
   components: {
     BeachSliderArea: () => import('~/components/global/BeachSliderArea'),
+    BlockPlug: () => import('~/components/global/BlockPlug'),
+  },
+  data() {
+    return {
+      PLUG_TITLE,
+    };
   },
   async fetch() {
     if (!this.getFamilyRest) {

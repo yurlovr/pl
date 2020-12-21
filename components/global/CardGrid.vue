@@ -7,7 +7,7 @@
       class="card-grid__card"
     />
     <h4
-      v-show="data.list.length === 0"
+      v-show="!data.list.length"
       class="favorites-page__empty favorites-page__empty--card-grid"
     >
       {{ emptyText ? emptyText : '' }}

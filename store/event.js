@@ -117,13 +117,12 @@ export const mutations = {
       title: 'О мероприятии',
       about: eventItem.DESCRIPTION,
     };
-
     const mainInfo = {
       title: eventItem.NAME,
       date: dataAndTimeTransform(eventItem.ACTIVE_FROM, eventItem.ACTIVE_TO, 'date'),
       likes: eventItem.COUNT_FAVORITES,
       location: cityItem?.NAME,
-      locationId: cityItem?.CITIES,
+      locationId: cityItem?.ID,
       eventId: eventItem.ID,
       price: eventItem.PRICE || null,
       beachSeabedType: beachItem.PARAMETERS?.P_BOTTOM?.NAME,

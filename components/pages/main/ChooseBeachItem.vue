@@ -1,6 +1,6 @@
 <template>
   <nuxt-link
-    :to="{ path: '/search', query: { typeBeach: item.id}}"
+    :to="{ path: '/search1', query: { typeBeach: item.id, page: 1, count: COUNT_ELEMENTS_BEACH}}"
     class="main-page__choose-beach__card"
   >
     <img
@@ -13,12 +13,19 @@
 </template>
 
 <script>
+import { COUNT_ELEMENTS_BEACH } from '~/const/const';
+
 export default {
   props: {
     item: {
       type: Object,
       required: true,
     },
+  },
+  data() {
+    return {
+      COUNT_ELEMENTS_BEACH,
+    };
   },
 };
 </script>

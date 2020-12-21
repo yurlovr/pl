@@ -5,7 +5,7 @@
         Результаты поиска
       </h3>
       <div
-        v-if="getSearchResultCity"
+        v-if="getSearch"
         class="search-page__title-area__buttons"
       >
         <button
@@ -41,7 +41,7 @@
             alt="Вид: Карточки"
           >
         </button>
-        <button
+        <!-- <button
           v-if="showBeachesOrEvents === false"
           class="search-page__title-area__button"
           :class="{ active: modeOption === 'map' }"
@@ -57,7 +57,7 @@
             src="~/static/pics/search/map_gray.svg"
             alt="Вид: Карта"
           >
-        </button>
+        </button> -->
       </div>
     </div>
     <SearchTags />
@@ -81,22 +81,22 @@
       </button>
     </div> -->
     <div
-      v-if="!getSearchResultCity.list.length"
+      v-if="!getSearch"
       class="custom-container search-page__empty"
     >
       <NoSearchResult />
     </div>
     <CardGrid
       v-show="modeOption === 'card'"
-      v-if="getSearchResultCity"
+      v-if="getSearch"
       :per-page="COUNT_ELEMENTS_BEACH"
-      :data="getSearchResultCity"
+      :data="getSearch"
     />
     <search-horizontal-view
       v-show="modeOption === 'list'"
-      v-if="getSearchResultCity"
+      v-if="getSearch"
       :per-page="COUNT_ELEMENTS_BEACH"
-      :data="getSearchResultCity"
+      :data="getSearch"
     />
     <!-- <SearchMapArea
       v-show="mode_option == 'map'"
@@ -113,17 +113,22 @@ import SearchTags from '~/components/pages/search/SearchTags';
 import SearchMapArea from '~/components/pages/search/SearchMapArea';
 import CardGrid from '~/components/global/CardGrid';
 import NoSearchResult from '~/components/global/NoSearchResult';
-import SearchHorizontalView from '../components/pages/search/SearchHorizontalView';
+import SearchHorizontalView from '~/components/pages/search/SearchHorizontalView';
 import { COUNT_ELEMENTS_BEACH } from '~/const/const';
 
 export default {
-  name: 'SearchCity',
   components: {
     SearchHorizontalView,
     SearchTags,
     CardGrid,
     SearchMapArea,
     NoSearchResult,
+  },
+
+  beforeRouteLeave(to, from, next) {
+    this.setSeach(null);
+    this.setTags(null);
+    next();
   },
 
   async asyncData({ $axios, route }) {
@@ -136,7 +141,6 @@ export default {
   data() {
     return {
       showHorizontalView: true,
-      modeOption: 'list',
       showCardsOrMap: false, // cards: false, map: true
       mapShownForTheFirstTime: false,
       wait: false,
@@ -149,15 +153,11 @@ export default {
 
   async fetch({ store, route }) {
     const { query } = route;
-    if (!store.getters['search/getSearchResultCity']
-      || (store.getters['search/getSearchResultCity']
-        && store.getters['search/getSearchResultCity'].pagination.page !== +query.page
-      )
-      || (store.getters['search/getSearchResultCity']
-        && store.getters['search/getSearchResultCity'].list[0].locationId !== query.city
-      )) {
-      await store.dispatch('search/setSearchCityQuery', query);
-      store.dispatch('search/setTags', { city: query.city });
+    if (!store.getters['search/getSearch']
+      || (store.getters['search/getSearch']
+        && store.getters['search/getSearch'].pagination.page !== +query.page)) {
+      await store.dispatch('search/setSeach', query);
+      store.dispatch('search/setTags', { ...query });
     }
   },
 
@@ -177,24 +177,107 @@ export default {
   },
 
   computed: {
-    ...mapGetters('search', [
-      'getSearchResultCity',
+    ...mapGetters('search', {
+      getSearch: 'getSearch',
+      getRadiusIfCityExists: 'getRadiusIfCityExists',
+      tags: 'getTags',
+    }),
+    ...mapGetters([
+      'getTypeDisplay',
     ]),
+    // ...mapState('search', [
+    //   'searchParams',
+    //   'searchPageResultEventBackup',
+    //   'query',
+    //   'f_loaded',
+    // ]),
+
+    modeOption: {
+      get() {
+        return this.getTypeDisplay;
+      },
+      set(value) {
+        this.setTypeDisplay(value);
+      },
+    },
+
+    radius() {
+      return this.$route.query && this.$route.query.diameter ? this.$route.query.diameter : null;
+    },
   },
 
-  watchQuery: ['city', 'page', 'count'],
+  watchQuery: ['typeBeach', 'page', 'count'],
+
+  // watch: {
+  //   query(n, o) {
+  //     if (n != o && !this.wait) {
+  //       this.updateTags(n);
+  //       this.$bus.$emit('updateMap');
+  //     }
+  //   },
+
+  //   getSearchResult(n, o) {
+  //     this.$bus.$emit('updateMap', n);
+  //   },
+  // },
+
+  // created() {
+  //   if (this.updateQuery()) return;
+
+  //   this.wait = true;
+  //   this.updateTags();
+
+  //   if (this.tags.length > 0) {
+  //     this.search([this.last_coordinates, this.geo_locating]);
+  //   }
+  //   setTimeout(() => {
+  //     this.wait = false;
+  //   }, 10);
+  // },
 
   methods: {
+    // ...mapMutations('search', ['updateSearchParam', 'updateInput', 'showBeaches', 'showEvents']),
     ...mapActions('search', [
-      'setSearchCityQuery',
+      'search',
+      'searchQuery',
+      'setSeach',
+      'setTags',
     ]),
-
+    ...mapActions([
+      'setTypeDisplay'
+    ]),
     showHorizontal() {
       this.modeOption = 'list';
     },
     showCards() {
       this.modeOption = 'card';
     },
+
+    // showMap() {
+    //   this.mode_option = 'map';
+    //   if (!this.mapShownForTheFirstTime) {
+    //     this.mapShownForTheFirstTime = true;
+    //     this.$bus.$emit('updateScrollbar');
+    //   }
+    // },
+
+    showOnlyBeaches() {
+      console.log('showOnlyBeaches');
+      // this.showBeachesOrEvents = false;
+      // this.showBeaches();
+    },
+
+    showOnlyEvents() {
+      console.log('showOnlyEvents');
+      // this.mode_option = 'card';
+      // this.showBeachesOrEvents = true;
+      // this.showEvents();
+    },
+
+    // updateQuery() {
+    //   this.updateInput(this.$route.query.q || '');
+    //   this.searchQuery([this.last_coordinates, this.geo_locating]);
+    // },
   },
 };
 </script>

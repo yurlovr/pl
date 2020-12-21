@@ -30,12 +30,6 @@ export default {
   components: {
     SearchTag,
   },
-  // props: {
-  //   tags: {
-  //     type: Array,
-  //     required: true,
-  //   },
-  // },
 
   data() {
     return {

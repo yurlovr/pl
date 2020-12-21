@@ -1,6 +1,7 @@
 <template>
   <div>
-    <div v-swiper:mySwiper="swiperOption">
+    <div
+      v-swiper:mySwiper="swiperOption">
       <div
         v-if="slideData"
         class="swiper-wrapper"
@@ -79,6 +80,7 @@
 import { mapGetters, mapActions } from 'vuex';
 
 export default {
+
   props: {
     activeMonth: {
       type: Number,
@@ -134,11 +136,7 @@ export default {
       maxCharsInCityName: 12,
     };
   },
-  async fetch() {
-    if (!this.getWeather) {
-      await this.setWeather();
-    }
-  },
+
   computed: {
     ...mapGetters('main', [
       'getWeather',

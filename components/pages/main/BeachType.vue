@@ -10,7 +10,7 @@
         class="main-page__beach-type__card"
       >
         <nuxt-link
-          :to="{ path: '/search', query: {[card.filter[0].type] : card.filter[0].id}}"
+          :to="{ path: '/search1', query: {[card.filter[0].type] : card.filter[0].id, page: 1, count: COUNT_ELEMENTS_BEACH}}"
         >
           <img
             v-lazy-load
@@ -41,6 +41,7 @@
 
 <script>
 import { plural } from '~/helpers';
+import { COUNT_ELEMENTS_BEACH } from '~/const/const';
 
 export default {
   props: {
@@ -49,15 +50,18 @@ export default {
       required: true,
     },
   },
+  data() {
+    return {
+      COUNT_ELEMENTS_BEACH,
+    };
+  },
   methods: {
     plural,
-    // search(card) {
-    //   this.$bus.$emit('emptySearchParams');
-    //   for (let i = 0; i < card.filter.length; i++) {
-    //     this.$bus.$emit('updateSearchParam', card.filter[i]);
-    //   }
-    //   setTimeout(() => { this.$bus.$emit('search'); }, 1);
-    // },
   },
 };
 </script>
+<style lang="scss" scoped>
+.main-page__beach-type__card {
+  background-color: #278596;
+}
+</style>

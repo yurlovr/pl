@@ -17,7 +17,9 @@ export const state = () => ({
   // TODO Move to settings store module
   mobile_settings: [],
   isModalViewed: false,
-
+  addTags: null,
+  tags: null,
+  typeDisplay: 'list',
 });
 
 export const mutations = {
@@ -43,11 +45,26 @@ export const mutations = {
   SET_MODAL_VIEWED: (state, status = false) => {
     state.isModalViewed = status;
   },
+  SET_ADD_TAGS: (state, payload) => {
+    state.addTags = payload;
+  },
+  SET_TAGS: (state, payload) => {
+    state.tags = payload;
+  },
+  SET_TYPE_DISPLAY: (state, payload) => {
+    state.typeDisplay = payload;
+  },
 };
 
 export const actions = {
-  // async nuxtServerInit({ commit }, { app }) {
-//     const start = new Date().getTime();
+  async nuxtServerInit({ commit }, { app }) {
+    const start = new Date().getTime();
+    const [addTags, tags] = await Promise.all([
+      this.$axios.$get('/addtag/list?count=50'),
+      this.$axios.$get('/tag/list?count=10'),
+    ]);
+    commit('SET_ADD_TAGS', addTags.data.list);
+    commit('SET_TAGS', tags.data.list);
     // const [
 //       // beaches,
 //       events,
@@ -61,7 +78,7 @@ export const actions = {
 //       // this.$axios.$get('/map-entity/list?count=10'),
 //       // this.$axios.$get('/settings/list'),
 //     ]);
-//     console.log(`end load data ${new Date().getTime() - start}ms`);
+    console.log(`end load data ${new Date().getTime() - start}ms`);
 
 //     // commit('SET_ALL_BEACHES', beaches);
 //     // commit('SET_ALL_EVENTS', events);
@@ -75,6 +92,9 @@ export const actions = {
 //     commit('SET_MODAL_VIEWED', isModalViewed);
 
 //     commit('setLastUserPos', this.$cookies.get('last_coordinates') || {});
+  },
+  // setTypeDisplay({ commit }, payload) {
+  //   commit('SET_TYPE_DISPLAY', payload);
   // },
 };
 
@@ -107,4 +127,5 @@ export const getters = {
 
     return list.map(mapSettings);
   },
+  getTypeDisplay: (state) => state.typeDisplay,
 };

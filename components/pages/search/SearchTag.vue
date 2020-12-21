@@ -1,5 +1,8 @@
 <template>
-  <div class="search-page__tag">
+  <div
+    v-if="tag"
+    class="search-page__tag"
+  >
     <span>
       {{ tag.value.title }}
     </span>
@@ -22,7 +25,7 @@ export default {
   props: {
     tag: {
       type: Object,
-      required: true,
+      default: () => {},
     },
   },
 

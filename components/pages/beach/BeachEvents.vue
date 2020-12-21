@@ -1,5 +1,5 @@
 <template>
-	<section class="beach-page__events">
+	<section id="events" class="beach-page__events">
 		<div class="main-page__section-subtitle-area beach-page__events__title-area">
 			<h3 class="two-part-layout__card__title beach-page__events__title">Ближайшие мероприятия на пляже</h3>
 			<a :href="data.link" @click.prevent="$bus.goTo(data.link, $router)" class="main-page__section__subtitle-area__see-all beach-page__events__see-all">

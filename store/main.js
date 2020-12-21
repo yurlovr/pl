@@ -126,13 +126,14 @@ export const mutations = {
 
 export const actions = {
   async getMainPageData({ commit, state }) {
+    console.log('getMainPageData');
     const popularBeachReq = state.geo.id
       ? this.$axios.$get(`/beach/list?city=${state.geo.id}&count=10`)
       : this.$axios.$get('/beach/top?count=10');
 
     const [
       popularBeach,
-      map,
+      // map,
       // anyPlaces,
     ] = await Promise.all([
       popularBeachReq,
@@ -143,42 +144,50 @@ export const actions = {
     if (state.geo.id) {
       commit('SET_GEO_COUNT', state.beachesTop.data ? state.beachesTop.data.list.length : 0);
     }
-    commit('SET_MAP', map);
+    // commit('SET_MAP', map);
     // commit('SET_ANY_PLACES', anyPlaces);
   },
   async setChooseToYourWishes({ commit }) {
+    console.log('setChooseToYourWishes');
     const result = await this.$axios.$get(`/collectionList/item?id=${TAGS.CHOOSE_WISHES}`);
     commit('SET_CHOOSE_TO_YOUR_WISHES', result.data.item);
   },
   async setBanners({ commit }) {
+    console.log('setBanners');
     const banners = await this.$axios.$get('/banner/list');
     commit('SET_BANNERS', banners);
   },
   async setActiveRest({ commit }) {
+    console.log('setActiveRest');
     const active = await this.$axios.$get(`/collectionList/item?id=${TAGS.ACTIVE_REST}`);
     commit('SET_ACTIVE_REST', active);
   },
 
   async setWeather({ commit }) {
+    console.log('setWeather');
     const weather = await this.$axios.$get('/weather/list');
     commit('SET_WEATHER', weather);
   },
 
   async setEvents({ commit }) {
+    console.log('setEvents');
     const events = await this.$axios.$get('/event/list?count=10');
     commit('SET_EVENTS', events);
   },
 
   async setFamilyRest({ commit }) {
+    console.log('setFamilyRest');
     const familyRest = await this.$axios.$get(`/beach/list?tags=${TAGS.FAMILY_REST}`);
     commit('SET_FAMILY_REST', familyRest);
   },
   async setCities({ commit }) {
+    console.log('setCities');
     const cities = await this.$axios.$get('/city/top?count=10');
     commit('SET_CITIES', cities);
   },
   async setAnyPlaces({ commit }) {
     // поменять адрес запроса
+    console.log('setAnyPlaces');
     const anyPlaces = await this.$axios.$get('https://crimea.air-dev.agency/api/app/hotel/list?count=10');
     commit('SET_ANY_PLACES', anyPlaces);
   },

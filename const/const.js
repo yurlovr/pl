@@ -45,3 +45,37 @@ export const MONTHS = [
   'декабрь',
 ];
 export const OUT_LINKS_HOTEL = 'https://nash.travel/hotel';
+
+export const PLUG_TITLE = {
+  FAMILY_REST: {
+    title: 'Отдых для всей семьи',
+    description: 'Пологий берег, плавный вход в воду, безопасность и современная инфраструктура',
+  },
+  EVENTS: {
+    title: 'Ближайшие мероприятия на пляжах',
+  },
+  CHOOSE_BEACH: {
+    title: 'Выберите свой пляж',
+    description: 'Все виды пляжей',
+  },
+  ACTIVE_REST: {
+    title: 'Активный отдых',
+    description: 'Наша подборка основанная на водных активностях',
+  },
+  WEATHER: {
+    title: 'Погода в курортных городах Крыма',
+    description: 'Средняя по месяцам',
+  },
+  ANY_PLACES: {
+    title: 'Где остановиться в Крыму',
+    description: 'Отели, Гостиницы, Санатории',
+  },
+  BANNERS: {
+    title: 'Выбирайте по своим желаниям',
+    description: 'Пляжи, развлечения, экскурсии и многое другое',
+  },
+  YOUR_WISHES: {
+    title: 'Выбирайте по своим желаниям',
+    description: 'Городские, Дикие пляжи ',
+  },
+};

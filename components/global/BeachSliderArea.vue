@@ -25,9 +25,9 @@
       </div>
     </div>
 
-    <client-only>
+    <!-- <client-only> -->
       <SliderBeachEventHotel :data="data.beachSliderData" />
-    </client-only>
+    <!-- </client-only> -->
 
     <div class="main-page__beach-slider-area__see-all-bottom">
       <nuxt-link

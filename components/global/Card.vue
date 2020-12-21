@@ -107,7 +107,10 @@
         >
 
       </a>
-      <div v-if="data.tempWater !== undefined && showTemp !== false" class="custom-card__temp-area">
+      <div
+        v-if="data.tempWater && showTemp !== false"
+        class="custom-card__temp-area"
+      >
         <img
           src="~/static/pics/global/svg/temper_big.svg"
           alt="Температура"
@@ -118,8 +121,12 @@
           alt="Температура"
           class="small"
         >
-        <span class="custom-card__temp">{{ (data.tempWater > 0 ? '+ ' : '') + (data.tempWater < 0 ? '' : '' ) + data.tempWater }}</span>
-        <span class="custom-card__temp-o"><span>o</span></span>
+        <span class="custom-card__temp">
+          {{ `${data.tempWater > 0 ? '+ ' : '- '} ${data.tempWater}` }}
+        </span>
+        <span class="custom-card__temp-o">
+          <span>o</span>
+        </span>
         <span class="custom-card__temp-C">C</span>
       </div>
 

@@ -3,7 +3,10 @@
     <section
       class="main-page__weather-slider-area custom-container"
     >
-      <h3 class="main-page__section-title" style="margin-bottom: 50px;">
+      <h3
+        class="main-page__section-title"
+        style="margin-bottom: 50px;"
+      >
         Погода в курортных городах Крыма
       </h3>
       <div class="slider-weather">
@@ -43,7 +46,13 @@
           <div
             class="slider-weather__part-right"
           >
+            <BlockPlug
+              v-if="!getWeather"
+              :height="297"
+              :show-loader="true"
+            />
             <SliderWeather
+              v-else
               :active-month="activeMonth"
             />
           </div>
@@ -54,13 +63,14 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex';
-import { MONTHS } from '~/const/const';
+import { mapActions, mapGetters } from 'vuex';
+import { MONTHS, PLUG_TITLE } from '~/const/const';
 
 export default {
 
   components: {
     SliderWeather: () => import('~/components/pages/main/sliders/SliderWeather'),
+    BlockPlug: () => import('~/components/global/BlockPlug'),
   },
 
   data() {
@@ -79,7 +89,20 @@ export default {
         },
       },
       activeMonth: new Date().getMonth(),
+      PLUG_TITLE,
     };
+  },
+
+  async fetch() {
+    if (!this.getWeather) {
+      await this.setWeather();
+    }
+  },
+
+  computed: {
+    ...mapGetters('main', [
+      'getWeather',
+    ]),
   },
 
   mounted() {

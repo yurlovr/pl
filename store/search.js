@@ -1,5 +1,6 @@
 import {getDistanceFromLatLonInKm} from "../assets/calcDistance";
 import { mapBeach } from '~/helpers/mappers';
+import { TYPE_BEACHES } from '~/const/const';
 
 export const state = () => ({
   my_coords: {},
@@ -138,6 +139,7 @@ export const state = () => ({
   radius: null,
   f_loaded: false,
   searchResultCity: null,
+  result: null,
 });
 
 export const mutations = {
@@ -405,6 +407,18 @@ export const mutations = {
   SET_TAGS(state, payload) {
     state.tags = payload;
   },
+
+  SET_SEARCH1(state, payload) {
+    if (!payload) {
+      state.result = null;
+      return;
+    }
+    const list = payload.list.map(mapBeach);
+    state.result = {
+      ...payload,
+      list,
+    };
+  },
 };
 
 export const actions = {
@@ -490,7 +504,11 @@ export const actions = {
     const { data } = await this.$axios.$get(`search/filter?city=${city}&page=${page}&count=${count}`);
     commit('SET_SEARCH_RESULT_CITY', data);
   },
-  setTags({ state, commit }, query) {
+  setTags({ state, commit, rootState }, query) {
+    if (!query) {
+      commit('SET_TAGS', null);
+      return;
+    }
     let tags = [];
     if (Object.keys(query).length === 1 && query.city) {
       tags = tags.concat({
@@ -502,15 +520,83 @@ export const actions = {
         type: 'select',
       });
     }
+    if (Object.keys(query).includes('typeBeach')) {
+      tags = tags.concat({
+        param: 'beachType',
+        value: {
+          title: TYPE_BEACHES.find((i) => i.id === +query.typeBeach).title,
+        },
+        default: null,
+        type: 'select',
+      });
+    }
+    if (Object.keys(query).includes('addTags')) {
+      const tagsArray = rootState.addTags.map((item) => {
+        const currentCard = item.ID === query.addTags;
+
+        return currentCard ? {
+          param: 'addTags',
+          value: {
+            title: item.NAME,
+          },
+          default: null,
+          type: 'select',
+        }
+          : null;
+      }).filter(Boolean);
+      tags = tags.concat(tagsArray);
+    }
+
+    if (Object.keys(query).includes('tags')) {
+      const tagsArray = rootState.tags.map((item) => {
+        const currentCard = item.ID === query.tags;
+
+        return currentCard ? {
+          param: 'tags',
+          value: {
+            title: item.NAME,
+          },
+          default: null,
+          type: 'select',
+        }
+          : null;
+      }).filter(Boolean);
+      tags = tags.concat(tagsArray);
+    }
+
     commit('SET_TAGS', tags);
   },
   updateSearchTags({ state, commit }, payload) {
     let result = state.tags;
     const { param, currentValue, value } = payload;
     if (param === 'cities' && !value) {
-      result = result.filter((item) => item.value.title.toLowerCase() !== currentValue.title.toLowerCase());
+      result = result.filter((item) => item.value.title.toLowerCase()
+        !== currentValue.title.toLowerCase());
+    }
+    if (param === 'beachType' && !value) {
+      result = result.filter((item) => item.value.title.toLowerCase()
+        !== currentValue.title.toLowerCase());
+    }
+    if (param === 'addTags' && !value) {
+      result = result.filter((item) => item.value.title.toLowerCase()
+        !== currentValue.title.toLowerCase());
+    }
+    if (param === 'tags' && !value) {
+      result = result.filter((item) => item.value.title.toLowerCase()
+        !== currentValue.title.toLowerCase());
     }
     commit('SET_TAGS', result);
+  },
+  async setSeach({ commit }, payload) {
+    if (!payload) {
+      commit('SET_SEARCH1', payload);
+      return;
+    }
+    const { page, count, ...params } = payload;
+    const paramsForQuery = Object.keys(params)
+      .map((key) => `${key}=${params[key]}`).join('&');
+    const { data } = await this.$axios.$get(`search/filter?${paramsForQuery}&page=${page}&count=${count}`);
+    commit('SET_SEARCH1', data);
   },
 };
 
@@ -596,4 +682,5 @@ export const getters = {
   paramsShown: (state) => state.paramsShown,
   getSearchResultCity: (state) => state.searchResultCity,
   getTags: (state) => state.tags,
+  getSearch: (state) => state.result,
 };

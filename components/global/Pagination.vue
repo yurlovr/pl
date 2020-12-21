@@ -110,7 +110,7 @@ export default {
     if (this.page !== 1) {
       this.page = +this.$route.query.page;
     }
-    setTimeout(() => this.generatePagination(this.page), 1);
+    setTimeout(() => this.generatePagination(this.page));
   },
 
   methods: {

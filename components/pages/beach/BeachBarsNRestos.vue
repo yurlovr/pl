@@ -1,5 +1,5 @@
 <template>
-  <section class="beach-page__barsNrestos">
+  <section id="barsNRestos" class="beach-page__barsNrestos">
     <div class="swiper-bar-display_mobile">
       <h2 class="two-part-layout__card__title beach-page__barsNrestos__title">Бары и рестораны</h2>
       <!--<a
