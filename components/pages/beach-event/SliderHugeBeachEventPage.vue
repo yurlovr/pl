@@ -506,7 +506,7 @@ export default {
         this.modalOpen = true;
         if (video) {
           setTimeout(() => {
-            console.log(pos + i, 'pos + i');
+            // console.log(pos + i, 'pos + i');
             document.getElementById(pos + i).click();
           }, 200);
         }

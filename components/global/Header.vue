@@ -5,12 +5,12 @@
       class="search__bg"
       @click="updateParamsShown(false)"
     />
-    <!-- <div class="header__bg" :class="{ active : (bgAndBarShown || tempBgAndBarShown) }" /> -->
+    <div class="header__bg" :class="{ active : (bgAndBarShown || tempBgAndBarShown) }" />
     <div class="header__inner custom-container">
-      <nuxt-link to="/">
+      <nuxt-link to="/" @click.prevent="$bus.goTo('/', router)">
         <img src="~/static/pics/global/svg/logo-white.svg" alt="НашПляж">
       </nuxt-link>
-      <!-- <Search v-show="(bgAndBarShown || tempBgAndBarShown)" ref="searchGeneral" /> -->
+      <Search v-show="(bgAndBarShown || tempBgAndBarShown)" ref="searchGeneral" />
       <div class="header__left">
         <button
           v-show="(bgAndBarShown || tempBgAndBarShown)"
@@ -49,7 +49,7 @@ export default {
   data() {
     return {
       // show background and the searchBar (searchBar for desktop)
-      bgAndBarShown: true,
+      bgAndBarShown: false,
       tempBgAndBarShown: false,
     };
   },
@@ -64,6 +64,7 @@ export default {
     this.$bus.$off('tempHideHeaderBgAndBar');
     this.$bus.$off('showHeaderBgAndBar');
     this.$bus.$off('tempShowHeaderBgAndBar');
+    this.$bus.$off('dontShowSearch');
   },
 
   mounted() {
@@ -82,10 +83,18 @@ export default {
     this.$bus.$on('tempShowHeaderBgAndBar', () => {
       this.tempBgAndBarShown = true;
     });
+    this.$bus.$on('dontShowSearch', () => {
+      this.tempBgAndBarShown = false;
+      this.bgAndBarShown = false;
+    });
+    if (this.$route.name !== '/') {
+      this.bgAndBarShown = true;
+      this.tempBgAndBarShown = true;
+    }
   },
   methods: {
     ...mapMutations('search', [
-        'updateParamsShown',
+      'updateParamsShown',
     ]),
     toggleSearch() {
       this.$refs.searchGeneral.toggleMobileShow();

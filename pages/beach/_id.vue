@@ -5,6 +5,7 @@
         <!-- Navigation Menu -->
         <BeachEventSections
           :sections="getSections"
+          :beach="true"
           class="beach-page-sections--w-100"
         />
 
@@ -268,7 +269,6 @@ export default {
   },
 
   async fetch({ store, params, redirect }) {
-    console.log('BEACH')
     const res = await store.dispatch('beach/getBeach', params.id);
     if (res === 404) redirect('/404');
   },

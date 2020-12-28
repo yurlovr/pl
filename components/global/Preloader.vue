@@ -20,11 +20,9 @@ export default {
   },
   methods: {
     start() {
-      console.log('STARST')
       this.loading = true;
     },
     finish() {
-      console.log('FINISH')
       this.loading = false;
     },
   },

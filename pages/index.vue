@@ -1,14 +1,13 @@
 <template>
   <div>
     <p v-if="$fetchState.pending">
-      fbnrtjkbnfgklbmkfglb
     <!-- Fetching data -->
     </p>
     <!-- <p v-else-if="$fetchState.error"> -->
     <!-- error message here -->
     <!-- </p> -->
     <div
-      v-else
+
       class="main-page"
     >
       <img
@@ -18,19 +17,22 @@
       >
       <div class="main-page__welcome__gradient" />
       <Welcome />
-      <!-- <Search
+      <Search
         v-show="!(bgAndBarShown || tempBgAndBarShown)"
         class="main-page__welcome__search"
         label-id="1"
-      /> -->
+      />
       <BeachSliderAreaMoment />
       <GetCities />
-          <!-- <MapArea
-            v-if="getMap"
-            :data="getMap"
-            :map-data="mapEntity"
-          /> -->
-
+      <LazyComponent>
+        <template #placeholder>
+          <BlockPlug
+            :text="PLUG_TITLE.MAP"
+            :map="true"
+          />
+        </template>
+        <MapBlock />
+      </LazyComponent>
       <!-- <Banner :index="2" class="banner-1" /> -->
       <LazyComponent>
         <template #placeholder>
@@ -107,7 +109,6 @@ export default {
   components: {
     Welcome,
     Search,
-    // MapArea: () => import('~/components/pages/main/MapArea'),
     WeatherSliderArea: () => import('~/components/pages/main/WeatherSliderArea'),
     DynamicSliderArea: () => import('~/components/pages/main/DynamicSliderArea'),
     BannersBlock: () => import('~/components/pages/main/BannersBlock'),
@@ -119,6 +120,7 @@ export default {
     BlockPlug: () => import('~/components/global/BlockPlug'),
     ChooseBeach: () => import('~/components/pages/main/ChooseBeach'),
     BeachSliderAreaMoment: () => import('~/components/pages/main/BeachSliderAreaMoment'),
+    MapBlock: () => import('~/components/pages/main/MapBlock'),
   },
 
   data() {
@@ -149,19 +151,13 @@ export default {
   },
 
   computed: {
-    ...mapGetters('main', [
-      'getBeachesTop',
-    ]),
     ...mapGetters(['mapEntity']),
   },
 
   mounted() {
-    // this.$nextTick(() => {
-    //   this.$nuxt.$loading.start()
-    // })
-    // this.$bus.$emit('mainPageReady');
-    // this.$bus.$emit('hidePageTransitioner');
-    // this.$bus.$emit('dontShowSearch');
+    this.$bus.$emit('mainPageReady');
+    this.$bus.$emit('hidePageTransitioner');
+    this.$bus.$emit('dontShowSearch');
 
     window.addEventListener('scroll', this.onScroll, false);
     window.addEventListener('resize', this.onResize, false);

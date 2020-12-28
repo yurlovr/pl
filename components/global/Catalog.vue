@@ -4,24 +4,41 @@
       <h3 class="custom-page__title catalog-page__title">
         {{ dataGrid.title }}
       </h3>
-      <div v-if="dataGrid && type === 'beach'" class="search-page__title-area__buttons">
+      <div v-if="dataGrid && type !== 'event'" class="search-page__title-area__buttons">
         <button
           class="search-page__title-area__button"
-          :class="{ active: !showCardsOrMap }"
-          @click="showCardsOrMap = false"
+          :class="{ active: modeOption === 'list' }"
+          @click="showHorizontal"
         >
           <img
-            v-show="!showCardsOrMap"
+            v-show="modeOption === 'list'"
+            src="~/static/pics/search/list_orange.svg"
+            alt="Вид: Горизонтальные карточки"
+          >
+
+          <img
+            v-show="modeOption === 'card'"
+            src="~/static/pics/search/list_grey.svg"
+            alt="Вид: Горизонтальные карточки"
+          >
+        </button>
+        <button
+          class="search-page__title-area__button"
+          :class="{ active: modeOption === 'card' }"
+          @click="showCards"
+        >
+          <img
+            v-show="modeOption === 'card'"
             src="~/static/pics/search/cards_orange.svg"
             alt="Вид: Карточки"
           >
           <img
-            v-show="showCardsOrMap"
+            v-show="modeOption === 'list'"
             src="~/static/pics/search/cards_gray.svg"
             alt="Вид: Карточки"
           >
         </button>
-        <button
+        <!-- <button
           class="search-page__title-area__button"
           :class="{ active: showCardsOrMap }"
           @click="showMap()"
@@ -36,19 +53,25 @@
             src="~/static/pics/search/map_gray.svg"
             alt="Вид: Карта"
           >
-        </button>
+        </button> -->
       </div>
     </div>
     <CardGrid
       v-if="dataGrid && dataGrid.list.length"
-      v-show="!showCardsOrMap"
+      v-show="modeOption === 'card' || type === 'event'"
+      :per-page="perPage"
+      :data="dataGrid"
+    />
+    <search-horizontal-view
+      v-show="modeOption === 'list' && type !== 'event'"
+      v-if="dataGrid && Object.keys(dataGrid).length"
       :per-page="perPage"
       :data="dataGrid"
     />
     <!-- <SearchMapArea
       v-show="showCardsOrMap"
-      v-if="data.grid && data.grid.length > 0 && type === 'beach'"
-      :data="data.grid"
+      v-if="dataGrid && Object.keys(dataGrid).length > 0 && type === 'beach'"
+      :data="dataGrid"
     /> -->
   </div>
 </template>
@@ -58,12 +81,14 @@
 import { mapMutations, mapActions, mapGetters } from 'vuex';
 import CardGrid from '~/components/global/CardGrid';
 import SearchMapArea from '~/components/pages/search/SearchMapArea';
+import SearchHorizontalView from '~/components/pages/search/SearchHorizontalView';
 import { COUNT_ELEMENTS_ON_PAGE } from '../../const/const';
 
 export default {
   components: {
     CardGrid,
     SearchMapArea,
+    SearchHorizontalView,
   },
   props: {
     type: {
@@ -101,6 +126,17 @@ export default {
     ...mapGetters('catalog', {
       perPage: 'getPerPage',
     }),
+    ...mapGetters([
+      'getTypeDisplay',
+    ]),
+    modeOption: {
+      get() {
+        return this.getTypeDisplay;
+      },
+      set(value) {
+        this.setTypeDisplay(value);
+      },
+    },
   },
 
   async created() {
@@ -119,6 +155,9 @@ export default {
     ...mapActions('catalog', [
       'setPopularBeaches',
     ]),
+    ...mapActions([
+      'setTypeDisplay',
+    ]),
 
     showMap() {
       this.showCardsOrMap = true;
@@ -126,6 +165,12 @@ export default {
         this.mapShownForTheFirstTime = true;
         this.$bus.$emit('updateScrollbar');
       }
+    },
+    showHorizontal() {
+      this.modeOption = 'list';
+    },
+    showCards() {
+      this.modeOption = 'card';
     },
   },
 };

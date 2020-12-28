@@ -17,7 +17,7 @@ export const state = () => ({
   weather: null,
   beachTypes: {},
   banners: null,
-  map: {},
+  map: null,
   geo: {},
   anyPlaces: null,
   show_mobile_preview: true,
@@ -25,6 +25,18 @@ export const state = () => ({
   activeRest: null,
   familyRest: null,
 });
+
+const mapCenter = (array) => ([
+  array.length !== 1 ? ([array.reduce((a, b) => {
+    if (a === Object(a)) a = a[0];
+    return a + b[0];
+  }) / array.length,
+  array.reduce((a, b) => {
+    if (a === Object(a)) a = a[1];
+    return a + b[1];
+  }) / array.length,
+  ]) : array[0],
+]);
 
 export const mutations = {
   setMobileState: (state, data) => state.show_mobile_preview = data,
@@ -69,7 +81,61 @@ export const mutations = {
   // },
 
   SET_MAP: (state, payload) => {
-    state.map = payload;
+    const { list } = payload.data;
+    // убрать пляжи без координат
+    // вынести в маппер
+    const clusters = Object.keys(list)
+      .map((key) => list[key])
+      .map((item) => item.filter((i) => i.COORDINATES))
+      .map((item) => item.map((elem) => ({
+        pos: elem.COORDINATES ? elem.COORDINATES.split(',').map((v) => parseFloat(v)) : null,
+        rating: parseFloat(elem.AVERAGE_RATING),
+        title: elem.NAME,
+        location: elem?.CITY?.NAME,
+        locationId: elem.CITY ? elem.CITY.ID : -1,
+        beachId: elem.ID,
+        pics: elem.PHOTOS && elem.PHOTOS.small ? [...elem.PHOTOS.small.map((e) => e.path)] : null,
+        showFavorite: true,
+        paid: elem.PAID,
+        humanLink: elem.CODE || elem.ID,
+      })))
+      .map((item) => {
+        if (item.length !== 1) {
+          return {
+            beaches: item,
+            id: item[0].locationId,
+            clusterCenter: [
+              item.reduce((a, b) => {
+                if (a === Object(a)) {
+                  a = a.pos[0];
+                }
+                return a + b.pos[0];
+              }) / item.length,
+              item.reduce((a, b) => {
+                if (a === Object(a)) {
+                  a = a.pos[1];
+                }
+                return a + b.pos[1];
+              }) / item.length,
+            ],
+          };
+        }
+        return {
+          beaches: item,
+          id: item[0].locationId,
+          clusterCenter: item[0].pos,
+        };
+      });
+
+    // if (state.geo.id && state.geo.count && state.geo.count > 0) {
+    //   ret.map.geo = {
+    //     id: ret.map.addressBeaches.findIndex((v) => v.id == state.geo.id),
+    //   };
+    // }
+    state.map = {
+      addressBeaches: clusters,
+      center: mapCenter(clusters.map((item) => item.clusterCenter)),
+    };
   },
 
   SET_BANNERS: (state, payload) => {
@@ -126,70 +192,68 @@ export const mutations = {
 
 export const actions = {
   async getMainPageData({ commit, state }) {
-    console.log('getMainPageData');
-    const popularBeachReq = state.geo.id
-      ? this.$axios.$get(`/beach/list?city=${state.geo.id}&count=10`)
-      : this.$axios.$get('/beach/top?count=10');
-
-    const [
-      popularBeach,
-      // map,
-      // anyPlaces,
-    ] = await Promise.all([
-      popularBeachReq,
-      // this.$axios.$get('/beach/clusters/'),
-      // this.$axios.$get('/hotel/list?count=10'),
-    ]);
+    // console.log('getMainPageData');
+    const popularBeach = state.geo.id
+      ? await this.$axios.$get(`/beach/list?city=${state.geo.id}&count=10`)
+      : await this.$axios.$get('/beach/top?count=10');
+    // const popularBeach = await this.$axios.$get('/beach/top?count=10');
+    // const [
+    //   popularBeach,
+    // ] = await Promise.all([
+    //   popularBeachReq,
+    // ]);
     commit('SET_POPULAR_BEACH', popularBeach);
     if (state.geo.id) {
       commit('SET_GEO_COUNT', state.beachesTop.data ? state.beachesTop.data.list.length : 0);
     }
-    // commit('SET_MAP', map);
-    // commit('SET_ANY_PLACES', anyPlaces);
   },
   async setChooseToYourWishes({ commit }) {
-    console.log('setChooseToYourWishes');
+    // console.log('setChooseToYourWishes');
     const result = await this.$axios.$get(`/collectionList/item?id=${TAGS.CHOOSE_WISHES}`);
     commit('SET_CHOOSE_TO_YOUR_WISHES', result.data.item);
   },
   async setBanners({ commit }) {
-    console.log('setBanners');
+    // console.log('setBanners');
     const banners = await this.$axios.$get('/banner/list');
     commit('SET_BANNERS', banners);
   },
   async setActiveRest({ commit }) {
-    console.log('setActiveRest');
+    // console.log('setActiveRest');
     const active = await this.$axios.$get(`/collectionList/item?id=${TAGS.ACTIVE_REST}`);
     commit('SET_ACTIVE_REST', active);
   },
 
   async setWeather({ commit }) {
-    console.log('setWeather');
+    // console.log('setWeather');
     const weather = await this.$axios.$get('/weather/list');
     commit('SET_WEATHER', weather);
   },
 
   async setEvents({ commit }) {
-    console.log('setEvents');
+    // console.log('setEvents');
     const events = await this.$axios.$get('/event/list?count=10');
     commit('SET_EVENTS', events);
   },
 
   async setFamilyRest({ commit }) {
-    console.log('setFamilyRest');
+    // console.log('setFamilyRest');
     const familyRest = await this.$axios.$get(`/beach/list?tags=${TAGS.FAMILY_REST}`);
     commit('SET_FAMILY_REST', familyRest);
   },
   async setCities({ commit }) {
-    console.log('setCities');
+    // console.log('setCities');
     const cities = await this.$axios.$get('/city/top?count=10');
     commit('SET_CITIES', cities);
   },
   async setAnyPlaces({ commit }) {
-    // поменять адрес запроса
-    console.log('setAnyPlaces');
-    const anyPlaces = await this.$axios.$get('https://crimea.air-dev.agency/api/app/hotel/list?count=10');
+    // console.log('setAnyPlaces');
+    const anyPlaces = await this.$axios.$get('/hotel/list?count=10');
     commit('SET_ANY_PLACES', anyPlaces);
+  },
+  async setMap({ commit }) {
+    // console.log('setMap');
+    const map = await this.$axios.$get('/beach/clusters/');
+    commit('SET_MAP', map);
   },
 };
 
@@ -231,81 +295,85 @@ export const getters = {
   // Курортные города
   getCitiesTop: (state) => state.citiesTop,
 
-  getMap: (state) => {
+  getMap: (state) => state.map,
     // console.log('!!!getMap', state.map.data)
     // Карта пляжей
-    if (!state.map.data) return null;
-    const clusterCenters = [];
-    let curCluster;
-    const ret = {};
-    // console.log(state.map.data.list, 'state.map.data.list')
+  //   if (!state.map) return null;
+  //   const clusterCenters = [];
+  //   let curCluster;
+  //   const ret = {};
+  //   // console.log(state.map.data.list, 'state.map.data.list')
 
-    const clusters = Object.keys(state.map.data.list).map((k) => state.map.data.list[k]);
-
-    for (let i = 0; i < clusters.length; i++) {
-      curCluster = clusters[i].filter((v) => v.COORDINATES != '');
-      if (curCluster && curCluster.length > 0) {
-        clusterCenters.push(
-          curCluster.length != 1 ? ([curCluster.reduce((a, b) => {
-            if (typeof a === 'object') a = parseFloat(a.COORDINATES.split(',')[0]);
-            return a + parseFloat(b.COORDINATES.split(',')[0]);
-          }) / curCluster.length,
-          curCluster.reduce((a, b) => {
-            if (typeof a === 'object') a = parseFloat(a.COORDINATES.split(',')[1]);
-            return a + parseFloat(b.COORDINATES.split(',')[1]);
-          }) / curCluster.length,
-          ]) : curCluster[0].COORDINATES.split(',').map((v) => parseFloat(v)),
-        );
-      }
-    }
-    ret.map = {
-      addressBeaches: [],
-    };
-    if (clusterCenters && clusterCenters.length > 0) {
-      ret.map.center = [
-        clusterCenters.length != 1 ? ([clusterCenters.reduce((a, b) => {
-          if (typeof a === 'object') a = a[0];
-          return a + b[0];
-        }) / clusterCenters.length,
-        clusterCenters.reduce((a, b) => {
-          if (typeof a === 'object') a = a[1];
-          return a + b[1];
-        }) / clusterCenters.length,
-        ]) : clusterCenters[0],
-      ];
-    }
-    for (let i = 0; i < clusters.length; i++) {
-      curCluster = [];
-      for (let j = 0; j < clusters[i].length; j++) {
-        if (!clusters[i][j].COORDINATES || clusters[i][j].COORDINATES && isNaN(clusters[i][j].COORDINATES.split(',').map((v) => parseFloat(v))[0])) continue;
-        curCluster.push({
-          pos: clusters[i][j].COORDINATES ? clusters[i][j].COORDINATES.split(',').map((v) => parseFloat(v)) : null,
-          rating: parseFloat(clusters[i][j].AVERAGE_RATING),
-          title: clusters[i][j].NAME,
-          location: clusters[i][j].CITY ? clusters[i][j].CITY.NAME : null,
-          locationId: clusters[i][j].CITY ? clusters[i][j].CITY.ID : -1,
-          beachId: clusters[i][j].ID,
-          pics: clusters[i][j].PHOTOS && clusters[i][j].PHOTOS.small ? [...clusters[i][j].PHOTOS.small.map((e) => e.path)] : null,
-          showFavorite: true,
-          paid: clusters[i][j].PAID,
-          humanLink: clusters[i][j].CODE || clusters[i][j].ID,
-        });
-      }
-      if (clusterCenters[i] && clusterCenters[i].length > 0) {
-        ret.map.addressBeaches.push({
-          clusterCenter: clusterCenters[i],
-          beaches: curCluster,
-          id: clusters[i][0].CITY ? clusters[i][0].CITY.ID : null,
-        });
-      }
-    }
-    if (state.geo.id && state.geo.count && state.geo.count > 0) {
-      ret.map.geo = {
-        id: ret.map.addressBeaches.findIndex((v) => v.id == state.geo.id),
-      };
-    }
-    return ret.map;
-  },
+  //   const clusters = Object.keys(state.map.data.list).map((k) => state.map.data.list[k]);
+  //   for (let i = 0; i < clusters.length; i++) {
+  //     curCluster = clusters[i].filter((v) => v.COORDINATES != '');
+  //     // console.log('curCluster@@@@@@@', curCluster);
+  //     if (curCluster && curCluster.length > 0) {
+  //       clusterCenters.push(
+  //         curCluster.length !== 1 ?
+  //           ([curCluster.reduce((a, b) => {
+  //             if (typeof a === 'object') a = parseFloat(a.COORDINATES.split(',')[0]);
+  //             return a + parseFloat(b.COORDINATES.split(',')[0]);
+  //           }) / curCluster.length,
+  //           curCluster.reduce((a, b) => {
+  //             if (typeof a === 'object') a = parseFloat(a.COORDINATES.split(',')[1]);
+  //             return a + parseFloat(b.COORDINATES.split(',')[1]);
+  //           }) / curCluster.length,
+  //           ])
+  //         : curCluster[0].COORDINATES.split(',').map((v) => parseFloat(v)),
+  //       );
+  //     }
+  //   }
+  //   console.log('curCluster!!!!!!!!!!!!!', clusterCenters);
+  //   ret.map = {
+  //     addressBeaches: [],
+  //   };
+  //   if (clusterCenters && clusterCenters.length > 0) {
+  //     ret.map.center = [
+  //       clusterCenters.length != 1 ? ([clusterCenters.reduce((a, b) => {
+  //         if (typeof a === 'object') a = a[0];
+  //         return a + b[0];
+  //       }) / clusterCenters.length,
+  //       clusterCenters.reduce((a, b) => {
+  //         if (typeof a === 'object') a = a[1];
+  //         return a + b[1];
+  //       }) / clusterCenters.length,
+  //       ]) : clusterCenters[0],
+  //     ];
+  //   }
+  //   for (let i = 0; i < clusters.length; i++) {
+  //     curCluster = [];
+  //     for (let j = 0; j < clusters[i].length; j++) {
+  //       if (!clusters[i][j].COORDINATES || clusters[i][j].COORDINATES && isNaN(clusters[i][j].COORDINATES.split(',').map((v) => parseFloat(v))[0])) continue;
+  //       curCluster.push({
+  //         pos: clusters[i][j].COORDINATES ? clusters[i][j].COORDINATES.split(',').map((v) => parseFloat(v)) : null,
+  //         rating: parseFloat(clusters[i][j].AVERAGE_RATING),
+  //         title: clusters[i][j].NAME,
+  //         location: clusters[i][j].CITY ? clusters[i][j].CITY.NAME : null,
+  //         locationId: clusters[i][j].CITY ? clusters[i][j].CITY.ID : -1,
+  //         beachId: clusters[i][j].ID,
+  //         pics: clusters[i][j].PHOTOS && clusters[i][j].PHOTOS.small ? [...clusters[i][j].PHOTOS.small.map((e) => e.path)] : null,
+  //         showFavorite: true,
+  //         paid: clusters[i][j].PAID,
+  //         humanLink: clusters[i][j].CODE || clusters[i][j].ID,
+  //       });
+  //     }
+  //     if (clusterCenters[i] && clusterCenters[i].length > 0) {
+  //       ret.map.addressBeaches.push({
+  //         clusterCenter: clusterCenters[i],
+  //         beaches: curCluster,
+  //         id: clusters[i][0].CITY ? clusters[i][0].CITY.ID : null,
+  //       });
+  //     }
+  //   }
+  //   if (state.geo.id && state.geo.count && state.geo.count > 0) {
+  //     ret.map.geo = {
+  //       id: ret.map.addressBeaches.findIndex((v) => v.id == state.geo.id),
+  //     };
+  //   }
+  //   console.log('ret', ret)
+  //   return ret.map;
+  // },
 
   getBanners: (state) => state.banners,
 
@@ -317,28 +385,6 @@ export const getters = {
   // Ближайшие мероприятия
   // TODO Fetch by api
   getEvents: (state) => state.events,
-
-  // Выберите свой пляж
-  // TODO Hardcode this shit
-  // getChooseYourBeach: (state, getters, rootState) => {
-  //   if (!rootState.search.searchConfig) return null;
-
-  //   const { beachTypes } = rootState.search.searchConfig.data;
-  //   if (!beachTypes) return null;
-
-  //   const types = [
-  //     'galechnye-plyazhi',
-  //     'peschanye-plyazhi',
-  //     'rakushechnye-plyazhi',
-  //   ];
-
-  //   return beachTypes
-  //     .filter((type) => types.includes(type.CODE))
-  //     .map((type) => ({
-  //       title: type.NAME,
-  //       id: type.EXTERNAL_ID,
-  //     }));
-  // },
 
   getWeather: (state) => {
     if (!state.weather) return null;

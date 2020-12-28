@@ -5,18 +5,24 @@
         <div
           v-for="(beach, i) in getBeaches"
           :id="`smc-${i}`"
+          :key="`smc-${i}`"
           class="map-beaches-main__card"
-          :class="{ active : activeCard == i}"
+          :class="{ active: activeCard === i}"
         >
           <div class="map-beaches-main__card__pic-area">
-            <a :href="`/beach/${beach.humanLink || beach.beachId}`" @click.prevent="$bus.goTo(`/beach/${beach.humanLink || beach.beachId}`, $router)">
+            <a
+              :href="`/beach/${beach.humanLink || beach.beachId}`"
+              @click.prevent="$bus.goTo(`/beach/${beach.humanLink || beach.beachId}`, $router)"
+            >
               <img
                 v-if="beach.pics && beach.pics.length"
                 v-lazy-load
                 :data-src="beach.pics[0]"
               >
-              <img v-else src="~/static/pics/global/pics/slider_beh_placeholder.png">
-
+              <img
+                v-else
+                src="~/static/pics/global/pics/slider_beh_placeholder.png"
+              >
             </a>
             <AddToFavorites :data="beach" />
           </div>
@@ -25,11 +31,22 @@
               <img src="~/static/pics/global/svg/star.svg" alt="Рейтинг">
               <span>{{ beach.rating.toFixed(1) }}</span>
             </div>
-            <a :href="`/beach/${beach.humanLink || beach.beachId}`" @click.prevent="$bus.goTo(`/beach/${beach.humanLink || beach.beachId}`, $router)">
-              <h3 class="map-beaches-main__card__title" v-html="beach.title" />
+            <a
+              :href="`/beach/${beach.humanLink || beach.beachId}`"
+              @click.prevent="$bus.goTo(`/beach/${beach.humanLink || beach.beachId}`, $router)"
+            >
+              <h3
+                class="map-beaches-main__card__title"
+                v-html="beach.title"
+              />
             </a>
-            <a :href="`/search?city=${beach.locationId}`" @click.prevent="searchCity(beach)">
-              <h5 class="map-beaches-main__card__location">{{ beach.location }}</h5>
+            <a
+              :href="`/search?city=${beach.locationId}`"
+              @click.prevent="searchCity(beach)"
+            >
+              <h5 class="map-beaches-main__card__location">
+                {{ beach.location }}
+              </h5>
             </a>
           </div>
         </div>
@@ -40,30 +57,51 @@
         <div class="swiper-wrapper">
           <div
             v-for="(beach, i) in getBeaches"
+            :key="i"
             class="swiper-slide map-beaches-main__slide"
-            :class="{ active : activeCard == i}"
+            :class="{ active : activeCard === i}"
           >
             <div class="map-beaches-main__card__pic-area">
-              <a href="/" @click.prevent="$bus.goTo('/', $router)">
+              <a
+                href="/"
+                @click.prevent="$bus.goTo('/', $router)"
+              >
                 <img
                   v-if="beach.pics && beach.pics.length"
                   v-lazy-load
                   :data-src="beach.pics[0]"
                 >
-                <img v-else src="~/static/pics/global/pics/slider_beh_placeholder.png">
+                <img
+                  v-else
+                  src="~/static/pics/global/pics/slider_beh_placeholder.png"
+                >
               </a>
               <AddToFavorites :data="beach" />
             </div>
             <div class="map-beaches-main__card__info-area">
               <div class="map-beaches-main__card__rating-area">
-                <img src="~/static/pics/global/svg/star.svg" alt="Рейтинг">
+                <img
+                  src="~/static/pics/global/svg/star.svg"
+                  alt="Рейтинг"
+                >
                 <span>{{ beach.rating.toFixed(1) }}</span>
               </div>
-              <a href="/" @click.prevent="$bus.goTo('/', $router)">
-                <h3 class="map-beaches-main__card__title" v-html="beach.title" />
+              <a
+                href="/"
+                @click.prevent="$bus.goTo('/', $router)"
+              >
+                <h3
+                  class="map-beaches-main__card__title"
+                  v-html="beach.title"
+                />
               </a>
-              <a :href="`/search?city=${beach.locationId}`" @click.prevent="searchCity(beach)">
-                <h5 class="map-beaches-main__card__location">{{ beach.location }}</h5>
+              <a
+                :href="`/search?city=${beach.locationId}`"
+                @click.prevent="searchCity(beach)"
+              >
+                <h5 class="map-beaches-main__card__location">
+                  {{ beach.location }}
+                </h5>
               </a>
             </div>
           </div>
@@ -73,8 +111,9 @@
         <div class="custom-pagination">
           <button
             v-for="(b,i) in Math.max(getBeachesNumber - minus, 0)"
+            :key="i"
             class="custom-pagination-bullet"
-            :class="{ 'custom-pagination-bullet-active' : i == activeIndex }"
+            :class="{ 'custom-pagination-bullet-active' : i === activeIndex }"
             @click="mySwiper.slideTo(i)"
           />
         </div>
@@ -84,7 +123,6 @@
 </template>
 
 <script>
-import Vue from 'vue';
 import AddToFavorites from '~/components/global/AddToFavorites';
 
 export default {
@@ -128,19 +166,14 @@ export default {
     getBeaches() {
       const allBeaches = [];
       for (let i = 0; i < this.data.length; i++) {
-        for (let j = 0; j < this.data[i].beaches.length; j++) allBeaches.push(this.data[i].beaches[j]);
+        for (let j = 0; j < this.data[i].beaches.length; j++) {
+          allBeaches.push(this.data[i].beaches[j]);
+        }
       }
       return allBeaches;
     },
   },
 
-  // beforeMount() {
-  //   if (process.browser) {
-  //     require('swiper/dist/css/swiper.css');
-  //     const VueAwesomeSwiper = require('vue-awesome-swiper/dist/ssr');
-  //     Vue.use(VueAwesomeSwiper);
-  //   }
-  // },
   beforeDestroy() {
     this.$bus.$off('goToCard');
 
@@ -183,8 +216,11 @@ export default {
     onResize() {
       this.arrowY = this.$el.querySelector('.map-beaches-main__card__pic-area').offsetHeight / 2;
 
-      if (window.innerWidth > 400) this.minus = 1;
-      else this.minus = 0;
+      if (window.innerWidth > 400) {
+        this.minus = 1;
+      } else {
+        this.minus = 0;
+      }
     },
 
     scrollToCard(i) {
@@ -196,10 +232,10 @@ export default {
     },
 
     searchCity(data) {
-		      this.$bus.$emit('emptySearchParams');
-		      this.$bus.$emit('updateSearchParam', { param: 'cities', value: { title: data.location, id: data.locationId } });
-		      setTimeout(() => { this.$bus.$emit('search'); }, 1);
-		    },
+      this.$bus.$emit('emptySearchParams');
+      this.$bus.$emit('updateSearchParam', { param: 'cities', value: { title: data.location, id: data.locationId } });
+      setTimeout(() => { this.$bus.$emit('search'); }, 1);
+    },
   },
 };
 </script>

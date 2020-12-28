@@ -78,4 +78,27 @@ export const PLUG_TITLE = {
     title: 'Выбирайте по своим желаниям',
     description: 'Городские, Дикие пляжи ',
   },
+  MAP: {
+    title: 'Карта пляжей Крыма',
+  },
+};
+
+
+export const SOC_LINK = {
+  INST: {
+    link: 'https://www.instagram.com/plyazhi.ru/',
+    id: 'instagram',
+  },
+  FACE: {
+    link: 'https://www.facebook.com/plyazhi.ru/',
+    id: 'facebook',
+  },
+  VK: {
+    link: 'https://vk.com/plyazhiru',
+    id: 'vk',
+  },
+  OK: {
+    link: 'https://ok.ru/group/58430154539188',
+    id: 'ok',
+  },
 };

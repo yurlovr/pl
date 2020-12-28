@@ -187,15 +187,29 @@ export const getters = {
     },
   getSections: (state, getters) => {
     const sections = [
-      { title: 'Галерея',                 hash: 'gallery'   },
-      { title: 'Основные характеристики', hash: 'main-info' },
-      { title: 'Инфраструктура',          hash: 'infra',
-        show: state.beach.infrastructures.length > 0
+      {
+        title: 'Галерея',
+        hash: 'gallery',
+        show: true,
       },
-      { title: 'О пляже', hash: 'about',
+      {
+        title: 'Основные характеристики',
+        hash: 'main-info',
+        show: true,
+      },
+      {
+        title: 'Инфраструктура',
+        hash: 'infra',
+        show: state.beach.infrastructures.length > 0,
+      },
+      {
+        title: 'О пляже',
+        hash: 'about',
         show: state.beach.desc && state.beach.desc.length > 0,
       },
-      { title: 'Услуги и аренда', hash: 'services',
+      {
+        title: 'Услуги и аренда',
+        hash: 'services',
         show: state.beach.services.length > 0,
       },
       {
@@ -226,7 +240,7 @@ export const getters = {
       {
         title: 'Отзывы гостей',
         hash: 'reviews',
-        show: true
+        show: true,
       },
       {
         title: 'Похожие пляжи',
@@ -235,10 +249,11 @@ export const getters = {
       },
       {
         title: 'Фото посетителей',
-        hash: 'visitor-pics'
-      }
-    ]
-    return sections
+        hash: 'visitor-pics',
+        show: true,
+      },
+    ];
+    return sections;
   },
   getDescription: state => state.beach.data.item.DESCRIPTION,
   getParking: state => {

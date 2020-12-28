@@ -9,6 +9,7 @@ export const state = () => ({
   page: null,
   events: null,
   perPage: COUNT_ELEMENTS_ON_PAGE,
+  familyBeaches: null,
 });
 
 export const mutations = {
@@ -26,7 +27,6 @@ export const mutations = {
     state.allBeaches = data;
   },
   SET_PAGE: (state, data) => {
-    console.log('mutation')
     state.page = +data;
   },
   SET_EVENTS: (state, data) => {
@@ -34,6 +34,9 @@ export const mutations = {
   },
   SET_PER_PAGE: (state, data) => {
     state.perPage = data;
+  },
+  SET_FAMILY_BEACHES: (state, data) => {
+    state.familyBeaches = data;
   },
 };
 
@@ -70,6 +73,15 @@ export const actions = {
   },
   setPerPage({ commit }, payload) {
     commit('SET_PER_PAGE', payload);
+  },
+  async setFamilyBeaches({ commit }, payload) {
+    const { page, count } = payload;
+    const { data } = await this.$axios.$get(`/beach/list?tags=1835&count=${count}&page=${page}`);
+    commit('SET_FAMILY_BEACHES', {
+      ...data,
+      list: data.list.map(mapBeach),
+      title: 'Отдых для всей семьи',
+    });
   },
 };
 
@@ -151,4 +163,5 @@ export const getters = {
   getPage: (state) => state.page,
   getEvents: (state) => state.events,
   getPerPage: (state) => state.perPage,
+  getFamilyBeaches: (state) => state.familyBeaches,
 };

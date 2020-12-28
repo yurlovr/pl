@@ -1,20 +1,63 @@
 <template>
-	<div class="custom-checkbox" @click="toggle()">
-		<div class="custom-checkbox__checkbox" :class="{ checked: value }">
-			<img src="~/static/pics/global/svg/check.svg" v-show="value">
-		</div>
-		<span>{{ title }}</span>
-	</div>
+  <div
+    class="custom-checkbox"
+    @click="toggle"
+  >
+    <div
+      class="custom-checkbox__checkbox"
+      :class="{ checked: value }"
+    >
+      <img
+        v-show="value"
+        src="~/static/pics/global/svg/check.svg"
+      >
+    </div>
+    <span>
+      {{ title }}
+    </span>
+  </div>
 </template>
 
 <script>
-export default {
-	props: ['title', 'value', 'id', 'type'],
+import { mapActions } from 'vuex';
 
-	methods: {
-		toggle() {
-			this.$bus.$emit('updateSearchParam', { id: this.id, value: !this.value, type: this.type });
-		}
-	}
-}
+export default {
+  props: {
+    title: {
+      type: String,
+      required: true,
+    },
+    value: {
+      type: Boolean,
+      required: true,
+    },
+    id: {
+      type: String,
+      required: true,
+    },
+    type: {
+      type: String,
+      required: true,
+    },
+  },
+  methods: {
+    ...mapActions('search', [
+      'setSearchParams',
+    ]),
+    toggle() {
+      const {
+        id,
+        value,
+        type,
+        title,
+      } = this;
+      this.setSearchParams({
+        id,
+        type,
+        value: !value,
+        title,
+      });
+    },
+  },
+};
 </script>

@@ -42,7 +42,7 @@
     methods: {
       playVideo() {
         this.$nextTick(() => {
-          console.log('herer', this.$refs[this.reference].player)
+          // console.log('herer', this.$refs[this.reference].player)
           this.$refs[this.reference].player.playVideo();
         })
       },

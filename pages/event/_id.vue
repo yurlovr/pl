@@ -76,7 +76,7 @@ export default {
     };
   },
 
-  async fetch({ store, params, redirect }) {
+  async fetch({ store, params, redirect, route }) {
     await store.dispatch('event/setDefaultState');
     await store.dispatch('event/getEvent', params.id);
     if (store.getters['event/getError']) redirect('/404');

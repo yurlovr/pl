@@ -1,11 +1,14 @@
 <template>
   <section
-    :style="{'height': `${height}px`}"
+    :style="{ 'height': `${height}px`}"
     :class="className"
+    class="block marginauto"
   >
     <div
       class="main-page__beach-slider-area-wrapper"
-      :class="{ 'no-subtitle' : !text.description }"
+      :class="{ 'no-subtitle' : !text.description,
+                'map_block': map,
+      }"
     >
       <h3
         v-if="text.title"
@@ -58,10 +61,17 @@ export default {
       type: Boolean,
       default: false,
     },
+    map: {
+      type: Boolean,
+      default: false,
+    },
   },
 };
 </script>
 <style scoped>
+.block {
+  max-width: 1440px;
+}
 .main-page__section-title {
   margin-bottom: 10px;
 }
@@ -82,7 +92,13 @@ export default {
 .img_container img {
   animation: fade 1500ms infinite;
 }
-
+.map_block {
+  padding-left: 74px;
+  padding-right: 74px;
+}
+.marginauto{
+  margin: 0 auto;
+}
 @keyframes fade {
     0% { opacity: 1; }
     10% { opacity: 0.7; }
@@ -92,8 +108,8 @@ export default {
     50% { opacity: 0.2; }
     60% { opacity: 0.3; }
     70% { opacity: 0.4; }
-    80% {opacity: 0.6; }
-    90% {opacity: 0.7; }
+    80% { opacity: 0.6; }
+    90% { opacity: 0.7; }
     100% {opacity: 1; }
   }
 </style>

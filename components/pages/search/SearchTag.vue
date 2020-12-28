@@ -1,6 +1,6 @@
 <template>
   <div
-    v-if="tag"
+    v-if="tag && tag !== '/'"
     class="search-page__tag"
   >
     <span>
@@ -19,30 +19,35 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex';
+import { mapActions, mapGetters } from 'vuex';
 
 export default {
   props: {
     tag: {
-      type: Object,
-      default: () => {},
+      type: [String, Object],
+      required: true,
     },
   },
-
+  computed: {
+    ...mapGetters('search', [
+      'getRenderTags',
+    ]),
+  },
   methods: {
     ...mapActions('search', [
-      'updateSearchTags',
+      'setUpdateSearchTags',
+      'setRenderTags',
     ]),
     removeTag() {
       if (this.tag.type === 'select') {
-        // this.$bus.$emit('updateSearchParam', { param: this.tag.param, value: this.tag.default })}
-        this.updateSearchTags({
-          param: this.tag.param,
-          currentValue: this.tag.value,
-          value: this.tag.default,
+        this.setUpdateSearchTags(this.tag);
+      } else {
+        this.setUpdateSearchTags({
+          ...this.tag,
+          value: false,
         });
-      } else this.$bus.$emit('updateSearchParam', { id: this.tag.id, value: false, type: this.tag.type });
-      // this.$bus.$emit('search');
+      }
+      this.setRenderTags(this.getRenderTags + 1);
     },
   },
 };

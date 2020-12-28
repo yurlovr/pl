@@ -44,6 +44,7 @@
             Контакты
           </nuxt-link>
         </div>
+        <SocLink />
         <!-- <div class="footer__part">
           <h4>Мы в соцсетях</h4>
           <div class="footer__part__social-links">
@@ -109,8 +110,12 @@
 <script>
 import { mapGetters, mapActions } from 'vuex';
 import { COUNT_ELEMENTS_ON_PAGE } from '../../const/const';
+// import SocLink from '~components/global/SocLink';
 
 export default {
+  components: {
+    SocLink: () => import('~/components/global/SocLink'),
+  },
   data() {
     return {
       social_links: [],

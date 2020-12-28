@@ -124,7 +124,7 @@
       },
       start(e) {
         this.start_y = e.changedTouches[0].pageY
-        console.log(this.start_y, 'e.changedTouches')
+        // console.log(this.start_y, 'e.changedTouches')
       },
       onResize() {
         if (window.innerWidth <= 720) {

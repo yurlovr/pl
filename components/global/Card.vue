@@ -3,9 +3,11 @@
     <div class="custom-card__pic-area">
       <nuxt-link
         v-if="!data.another_place"
-        :to="{ path: data.humanLink ? data.humanLink : ( data.mainLink ? data.mainLink : '#')}"
+        :to="{ path: data.humanLink ? data.humanLink : ( data.mainLink ? data.mainLink : '#'),
+               query: {id: data.humanLink ? data.id : ''}}"
         class="custom-card__link"
       >
+       <!-- :to="{ path: data.humanLink ? data.humanLink : ( data.mainLink ? data.mainLink : '#')}" -->
         <!-- <img
           v-if="data.custom_photo"
           v-show="picLoaded"

@@ -1,6 +1,6 @@
 <template>
   <nuxt-link
-    :to="{path: '/search1', query: {addTags: getLink,
+    :to="{path: '/search1', query: {['addTags[]']: getLink,
                                     page: 1,
                                     count: COUNT_ELEMENTS_BEACH}
     }"

@@ -1,9 +1,11 @@
 <template>
-  <div class="search-page__tags">
+  <div
+    class="search-page__tags"
+  >
     <div class="search-page__desktop-tablet custom-container">
       <SearchTag
-        v-for="(tag, i) in getTags"
-        :key="i"
+        v-for="tag in renderTags"
+        :key="tag.id"
         :tag="tag"
       />
     </div>
@@ -11,8 +13,8 @@
       <div v-swiper:mySwiper="swiperOption">
         <div class="swiper-wrapper">
           <SearchTag
-            v-for="(tag, i) in getTags"
-            :key="i"
+            v-for="tag in renderTags"
+            :key="tag.id"
             class="swiper-slide"
             :tag="tag"
           />
@@ -23,7 +25,7 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
+import { mapGetters, mapActions } from 'vuex';
 import SearchTag from '~/components/pages/search/SearchTag';
 
 export default {
@@ -40,27 +42,41 @@ export default {
         observeParents: true,
         slidesPerView: 'auto',
       },
+      renderTags: null,
     };
   },
 
   computed: {
     ...mapGetters('search', [
       'getTags',
+      'getRenderTags',
     ]),
   },
 
   watch: {
     getTags(v) {
-      if (!v.length) {
-        this.$router.push('/');
+      if (v === '/') {
+        this.$bus.goTo('/', this.$router);
+      }
+    },
+    getRenderTags(value) {
+      if (value) {
+        this.renderTags = JSON.parse(JSON.stringify(this.getTags));
+        // this.setRenderTags(0);
       }
     },
   },
 
   mounted() {
+    this.renderTags = JSON.parse(JSON.stringify(this.getTags));
     this.mySwiper.init(this.swiperOption);
 
     // this.$bus.$on('updateSearchTagsSlider', () => { if (this.mySwiper) this.mySwiper.update(); });
+  },
+  methods: {
+    ...mapActions('search', [
+      'setRenderTags',
+    ]),
   },
   // beforeDestroy() {
   //   this.$bus.$off('updateSearchTagsSlider');

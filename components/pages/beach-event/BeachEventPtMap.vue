@@ -267,7 +267,7 @@
                   })
                 })
               }
-              console.log(features, 'features')
+              // console.log(features, 'features')
               additionalObjectManager.add({
                 type: "FeatureCollection",
                 features: features

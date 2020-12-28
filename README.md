@@ -24,7 +24,10 @@ For building and development need at least NodeJS 10 or high.
 
 ## Docker image ##
 
-- In project present production ready Dockerfile for deployment. 
+- In project present production ready Dockerfile for deployment.
 - To build docker image use command: ` docker build . -t krym-vue:latest --build-arg URL_API=https://yourbackendaddress.com`
 - You can run docker image in daemon mode by command: `docker run -d --name krym-vue --restart=always -p 127.0.0.1:3000:3000 krym-vue:latest`
-- Notice: You can pass environment URL_API only on build stage. 
+- Notice: You can pass environment URL_API only on build stage.
+
+## TODO ##
+1. Человеческие ссылки

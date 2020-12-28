@@ -34,7 +34,6 @@ export default {
   methods: {
     close() {
       // if (event.keyCode == 27) {
-      console.log('fdssdfdsf');
       this.$emit('close-modal');
       // }
     },

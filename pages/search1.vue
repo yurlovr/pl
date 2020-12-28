@@ -81,7 +81,7 @@
       </button>
     </div> -->
     <div
-      v-if="!getSearch"
+      v-if="(!getSearch || !getSearch.list.length) && !searchBegin"
       class="custom-container search-page__empty"
     >
       <NoSearchResult />
@@ -128,6 +128,7 @@ export default {
   beforeRouteLeave(to, from, next) {
     this.setSeach(null);
     this.setTags(null);
+    this.setDefaultSearchParams();
     next();
   },
 
@@ -148,6 +149,7 @@ export default {
       last_coordinates: this.$cookies.get('last_coordinates') || {},
       geo_locating: this.$cookies.get('geo_locating') || -1,
       COUNT_ELEMENTS_BEACH,
+      searchBegin: false,
     };
   },
 
@@ -157,7 +159,9 @@ export default {
       || (store.getters['search/getSearch']
         && store.getters['search/getSearch'].pagination.page !== +query.page)) {
       await store.dispatch('search/setSeach', query);
-      store.dispatch('search/setTags', { ...query });
+      // Тэги
+      await store.dispatch('search/setTags', { ...query });
+      await store.dispatch('search/setRenderTags', store.getters['search/getRenderTags'] + 1);
     }
   },
 
@@ -181,6 +185,9 @@ export default {
       getSearch: 'getSearch',
       getRadiusIfCityExists: 'getRadiusIfCityExists',
       tags: 'getTags',
+      queryParams: 'getQueryParams',
+      getSendRequest: 'getSendRequest',
+      getShowSearch: 'getShowSearch',
     }),
     ...mapGetters([
       'getTypeDisplay',
@@ -206,7 +213,47 @@ export default {
     },
   },
 
-  watchQuery: ['typeBeach', 'page', 'count'],
+  watch: {
+    getSearch(value) {
+      if (!value) {
+        this.searchBegin = true;
+      }
+      if (value && this.searchBegin) {
+        this.searchBegin = false;
+        this.$bus.$emit('hidePageTransitioner');
+      }
+    },
+    queryParams(value) {
+      if (value !== '?' && !this.getShowSearch) {
+        this.setSeach(null);
+        this.$bus.goTo(`/search1${value}&page=1&count=${COUNT_ELEMENTS_BEACH}`, this.$router);
+      }
+    },
+    getSendRequest(value) {
+      if (value) {
+        this.setSendRequest(false);
+        this.setShowSearch(false);
+        this.$bus.goTo(`/search1${this.queryParams}&page=1&count=${COUNT_ELEMENTS_BEACH}`, this.$router);
+      }
+    },
+  },
+
+  watchQuery: [
+    'city',
+    'price',
+    'typeBeach',
+    'page',
+    'count',
+    'modes',
+    'searchBeachLengthFrom',
+    'searchBeachLengthTo',
+    'searchWaterTempFrom',
+    'searchWaterTempTo',
+    'tags[]',
+    'addTags[]',
+    'services[]',
+    'infrastructures[]',
+  ],
 
   // watch: {
   //   query(n, o) {
@@ -242,9 +289,11 @@ export default {
       'searchQuery',
       'setSeach',
       'setTags',
+      'setDefaultSearchParams',
+      'setSendRequest',
     ]),
     ...mapActions([
-      'setTypeDisplay'
+      'setTypeDisplay',
     ]),
     showHorizontal() {
       this.modeOption = 'list';

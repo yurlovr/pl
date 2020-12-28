@@ -10,12 +10,18 @@
             class="search-page__map-area__card__title beach-event__main-info__title"
             v-html="data.title"
           />
-          <nuxt-link
+          <!-- TODO починить ссылку -->
+          <!-- <nuxt-link
             :to="getLink"
             class="search-page__map-area__card__subtitle beach-event__main-info__subtitle"
           >
             {{ data.location }}
-          </nuxt-link>
+          </nuxt-link> -->
+          <span
+            class="search-page__map-area__card__subtitle beach-event__main-info__subtitle"
+          >
+            {{ data.location }}
+          </span>
         </div>
         <button
           class="beach-event__main-info__hearts"

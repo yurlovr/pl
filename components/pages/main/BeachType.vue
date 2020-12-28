@@ -10,7 +10,7 @@
         class="main-page__beach-type__card"
       >
         <nuxt-link
-          :to="{ path: '/search1', query: {[card.filter[0].type] : card.filter[0].id, page: 1, count: COUNT_ELEMENTS_BEACH}}"
+          :to="{ path: '/search1', query: {[`${[card.filter[0].type]}[]`] : card.filter[0].id, page: 1, count: COUNT_ELEMENTS_BEACH}}"
         >
           <img
             v-lazy-load

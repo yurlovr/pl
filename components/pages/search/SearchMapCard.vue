@@ -48,7 +48,7 @@
         // console.log('dfsfsdfsdfsdfsd', e)
       },
       b(e){
-        console.log(e, 'e')
+        // console.log(e, 'e')
       }
     }
 	}

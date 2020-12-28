@@ -8,8 +8,8 @@
           class="swiper-slide slider-cities__slide"
         >
           <nuxt-link
-            :to="{ path: '/search-city',
-                   query: {city: slide.cityId, page: 1, count: COUNT_ELEMENTS_BEACH}
+            :to="{path: '/search-city',
+                  query: {city: slide.cityId, page: 1, count: COUNT_ELEMENTS_BEACH}
             }"
             class="slider__slide__link"
           >
@@ -17,6 +17,7 @@
               <img
                 v-if="!slide.pic"
                 src="~/static/pics/global/pics/slider_cities_placeholder.png"
+                class="no_image"
               >
               <img
                 v-if="slide.pic"
@@ -24,11 +25,6 @@
                 :data-src="slide.pic"
                 class="slider-cities__slide__pic"
               >
-              <div class="slide-placeholder">
-                <span class="slide-placeholder__text">
-                  загрузка изображения
-                </span>
-              </div>
               <h4 class="slider-cities__slide__title">
                 {{ slide.city }}
               </h4>
@@ -80,7 +76,6 @@
 </template>
 
 <script>
-// import Vue from 'vue';
 import { plural } from '~/helpers'
 import { COUNT_ELEMENTS_BEACH } from '~/const/const';
 
@@ -158,3 +153,8 @@ export default {
   },
 };
 </script>
+<style lang="scss" scoped>
+.no_image {
+  border-radius: 12px 12px 0 0;
+}
+</style>

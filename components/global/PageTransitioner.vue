@@ -33,6 +33,7 @@ export default {
     const transitioner = document.getElementById('transitioner');
     this.$bus.$on('transition', () => { this.transition(left, right, logo, transitioner); });
     this.$bus.$on('hidePageTransitioner', () => {
+      // console.log('hidePageTransitioner')
       logo.style.opacity = 0;
 
       setTimeout(() => {

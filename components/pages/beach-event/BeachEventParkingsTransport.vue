@@ -135,7 +135,6 @@ export default {
         lat: latitude,
         lng: longitude,
       };
-      console.log(myCoords, 'm');
       this.$cookies.set('last_coordinates', JSON.stringify(myCoords), {
         maxAge: 30 * 24 * 60 * 60, // one month
       });

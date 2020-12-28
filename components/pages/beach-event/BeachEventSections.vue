@@ -13,7 +13,7 @@
           :style="{ 'justify-content': sections.length <= 8 ? 'flex-start' : 'space-between' }"
         >
           <div
-            v-for="(section) in sections"
+            v-for="(section) in beach ? showSections : sections"
             :key="section.hash"
             class="swiper-slide"
             :class="{ active : section.hash === activeSectionHash }"
@@ -42,6 +42,10 @@ export default {
       type: Array,
       required: true,
     },
+    beach: {
+      type: Boolean,
+      default: false,
+    },
   },
 
   data() {
@@ -57,10 +61,14 @@ export default {
       margin: 300,
       atTop: true,
       dontScroll: true,
+      showSections: null,
     };
   },
 
   mounted() {
+    if (this.beach) {
+      this.showSections = this.sections.filter((item) => item.show);
+    }
     if (this.sections && this.sections.length > 0 && process.browser) {
       this.mySwiper.init(this.swiperOption);
     }

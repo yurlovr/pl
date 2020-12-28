@@ -324,7 +324,7 @@ export const actions = {
       beach = await this.$axios.$get(`/beach/item?id=${BEACH}`);
       city = await this.$axios.$get(`/city/item?id=${CITIES}`);
     } catch (error) {
-      console.log(error);
+      // console.log(error);
     }
     commit('SET_EVENT', { event, beach, city });
 

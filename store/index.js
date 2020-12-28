@@ -59,12 +59,16 @@ export const mutations = {
 export const actions = {
   async nuxtServerInit({ commit }, { app }) {
     const start = new Date().getTime();
-    const [addTags, tags] = await Promise.all([
+    const [addTags, tags, searchConfig] = await Promise.all([
       this.$axios.$get('/addtag/list?count=50'),
       this.$axios.$get('/tag/list?count=10'),
+      this.$axios.$get('/search/config'),
     ]);
     commit('SET_ADD_TAGS', addTags.data.list);
     commit('SET_TAGS', tags.data.list);
+    commit('search/SET_SEARCH_CONFIG', searchConfig.data);
+    commit('search/SET_SEARCH_CONFIG_DEFAULT');
+
     // const [
 //       // beaches,
 //       events,
@@ -77,7 +81,7 @@ export const actions = {
 //       // this.$axios.$get('search/config'),
 //       // this.$axios.$get('/map-entity/list?count=10'),
 //       // this.$axios.$get('/settings/list'),
-//     ]);
+    // ]);
     console.log(`end load data ${new Date().getTime() - start}ms`);
 
 //     // commit('SET_ALL_BEACHES', beaches);
@@ -93,9 +97,9 @@ export const actions = {
 
 //     commit('setLastUserPos', this.$cookies.get('last_coordinates') || {});
   },
-  // setTypeDisplay({ commit }, payload) {
-  //   commit('SET_TYPE_DISPLAY', payload);
-  // },
+  setTypeDisplay({ commit }, payload) {
+    commit('SET_TYPE_DISPLAY', payload);
+  },
 };
 
 export const getters = {

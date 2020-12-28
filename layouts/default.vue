@@ -1,7 +1,7 @@
 <template>
   <div id="content">
-    <!-- <PageTransitioner /> -->
-    <!-- <Preloader /> -->
+    <PageTransitioner />
+    <Preloader />
 
     <MobileSettingsModal
       v-if="getMobileSettings && getMobileSettings.length > 0"
@@ -68,7 +68,7 @@ export default {
   },
 
   mounted() {
-    console.log('Layout mounted');
+    // this.$root.$loading.start();
 
     // let scr = document.createElement('script')
     // scr.type = 'text/javascript';
