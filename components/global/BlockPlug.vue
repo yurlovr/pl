@@ -71,6 +71,8 @@ export default {
 <style scoped>
 .block {
   max-width: 1440px;
+  padding-left: 74px;
+  padding-right: 74px;
 }
 .main-page__section-title {
   margin-bottom: 10px;

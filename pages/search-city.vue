@@ -41,7 +41,7 @@
             alt="Вид: Карточки"
           >
         </button>
-        <button
+        <!-- <button
           v-if="showBeachesOrEvents === false"
           class="search-page__title-area__button"
           :class="{ active: modeOption === 'map' }"
@@ -57,7 +57,7 @@
             src="~/static/pics/search/map_gray.svg"
             alt="Вид: Карта"
           >
-        </button>
+        </button> -->
       </div>
     </div>
     <SearchTags />

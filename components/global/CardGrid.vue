@@ -52,13 +52,18 @@ export default {
 
   methods: {
     onChangePage(pageNum) {
-      this.$router.push({
-        query: {
-          ...this.$route.query,
-          page: pageNum,
-          count: this.perPage,
-        },
-      });
+      // const newPageNum = this.$route.fullPath.match(/(page=)\d+/)[0];
+      // const path = this.$route.fullPath.replace(newPageNum, `page=${pageNum}`);
+      // this.$bus.$emit('transition');
+      // this.$bus.goTo(path, this.$router, false);
+      // console.log(path)
+      // this.$router.push({
+      //   query: {
+      //     ...this.$route.query,
+      //     page: pageNum,
+      //     count: this.perPage,
+      //   },
+      // });
     },
   },
 };
