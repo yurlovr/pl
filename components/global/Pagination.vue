@@ -25,8 +25,8 @@
       <span>1</span>
     </button>
     <button
-      v-for="button in buttons"
-      :key="button"
+      v-for="(button, index) in buttons"
+      :key="button + index"
       class="pagination__button"
       :class="{ 'three-dots': button === '. . .', 'current': button === page }"
       :disabled="button == '. . .' || button == page"
