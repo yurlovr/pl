@@ -129,6 +129,7 @@ export default {
     this.setSeach(null);
     this.setTags(null);
     this.setDefaultSearchParams();
+    this.routeLeave = to.name;
     next();
   },
 
@@ -150,6 +151,7 @@ export default {
       geo_locating: this.$cookies.get('geo_locating') || -1,
       COUNT_ELEMENTS_BEACH,
       searchBegin: false,
+      routeLeave: false,
     };
   },
 
@@ -224,9 +226,12 @@ export default {
       }
     },
     queryParams(value) {
-      if (value !== '?' && !this.getShowSearch) {
+      if (value && value !== '?' && !this.getShowSearch) {
         this.setSeach(null);
         this.$bus.goTo(`/search1${value}&page=1&count=${COUNT_ELEMENTS_BEACH}`, this.$router);
+      }
+      if (!value && !this.getShowSearch && this.routeLeave !== 'beach-id') {
+        this.$bus.goTo(`/beach-catalog?page=1&count=${COUNT_ELEMENTS_BEACH}`, this.$router);
       }
     },
     getSendRequest(value) {

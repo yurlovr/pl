@@ -148,7 +148,7 @@ export default {
         this.setPerPage(COUNT_ELEMENTS_ON_PAGE);
       }
       return COUNT_ELEMENTS_ON_PAGE;
-    }
-  }
+    },
+  },
 };
 </script>

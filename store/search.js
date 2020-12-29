@@ -1128,7 +1128,16 @@ export const getters = {
       selectsString = state.queryParams.selects.map((item) => `${item.param}=${item.option.id}`)
         .join('&');
     }
-    return checkBoxString ? `?${checkBoxString}&${selectsString}` : `?${selectsString}`;
+    if (checkBoxString && selectsString) {
+      return `?${checkBoxString}&${selectsString}`;
+    }
+    if (!checkBoxString && selectsString) {
+      return `?${selectsString}`;
+    }
+    if (!selectsString && checkBoxString) {
+      return `?${checkBoxString}`;
+    }
+    return null;
   },
   getSearchResultFromParams: (state) => state.searchResultFromParams,
   getTags: (state) => {
@@ -1158,7 +1167,7 @@ export const getters = {
       id: item.id,
     }));
     const result = [...selectTags, ...checkBoxTags];
-    return result.length ? result : '/';
+    return result.length ? result : null;
   },
   getRenderTags: (state) => state.renderTags,
   getSendRequest: (state) => state.sendRequest,

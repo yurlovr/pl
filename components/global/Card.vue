@@ -382,6 +382,11 @@ export default {
         this.$bus.$emit('search');
       }, 1);
     },
+    // clickLink({ event, link, id }) {
+    //   event.preventDefault();
+    //   console.log('LINK', link, event)
+    //   this.$router.push({ path: link, query: { id } });
+    // },
   },
 };
 </script>

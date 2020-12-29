@@ -54,11 +54,6 @@ export default {
   },
 
   watch: {
-    getTags(v) {
-      if (v === '/') {
-        this.$bus.goTo('/', this.$router);
-      }
-    },
     getRenderTags(value) {
       if (value) {
         this.renderTags = JSON.parse(JSON.stringify(this.getTags));

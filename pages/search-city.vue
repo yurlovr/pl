@@ -179,7 +179,16 @@ export default {
   computed: {
     ...mapGetters('search', [
       'getSearchResultCity',
+      'getQueryParams',
     ]),
+  },
+
+  watch: {
+    getQueryParams(value) {
+      if (!value) {
+        this.$bus.goTo('/', this.$router);
+      }
+    },
   },
 
   watchQuery: ['city', 'page', 'count'],
