@@ -20,7 +20,7 @@
           <img src="~/static/pics/global/svg/search_white.svg" alt="Поиск">
         </button>
         <div class="header__favorites">
-          <a href="/favorites" @click.prevent="$bus.goTo('/favorites', $router)">
+          <a href="/favorites" @click.prevent="$bus.goTo('/favorites1', $router)">
             <img
               class="header__favorites-img"
               alt="Избранное"
