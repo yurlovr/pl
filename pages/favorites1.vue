@@ -18,7 +18,7 @@
           Пляжи
         </button>
         <button
-          v-if="getHaveMyEvents"
+          v-if="getHaveMyEvents || getHaveMyVisited"
           class="favorites-page__favorites-type"
           :class="{ active: showBeachesOrEvents }"
           @click="showBeachesOrEvents = true"
@@ -30,6 +30,20 @@
         v-if="myData"
         :per-page="perPage"
         :data="myData"
+      />
+      <div
+        v-show="showBeachesOrEvents && getMyVisited"
+        class="custom-container"
+      >
+        <h3 class="main-page__section-title">
+          Посещенные мероприятия
+        </h3>
+      </div>
+      <CardGrid
+        v-if="getMyVisited"
+        v-show="showBeachesOrEvents && getMyVisited"
+        :per-page="perPage"
+        :data="getMyVisited"
       />
     </div>
   </div>
@@ -51,6 +65,11 @@ export default {
     }
     next();
   },
+  beforeRouteLeave(from, to, next) {
+    this.setMyBeaches(null);
+    this.setMyEvents(null);
+    next();
+  },
   data() {
     return {
       COUNT_ELEMENTS_BEACH,
@@ -64,7 +83,7 @@ export default {
       await this.setMyBeaches();
     }
     if (!this.getHaveMyBeaches
-      && this.getHaveMyEvents) {
+      && (this.getHaveMyEvents || this.getHaveMyVisited)) {
       this.showBeachesOrEvents = true;
       await this.setMyEvents();
     }
@@ -88,6 +107,7 @@ export default {
       'getHaveMyVisited',
       'getMyBeaches',
       'getMyEvents',
+      'getMyVisited',
     ]),
     ...mapGetters('catalog', {
       perPage: 'getPerPage',
@@ -113,6 +133,5 @@ export default {
       'setMyEvents',
     ]),
   },
-
 };
 </script>
