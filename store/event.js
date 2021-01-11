@@ -353,7 +353,6 @@ export const actions = {
     commit('SET_VISITOR_PICS', visitorPics);
   },
   async setReviews({ commit }, eventId) {
-    // &count=9999
     const reviews = await this.$axios.$get(`/review/list?entityId=${eventId}`);
     commit('SET_REVIEWS', reviews);
   },

@@ -15,7 +15,7 @@ export default {
     Catalog,
   },
   async fetch({ store, query }) {
-    const { page, count } = query;
+    const { page, count, beachId } = query;
     if (count !== COUNT_ELEMENTS_ON_PAGE) {
       store.dispatch('catalog/setPerPage', count);
     }
@@ -25,6 +25,7 @@ export default {
     await store.dispatch('catalog/setEvents', {
       page,
       count,
+      beachId,
     });
   },
 

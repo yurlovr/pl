@@ -13,7 +13,7 @@ import {
   mapBar,
   mapReview,
   mapService,
-  mapVisitors
+  mapVisitors,
 } from "../helpers/mappers";
 
 export const state = () => ({
@@ -319,7 +319,7 @@ export const getters = {
   getEvents: state => {
     return {
       count: Math.min(state.events.length, 45),
-      link: `/event-catalog?beach=${state.beach.id}`,
+      link: `/event-catalog?beachId=${state.beach.id}`,
       cardData: state.events,
     }
   },
@@ -378,6 +378,6 @@ function mapBeachFull(beach) {
     ...mapBeachHugeSliderData(beach),
     ...mapBeachServices(beach),
     ...mapBeachMainData(beach),
-    ...mapBeach(beach)
+    ...mapBeach(beach),
   }
 }

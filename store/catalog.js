@@ -63,8 +63,8 @@ export const actions = {
     commit('SET_PAGE', page);
   },
   async setEvents({ commit }, payload) {
-    const { page, count } = payload;
-    const { data } = await this.$axios.$get(`/event/list?count=${count}&page=${page}`);
+    const { page, count, beachId } = payload;
+    const { data } = await this.$axios.$get(`/event/list?${beachId ? `beachId=${beachId}&` : ''}count=${count}&page=${page}`);
     commit('SET_EVENTS', {
       ...data,
       list: data.list.map(mapEvent),
