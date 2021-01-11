@@ -14,7 +14,7 @@ export const state = () => ({
 });
 
 export const actions = {
-  addToFavorite({ commit, dispatch }, [id, type]) {
+  addToFavorite({ commit }, [id, type]) {
     switch (type) {
       case 'beach':
         commit('addBeach', id);
@@ -25,7 +25,7 @@ export const actions = {
       default: break;
     }
   },
-  removeFavorite({ commit, dispatch }, [id, type]) {
+  removeFavorite({ commit }, [id, type]) {
     switch (type) {
       case 'beach':
         commit('removeBeach', id);
@@ -43,7 +43,7 @@ export const actions = {
     }
     const query = Object.keys(state.beaches).map((item) => `id[]=${item}`)
       .join('&');
-    const { data } = await this.$axios.$get(`/beach/item?${query}`);
+    const { data } = await this.$axios.$get(`/beach/list?${query}`);
     commit('SET_MY_FAVORITES_BEACHES', data);
   },
   async setMyEvents({ commit, state }, payload = true) {
@@ -59,10 +59,10 @@ export const actions = {
     let events = null;
     let visited = null;
     if (queryEvents) {
-      events = await this.$axios.$get(`/event/item?${queryEvents}`);
+      events = await this.$axios.$get(`/event/list?${queryEvents}`);
     }
     if (queryVisited) {
-      visited = await this.$axios.$get(`/event/item?${queryVisited}`);
+      visited = await this.$axios.$get(`/event/list?${queryVisited}`);
     }
     if (events) {
       commit('SET_MY_FAVORITES_EVENTS', events.data);
@@ -114,10 +114,10 @@ export const mutations = {
       state.myBeaches = payload;
       return;
     }
-    const { item } = payload;
+    const { list, pagination } = payload;
     state.myBeaches = {
-      list: [].concat(mapBeach(item)),
-      pagination: {},
+      list: [].concat(list.map((item) => mapBeach(item))),
+      pagination,
     };
   },
   SET_MY_FAVORITES_EVENTS: (state, payload) => {
@@ -125,10 +125,10 @@ export const mutations = {
       state.myEvents = payload;
       return;
     }
-    const { item } = payload;
+    const { list, pagination } = payload;
     state.myEvents = {
-      list: [].concat(mapEvent(item)),
-      pagination: {},
+      list: [].concat(list.map((item) => mapEvent(item))),
+      pagination,
     };
   },
   SET_MY_FAVORITES_VISITED: (state, payload) => {
@@ -136,10 +136,10 @@ export const mutations = {
       state.myVisited = payload;
       return;
     }
-    const { item } = payload;
+    const { list, pagination } = payload;
     state.myVisited = {
-      list: [].concat(mapEvent(item)),
-      pagination: {},
+      list: [].concat(list.map((item) => mapEvent(item))),
+      pagination,
     };
   },
 };
