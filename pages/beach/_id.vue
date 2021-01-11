@@ -92,12 +92,12 @@
           </div>
 
           <!-- Transport map  -->
-          <!--          <BeachEventParkingsTransport-->
-          <!--            id="pt"-->
-          <!--            :data="getParking"-->
-          <!--            :additional="[...getParking.filter(e => Array.isArray(e.pos)), ...getInfraData.filter(e => Array.isArray(e.pos))]"-->
-          <!--            v-if="getParking.parkings.auto.length > 0 || getParking.parkings.bus.length > 0"-->
-          <!--          />-->
+          <BeachEventParkingsTransport
+            v-if="getParking && (getParking.parkings.auto.length > 0 || getParking.parkings.bus.length > 0)"
+            id="pt"
+            :additional="[...getParking.parkings.auto.filter(e => Array.isArray(e.pos)), ...getParking.parkings.bus.filter(e => Array.isArray(e.pos)), ...getInfraData.filter(e => Array.isArray(e.pos))]"
+            :data="getParking"
+          />
 
           <!-- Temp Chart -->
           <BeachWaterTemperatureHistogram
@@ -301,6 +301,7 @@ export default {
       'getSections',
       'getWaterTemp',
       'getParking',
+      'getInfraData',
       'getEvents',
       'hotelsData',
       'getAnnounce',

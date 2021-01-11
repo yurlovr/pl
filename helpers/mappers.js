@@ -182,11 +182,11 @@ export function mapBeachList(list = []) {
 export function mapBeachServices(beach) {
   return {
     infrastructures: beach.INFRASTRUCTURES
-      .map(mapService)
-      .filter((i) => ![
-        'ostanovki-obshchestvennogo-transporta',
-        'parkovka',
-      ].includes(i.code)),
+      .map(mapService),
+      // .filter((i) => ![
+      //   'ostanovki-obshchestvennogo-transporta',
+      //   'parkovka',
+      // ].includes(i.code)),
     services: beach.SERVICES.map(mapService),
   };
 }

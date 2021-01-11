@@ -1,6 +1,6 @@
 <template>
   <div
-    v-if="data.auto.length || data.bus.length"
+    v-if="data.parkings || data.auto.length || data.bus.length"
     id="pt"
     class="beach-event__pt-wrapper"
   >

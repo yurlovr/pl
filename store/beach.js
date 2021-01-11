@@ -81,11 +81,11 @@ export const actions = {
 export const mutations = {
   SET_BEACH: (state, payload) => {
     if (!payload || !payload.data) return;
-    const { item } = payload.data
-    state.beach = mapBeachFull(item)
+    const { item } = payload.data;
+    state.beach = mapBeachFull(item);
   },
   SET_ANY_PLACES: (state, data) => {
-    state.any_places = data
+    state.any_places = data;
   },
 
   SET_TEMPERATURES: (state, payload) => {
@@ -118,37 +118,36 @@ export const mutations = {
 
   SET_ANNOUNCEMENT_DATA: (state, payload) => {
     const list = payload.data.list || [];
-    state.announcements = list.map(mapAnnounce)
+    state.announcements = list.map(mapAnnounce);
   },
 
   SET_HOTELS: (state, data) => {
-    state.hotels = data
+    state.hotels = data;
   },
-}
-
+};
 
 export const getters = {
-  getAvgRating: state => {
+  getAvgRating: (state) => {
     if (!state.beach.data) return null;
     const beach = state.beach.data.item;
-    return mapBeachToAvgRating(beach)
+    return mapBeachToAvgRating(beach);
   },
-  getMainData: state => mapBeachMainData(state.beach.data.item),
-  getHugeSliderData: state => mapBeachHugeSliderData(state.beach.data.item),
-  getSideMapWeatherData: state => mapBeachToSideMapWeatherData(state.beach.data.item),
-  getInfraData: state => {
+  getMainData: (state) => mapBeachMainData(state.beach.data.item),
+  getHugeSliderData: (state) => mapBeachHugeSliderData(state.beach.data.item),
+  getSideMapWeatherData: (state) => mapBeachToSideMapWeatherData(state.beach.data.item),
+  getInfraData: (state) => {
     const infra = state.beach.infrastructures
-      .filter(i => ![
+      .filter((i) => ![
         'ostanovki-obshchestvennogo-transporta',
-        'parkovka'
+        'parkovka',
       ].includes(i.code));
     return infra;
   },
-  hotelsData: state => {
+  hotelsData: (state) => {
       // console.log('getHotelsData')
-      let ret = { }
-      if (state.hotels.data){
-        let hotels = state.hotels.data.list
+      let ret = {};
+      if (state.hotels.data) {
+        let hotels = state.hotels.data.list;
         ret.hotels = {
           title: 'Забронируй номер рядом с пляжем',
           subtitle: 'Наша подборка отелей, основанная на ваших отзывах',
@@ -159,9 +158,9 @@ export const getters = {
           },*/
           beachSliderData: {
             slideNumber: 6,
-            cardData: []
-          }
-        }
+            cardData: [],
+          },
+        };
 
         for (let i = 0; i < hotels.length; i++) {
           ret.hotels.beachSliderData.cardData.push({
@@ -255,41 +254,42 @@ export const getters = {
     ];
     return sections;
   },
-  getDescription: state => state.beach.data.item.DESCRIPTION,
-  getParking: state => {
-    if (!state.beach.data) return null;
-    const beach = state.beach
+  getDescription: (state) => state.beach.data.item.DESCRIPTION,
+  getParking: (state) => {
+    if (!state.beach) return null;
+    const { beach } = state;
 
     const auto = beach.infrastructures
-      .filter(v => v.code == 'parkovka')
-      .map(item => ({
-        pos: item.COORDINATES ? item.COORDINATES.split(',').map(Number) : [],
-        title: item.DESCRIPTION,
+      .filter((v) => v.code === 'parkovka')
+      .map((item) => ({
+        // pos: item.COORDINATES ? item.COORDINATES.split(',').map(Number) : [],
+        pos: item.pos,
+        title: item.title,
         type: 'Автомобильная парковка',
         mode: '',
         address: '',
-        price: ''
+        price: '',
+      }));
+    const bus = beach.infrastructures
+      .filter((v) => v.code === 'ostanovki-obshchestvennogo-transporta')
+      .map((item) => ({
+        // pos: item.COORDINATES ? item.COORDINATES.split(',').map(Number) : [],
+        pos: item.pos,
+        title: item.title || 'Автобусная остановка',
+        buses: '',
+        taxi: '',
       }));
 
-    const bus = beach.infrastructures
-      .filter(v => v.code == 'ostanovki-obshchestvennogo-transporta')
-      .map(item => ({
-        pos: item.COORDINATES ? item.COORDINATES.split(',').map(Number) : [],
-        title: item.DESCRIPTION || 'Автобусная остановка',
-        buses: '',
-        taxi: ''
-      }))
-
     return {
-      title: beach.NAME,
-      pos: (beach.COORDINATES != '')
-        ? beach.COORDINATES.split(',').map(v => parseFloat(v))
+      title: beach.title,
+      pos: (beach.coordinates !== '')
+        ? beach.coordinates
         : null,
       parkings: {
         auto,
-        bus
-      }
-    }
+        bus,
+      },
+    };
   },
 
   getSimilarBeaches: state => {
@@ -316,13 +316,11 @@ export const getters = {
 
   },
 
-  getEvents: state => {
-    return {
-      count: Math.min(state.events.length, 45),
-      link: `/event-catalog?beachId=${state.beach.id}`,
-      cardData: state.events,
-    }
-  },
+  getEvents: (state) => ({
+    count: Math.min(state.events.length, 45),
+    link: `/event-catalog?beachId=${state.beach.id}`,
+    cardData: state.events,
+  }),
 
   getAnnounce: state => {
     if (!state.announcements) return null;
