@@ -9,7 +9,7 @@
       :map="true"
     />
     <MapArea
-      v-if="map"
+      v-if="clusters"
       v-show="mapLoaded"
       :data="map"
       @map-loaded="mapIsLoaded"
@@ -40,6 +40,7 @@ export default {
   computed: {
     ...mapGetters('main', {
       map: 'getMap',
+      clusters: 'getClusters',
     }),
   },
   methods: {

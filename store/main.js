@@ -24,6 +24,7 @@ export const state = () => ({
   chooseToYourWishes: null,
   activeRest: null,
   familyRest: null,
+  clusters: null,
 });
 
 const mapCenter = (array) => ([
@@ -91,7 +92,7 @@ export const mutations = {
         pos: elem.COORDINATES ? elem.COORDINATES.split(',').map((v) => parseFloat(v)) : null,
         rating: parseFloat(elem.AVERAGE_RATING),
         title: elem.NAME,
-        location: elem?.CITY?.NAME,
+        location: elem && elem.CITY ? elem.CITY.NAME : null,
         locationId: elem.CITY ? elem.CITY.ID : -1,
         beachId: elem.ID,
         pics: elem.PHOTOS && elem.PHOTOS.small ? [...elem.PHOTOS.small.map((e) => e.path)] : null,
@@ -188,6 +189,14 @@ export const mutations = {
       },
     };
   },
+  SET_CLUSTERS: (state, data) => {
+    const { list } = data.list;
+    state.clusters = list.map((item) => ({
+      coords: item.COORDINATES.split(',').map((item) => +item),
+      id: item.ID,
+      beachName: item.NAME,
+    }));
+  },
 };
 
 export const actions = {
@@ -251,9 +260,10 @@ export const actions = {
     commit('SET_ANY_PLACES', anyPlaces);
   },
   async setMap({ commit }) {
-    // console.log('setMap');
-    const map = await this.$axios.$get('/beach/clusters/');
-    commit('SET_MAP', map);
+    // const map = await this.$axios.$get('/beach/clusters/');
+    const dataForClusters = await this.$axios.$get('/beach/listforcluster');
+    commit('SET_CLUSTERS', dataForClusters.data);
+    // commit('SET_MAP', map);
   },
 };
 
@@ -418,4 +428,5 @@ export const getters = {
   getChooseToYourWishes: (state) => state.chooseToYourWishes,
   // Активный отдых
   getActiveRest: (state) => state.activeRest,
+  getClusters: (state) => state.clusters,
 };

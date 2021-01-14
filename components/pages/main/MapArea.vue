@@ -6,10 +6,10 @@
       </h3>
     </div>
     <div class="main-page__map-inner">
-      <MapBeaches
+      <!-- <MapBeaches
         v-show="step === 2"
         :data="data.addressBeaches"
-      />
+      /> -->
       <Map
         :data="data"
         :map-data="[]"
