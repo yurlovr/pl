@@ -25,6 +25,7 @@ export const state = () => ({
   activeRest: null,
   familyRest: null,
   clusters: null,
+  beachFromMap: null,
 });
 
 const mapCenter = (array) => ([
@@ -197,6 +198,14 @@ export const mutations = {
       beachName: item.NAME,
     }));
   },
+  SET_BEACH_FROM_MAP: (state, data) => {
+    if (!data) {
+      state.beachFromMap = null;
+      return;
+    }
+    const { item } = data;
+    state.beachFromMap = mapBeach(item);
+  },
 };
 
 export const actions = {
@@ -264,6 +273,14 @@ export const actions = {
     const dataForClusters = await this.$axios.$get('/beach/listforcluster');
     commit('SET_CLUSTERS', dataForClusters.data);
     // commit('SET_MAP', map);
+  },
+  async setBeachFromMap({ commit }, beachId) {
+    let dataBeach = null;
+    if (beachId) {
+      const { data } = await this.$axios.$get(`/beach/item?id=${beachId}`);
+      dataBeach = data;
+    }
+    commit('SET_BEACH_FROM_MAP', dataBeach);
   },
 };
 
@@ -429,4 +446,5 @@ export const getters = {
   // Активный отдых
   getActiveRest: (state) => state.activeRest,
   getClusters: (state) => state.clusters,
+  getBeachFromMap: (state) => state.beachFromMap,
 };

@@ -11,28 +11,41 @@
       >
     </button>
     <div class="map__zoom-wrapper">
-      <button class="map__zoom map__zoom-plus">
+      <button
+        ref="zoomPlus"
+        class="map__zoom map__zoom-plus"
+      >
         <img src="~/static/pics/global/svg/plus.svg">
       </button>
-      <button class="map__zoom map__zoom-minus">
+      <button
+        ref="zoomMinus"
+        class="map__zoom map__zoom-minus"
+      >
         <img src="~/static/pics/global/svg/minus.svg">
       </button>
     </div>
     <div
       ref="yamap"
-      id="map"
       class="map"
-    />
+    >
+      <PopupMapWrapper
+        v-if="active"
+        @close-popup="closeActive"
+      />
+    </div>
   </section>
 </template>
 
 <script>
 import ymaps from 'ymaps';
-import { mapGetters } from 'vuex';
+import { mapGetters, mapActions } from 'vuex';
+import PopupMapWrapper from './PopupMapWrapper.vue';
 
 export default {
+  components: {
+    PopupMapWrapper,
+  },
   props: ['data', 'mapData'],
-
   data() {
     return {
       zoom: 8,
@@ -41,18 +54,34 @@ export default {
       map: null,
       step: 1,
       chosenObject: -1,
+      oldZoom: null,
+      clickToCluster: false,
+      maps: null,
+      currentObjectId: null,
+      active: false,
+      objectManager: null,
     };
   },
   computed: {
     ...mapGetters('main', {
       clusters: 'getClusters',
+      beachFromMap: 'getBeachFromMap',
     }),
+    points() {
+      return this.clusters.map((item) => ({
+        id: item.id,
+        geometry: {
+          type: 'Point',
+          coordinates: item.coords,
+        },
+        properties: {
+          hintContent: `<strong>${item.beachName}</strong>`,
+        },
+        name: item.beachName,
+      }));
+    },
   },
   async mounted() {
-    // TODO use ssr swiper version instead
-    // requiring the Swiper
-    require('~/plugins/swiper.min').__proto__;
-    // making the map
     this.initMap();
 
     window.addEventListener('resize', this.onResize);
@@ -60,490 +89,129 @@ export default {
   },
 
   methods: {
+    ...mapActions('main', [
+      'setBeachFromMap',
+    ]),
     initMap() {
-      // setTimeout(() => {
       ymaps
         .load()
         .then((maps) => {
-          let geoObjects = [];
-          const sizeElemMap = [this.$refs.yamap.clientWidth, this.$refs.yamap.clientHeight];
-          const getPointData = (index) => ({
-            balloonContentBody: 'балун <strong>метки ' + index + '</strong>',
-            clusterCaption: 'метка <strong>' + index + '</strong>'
-          });
-          const points = this.clusters.map((item) => item.coords);
-          const getPointOptions = () => ({
-            preset: 'twirl#violetIcon',
-          });
-          this.map = new maps.Map(document.getElementById('map'), {
-            center: this.clusters[0].coords,
+          this.maps = maps;
+          this.map = new maps.Map(this.$refs.yamap, {
+            center: [45.08862278414359, 35.649618227986906],
             zoom: this.zoom,
             controls: ['typeSelector'],
           });
-          // maps.util.bounds.getCenterAndZoom(points, sizeElemMap);
+
+          const objectManager = new maps.ObjectManager({
+            clusterize: true,
+            gridSize: 80,
+            clusterDisableClickZoom: false,
+            clusterHasBalloon: false,
+            geoObjectOpenBalloonOnClick: true,
+          });
+          this.objectManager = objectManager;
+          objectManager.objects.options.set({
+            iconLayout: 'default#image',
+            iconImageHref: '/pics/global/svg/map_beach_72dpi.svg',
+            iconImageSize: [30, 42],
+          });
+
+          objectManager.clusters.options.set('preset', 'islands#darkOrangeClusterIcons');
+          objectManager.clusters.events.add('click', () => {
+            if (this.active) {
+              this.closeActive();
+            }
+            if (this.currentObjectId) {
+              objectManager.objects.setObjectOptions(this.currentObjectId, {
+                iconImageHref: '/pics/global/svg/map_beach_72dpi.svg',
+              });
+              this.currentObjectId = null;
+            }
+          });
+          objectManager.objects.events.add('click', async (e) => {
+            const currentObjectId = e.get('objectId');
+            if (this.currentObjectId && this.currentObjectId === currentObjectId) {
+              this.currentObjectId = null;
+              objectManager.objects.setObjectOptions(currentObjectId, {
+                iconImageHref: '/pics/global/svg/map_beach_72dpi.svg',
+              });
+            } else {
+              objectManager.objects.setObjectOptions(this.currentObjectId, {
+                iconImageHref: '/pics/global/svg/map_beach_72dpi.svg',
+              });
+              this.currentObjectId = currentObjectId;
+              objectManager.objects.setObjectOptions(currentObjectId, {
+                iconImageHref: '/pics/global/svg/pin_active.svg',
+              });
+              this.active = true;
+              await this.setBeachFromMap(currentObjectId);
+              objectManager.objects.setObjectOptions(currentObjectId, {
+                iconImageHref: '/pics/global/svg/pin_active.svg',
+              });
+            }
+          });
+          objectManager.clusters.events.add('click', () => {
+            this.clickToCluster = true;
+          });
+          objectManager.add(this.points);
+          this.map.geoObjects.add(objectManager);
           this.map.behaviors.disable('scrollZoom');
 
-          this.$el.querySelector('.map__zoom-plus').addEventListener('click', () => {
-            if (this.zoom < 15) {
+          this.$refs.zoomPlus.addEventListener('click', () => {
+            if (this.oldZoom) this.oldZoom = null;
+            if (this.zoom < 20) {
               this.zoom += 1;
               this.map.setZoom(this.zoom);
             }
           });
 
-          this.$el.querySelector('.map__zoom-minus').addEventListener('click', () => {
-            if (this.zoom > 0) {
+          this.$refs.zoomMinus.addEventListener('click', () => {
+            if (this.zoom < 8) return;
+            if (this.zoom >= 9 && !this.oldZoom) {
               this.zoom -= 1;
-              this.map.setZoom(this.zoom);
+            }
+            if (this.oldZoom) {
+              this.zoom = this.oldZoom;
+              this.oldZoom = null;
+            }
+            this.map.setZoom(this.zoom);
+          });
+
+          this.map.events.add('boundschange', () => {
+            if (this.clickToCluster) {
+              const zoom = this.map.getZoom();
+              this.oldZoom = this.zoom;
+              this.zoom = zoom;
+              this.clickToCluster = false;
             }
           });
-          // markers
-          const iconStep1 = maps.templateLayoutFactory.createClass(
-            '<div class="map__circle-orange step-1"><span>$[properties.iconContent]</span></div>',
-          );
-          const iconStep2 = maps.templateLayoutFactory.createClass(
-            '<div class="map__beach-icon step-2"></div>',
-          );
-          const parkingIcon = maps.templateLayoutFactory.createClass(
-            '<div class="map__beach-parking-icon"></div>',
-          );
-
-          let step1CounterForChosen = 0;
-          let step2CounterForChosen = 0;
-          let balloonLayout;
-
-          const step1ObjectManager = new maps.ObjectManager({
-            geoObjectOpenBalloonOnClick: false,
-          });
-          const step2ObjectManager = new maps.ObjectManager({
-            geoObjectOpenBalloonOnClick: true,
-          });
-          const customObjectManager = new maps.ObjectManager({
-            geoObjectOpenBalloonOnClick: true,
-          });
-          this.map.geoObjects.add(step1ObjectManager);
-          this.map.geoObjects.add(step2ObjectManager);
-          this.map.geoObjects.add(customObjectManager);
-
-          const closeBalloon = () => {
-            step2ObjectManager.objects.setObjectOptions(this.chosen, {
-              iconImageHref: '/pics/global/svg/map_beach_72dpi.svg',
-            });
-            customObjectManager.objects.setObjectOptions(this.chosenObject, {
-              iconImageHref: '/pics/global/svg/beach_blue.svg',
-              iconImageOffset: [-18, -50],
-              iconImageSize: [27, 40],
-            });
-            this.chosenObject = -1;
-            this.chosen = -1;
-            this.map.balloon.close();
-            this.$bus.$emit('releaseSelection');
-          };
-
-            // const goToStep2 = (id) => {
-            //   this.$bus.$emit('changeStep', 2);
-            //   step1ObjectManager.setFilter('id < 0'); // hide step-1 markers
-            //   // show step-2 markers
-            //   this.zoom = 12;
-            //   this.map.setCenter(this.data.addressBeaches[id].clusterCenter, this.zoom);
-            //   // setTimeout(this.onResize, 100);
-            //   step2ObjectManager.setFilter('');
-            //   this.step = 2;
-            // };
-
-            // going to step 2
-            // const onStep1ObjectEvent = (e) => {
-            //   const objectId = e.get('objectId');
-            //   if (e.get('type') === 'click') {
-            //     goToStep2(objectId);
-            //   }
-            // };
-
-            // const onStep2ObjectEvent = (e) => {
-            //   const objectId = e.get('objectId');
-            //   if (e.get('type') == 'mouseenter') {
-            //     // The setObjectOptions method allows you to set object options "on the fly".
-            //     step2ObjectManager.objects.setObjectOptions(objectId, {
-            //       iconImageHref: '/pics/global/svg/pin_active.svg',
-            //     });
-            //   } else if (e.get('type') === 'mouseleave') {
-            //     if (objectId !== this.chosen) {
-            //       step2ObjectManager.objects.setObjectOptions(objectId, {
-            //         iconImageHref: '/pics/global/svg/map_beach_72dpi.svg',
-            //       });
-            //     }
-            //   } else if (e.get('type') === 'click') {
-            //     // open the balloon
-            //     if (this.chosen !== objectId) {
-            //       if (this.chosen !== -1) {
-            //         step2ObjectManager.objects.setObjectOptions(this.chosen, {
-            //           iconImageHref: '/pics/global/svg/map_beach_72dpi.svg',
-            //         });
-            //       }
-            //       this.chosen = objectId;
-            //       step2ObjectManager.objects.setObjectOptions(this.chosen, {
-            //         iconImageHref: '/pics/global/svg/pin_active.svg',
-            //       });
-            //       this.$bus.$emit('goToCard', this.chosen);
-            //       // close the balloon
-            //     } else {
-            //       closeBalloon();
-            //     }
-            //   }
-            // };
-
-            // step1ObjectManager.objects.events.add(['click'], onStep1ObjectEvent);
-            // step2ObjectManager.setFilter('id < 0'); // hide step-2 markers
-            // step2ObjectManager.objects.events.add(['mouseenter', 'mouseleave', 'click'], onStep2ObjectEvent);
-
-            // step 1 markers
-            // for (let i = 0; i < this.data.addressBeaches.length; i++) {
-            //   // step1ObjectManager.add({
-            //   //   type: 'FeatureCollection',
-            //   //   features: [{
-            //   //     type: 'Feature',
-            //   //     id: step1CounterForChosen,
-            //   //     geometry: {
-            //   //       type: 'Point',
-            //   //       coordinates: this.data.addressBeaches[i].clusterCenter,
-            //   //     },
-            //   //     properties: {
-            //   //       iconContent: this.data.addressBeaches[i].beaches.length,
-            //   //     },
-            //   //     options: {
-            //   //       iconLayout: 'default#imageWithContent',
-            //   //       iconImageHref: '',
-            //   //       iconImageSize: [50, 50],
-            //   //       iconImageOffset: [-25, -25],
-            //   //       iconContentLayout: iconStep1,
-            //   //     },
-            //   //   }],
-            //   // });
-
-            //   step1CounterForChosen++;
-
-            //   // step 2 markers
-            //   for (let j = 0; j < this.data.addressBeaches[i].beaches.length; j++) {
-            //     // adding the balloon
-            //     const slides = [];
-            //     const { pics } = this.data.addressBeaches[i].beaches[j];
-
-            //     if (pics && pics.length) {
-            //       for (let k = 0; k < this.data.addressBeaches[i].beaches[j].pics.length; k++) {
-            //         slides.push(`
-            //                             <div class="swiper-slide map-popup__slide">
-            //                                 <img  src="${this.data.addressBeaches[i].beaches[j].pics[k]}">
-            //                             </div>
-            //                         `);
-            //       }
-            //     }
-
-            //     balloonLayout = maps.templateLayoutFactory.createClass(`
-            //                         <div class="map-popup map-popup--bottom">
-            //                             <div class="map-popup__pic-area">
-            //                                 <div class="map-popup__slider">
-            //                                     <div class="swiper-container" id="balloon-swiper">
-            //                                         <div class="swiper-wrapper">
-            //                                             ${slides.join('')}
-            //                                         </div>
-            //                                     </div>
-            //                                     <div class="pagination-wrapper"><div class="swiper-pagination"></div></div>
-            //                                     <button class="slider__arrow-left slider__arrow-left-balloon">
-            //                                         <img  src="/pics/global/svg/arrow_next_map.svg" alt="Налево">
-            //                                     </button>
-            //                                     <button class="slider__arrow-right slider__arrow-right-balloon">
-            //                                         <img  src="/pics/global/svg/arrow_next_map.svg" alt="Направо">
-            //                                     </button>
-            //                                 </div>
-            //                             </div>
-            //                             <div class="map-popup__info-area">
-            //                                 <span class="map-popup__rating">
-            //                                     <img src="/pics/global/svg/star.svg" alt="Рейтинг">
-            //                                     <span>${this.data.addressBeaches[i].beaches[j].rating.toFixed(1)}</span>
-            //                                 </span>
-            //                                 <a href="/beach/${this.data.addressBeaches[i].beaches[j].humanLink || this.data.addressBeaches[i].beaches[j].beachId}" class="map-popup__title">${this.data.addressBeaches[i].beaches[j].title}</a>
-            //                                 <h5 class="map-popup__location">${this.data.addressBeaches[i].beaches[j].location}</h5>
-            //                             </div>
-            //                         </div>
-            //                     `, {
-            //       build() {
-            //         this.constructor.superclass.build.call(this);
-
-            //         // init the swiper
-            //         this.swiper = new Swiper('#balloon-swiper', {
-            //           slidePerView: 1,
-            //           spaceBetween: 20,
-            //           pagination: {
-            //             el: '.swiper-pagination',
-            //             type: 'bullets',
-            //             clickable: true,
-            //           },
-            //         });
-
-            //         // init the arrows
-            //         document.querySelector('.slider__arrow-left-balloon').addEventListener('click', () => this.swiper.slidePrev());
-            //         document.querySelector('.slider__arrow-right-balloon').addEventListener('click', () => this.swiper.slideNext());
-            //       },
-
-            //       clear() {
-            //         this.swiper && this.swiper.destroy && this.swiper.destroy(false, false);
-            //         // TODO И как с этим быть?
-            //         this.constructor.superclass.clear.call(this);
-            //       },
-
-            //       getShape() {
-            //         return new maps.shape.Rectangle(new maps.geometry.pixel.Rectangle([
-            //           [25, 0], [275, 0], // balloon's width is always 300 and -25 for the margin
-            //         ]));
-            //       },
-
-            //       _isElement(element) {
-            //         return element && element[0];
-            //       },
-            //     });
-
-            //     step2ObjectManager.add({
-            //       type: 'FeatureCollection',
-            //       features: [{
-            //         type: 'Feature',
-            //         id: step2CounterForChosen,
-            //         geometry: {
-            //           type: 'Point',
-            //           coordinates: this.data.addressBeaches[i].beaches[j].pos,
-            //         },
-            //         options: {
-            //           iconLayout: 'default#imageWithContent',
-            //           iconImageHref: '/pics/global/svg/map_beach_72dpi.svg',
-            //           iconContentLayout: iconStep2,
-            //           iconImageSize: [40, 53],
-            //           iconImageOffset: [-18, -50],
-            //           hideIconOnBalloonOpen: false,
-            //           balloonShadow: false,
-            //           balloonLayout,
-            //           balloonContentLayout: '',
-            //           balloonOffset: [-151, -345],
-            //           balloonPane: 'balloon',
-            //           balloonAutoPan: true,
-            //           balloonPanelMaxMapArea: 0,
-            //         },
-            //       }],
-            //     });
-
-            //     step2CounterForChosen++;
-            //   }
-            // }
-
-            // adding customs
-
-            // for (let i = 0; i < this.mapData.length; i++) {
-            //   balloonLayout = maps.templateLayoutFactory.createClass(`
-            //                 <div class="map-popup map-popup--bottom">
-            //                   <a target="_blank" href="${this.mapData[i].url}" style="color: #393e48">
-            //                     <div class="map-popup__pic-area">
-            //                         <div class="map-popup__slider">
-            //                             <div class="swiper-container" id="balloon-swiper">
-            //                                 <div class="swiper-wrapper">
-            //                                   <img class="map__img" src="${this.mapData[i].preview}" alt="">
-            //                                 </div>
-            //                             </div>
-            //                         </div>
-            //                     </div>
-            //                     <div class="map-popup__info-area">
-            //                         <div class="map-popup__title">${this.mapData[i].name}</div>
-            //                         <p>${this.mapData[i].type ? this.mapData[i].type.DESCRIPTION : ''}</p>
-            //                         ${this.mapData[i].description || ''}
-            //                     </div>
-            //                   </a>
-            //                 </div>
-            //             `, {
-            //     build() {
-            //       this.constructor.superclass.build.call(this);
-            //     },
-
-            //     clear() {
-            //       this.constructor.superclass.clear.call(this);
-            //     },
-
-            //     getShape() {
-            //       return new maps.shape.Rectangle(new maps.geometry.pixel.Rectangle([
-            //         [25, 0], [275, 0], // balloon's width is always 300 and -25 for the margin
-            //       ]));
-            //     },
-
-            //     _isElement(element) {
-            //       return element && element[0];
-            //     },
-            //   });
-
-            //   customObjectManager.add({
-            //     type: 'FeatureCollection',
-            //     features: [{
-            //       type: 'Feature',
-            //       id: i,
-            //       geometry: {
-            //         type: 'Point',
-            //         coordinates: this.mapData[i] ? this.mapData[i].coordinates : [0, 0],
-            //       },
-            //       options: {
-            //         iconLayout: 'default#imageWithContent',
-            //         iconImageHref: '/pics/global/svg/beach_blue.svg',
-            //         iconContentLayout: parkingIcon,
-            //         iconImageSize: [27, 40],
-            //         iconImageOffset: [-18, -50],
-            //         hideIconOnBalloonOpen: false,
-            //         balloonShadow: false,
-            //         balloonLayout,
-            //         balloonContentLayout: '',
-            //         balloonOffset: [-155, -345],
-            //         balloonPane: 'balloon',
-            //         balloonAutoPan: true,
-            //         balloonPanelMaxMapArea: 0,
-            //         hintLayout: maps.templateLayoutFactory.createClass("<div class='my-hint'>"
-            //                       + `<b>${this.mapData[i].name}</b><br />`
-            //                       + '</div>'),
-            //       },
-            //     }],
-            //   });
-            // }
-            // const customObjectEvent = (e) => {
-            //   const objectId = e.get('objectId');
-            //   if (e.get('type') === 'mouseenter') {
-            //     if (objectId !== this.chosenObject) {
-            //       customObjectManager.objects.setObjectOptions(objectId, {
-            //         iconImageHref: '/pics/global/svg/beach_blue.svg',
-            //         iconImageOffset: [-22, -60],
-            //         iconImageSize: [35, 48],
-            //       });
-            //     }
-            //   } else if (e.get('type') === 'mouseleave') {
-            //     if (objectId !== this.chosenObject) {
-            //       customObjectManager.objects.setObjectOptions(objectId, {
-            //         iconImageHref: '/pics/global/svg/beach_blue.svg',
-            //         iconImageOffset: [-18, -50],
-            //         iconImageSize: [27, 40],
-            //       });
-            //     }
-            //   } else if (e.get('type') === 'click') {
-            //     // open the balloon
-            //     if (this.chosenObject !== objectId) {
-            //       if (this.chosenObject !== -1) {
-            //         customObjectManager.objects.setObjectOptions(this.chosenObject, {
-            //           iconImageHref: '/pics/global/svg/beach_blue.svg',
-            //           iconImageOffset: [-18, -50],
-            //           iconImageSize: [27, 40],
-            //         });
-            //       }
-            //       this.chosenObject = objectId;
-            //       customObjectManager.objects.setObjectOptions(this.chosenObject, {
-            //         iconImageHref: '/pics/global/svg/beach_blue.svg',
-            //         iconImageOffset: [-22, -60],
-            //         iconImageSize: [35, 48],
-            //       });
-            //       // close the balloon
-            //     } else {
-            //       closeBalloon();
-            //     }
-            //   }
-            // };
-            // customObjectManager.objects.events.add(['mouseenter', 'mouseleave', 'click'], customObjectEvent);
-
-            // if (this.data.geo) {
-            //   goToStep2(this.data.geo.id);
-            // }
-
-            // document.getElementById('go-to-step-1-button').addEventListener('click', () => {
-            //   this.zoom = 8;
-            //   this.map.setZoom(this.zoom);
-            //   step1ObjectManager.setFilter(''); // show step-1 markers
-            //   step2ObjectManager.setFilter('id < 0'); // hide step-2 markers
-            //   this.$bus.$emit('changeStep', 1);
-            //   this.step = 1;
-            //   setTimeout(() => this.onResize(), 1);
-            //   step2ObjectManager.objects.setObjectOptions(this.chosen, {
-            //     iconImageHref: '/pics/global/svg/map_beach_72dpi.svg',
-            //   });
-            //   this.chosen = -1;
-            //   this.swiper && this.swiper.destroy && this.swiper.destroy(false, false);
-            //   this.map.balloon.close();
-            // });
-
-            // // closing balloon on map click
-            // this.map.events.add('click', (e) => {
-            //   if (e.get('target') === this.map) {
-            //     closeBalloon();
-            //   }
-            // });
-          const clusterer = new maps.Clusterer({
-            /**
-             * Через кластеризатор можно указать только стили кластеров,
-             * стили для меток нужно назначать каждой метке отдельно.
-             * @see http://api.yandex.ru/maps/doc/jsapi/2.x/ref/reference/option.presetStorage.xml
-             */
-            preset: 'twirl#blackClusterIcons',
-            /**
-             * Ставим true, если хотим кластеризовать только точки с одинаковыми координатами.
-             */
-            groupByCoordinates: false,
-            /**
-             * Опции кластеров указываем в кластеризаторе с префиксом "cluster".
-             * @see http://api.yandex.ru/maps/doc/jsapi/2.x/ref/reference/Cluster.xml
-             */
-            clusterDisableClickZoom: true,
-          });
-          points.forEach((item, index) => {
-            /**
-          * Так же их можно добавлять/менять динамически после создания меток.
-          * geoObjects[i].properties.set(getPointData(i));
-          * geoObjects[i].options.set(getPointOptions());
-          */
-            const placeMark = new maps.Placemark(item, getPointData(index), getPointOptions());
-            geoObjects = geoObjects.concat(placeMark);
-          });
-          clusterer.options.set({
-            gridSize: 80,
-            clusterDisableClickZoom: true,
-          });
-          clusterer.add(geoObjects);
-          clusterer.events.once('objectsaddtomap', () => {
-            this.map.setBounds(clusterer.getBounds());
-          });
-          clusterer.events
-          // Можно слушать сразу несколько событий, указывая их имена в массиве.
-            .add(['mouseenter', 'mouseleave'], (e) => {
-              const target = e.get('target'); // Геообъект - источник события.
-              const eType = e.get('type'); // Тип события.
-              const zIndex = Number(eType === 'mouseenter') * 1000; // 1000 или 0 в зависимости от типа события.
-              target.options.set('zIndex', zIndex);
-            });
-          clusterer.events.add('objectsaddtomap', () => {
-            for (const i = 0, len = geoObjects.length; i < len; i++) {
-              const geoObject = geoObjects[i];
-              /**
-              * Информацию о текущем состоянии геообъекта, добавленного в кластеризатор,
-                 * а также ссылку на кластер, в который добавлен геообъект,
-                 * можно получить с помощью метода getObjectState.
-                 * @see http://api.yandex.ru/maps/doc/jsapi/2.x/ref/reference/Clusterer.xml#getObjectState
-                 */
-              const geoObjectState = clusterer.getObjectState(geoObject);
-              // признак, указывающий, находится ли объект в видимой области карты
-              const { isShown, isClustered, cluster } = geoObjectState;
-              // isClustered признак, указывающий, попал ли объект в состав кластера
-              // cluster ссылка на кластер, в который добавлен объект
-
-              if (window.console) {
-                console.log('Геообъект: %s, находится в видимой области карты: %s, в составе кластера: %s', i, isShown, isClustered);
-              }
-            }
-          });
-          this.map.geoObjects.add(clusterer);
+          // // markers
+          // const iconStep1 = maps.templateLayoutFactory.createClass(
+          //   '<div class="map__circle-orange step-1"><span>$[properties.iconContent]</span></div>',
+          // );
           this.$emit('map-loaded');
         })
+        // })
         .catch((error) => console.error('Yandex Maps ERROR:', error));
       // }, 1);
     },
-
     onResize() {
       if (this.map) this.map.container.fitToViewport();
+    },
+    closeActive() {
+      this.active = false;
+      this.setBeachFromMap(null);
+      this.objectManager.objects.setObjectOptions(this.currentObjectId, {
+        iconImageHref: '/pics/global/svg/map_beach_72dpi.svg',
+      });
+      this.currentObjectId = null;
     },
   },
 };
 </script>
+<style lang="scss" scoped>
+.map {
+  position: relative;
+}
+</style>

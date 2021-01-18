@@ -75,7 +75,7 @@ export const actions = {
         commit('SET_HOTELS',            hotels);
 
         // commit('SET_SIMILAR_BEACHES', await this.$axios.$get(`/beach/list?city=${state.beach.localtionId}${state.tags.slice(0, -1)}`));
-    }
+    },
 }
 
 export const mutations = {

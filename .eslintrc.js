@@ -28,6 +28,6 @@ module.exports = {
     'no-shadow': ['off'],
     'no-param-reassign': ['error', { props: false }],
     'import/no-extraneous-dependencies': ['off'],
-    'no-return-assign': ['off']
+    'no-return-assign': ['off'],
   },
 };

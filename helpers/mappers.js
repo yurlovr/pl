@@ -152,6 +152,7 @@ export function mapBeach(item) {
     rating: parseFloat(item.AVERAGE_RATING),
     title: item.NAME,
     pic: item.PHOTOS ? item.PHOTOS.medium[0].path : null,
+    photos: item.PHOTOS ? item.PHOTOS.medium : [],
     mainLink: `beach/${item.ID}`,
     beachLink: `beach/${item.ID}`,
     humanLink: item.CODE ? `beach/${item.CODE}` : null,
