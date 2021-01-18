@@ -145,6 +145,7 @@ export default {
                 iconImageHref: '/pics/global/svg/pin_active.svg',
               });
               this.active = true;
+              this.setBeachFromMap(null);
               await this.setBeachFromMap(currentObjectId);
               objectManager.objects.setObjectOptions(currentObjectId, {
                 iconImageHref: '/pics/global/svg/pin_active.svg',
