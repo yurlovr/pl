@@ -3,8 +3,9 @@
     v-if="data"
     class="announcement-card"
   >
-    <nuxt-link
-      :to="data.link"
+    <a
+      :href="data.link"
+      target="_blank"
     >
       <div class="announcement-card__pic-area">
         <img
@@ -33,7 +34,7 @@
           {{ data.description }}
         </p>
       </div>
-    </nuxt-link>
+    </a>
   </div>
 </template>
 
