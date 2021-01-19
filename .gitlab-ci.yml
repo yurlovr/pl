@@ -69,7 +69,7 @@ build_develop:
     - develop
   variables:
     ENV: dev
-    URL_API: https://dev-backend.plyazhi.ru/api/app
+    URL_API: https://dev-backend.plyazhi.ru/api/app/
 
 deploy_develop:
   only:
