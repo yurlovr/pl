@@ -8,7 +8,7 @@ stages:
   environment:
     name: master
     url: https://master.krym-project.cloud
-  
+
 .develop_environment:
   environment:
     name: develop
@@ -28,7 +28,7 @@ stages:
     - echo "build image for "
     - echo $URL_API
     - docker build -t $IMAGE_TAG . --build-arg URL_API=$URL_API --compress --cache-from $IMAGE_TAG
-    - docker push $IMAGE_TAG 
+    - docker push $IMAGE_TAG
 
 .build_docker:
   image: docker:19.03.12
@@ -42,9 +42,9 @@ stages:
     - docker pull $IMAGE_TAG || true
     - echo "build image for $URL_API"
     - docker build -t $IMAGE_TAG . --build-arg URL_API=$URL_API --compress --cache-from $IMAGE_TAG
-    - docker push $IMAGE_TAG     
+    - docker push $IMAGE_TAG
   tags:
-    - preprod-docker    
+    - preprod-docker
 
 .deploy_template:
   image: alpine:3.11
@@ -57,19 +57,19 @@ stages:
     - echo $SSH_PARAMS
     - ssh_run $SSH_PARAMS "$SSH_PRIVATE_KEY" "docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY"
     - ssh_run $SSH_PARAMS "$SSH_PRIVATE_KEY" "docker pull $IMAGE_TAG"
-    - ssh_run $SSH_PARAMS "$SSH_PRIVATE_KEY" "docker stop krym-$CI_COMMIT_BRANCH || true"    
+    - ssh_run $SSH_PARAMS "$SSH_PRIVATE_KEY" "docker stop krym-$CI_COMMIT_BRANCH || true"
     - ssh_run $SSH_PARAMS "$SSH_PRIVATE_KEY" "docker rm krym-$CI_COMMIT_BRANCH || true"
-    - ssh_run $SSH_PARAMS "$SSH_PRIVATE_KEY" "docker run -d --name krym-$CI_COMMIT_BRANCH --restart=on-failure:10 -p 127.0.0.1:$PORT:3000 $IMAGE_TAG"       
-    # - ssh_run $SSH_PARAMS "$SSH_PRIVATE_KEY" "docker image prune -f" || true   
-        
+    - ssh_run $SSH_PARAMS "$SSH_PRIVATE_KEY" "docker run -d --name krym-$CI_COMMIT_BRANCH --restart=on-failure:10 -p 127.0.0.1:$PORT:3000 $IMAGE_TAG"
+    # - ssh_run $SSH_PARAMS "$SSH_PRIVATE_KEY" "docker image prune -f" || true
+
 build_develop:
   extends:
     - .build_docker
   only:
     - develop
-  variables:    
+  variables:
     ENV: dev
-    URL_API: https://backuat.plyazhi.ru/api/app/
+    URL_API: https://dev-backend.plyazhi.ru/api/app
 
 deploy_develop:
   only:
@@ -77,13 +77,13 @@ deploy_develop:
   stage: deploy
   environment:
     name: dev
-    url: https://dev.plyazhi.ru/   
+    url: https://dev.plyazhi.ru/
   tags:
     - preprod-shell
   script:
     - docker stack deploy --with-registry-auth -c /home/ubuntu/plyazhi/web.yml web
   variables:
-    GIT_STRATEGY: none           
+    GIT_STRATEGY: none
 
 build_master:
   extends:
@@ -93,10 +93,10 @@ build_master:
     - master
 
 deploy_master:
-  extends: 
+  extends:
     - .deploy_template
     - .master_environment
-  variables: 
+  variables:
     PORT: 3001
   only:
     - master
