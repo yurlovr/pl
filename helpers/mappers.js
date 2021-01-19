@@ -99,19 +99,19 @@ export function mapBeachFull(item) {
     isBeachClosed: item.LABEL.TEXT != '',
     goldMedal: item.CERTIFICATION,
     blueMedal: item.WEBCAMERA,
-    pics: !item.VIDEO.LINK
+    pics: item.VIDEO && !item.VIDEO.LINK
       ? item.PHOTOS.reference.map((e) => e.path)
       : [...item.PHOTOS.reference.map((e) => e.path), item.VIDEO.LINK],
     sizes: item.PHOTOS.reference.map((e) => e.size),
-    medium_pics: !item.VIDEO.LINK
+    medium_pics: item.VIDEO && !item.VIDEO.LINK
       ? item.PHOTOS.medium.map((e) => e.path)
       : [...item.PHOTOS.medium.map((e) => e.path), item.VIDEO.LINK],
-    beachClosedText: item.LABEL.TEXT,
-    beachClosedColor: item.LABEL.COLOR,
-    beachClosedTooltip: item.LABEL.DESCRIPTION,
+    beachClosedText: item.LABEL ? item.LABEL.TEXT : '',
+    beachClosedColor: item.LABEL ? item.LABEL.COLOR : '',
+    beachClosedTooltip: item.LABEL ? item.LABEL.DESCRIPTION : '',
     beautySunrise: item.WEATHER.BEAUTIFUL_SUNRISE,
     beautySunset: item.WEATHER.BEAUTIFUL_SUNSET,
-    panorama: item.PANORAMA,
+    panorama: item.PANORAMA || null,
 
     // mapBeachToSideMapWeatherData
     date: item.WEATHER.DATE,
@@ -127,14 +127,14 @@ export function mapBeachFull(item) {
 
     // mapBeachToAvgRating
     // rating: parseFloat(item.RATING.RATING),
-    peopleCount: item.RATING.COUNT_REVIEWS,
+    peopleCount: item.AVERAGE_COUNT_REVIEWS,
     ratings: [
-      { title: 'Природа', rating: item.RATING.NATURE },
-      { title: 'Чистота воды', rating: item.RATING.WATER_PURITY },
-      { title: 'Чистота берега', rating: item.RATING.SHORE_CLEANLINESS },
-      { title: 'Инфраструктура', rating: item.RATING.INFRASTRUCTURE },
-      { title: 'Безопасность', rating: item.RATING.SECURITY },
-      { title: 'Доступность', rating: item.RATING.AVAILABILITY },
+      { title: 'Природа', rating: item.AVERAGE_RATING_NATURE },
+      { title: 'Чистота воды', rating: item.AVERAGE_RATING_WATER_PURITY },
+      { title: 'Чистота берега', rating: item.AVERAGE_RATING_SHORE_CLEANLINESS },
+      { title: 'Инфраструктура', rating: item.AVERAGE_RATING_INFRASTRUCTURE },
+      { title: 'Безопасность', rating: item.AVERAGE_RATING_SECURITY },
+      { title: 'Доступность', rating: item.AVERAGE_RATING_AVAILABILITY },
     ],
   };
 }
@@ -151,7 +151,7 @@ export function mapBeach(item) {
     paid: item.PAID,
     rating: parseFloat(item.AVERAGE_RATING),
     title: item.NAME,
-    pic: item.PHOTOS ? item.PHOTOS.medium[0].path : null,
+    pic: item.PREVIEW, //item.PHOTOS ? item.PHOTOS.medium[0].path : null,
     photos: item.PHOTOS ? item.PHOTOS.medium : [],
     mainLink: `beach/${item.ID}`,
     beachLink: `beach/${item.ID}`,
@@ -239,25 +239,26 @@ export function mapBeachMainData(item) {
  * @param item
  * @returns {{beautySunset: *, beachClosedTooltip: *, goldMedal: *, medium_pics: (*|*[]), title: *, blueMedal: *, beautySunrise: *, panorama: *, sizes: *, beachClosedText: *, isBeachClosed: boolean, beachClosedColor: GLenum, pics: (*|*[])}}
  */
+
 export function mapBeachHugeSliderData(item) {
   return {
     title: item.NAME,
-    isBeachClosed: item.LABEL.TEXT != '',
+    isBeachClosed: item.LABEL && !!item.LABEL.TEXT,
     goldMedal: item.CERTIFICATION,
     blueMedal: item.WEBCAMERA,
-    pics: !item.VIDEO.LINK
+    pics: !item.VIDEO
       ? item.PHOTOS.reference.map((e) => e.path)
       : [...item.PHOTOS.reference.map((e) => e.path), item.VIDEO.LINK],
     sizes: item.PHOTOS.reference.map((e) => e.size),
-    medium_pics: !item.VIDEO.LINK
+    medium_pics: !item.VIDEO
       ? item.PHOTOS.medium.map((e) => e.path)
       : [...item.PHOTOS.medium.map((e) => e.path), item.VIDEO.LINK],
-    beachClosedText: item.LABEL.TEXT,
-    beachClosedColor: item.LABEL.COLOR,
-    beachClosedTooltip: item.LABEL.DESCRIPTION,
+    beachClosedText: item.LABEL ? item.LABEL.TEXT : '',
+    beachClosedColor: item.LABEL ? item.LABEL.COLOR : '',
+    beachClosedTooltip: item.LABEL ? item.LABEL.DESCRIPTION : '',
     beautySunrise: item.WEATHER.BEAUTIFUL_SUNRISE,
     beautySunset: item.WEATHER.BEAUTIFUL_SUNSET,
-    panorama: item.PANORAMA,
+    panorama: item.PANORAMA || null,
   };
 }
 
@@ -289,15 +290,15 @@ export function mapBeachToSideMapWeatherData(item) {
  */
 export function mapBeachToAvgRating(item) {
   return {
-    rating: parseFloat(item.RATING.RATING),
-    peopleCount: item.RATING.COUNT_REVIEWS,
+    rating: parseFloat(item.AVERAGE_RATING),
+    peopleCount: item.AVERAGE_COUNT_REVIEWS,
     ratings: [
-      { title: 'Природа', rating: item.RATING.NATURE },
-      { title: 'Чистота воды', rating: item.RATING.WATER_PURITY },
-      { title: 'Чистота берега', rating: item.RATING.SHORE_CLEANLINESS },
-      { title: 'Инфраструктура', rating: item.RATING.INFRASTRUCTURE },
-      { title: 'Безопасность', rating: item.RATING.SECURITY },
-      { title: 'Доступность', rating: item.RATING.AVAILABILITY },
+      { title: 'Природа', rating: item.AVERAGE_RATING_NATURE },
+      { title: 'Чистота воды', rating: item.AVERAGE_RATING_WATER_PURITY },
+      { title: 'Чистота берега', rating: item.AVERAGE_RATING_SHORE_CLEANLINESS },
+      { title: 'Инфраструктура', rating: item.AVERAGE_RATING_INFRASTRUCTURE },
+      { title: 'Безопасность', rating: item.AVERAGE_RATING_SECURITY },
+      { title: 'Доступность', rating: item.AVERAGE_RATING_AVAILABILITY },
     ],
   };
 }
