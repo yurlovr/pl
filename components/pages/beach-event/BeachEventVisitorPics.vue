@@ -30,6 +30,7 @@
               <img
                 v-lazy-load
                 :data-src="review.pic"
+                :alt="`отзыв о ${title}`"
                 class="visitor-photo"
               >
               <div class="slide-placeholder">
@@ -129,7 +130,7 @@ export default {
     this.mySwiper && this.mySwiper.destroy && this.mySwiper.destroy(false, false);
     next();
   },
-  props: ['data', 'type', 'typeId'],
+  props: ['data', 'type', 'typeId', 'title'],
 
   // beforeMount() {
   //   if (process.browser) {

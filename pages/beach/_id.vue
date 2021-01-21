@@ -193,6 +193,7 @@
           :data="visitorPics"
           :type="'beach'"
           :type-id="beach.beachId"
+          :title="meta.h1 || 'пляже' "
         />
       </client-only>
     </div>
