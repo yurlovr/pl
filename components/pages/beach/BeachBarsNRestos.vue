@@ -52,7 +52,10 @@
             <img v-else-if="item.contact.TYPE === 'viber'" src="~/static/pics/global/messengers/viberIcon.png">
             <img v-else src="~/static/pics/global/messengers/whatsappIcon.png">
           </a>
-          <SliderBeachBarsNRestos :data="item.pics"/>
+          <SliderBeachBarsNRestos
+            :data="item.pics"
+            :title="`${item.description.split(' ')[0]} ${item.title} у ${title}`"
+          />
         </div>
       </div>
     </div>
@@ -65,7 +68,7 @@
   import {getDistanceFromLatLonInKm} from "../../../assets/calcDistance";
 
   export default {
-    props: ['data'],
+    props: ['data', 'title'],
 
     // beforeMount() {
     //   if (process.browser) {

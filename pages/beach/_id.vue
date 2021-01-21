@@ -120,6 +120,7 @@
             v-if="barsNRestos.length > 0"
             :data="barsNRestos"
             class="beach-page__cardless-area"
+            :title="meta.h1"
           />
 
           <!-- Opinions -->
