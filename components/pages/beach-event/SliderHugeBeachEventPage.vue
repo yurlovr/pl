@@ -74,7 +74,8 @@
               <img
                 v-if="!pic.includes('youtube')"
                 v-lazy-load
-                :data-src="pic"
+                :src="pic"
+                :alt="data.title"
               >
               <div class="slide-placeholder">
                 <span class="slide-placeholder__text">загрузка изображения</span>
@@ -156,7 +157,11 @@
           class="slider-beach-event__right__item__inner"
           @click="openModal(i)"
         >
-          <img v-lazy-load :data-src="pic">
+          <img
+            v-lazy-load
+            :src="pic"
+            :alt="data.title"
+          >
           <div class="slide-placeholder">
             <p class="slide-placeholder__text">
               загрузка изображения
@@ -235,7 +240,11 @@
                           <b>{{ (data.sizes[i] / 1024 / 1024).toFixed(1) }} МБ</b>
                         </div>
                       </div>
-                      <img v-lazy-load :data-src="pic">
+                      <img
+                        v-lazy-load
+                        :src="pic"
+                        :alt="data.title"
+                      >
                       <div class="slide-placeholder slide-placeholder--beach-modal-big">
                         <span class="slide-placeholder__text">загрузка изображения</span>
                       </div>
@@ -273,6 +282,7 @@
               <div class="custom-pagination">
                 <button
                   v-for="(b,i) in data.medium_pics.length"
+                  :key="i"
                   class="custom-pagination-bullet"
                   :class="{ 'custom-pagination-bullet-active' : i == activeIndex }"
                   @click="mySwiper.slideTo(i)"
@@ -293,7 +303,8 @@
                   <img
                     v-if="!pic.includes('youtube')"
                     v-lazy-load
-                    :data-src="pic"
+                    :src="pic"
+                    :alt="data.title"
                   >
                   <div class="slide-placeholder slide-placeholder--big-modal-right">
                     <span class="slide-placeholder__text">загрузка изображения</span>
