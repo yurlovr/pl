@@ -45,7 +45,7 @@
         title: this.meta.title || stable,
         meta: [
           {
-            hid: 'description-beach',
+            hid: 'description',
             name: 'description',
             content: this.meta.description || stable
           },

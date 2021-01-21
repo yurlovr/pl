@@ -233,6 +233,7 @@ import BeachEvents from '~/components/pages/beach/BeachEvents';
 import iframe360 from '~/components/pages/beach/iframe360';
 
 import { getDistanceFromLatLonInKm } from '../../assets/calcDistance';
+import { head } from '~/mixins/head';
 
 export default {
   components: {
@@ -255,12 +256,7 @@ export default {
     BeachEventSideButtons,
     iframe360,
   },
-  async asyncData({ $axios, route }) {
-    const { data } = await $axios.$get(`seo/meta?url=/beach/${route.params.id}`);
-    return {
-      meta: data,
-    };
-  },
+  mixins: [head],
   data() {
     return {
       show_pano: false,
@@ -271,21 +267,6 @@ export default {
   async fetch({ store, params, redirect }) {
     const res = await store.dispatch('beach/getBeach', params.id);
     if (res === 404) redirect('/404');
-  },
-
-  head() {
-    const stable = 'ПЛЯЖИ.РУ';
-    return {
-      title: this.meta.title || stable,
-      meta: [
-        {
-          hid: 'description-beach',
-          name: 'description',
-          content: this.meta.description || stable,
-        },
-        { hid: 'keywords-beach', name: 'keywords', content: this.meta.keywords || stable },
-      ],
-    };
   },
   computed: {
     ...mapState('beach', [

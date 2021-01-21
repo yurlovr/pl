@@ -1,6 +1,6 @@
 <template>
   <nuxt-link
-    :to="{ path: '/search1', query: { typeBeach: item.id, page: 1, count: COUNT_ELEMENTS_BEACH}}"
+    :to="{ path: '/search', query: { typeBeach: item.id, page: 1, count: COUNT_ELEMENTS_BEACH}}"
     class="main-page__choose-beach__card"
   >
     <img

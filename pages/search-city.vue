@@ -115,6 +115,7 @@ import CardGrid from '~/components/global/CardGrid';
 import NoSearchResult from '~/components/global/NoSearchResult';
 import SearchHorizontalView from '../components/pages/search/SearchHorizontalView';
 import { COUNT_ELEMENTS_BEACH } from '~/const/const';
+import { head } from '~/mixins/head';
 
 export default {
   name: 'SearchCity',
@@ -125,13 +126,7 @@ export default {
     SearchMapArea,
     NoSearchResult,
   },
-
-  async asyncData({ $axios, route }) {
-    const { data } = await $axios.$get(`seo/meta?url=${route.fullPath}`);
-    return {
-      meta: data,
-    };
-  },
+  mixins: [head],
 
   data() {
     return {
@@ -159,21 +154,6 @@ export default {
       await store.dispatch('search/setSearchCityQuery', query);
       store.dispatch('search/setTags', { city: query.city });
     }
-  },
-
-  head() {
-    const stable = 'ПЛЯЖИ.РУ';
-    return {
-      title: this.meta.title || stable,
-      meta: [
-        {
-          hid: 'description-beach',
-          name: 'description',
-          content: this.meta.description || stable,
-        },
-        { hid: 'keywords-beach', name: 'keywords', content: this.meta.keywords || stable },
-      ],
-    };
   },
 
   computed: {

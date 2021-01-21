@@ -564,7 +564,7 @@ export default {
       //   setTimeout(() => {
       this.setSeach(null);
       this.setSendRequest(true);
-      this.$bus.goTo(`/search1${query}`, this.$router);
+      this.$bus.goTo(`/search${query}`, this.$router);
       //   }, 1);
       // }
     },

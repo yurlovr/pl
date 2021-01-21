@@ -97,7 +97,7 @@
           v-else
           v-show="picLoaded"
           v-lazy-load
-          :data-src="data.pic"
+          :src="data.pic"
           alt="Фото"
           class="custom-card__pic"
           @load="picLoaded = true"

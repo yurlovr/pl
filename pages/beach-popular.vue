@@ -9,11 +9,13 @@
 import { mapGetters, mapActions } from 'vuex';
 import Catalog from '~/components/global/Catalog.vue';
 import { COUNT_ELEMENTS_ON_PAGE } from '../const/const';
+import { head } from '~/mixins/head';
 
 export default {
   components: {
     Catalog,
   },
+  mixins: [head],
   async fetch({ store, query }) {
     const { page, count } = query;
     if (count !== COUNT_ELEMENTS_ON_PAGE) {

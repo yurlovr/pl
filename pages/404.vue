@@ -18,30 +18,10 @@
   </div>
 </template>
 
-
 <script>
-  export default {
-    async asyncData( {$axios, route}){
-      const {data} = await $axios.$get('seo/meta?url=' + route.fullPath)
-      return {
-        meta: data
-      }
-    },
-    head() {
-      const stable = 'ПЛЯЖИ.РУ'
-      return {
-        title: this.meta.title || stable,
-        meta: [
-          {
-            hid: 'description-beach',
-            name: 'description',
-            content: this.meta.description || stable
-          },
-          {hid: 'keywords-beach', name: 'keywords', content: this.meta.keywords || stable},
-        ]
-      }
-    },
-  }
+import { head } from '~/mixins/head';
+
+export default {
+  mixins: [head],
+};
 </script>
-
-

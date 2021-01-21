@@ -107,6 +107,7 @@
     },
 
     mounted() {
+      console.log(this)
       this.mySwiperMain.on('imagesReady', () => {
         window.addEventListener('resize', this.onResize);
         this.onResize();

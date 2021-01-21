@@ -49,6 +49,7 @@ import BeachEventSideButtonsWrapper from '~/components/pages/beach-event/BeachEv
 import BeachEventMainInfoWrapper from '~/components/pages/beach-event/BeachEventMainInfoWrapper';
 import BeachEventAboutWrapper from '~/components/pages/beach-event/BeachEventAboutWrapper';
 import BeachEventAnnouncemetWrapper from '~/components/pages/beach-event/BeachEventAnnouncemetWrapper';
+import { head } from '~/mixins/head';
 
 export default {
   components: {
@@ -66,10 +67,7 @@ export default {
     BeachEventAboutWrapper,
     BeachEventAnnouncemetWrapper,
   },
-  async asyncData({ $axios, route }) {
-    const { data } = await $axios.$get(`seo/meta?url=/event/${route.params.id}`);
-    return { meta: data };
-  },
+  mixins: [head],
   data() {
     return {
       favorite: false,
@@ -82,20 +80,6 @@ export default {
     if (store.getters['event/getError']) redirect('/404');
     await store.dispatch('event/setMapEntity');
   },
-  head() {
-    const stable = 'ПЛЯЖИ.РУ';
-    return {
-      title: this.meta.title || stable,
-      meta: [
-        { hid: 'description-event', name: 'description', content: this.meta.description || stable },
-        { hid: 'keywords-event', name: 'keywords', content: this.meta.keywords || stable },
-      ],
-    };
-  },
-  // beforeDestroy() {
-	// 	  // TODO Use favorites store instead
-  //   this.$bus.$off('pToggleFavorites');
-  // },
 
   computed: {
     ...mapGetters('event', [

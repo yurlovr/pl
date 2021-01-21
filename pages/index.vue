@@ -104,6 +104,7 @@ import { mapActions, mapGetters, mapMutations } from 'vuex';
 import Search from '~/components/global/Search';
 import Welcome from '~/components/pages/main/Welcome';
 import { PLUG_TITLE } from '~/const/const';
+import { head } from '~/mixins/head';
 
 export default {
   components: {
@@ -122,7 +123,7 @@ export default {
     BeachSliderAreaMoment: () => import('~/components/pages/main/BeachSliderAreaMoment'),
     MapBlock: () => import('~/components/pages/main/MapBlock'),
   },
-
+  mixins: [head],
   data() {
     return {
       meta: null,
@@ -133,21 +134,7 @@ export default {
   },
 
   async fetch() {
-    const meta = await this.$axios.$get(`seo/meta?url=${this.$route.fullPath}`);
     this.setGeoLocating(this.$cookies.get('geo_locating'));
-    this.meta = meta.data;
-  },
-
-  head() {
-    const meta = this.meta || {};
-    const stable = 'ПЛЯЖИ.РУ';
-    return {
-      title: meta.title || stable,
-      meta: [
-        { hid: 'description-beach', name: 'description', content: meta.description || stable },
-        { hid: 'keywords-beach', name: 'keywords', content: meta.keywords || stable },
-      ],
-    };
   },
 
   computed: {

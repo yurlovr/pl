@@ -2,64 +2,66 @@
   <div class="search-page custom-page">
     <div class="search-page__title-area custom-container">
       <h3 class="main-page__section-title">
-        Результаты поиска {{ radius ? `(в радиусе
-        ${radius} км)`: '' }}
+        Результаты поиска
       </h3>
-      <!-- <div v-if="getSearchResult && getSearchResult.length > 1" class="search-page__title-area__buttons">
+      <div
+        v-if="getSearch"
+        class="search-page__title-area__buttons"
+      >
         <button
           class="search-page__title-area__button"
-          :class="{ active: mode_option == 'list' }"
+          :class="{ active: modeOption === 'list' }"
           @click="showHorizontal()"
         >
           <img
-            v-show="mode_option == 'list'"
+            v-show="modeOption === 'list'"
             src="~/static/pics/search/list_orange.svg"
             alt="Вид: Горизонтальные карточки"
           >
 
           <img
-            v-show="mode_option != 'list'"
+            v-show="modeOption !== 'list'"
             src="~/static/pics/search/list_grey.svg"
             alt="Вид: Горизонтальные карточки"
           >
         </button>
         <button
           class="search-page__title-area__button"
-          :class="{ active: mode_option == 'card' }"
+          :class="{ active: modeOption === 'card' }"
           @click="showCards()"
         >
           <img
-            v-show="mode_option == 'card'"
+            v-show="modeOption === 'card'"
             src="~/static/pics/search/cards_orange.svg"
             alt="Вид: Карточки"
           >
           <img
-            v-show="mode_option != 'card'"
+            v-show="modeOption !== 'card'"
             src="~/static/pics/search/cards_gray.svg"
             alt="Вид: Карточки"
           >
         </button>
-        <button
-          v-if="showBeachesOrEvents == false"
+        <!-- <button
+          v-if="showBeachesOrEvents === false"
           class="search-page__title-area__button"
-          :class="{ active: mode_option == 'map' }"
+          :class="{ active: modeOption === 'map' }"
           @click="showMap()"
         >
           <img
-            v-show="mode_option == 'map'"
+            v-show="modeOption === 'map'"
             src="~/static/pics/search/map_orange.svg"
             alt="Вид: Карта"
           >
           <img
-            v-show="mode_option != 'map'"
+            v-show="modeOption !== 'map'"
             src="~/static/pics/search/map_gray.svg"
             alt="Вид: Карта"
           >
-        </button>
-      </div> -->
+        </button> -->
+      </div>
     </div>
-    <SearchTags v-if=" tags && tags.length > 0" :tags="tags" />
-    <div
+    <SearchTags />
+    <!-- <div
       v-show="searchPageResultEventBackup.data && searchPageResultEventBackup.data.list.length > 0"
       class="favorites-page__favorites-types custom-container"
     >
@@ -77,34 +79,26 @@
       >
         Мероприятия
       </button>
-    </div>
+    </div> -->
     <div
-      v-if="!getSearchResultFromParams || getSearchResultFromParams.length <= 1"
+      v-if="(!getSearch || !getSearch.list.length) && !searchBegin"
       class="custom-container search-page__empty"
     >
-      <!-- <div v-show="f_loaded" class="favorites-page__visited-empty">
-        К сожалению по Вашему запросу ничего не найдено.<br>Попробуйте изменить
-        запрос, или начните
-        <nuxt-link
-          :to="'/'"
-        >
-          сначала
-        </nuxt-link>
-      </div> -->
+      <NoSearchResult />
     </div>
     <CardGrid
-      v-show="mode_option == 'card'"
-      v-if="getSearchResultFromParams"
-      :per-page="COUNT_ELEMENTS_ON_PAGE"
-      :data="getSearchResultFromParams"
+      v-show="modeOption === 'card'"
+      v-if="getSearch"
+      :per-page="COUNT_ELEMENTS_BEACH"
+      :data="getSearch"
     />
-    <!-- <search-horizontal-view
-      v-show="mode_option == 'list'"
-      v-if="getSearchResult && getSearchResult.length > 1"
-      :per-page="COUNT_ELEMENTS_ON_PAGE"
-      :data="getSearchResult.slice(0, -1)"
+    <search-horizontal-view
+      v-show="modeOption === 'list'"
+      v-if="getSearch"
+      :per-page="COUNT_ELEMENTS_BEACH"
+      :data="getSearch"
     />
-    <SearchMapArea
+    <!-- <SearchMapArea
       v-show="mode_option == 'map'"
       v-if="getSearchResult && getSearchResult.length > 1"
       :data="getSearchResult.slice(0, -1)"
@@ -114,63 +108,31 @@
 </template>
 
 <script>
-import {
-  mapGetters, mapMutations, mapState, mapActions,
-} from 'vuex';
+import { mapGetters, mapActions } from 'vuex';
 import SearchTags from '~/components/pages/search/SearchTags';
 import SearchMapArea from '~/components/pages/search/SearchMapArea';
 import CardGrid from '~/components/global/CardGrid';
-
-import SearchHorizontalView from '../components/pages/search/SearchHorizontalView';
-import { COUNT_ELEMENTS_ON_PAGE } from '~/const/const';
+import NoSearchResult from '~/components/global/NoSearchResult';
+import SearchHorizontalView from '~/components/pages/search/SearchHorizontalView';
+import { COUNT_ELEMENTS_BEACH } from '~/const/const';
 
 export default {
-  name: 'MainSearch',
   components: {
     SearchHorizontalView,
     SearchTags,
     CardGrid,
     SearchMapArea,
+    NoSearchResult,
   },
 
-  async fetch() {
-    const query = this.$route.fullPath.replace('/search?', '');
-    await this.setSeachFromParams(query);
-    // await this.setSearchCityQuery(query);
-  },
-  computed: {
-    ...mapGetters('search', [
-      'getSearchResult',
-      'getRadiusIfCityExists',
-      'getSearchResultCity',
-      'getQueryParams',
-      'getSearchResultFromParams',
-    ]),
-    ...mapState('search', [
-      'searchParams',
-      'searchPageResultEventBackup',
-      'query',
-      'f_loaded',
-    ]),
-    ...mapGetters(['mapEntity']),
-
-    radius() {
-      return this.$route.query && this.$route.query.diameter ? this.$route.query.diameter : null;
-    },
+  beforeRouteLeave(to, from, next) {
+    this.setSeach(null);
+    this.setTags(null);
+    this.setDefaultSearchParams();
+    this.routeLeave = to.name;
+    next();
   },
 
-  // watch: {
-  //   query(n, o) {
-  //     if (n != o && !this.wait) {
-  //       this.updateTags(n);
-  //       this.$bus.$emit('updateMap');
-  //     }
-  //   },
-
-  //   getSearchResult(n, o) {
-  //     this.$bus.$emit('updateMap', n);
-  //   },
-  // },
   async asyncData({ $axios, route }) {
     const { data } = await $axios.$get(`seo/meta?url=${route.fullPath}`);
     return {
@@ -181,16 +143,28 @@ export default {
   data() {
     return {
       showHorizontalView: true,
-      mode_option: 'card',
       showCardsOrMap: false, // cards: false, map: true
       mapShownForTheFirstTime: false,
-      tags: [],
       wait: false,
       showBeachesOrEvents: false, // beaches: false, events: true,
       last_coordinates: this.$cookies.get('last_coordinates') || {},
       geo_locating: this.$cookies.get('geo_locating') || -1,
-      COUNT_ELEMENTS_ON_PAGE,
+      COUNT_ELEMENTS_BEACH,
+      searchBegin: false,
+      routeLeave: false,
     };
+  },
+
+  async fetch({ store, route }) {
+    const { query } = route;
+    if (!store.getters['search/getSearch']
+      || (store.getters['search/getSearch']
+        && store.getters['search/getSearch'].pagination.page !== +query.page)) {
+      await store.dispatch('search/setSeach', query);
+      // Тэги
+      await store.dispatch('search/setTags', { ...query });
+      await store.dispatch('search/setRenderTags', store.getters['search/getRenderTags'] + 1);
+    }
   },
 
   head() {
@@ -208,11 +182,102 @@ export default {
     };
   },
 
+  computed: {
+    ...mapGetters('search', {
+      getSearch: 'getSearch',
+      getRadiusIfCityExists: 'getRadiusIfCityExists',
+      tags: 'getTags',
+      queryParams: 'getQueryParams',
+      getSendRequest: 'getSendRequest',
+      getShowSearch: 'getShowSearch',
+    }),
+    ...mapGetters([
+      'getTypeDisplay',
+    ]),
+    // ...mapState('search', [
+    //   'searchParams',
+    //   'searchPageResultEventBackup',
+    //   'query',
+    //   'f_loaded',
+    // ]),
+
+    modeOption: {
+      get() {
+        return this.getTypeDisplay;
+      },
+      set(value) {
+        this.setTypeDisplay(value);
+      },
+    },
+
+    radius() {
+      return this.$route.query && this.$route.query.diameter ? this.$route.query.diameter : null;
+    },
+  },
+
+  watch: {
+    getSearch(value) {
+      if (!value) {
+        this.searchBegin = true;
+      }
+      if (value && this.searchBegin) {
+        this.searchBegin = false;
+        this.$bus.$emit('hidePageTransitioner');
+      }
+    },
+    queryParams(value) {
+      if (value && value !== '?' && !this.getShowSearch) {
+        this.setSeach(null);
+        this.$bus.goTo(`/search${value}&page=1&count=${COUNT_ELEMENTS_BEACH}`, this.$router);
+      }
+      if (!value && !this.getShowSearch && this.routeLeave !== 'beach-id') {
+        this.$bus.goTo(`/beach-catalog?page=1&count=${COUNT_ELEMENTS_BEACH}`, this.$router);
+      }
+    },
+    getSendRequest(value) {
+      if (value) {
+        this.setSendRequest(false);
+        this.setShowSearch(false);
+        this.$bus.goTo(`/search${this.queryParams}&page=1&count=${COUNT_ELEMENTS_BEACH}`, this.$router);
+      }
+    },
+  },
+
+  watchQuery: [
+    'city',
+    'price',
+    'typeBeach',
+    'page',
+    'count',
+    'modes',
+    'searchBeachLengthFrom',
+    'searchBeachLengthTo',
+    'searchWaterTempFrom',
+    'searchWaterTempTo',
+    'tags[]',
+    'addTags[]',
+    'services[]',
+    'infrastructures[]',
+  ],
+
+  // watch: {
+  //   query(n, o) {
+  //     if (n != o && !this.wait) {
+  //       this.updateTags(n);
+  //       this.$bus.$emit('updateMap');
+  //     }
+  //   },
+
+  //   getSearchResult(n, o) {
+  //     this.$bus.$emit('updateMap', n);
+  //   },
+  // },
+
   // created() {
   //   if (this.updateQuery()) return;
 
   //   this.wait = true;
-  //   // this.updateTags();
+  //   this.updateTags();
 
   //   if (this.tags.length > 0) {
   //     this.search([this.last_coordinates, this.geo_locating]);
@@ -223,149 +288,49 @@ export default {
   // },
 
   methods: {
-    ...mapMutations('search', ['updateSearchParam', 'updateInput', 'showBeaches', 'showEvents']),
+    // ...mapMutations('search', ['updateSearchParam', 'updateInput', 'showBeaches', 'showEvents']),
     ...mapActions('search', [
       'search',
       'searchQuery',
-      'setSearchCityQuery',
-      'setSeachFromParams',
+      'setSeach',
+      'setTags',
+      'setDefaultSearchParams',
+      'setSendRequest',
     ]),
-
+    ...mapActions([
+      'setTypeDisplay',
+    ]),
     showHorizontal() {
-      this.mode_option = 'list';
+      this.modeOption = 'list';
     },
     showCards() {
-      this.mode_option = 'card';
+      this.modeOption = 'card';
     },
 
-    showMap() {
-      this.mode_option = 'map';
-      if (!this.mapShownForTheFirstTime) {
-        this.mapShownForTheFirstTime = true;
-        this.$bus.$emit('updateScrollbar');
-      }
-    },
+    // showMap() {
+    //   this.mode_option = 'map';
+    //   if (!this.mapShownForTheFirstTime) {
+    //     this.mapShownForTheFirstTime = true;
+    //     this.$bus.$emit('updateScrollbar');
+    //   }
+    // },
 
     showOnlyBeaches() {
-      this.showBeachesOrEvents = false;
-      this.showBeaches();
+      console.log('showOnlyBeaches');
+      // this.showBeachesOrEvents = false;
+      // this.showBeaches();
     },
 
     showOnlyEvents() {
-      this.mode_option = 'card';
-      this.showBeachesOrEvents = true;
-      this.showEvents();
+      console.log('showOnlyEvents');
+      // this.mode_option = 'card';
+      // this.showBeachesOrEvents = true;
+      // this.showEvents();
     },
 
     // updateQuery() {
     //   this.updateInput(this.$route.query.q || '');
     //   this.searchQuery([this.last_coordinates, this.geo_locating]);
-    // },
-
-    // updateTags(path) {
-    //   this.tags = [];
-    //   const p = path == undefined ? this.$nuxt.$route.fullPath : path;
-    //   const query = p.replace('/search', '').replace('/', '').replace('?', '').split('&'); let curQuery; let
-    //     curValue;
-    //   for (let i = 0; i < query.length; i++) {
-    //     curQuery = query[i].replace('[]', '').replace('%5B%5D', '').split('=');
-    //     if (curQuery[0] == 'city') {
-    //       curValue = this.searchParams.selects.cities.options.find((v) => v.id === curQuery[1]);
-    //       if (!curValue) continue;
-    //       this.tags.push({
-    //         param: 'cities',
-    //         value: curValue,
-    //         default: this.searchParams.selects.cities.options[0],
-    //         type: 'select',
-    //       });
-    //       if (path == undefined) this.updateSearchParam({ param: 'cities', value: curValue });
-    //     } else if (curQuery[0] == 'typeBeach') {
-    //       curValue = this.searchParams.selects.beachTypes.options.find((v) => v.id === curQuery[1]);
-    //       if (!curValue) continue;
-    //       this.tags.push({
-    //         param: 'beachTypes',
-    //         value: curValue,
-    //         default: this.searchParams.selects.beachTypes.options[0],
-    //         type: 'select',
-    //       });
-    //       if (path == undefined) this.updateSearchParam({ param: 'beachTypes', value: curValue });
-    //     } else if (curQuery[0] == 'mode') {
-    //       curValue = this.searchParams.selects.modes.options.find((v) => v.id === curQuery[1]);
-    //       if (!curValue) continue;
-    //       this.tags.push({
-    //         param: 'modes',
-    //         value: curValue,
-    //         default: this.searchParams.selects.modes.options[0],
-    //         type: 'select',
-    //       });
-    //       if (path == undefined) this.updateSearchParam({ param: 'modes', value: curValue });
-    //     } else if (curQuery[0] == 'price') {
-    //       curValue = this.searchParams.selects.price.options.find((v) => v.id == curQuery[1]);
-    //       if (!curValue) continue;
-    //       this.tags.push({
-    //         param: 'price',
-    //         value: curValue,
-    //         default: this.searchParams.selects.price.options[0],
-    //         type: 'select',
-    //       });
-    //       if (path == undefined) this.updateSearchParam({ param: 'price', value: curValue });
-    //     } else if (curQuery[0] == 'lengthFrom') {
-    //       curValue = this.searchParams.selects.searchBeachLengthFrom.options.find((v) => v.id == curQuery[1]);
-    //       if (!curValue) continue;
-    //       this.tags.push({
-    //         param: 'searchBeachLengthFrom',
-    //         value: { title: `Протяженность линии от: ${curValue.title} м`, id: curValue.id },
-    //         default: this.searchParams.selects.searchBeachLengthFrom.options[0],
-    //         type: 'select',
-    //       });
-    //       if (path == undefined) this.updateSearchParam({ param: 'searchBeachLengthFrom', value: curValue });
-    //     } else if (curQuery[0] == 'lengthTo') {
-    //       curValue = this.searchParams.selects.searchBeachLengthTo.options.find((v) => v.id == curQuery[1]);
-    //       if (!curValue) continue;
-    //       this.tags.push({
-    //         param: 'searchBeachLengthTo',
-    //         value: { title: `Протяженность линии до: ${curValue.title} м`, id: curValue.id },
-    //         default: this.searchParams.selects.searchBeachLengthTo.options[0],
-    //         type: 'select',
-    //       });
-    //       if (path == undefined) this.updateSearchParam({ param: 'searchBeachLengthTo', value: curValue });
-    //     } else if (curQuery[0] == 'tempFrom') {
-    //       curValue = this.searchParams.selects.searchWaterTempFrom.options.find((v) => v.id == curQuery[1]);
-    //       if (!curValue) continue;
-    //       this.tags.push({
-    //         param: 'searchWaterTempFrom',
-    //         value: { title: `Температура воды от: ${curValue.title} °C`, id: curValue.id },
-    //         default: this.searchParams.selects.searchWaterTempFrom.options[0],
-    //         type: 'select',
-    //       });
-    //       if (path == undefined) this.updateSearchParam({ param: 'searchWaterTempFrom', value: curValue });
-    //     } else if (curQuery[0] == 'tempTo') {
-    //       curValue = this.searchParams.selects.searchWaterTempTo.options.find((v) => v.id == curQuery[1]);
-    //       if (!curValue) continue;
-    //       this.tags.push({
-    //         param: 'searchWaterTempTo',
-    //         value: { title: `Температура воды до: ${curValue.title} °C`, id: curValue.id },
-    //         default: this.searchParams.selects.searchWaterTempTo.options[0],
-    //         type: 'select',
-    //       });
-    //       if (path == undefined) this.updateSearchParam({ param: 'searchWaterTempTo', value: curValue });
-    //     } else if (curQuery[0] == 'tags' || curQuery[0] == 'addTags' || curQuery[0] == 'services' || curQuery[0] == 'infrastructures') {
-    //       if (curQuery[0] == 'tags') curValue = this.searchParams.checkboxes.tags[curQuery[1]];
-    //       else if (curQuery[0] == 'addTags') curValue = this.searchParams.checkboxes.addTags[curQuery[1]];
-    //       else if (curQuery[0] == 'services') curValue = this.searchParams.checkboxes.services[curQuery[1]];
-    //       else if (curQuery[0] == 'infrastructures') curValue = this.searchParams.checkboxes.infrastructures[curQuery[0]];
-    //       if (!curValue) continue;
-    //       this.tags.push({
-    //         id: curValue.id,
-    //         value: {
-    //           bool: curValue.value,
-    //           title: curValue.title,
-    //         },
-    //         type: curValue.type,
-    //       });
-    //       if (path == undefined) this.updateSearchParam({ type: curValue.type, value: true, id: curValue.id });
-    //     }
-    //   }
     // },
   },
 };
