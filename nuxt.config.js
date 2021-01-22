@@ -18,12 +18,16 @@ export default {
       hid: 'description',
       name: 'description',
       content: process.env.npm_package_description || '',
+    }, {
+      name: 'yandex-verification',
+      constent: '0722e68c9b7607e2',
     }],
     link: [{
       rel: 'icon',
       type: 'image/x-icon',
       href: '/favicon.ico',
     }],
+    // <meta name="yandex-verification" content="0722e68c9b7607e2" />
   },
   router: {
     base: '/',
