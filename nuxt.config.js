@@ -20,7 +20,7 @@ export default {
       content: process.env.npm_package_description || '',
     }, {
       name: 'yandex-verification',
-      constent: '0722e68c9b7607e2',
+      content: '0722e68c9b7607e2',
     }],
     link: [{
       rel: 'icon',
