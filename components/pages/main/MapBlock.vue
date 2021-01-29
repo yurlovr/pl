@@ -11,7 +11,6 @@
     <MapArea
       v-if="clusters"
       v-show="mapLoaded"
-      :data="map"
       @map-loaded="mapIsLoaded"
     />
   </div>
@@ -33,13 +32,12 @@ export default {
     };
   },
   async fetch() {
-    if (!this.map) {
+    if (!this.clusters) {
       await this.setMap();
     }
   },
   computed: {
     ...mapGetters('main', {
-      map: 'getMap',
       clusters: 'getClusters',
     }),
   },

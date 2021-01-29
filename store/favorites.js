@@ -71,13 +71,6 @@ export const actions = {
       commit('SET_MY_FAVORITES_VISITED', visited.data);
     }
   },
-  // async setMyVisited({ commit, state }) {
-  //   console.log('VISITED');
-  //   const query = Object.keys(state.visited).map((item) => `id[]=${item}`)
-  //     .join('&');
-  //   const { data } = await this.$axios.$get(`/event/item?${query}`);
-  //   commit('SET_MY_FAVORITES_VISITED', data);
-  // },
 };
 export const mutations = {
   addEvent: (state, id) => {
@@ -149,21 +142,6 @@ export const getters = {
   isFavorite: (state) => (id, type) => (type === 'beach'
     ? state.beaches[id]
     : state.events[id]),
-  // TODO dont use rootState
-  getBeaches: (state, getters, rootState, rootGetters) => {
-    const ids = Object.keys(state.beaches);
-    return rootGetters.beaches.filter((b) => ids.includes(b.beachId));
-  },
-  // TODO dont use rootState
-  getEvents: (state, getters, rootState, rootGetters) => {
-    const ids = Object.keys(state.events);
-    return rootGetters.events.filter((b) => ids.includes(b.eventId));
-  },
-  // TODO dont use rootState
-  getVisitedEvents: (state, getters, rootState, rootGetters) => {
-    const ids = Object.keys(state.visited);
-    return rootGetters.events.filter((b) => ids.includes(b.eventId));
-  },
   getHaveMyBeaches: (state) => Object.keys(state.beaches).length,
   getHaveMyEvents: (state) => Object.keys(state.events).length,
   getHaveMyVisited: (state) => Object.keys(state.visited).length,

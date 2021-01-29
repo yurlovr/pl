@@ -1,3 +1,5 @@
+import { OUT_LINKS_EXCURSIONS } from '~/const/const';
+
 /**
  * Map Event entity
  */
@@ -20,6 +22,21 @@ export function mapEvent(item) {
     beachId: item.BEACH ? item.BEACH.ID : null,
   };
 }
+
+export function mapEventBeach(item) {
+  return {
+    id: item.ID,
+    title: item.NAME,
+    date: item.ACTIVE_FROM,
+    showFavorite: true,
+    beachId: item.BEACH,
+    paid: item.PAID,
+    mainLink: `/event/${item.ID}`,
+    eventId: item.ID,
+    pic: item.PHOTOS ? item.PHOTOS.medium[0].path : null,
+  };
+}
+
 export function mapEventList(list = []) {
   return list.map(mapEvent);
 }
@@ -45,8 +62,8 @@ export function mapEntityList(list = []) {
 }
 export function mapBeachFull(item) {
   return {
-
     access: item.ACCESS || null,
+    cityId: null,
     tempWater: item.WEATHER && item.WEATHER.TEMP ? item.WEATHER.TEMP.WATER : null,
     showFavorite: true,
     paid: item.PAID,
@@ -56,10 +73,6 @@ export function mapBeachFull(item) {
     mainLink: `beach/${item.ID}`,
     beachLink: `beach/${item.ID}`,
     humanLink: item.CODE ? `beach/${item.CODE}` : null,
-
-    location: item.CITY ? item.CITY.NAME : null,
-    locationId: item.CITY ? item.CITY.ID : null,
-
     // beachId:      item.ID,
     tags: item.TAGS
       ? item.TAGS.map((v) => ({ id: v.ID, title: v.NAME }))
@@ -80,8 +93,6 @@ export function mapBeachFull(item) {
     // title:           item.NAME,
     likes: item.COUNT_FAVORITES,
     beachId: item.ID,
-    // location:        item.CITY.NAME,
-    // locationId:      item.CITY.ID,
     // beachLength:     item.PARAMETERS.P_LINE_LENGTH,
     price: item.PARAMETERS.P_PRICE,
     // beachType:       item.PARAMETERS.P_BEACH_TYPE.NAME,
@@ -138,6 +149,20 @@ export function mapBeachFull(item) {
     ],
   };
 }
+
+export function mapSimilar(item) {
+  return {
+    id: item.ID,
+    tempWater: item.WEATHER && item.WEATHER.TEMP ? item.WEATHER.TEMP.WATER : null,
+    showFavorite: true,
+    paid: item.PAID,
+    rating: parseFloat(item.AVERAGE_RATING),
+    title: item.NAME,
+    pic: item.PREVIEW,
+    mainLink: item.ID,
+  };
+}
+
 /**
  * Map beach entity
  */
@@ -145,21 +170,19 @@ export function mapBeach(item) {
   return {
     id: item.ID,
     desc: item.DESCRIPTION,
+    excursions: item.EXCURSIONS,
     access: item.ACCESS || null,
     tempWater: item.WEATHER && item.WEATHER.TEMP ? item.WEATHER.TEMP.WATER : null,
     showFavorite: true,
     paid: item.PAID,
     rating: parseFloat(item.AVERAGE_RATING),
     title: item.NAME,
-    pic: item.PREVIEW, //item.PHOTOS ? item.PHOTOS.medium[0].path : null,
+    pic: item.PREVIEW,
     photos: item.PHOTOS ? item.PHOTOS.medium : [],
     mainLink: `beach/${item.ID}`,
     beachLink: `beach/${item.ID}`,
     humanLink: item.CODE ? `beach/${item.CODE}` : null,
-
-    location: item.CITY ? item.CITY.NAME : null,
-    locationId: item.CITY ? item.CITY.ID : null,
-
+    cityId: item.CITY,
     beachId: item.ID,
     tags: item.TAGS
       ? item.TAGS.map((v) => ({ id: v.ID, title: v.NAME }))
@@ -218,8 +241,6 @@ export function mapBeachMainData(item) {
     title: item.NAME,
     likes: item.COUNT_FAVORITES,
     beachId: item.ID,
-    location: item.CITY.NAME,
-    locationId: item.CITY.ID,
     beachLength: item.PARAMETERS.P_LINE_LENGTH,
     price: item.PARAMETERS.P_PRICE,
     beachType: item.PARAMETERS.P_BEACH_TYPE.NAME,
@@ -540,42 +561,19 @@ export const mapSearchCityResult = (item) => (
     access: {
       paid: item.ACCESS.PAID,
       description: item.ACCESS.DESCRIPTION,
-    }
-
+    },
   });
-  // ACCESS: {PAID: false, DESCRIPTION: ""}
-  // ADD_TAGS: [{…}]
-  // AVERAGE_RATING: "4.9"
-  // AVERAGE_RATING_AVAILABILITY: "5"
-  // AVERAGE_RATING_INFRASTRUCTURE: "5"
-  // AVERAGE_RATING_NATURE: "4.33"
-  // AVERAGE_RATING_SECURITY: "4.67"
-  // AVERAGE_RATING_SHORE_CLEANLINESS: "5"
-  // AVERAGE_RATING_WATER_PURITY: "5"
-  // CERTIFICATION: false
-  // CITY: {ID: "2", NAME: "Евпатория", REGION: "", COUNT_BEACHES: 25, PREVIEW_PICTURE: "https://plyazhi.ru/resize_cache/471/c1c777b5fa187d…3/iblock/0d9/0d93468ecb504d9c31f93ce8aca12a0b.jpg"}
-  // CLUSTER: "cluster2"
-  // CODE: "plyazh-royal-beach"
-  // CONTACT: {EMAIL: "", TELEGRAM: ""}
-  // COORDINATES: "45.189667,33.423517"
-  // COUNT_FAVORITES: 10
-  // DESCRIPTION: "Собираясь к морю, каждый рисует в голове картинку того, что его ждет на берегу. Солнце, воздух и вода... Звучит слишком размеренно? Захотелось чего-то &quot;поострее&quot;? Стоит посетить популярные среди молодежи локации. Одна из них -&nbsp;&nbsp;пляж Royal Beach.<br />↵Несмотря на удаление от центра Евпатории, добираться туда легко: автобус № 6 быстро доставит до остановки “Новый пляж”,&nbsp;&nbsp;и вот вы в центре модной тусовки. Кальяны у моря, вечеринки, бесплатные вечерние кинопросмотры, бар с Wi-Fi собирают на Royal Beach молодых людей с утра до ночи.<br />↵Инфраструктура не включает в себя детские развлечения, и глубина воды у берега начинается&nbsp;&nbsp;резко, потому нельзя назвать этот пляж “семейным”. Вход свободный, за пользование&nbsp;&nbsp;душем, туалетом и раздевалками&nbsp;&nbsp;плата не требуется.&nbsp;&nbsp;Кальян&nbsp;&nbsp;- от 450 рублей. За 200 рублей можно взять шезлонг или за 2000 рублей&nbsp;&nbsp;снять отдельное бунгало. Тех, кто устал от&nbsp;&nbsp;песка, оседающего&nbsp;&nbsp; в купальнике,&nbsp;&nbsp; ждет сюрприз -&nbsp;&nbsp;берег покрыт мелкой галькой, а к воде ведут дорожки. Проголодавшихся приглашают бар и столовая с вкусными блюдами крымской кухни &#40;средний чек около 600 рублей&#41;.<br />↵Ну,&nbsp;&nbsp;а с наступлением сумерек вам&nbsp;&nbsp;все равно не захочется покидать Royal Beach, ведь самое увлекательное&nbsp;&nbsp;здесь только начинается!<br />↵"
-  // DISTANCE: null
-  // EXTERNAL_ID: "3963"
-  // ID: "3963"
-  // INFRASTRUCTURES: (14) [{…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}]
-  // LABEL: {TEXT: "", DESCRIPTION: "", COLOR: "#fff"}
-  // LABEL_COLOR: "#fff"
-  // LABEL_TEXT: ""
-  // NAME: "Пляж &quot;Royal beach&quot;"
-  // PAID: false
-  // PANORAMA: ""
-  // PARAMETERS: {P_LINE_LENGTH: "300", P_BEACH_TYPE: {…}, P_BOTTOM: {…}, P_PRICE: "", P_MODE: null}
-  // PHOTOS: {small: Array(31), medium: Array(31), big: Array(31), reference: Array(31)}
-  // PREVIEW: "https://plyazhi.ru/resize_cache/11309/78823e188444b02b7334767d2df0be7d/iblock/c3d/c3d4df2266a7a74236d358f3ba20428c/177e7e488ce19bbf060dfb85ec0ddfbb.jpg"
-  // RATING: {COUNT_REVIEWS: "3", RATING: "4.9", NATURE: "4.33", WATER_PURITY: "5", SHORE_CLEANLINESS: "5", …}
-  // SERVICES: (3) [{…}, {…}, {…}]
-  // TAGS: (4) [{…}, {…}, {…}, {…}]
-  // VIDEO: {LINK: "", PICTURE: null}
-  // WEATHER: {DATE: "14.12.2020 09:00:53", TEMP: {…}, SUNSET: "17:04", SUNRISE: "08:17", BEAUTIFUL_SUNSET: true, …}
-  // WEBCAMERA: ""
+
+export const mapExcursion = (item) => ({
+  id: item.ID,
+  title: item.NAME,
+  pic: item.PREVIEW_PICTURE,
+  type: 'excursion',
+  duration: item.DURATION,
+  price: item.PRICE,
+  mainLink: item.LINK,
+  rating: item.RATING,
+  internal_url: OUT_LINKS_EXCURSIONS,
+  another_place: true,
+  metaHeader: item.ELEMENT_META_DESCRIPTION,
+});

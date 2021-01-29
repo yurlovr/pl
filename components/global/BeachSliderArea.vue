@@ -15,7 +15,7 @@
           <span>Смотреть все ({{ data.beachNumber }})</span>
         </nuxt-link>
         <a
-          v-else
+          v-if="outlink"
           :href="outlink"
           target="_blank"
           class="main-page__section__subtitle-area__see-all"
@@ -25,27 +25,25 @@
       </div>
     </div>
 
-    <!-- <client-only> -->
-      <SliderBeachEventHotel :data="data.beachSliderData" />
-    <!-- </client-only> -->
+    <SliderBeachEventHotel :data="data.beachSliderData" />
 
     <div class="main-page__beach-slider-area__see-all-bottom">
       <nuxt-link
-        v-if="!outlink"
+        v-if="!outlink && data.showMore.type !== 'similar'"
         :to="link"
         class="main-page__see-all"
         @click.prevent="$bus.goTo(link, $router)"
       >
         <span>Смотреть все ({{ data.beachNumber }})</span>
       </nuxt-link>
-      <nuxt-link
-        v-else
-        :to="outlink"
+      <a
+        v-if="outlink"
+        :href="outlink"
         target="_blank"
         class="main-page__see-all"
       >
         <span>Смотреть все ({{ data.beachNumber }})</span>
-      </nuxt-link>
+      </a>
     </div>
   </section>
 </template>
@@ -59,7 +57,20 @@ export default {
   components: {
     SliderBeachEventHotel,
   },
-  props: ['data', 'outlink'],
+  props: {
+    data: {
+      type: Object,
+      required: true,
+    },
+    outlink: {
+      type: String,
+      default: '',
+    },
+    pagination: {
+      type: Boolean,
+      default: false,
+    },
+  },
   computed: {
     ...mapGetters('catalog', [
       'getPerPage',
@@ -67,6 +78,9 @@ export default {
     link() {
       if (this.data.showMore.type === 'beach') {
         return `/${this.data.showMore.type}-${this.data.showMore.query.replace('?', '')}`;
+      }
+      if (this.data.showMore.type === 'similar') {
+        return `/search${this.data.showMore.query ? this.data.showMore.query : ''}`;
       }
       return `/${this.data.showMore.type}-catalog${this.data.showMore.query ? this.data.showMore.query : ''}`;
     },

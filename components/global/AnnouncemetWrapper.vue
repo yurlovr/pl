@@ -2,6 +2,7 @@
   <AnnouncementCard
     v-if="data"
     :data="data"
+    :class="className"
   />
 </template>
 
@@ -12,16 +13,26 @@ export default {
   components: {
     AnnouncementCard: () => import('~/components/global/AnnouncementCard'),
   },
+  props: {
+    className: {
+      type: String,
+      default: '',
+    },
+  },
   async fetch() {
-    await this.setAnnouncement('event');
+    const page = this.$route.path.split('/')[1];
+    await this.setAnnouncement(page);
   },
   computed: {
-    ...mapGetters('event', {
+    ...mapGetters('announcement', {
       data: 'getAnnouncement',
     }),
   },
+  beforeDestroy() {
+    this.setAnnouncement(null);
+  },
   methods: {
-    ...mapActions('event', [
+    ...mapActions('announcement', [
       'setAnnouncement',
     ]),
   },

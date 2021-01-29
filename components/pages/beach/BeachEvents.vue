@@ -12,7 +12,9 @@
         <span>Смотреть все ({{ data.count }})</span>
       </a>
     </div>
-    <div v-swiper:mySwiper="swiperOption">
+    <div
+      v-swiper:mySwiper="swiperOption"
+    >
       <div class="swiper-wrapper">
         <Card
           v-for="(slide, i) in data.cardData"
@@ -23,17 +25,23 @@
         />
       </div>
     </div>
-    <div v-if="data.cardData.length > 1" class="pagination-wrapper">
+    <div
+      v-if="data.cardData.length > 1"
+      class="pagination-wrapper"
+    >
       <div class="custom-pagination">
         <button
           v-for="(b,i) in data.cardData.length - 1"
+          :key="i"
           class="custom-pagination-bullet"
           :class="{ 'custom-pagination-bullet-active' : i == activeIndex }"
           @click="mySwiper.slideTo(i)"
         />
       </div>
     </div>
-    <div class="main-page__section-subtitle-area beach-page__events__see-all-bottom">
+    <div
+      class="main-page__section-subtitle-area beach-page__events__see-all-bottom"
+    >
       <a :href="link" @click.prevent="$bus.goTo(link, $router)">
         <span class="span-color-overload">Смотреть все ({{ data.count }})</span>
       </a>
@@ -42,22 +50,13 @@
 </template>
 
 <script>
-import Vue from 'vue';
 import Card from '~/components/global/Card';
 import { COUNT_ELEMENTS_BEACH } from '~/const/const';
 
 export default {
 
-  // beforeMount () {
-  // 	if (process.browser) {
-  // 		require('swiper/dist/css/swiper.css');
-  // 		const VueAwesomeSwiper = require('vue-awesome-swiper/dist/ssr');
-  // 		Vue.use(VueAwesomeSwiper);
-  // 	}
-  // },
-
   components: {
-	  		Card,
+    Card,
   },
   props: ['data', 'showTemp'],
 
@@ -86,11 +85,6 @@ export default {
   },
 
   mounted() {
-    // this.mySwiper.on('imagesReady', () => {
-    // window.addEventListener('resize', this.onResize);
-    // this.onResize();
-    // });
-
     this.mySwiper.on('slideChange', () => {
       this.activeIndex = this.mySwiper.activeIndex;
     });

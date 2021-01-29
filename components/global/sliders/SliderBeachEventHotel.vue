@@ -102,14 +102,6 @@ export default {
     };
   },
 
-  // beforeMount() {
-  //   if (process.browser) {
-  //     require('swiper/dist/css/swiper.css');
-  //     const VueAwesomeSwiper = require('vue-awesome-swiper/dist/ssr');
-  //     Vue.use(VueAwesomeSwiper);
-  //   }
-  // },
-
   mounted() {
     this.mySwiper.on('imagesReady', () => {
       window.addEventListener('resize', this.onResize);

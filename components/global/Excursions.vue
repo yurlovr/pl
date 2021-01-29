@@ -1,6 +1,6 @@
 <template>
   <div
-    :class="white && 'main-page__white-wrapper'"
+    class="main-page__white-wrapper"
   >
     <BlockPlug
       v-if="!dataForRender"
@@ -12,7 +12,7 @@
     <BeachSliderArea
       v-else
       :data="dataForRender"
-      :outlink="OUT_LINKS_HOTEL"
+      :outlink="OUT_LINKS_EXCURSIONS"
       class="main-page__family-rest"
     />
   </div>
@@ -20,7 +20,7 @@
 
 <script>
 import { mapGetters, mapActions } from 'vuex';
-import { OUT_LINKS_HOTEL, PLUG_TITLE } from '~/const/const';
+import { OUT_LINKS_EXCURSIONS, PLUG_TITLE } from '~/const/const';
 
 export default {
   components: {
@@ -32,54 +32,50 @@ export default {
       type: String,
       required: true,
     },
-    beachId: {
-      type: String,
-      default: '',
-    },
-    white: {
-      type: Boolean,
-      default: false,
+    excursionsIds: {
+      type: Array,
+      default: () => [],
     },
   },
   data() {
     return {
-      OUT_LINKS_HOTEL,
+      OUT_LINKS_EXCURSIONS,
       PLUG_TITLE,
     };
   },
 
   async fetch() {
-    await this.setHotels({
+    await this.setExcursions({
       page: this.page,
-      beachId: this.beachId || null,
+      excursionsIds: this.excursionsIds,
     });
   },
 
   computed: {
-    ...mapGetters('hotels', [
-      'getHotels',
+    ...mapGetters('excursions', [
+      'getExcursions',
     ]),
     dataForRender() {
       if (this.page === 'main') {
-        return this.getHotels.main;
+        return this.getExcursions.main;
       }
-      return this.getHotels.page;
+      return this.getExcursions.page;
     },
     title() {
       return this.page === 'main'
-        ? PLUG_TITLE.ANY_PLACES
-        : PLUG_TITLE.NEARBY_PLACES;
+        ? PLUG_TITLE.EXCURSIONS
+        : PLUG_TITLE.EXCURSIONS_BEACH;
     },
   },
   beforeDestroy() {
-    this.setHotels({
+    this.setExcursions({
       page: null,
       beachId: null,
     });
   },
   methods: {
-    ...mapActions('hotels', [
-      'setHotels',
+    ...mapActions('excursions', [
+      'setExcursions',
     ]),
   },
 };

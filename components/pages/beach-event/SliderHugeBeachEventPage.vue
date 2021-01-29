@@ -81,7 +81,7 @@
                 <span class="slide-placeholder__text">загрузка изображения</span>
               </div>
               <div v-if="pic.includes('youtube')" class="w-100 h-100">
-                <no-ssr>
+                <client-only>
                   <!--                  desktop logic-->
                   <video-youtube
                     v-if="mobile > 768"
@@ -112,7 +112,7 @@
                       >
                     </div>
                   </div>
-                </no-ssr>
+                </client-only>
                 <!--                </client-only>-->
               </div>
             </div>
@@ -251,14 +251,14 @@
                     </div>
                     <div v-else class="w-100 h-100 y-block">
                       <!--                    active in modal-->
-                      <no-ssr>
+                      <client-only>
                         <video-youtube
                           :key="i+'gui-modal'"
                           :url="pic"
                           :reference="'model'+i"
                           :modal="true"
                         />
-                      </no-ssr>
+                      </client-only>
                     </div>
                   </div>
                 </div>

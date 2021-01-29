@@ -5,7 +5,11 @@
   >
     <slot v-if="isIntersected" />
     <!-- Content that is loaded as a placeholder until it comes into view -->
-    <slot v-if="!isIntersected" name="placeholder" />
+    <slot
+      v-if="!isIntersected"
+      :id="id"
+      name="placeholder"
+    />
   </component>
 </template>
 
@@ -23,6 +27,10 @@ export default {
     threshold: {
       type: [Number, Array],
       default: 0,
+    },
+    id: {
+      type: String,
+      default: '',
     },
   },
   data() {

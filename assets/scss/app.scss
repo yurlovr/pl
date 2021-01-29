@@ -10478,7 +10478,10 @@ body.touch {
     min-height: 65vh;
   }
 }
-
+.no-padding {
+  padding-left: 0!important;
+  padding-right: 0!important;
+}
 
 
 

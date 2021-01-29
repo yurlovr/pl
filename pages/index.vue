@@ -83,8 +83,24 @@
             :text="PLUG_TITLE.ANY_PLACES"
           />
         </template>
-        <AnyPlaces />
+        <AnyPlaces
+          :page="'main'"
+          :white="true"
+        />
       </LazyComponent>
+
+      <LazyComponent>
+        <template #placeholder>
+          <BlockPlug
+            :text="PLUG_TITLE.EXCURSIONS_BEACH"
+            :height="649"
+          />
+        </template>
+        <Excursions
+          :page="'main'"
+        />
+      </LazyComponent>
+
       <LazyComponent>
         <template #placeholder>
           <BlockPlug
@@ -99,17 +115,14 @@
 </template>
 
 <script>
-// import LazyHydrate from 'vue-lazy-hydration';
-import { mapActions, mapGetters, mapMutations } from 'vuex';
-import Search from '~/components/global/Search';
-import Welcome from '~/components/pages/main/Welcome';
+import { mapActions, mapMutations } from 'vuex';
 import { PLUG_TITLE } from '~/const/const';
 import { head } from '~/mixins/head';
 
 export default {
   components: {
-    Welcome,
-    Search,
+    Welcome: () => import('~/components/pages/main/Welcome'),
+    Search: () => import('~/components/global/Search'),
     WeatherSliderArea: () => import('~/components/pages/main/WeatherSliderArea'),
     DynamicSliderArea: () => import('~/components/pages/main/DynamicSliderArea'),
     BannersBlock: () => import('~/components/pages/main/BannersBlock'),
@@ -122,8 +135,17 @@ export default {
     ChooseBeach: () => import('~/components/pages/main/ChooseBeach'),
     BeachSliderAreaMoment: () => import('~/components/pages/main/BeachSliderAreaMoment'),
     MapBlock: () => import('~/components/pages/main/MapBlock'),
+    Excursions: () => import('~/components/global/Excursions'),
   },
   mixins: [head],
+
+  beforeRouteLeave(to, from, next) {
+    window.removeEventListener('scroll', this.onScroll, false);
+    window.removeEventListener('resize', this.onResize, false);
+    this.$bus.$emit('showHeaderBgAndBar');
+    next();
+  },
+
   data() {
     return {
       meta: null,
@@ -135,10 +157,6 @@ export default {
 
   async fetch() {
     this.setGeoLocating(this.$cookies.get('geo_locating'));
-  },
-
-  computed: {
-    ...mapGetters(['mapEntity']),
   },
 
   mounted() {
@@ -197,13 +215,6 @@ export default {
         this.$bus.$emit('dontShowCorrectSelectText');
       }
     },
-  },
-
-  beforeRouteLeave(to, from, next) {
-    window.removeEventListener('scroll', this.onScroll, false);
-    window.removeEventListener('resize', this.onResize, false);
-    this.$bus.$emit('showHeaderBgAndBar');
-    next();
   },
 };
 </script>

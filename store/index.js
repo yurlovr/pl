@@ -1,20 +1,11 @@
 import {
-  mapBeachList,
-  mapEntityList,
   mapEventList,
-  mapIDs,
 } from '@/helpers/mappers';
 import { mapSettings } from '../helpers/mappers';
 
 export const state = () => ({
-  beaches: [],
-  events: [],
   user_coordinates: {},
   choose_position: false,
-  map_entity: [],
-  mappedEvents: [],
-
-  // TODO Move to settings store module
   mobile_settings: [],
   isModalViewed: false,
   addTags: null,
@@ -57,8 +48,7 @@ export const mutations = {
 };
 
 export const actions = {
-  async nuxtServerInit({ commit }, { app }) {
-    const start = new Date().getTime();
+  async nuxtServerInit({ commit }) {
     const [addTags, tags, searchConfig] = await Promise.all([
       this.$axios.$get('/addtag/list?count=50'),
       this.$axios.$get('/tag/list?count=10'),
@@ -68,34 +58,6 @@ export const actions = {
     commit('SET_TAGS', tags.data.list);
     commit('search/SET_SEARCH_CONFIG', searchConfig.data);
     commit('search/SET_SEARCH_CONFIG_DEFAULT');
-
-    // const [
-//       // beaches,
-//       events,
-      // search,
-//       map,
-//       settings,
-//     ] = await Promise.all([
-//       // this.$axios.$get('/beach/list?count=10'),
-//       // this.$axios.$get('/event/list?count=10'),
-//       // this.$axios.$get('search/config'),
-//       // this.$axios.$get('/map-entity/list?count=10'),
-//       // this.$axios.$get('/settings/list'),
-    // ]);
-    console.log(`end load data ${new Date().getTime() - start}ms`);
-
-//     // commit('SET_ALL_BEACHES', beaches);
-//     // commit('SET_ALL_EVENTS', events);
-//     // commit('search/SET_SEARCH', search);
-//     // commit('SET_MAP_ENTITY', map);
-//     // commit('SET_MOBILE_SETTINGS', settings);
-
-//     // TODO Configure cookie plugin for ssr
-//     const storeCache = app.$cookies.get('store');
-//     const { isModalViewed = false } = storeCache || {};
-//     commit('SET_MODAL_VIEWED', isModalViewed);
-
-//     commit('setLastUserPos', this.$cookies.get('last_coordinates') || {});
   },
   setTypeDisplay({ commit }, payload) {
     commit('SET_TYPE_DISPLAY', payload);
@@ -103,32 +65,10 @@ export const actions = {
 };
 
 export const getters = {
-  beachIds: (state) =>
-    // console.log('getter beachIds');
-    mapIDs(state.beaches.data.list),
-
-  eventIds: (state) =>
-    // console.log('getter eventIds');
-    mapIDs(state.events.data.list),
-
-  beaches: (state) =>
-    // console.log('getter beaches');
-    mapBeachList(state.beaches.data.list),
-
-  events: (state) =>
-    // console.log('getter events');
-    mapEventList(state.events.data.list),
-
-  mapEntity: (state) =>
-    // console.log('getter mapEntity');
-    mapEntityList(state.map_entity.data.list),
-
   // Mobile settings
   getMobileSettings: (state) => {
-    // console.log('getMobileSettings', state.mobile_settings.data)
     if (!state.mobile_settings.data) return null;
     const { list } = state.mobile_settings.data;
-
     return list.map(mapSettings);
   },
   getTypeDisplay: (state) => state.typeDisplay,

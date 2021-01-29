@@ -1,7 +1,12 @@
 <template>
-  <section id="barsNRestos" class="beach-page__barsNrestos">
+  <section
+    id="barsNRestos"
+    class="beach-page__barsNrestos"
+  >
     <div class="swiper-bar-display_mobile">
-      <h2 class="two-part-layout__card__title beach-page__barsNrestos__title">Бары и рестораны</h2>
+      <h2 class="two-part-layout__card__title beach-page__barsNrestos__title">
+        Бары и рестораны
+      </h2>
       <!--<a
           href="/online-service"
           @click.prevent="$bus.goTo('/online-service', $router)"
@@ -14,15 +19,19 @@
     <div v-swiper:mySwiper="swiperOption">
       <div class="swiper-wrapper">
         <div
-          class="swiper-slide"
           v-for="(item, i) in data"
           :key="i+'slider-bar-restor'"
+          class="swiper-slide"
         >
           <div class="beach-page__barsNrestos__subtitle-area">
-            <h3 class="beach-page__barsNrestos__subtitle">{{ item.title }}<span class="bar-distance"
-                                                                                v-if="getDistance(item.coordinates)">
-                          <br>{{getDistance(item.coordinates).toString().replace(/\./, ',')}} км</span></h3>
-            <div class="beach-page__barsNrestos__arrow-controls swiper-bar-display" v-if="data.length != 1">
+            <h3 class="beach-page__barsNrestos__subtitle">
+              {{ item.title }}<span
+                v-if="getDistance(item.coordinates)"
+                class="bar-distance"
+              >
+                <br>{{ getDistance(item.coordinates).toString().replace(/\./, ',') }} км</span>
+            </h3>
+            <div v-if="data.length != 1" class="beach-page__barsNrestos__arrow-controls swiper-bar-display">
               <button @click="mySwiper.slidePrev()">
                 <img
                   src="~/static/pics/beach/arrow_left_orange.svg"
@@ -63,67 +72,65 @@
 </template>
 
 <script>
-  import Vue from 'vue';
-  import SliderBeachBarsNRestos from '~/components/pages/beach/SliderBeachBarsNRestos';
-  import {getDistanceFromLatLonInKm} from "../../../assets/calcDistance";
+import SliderBeachBarsNRestos from '~/components/pages/beach/SliderBeachBarsNRestos';
+import { getDistanceFromLatLonInKm } from '../../../assets/calcDistance';
 
-  export default {
-    props: ['data', 'title'],
+export default {
 
-    // beforeMount() {
-    //   if (process.browser) {
-    //     require('swiper/dist/css/swiper.css');
-    //     const VueAwesomeSwiper = require('vue-awesome-swiper/dist/ssr');
-    //     Vue.use(VueAwesomeSwiper);
-    //   }
-    // },
-
-    components: {
-      SliderBeachBarsNRestos
+  components: {
+    SliderBeachBarsNRestos,
+  },
+  props: {
+    data: {
+      type: Array,
+      required: true,
     },
-
-    computed: {
-      last_coordinates() {
-        let cookie_coords = this.$cookies.get('last_coordinates') || {},
-          route_coords = this.$route.params && this.$route.params.coordinates ? this.$route.params.coordinates : {}
-        if (Object.values(cookie_coords).length) {
-          return cookie_coords
-        }
-        return route_coords ? (() => {
-          let obj = Object.values(route_coords);
-          return obj.length == 2 ? {lat: obj[0], lng: obj[1]} : {}
-        })() : {}
+    title: {
+      type: String,
+      required: true,
+    },
+  },
+  data() {
+    return {
+      swiperOption: {
+        spaceBetween: 70,
+        simulateTouch: false,
+        allowTouchMove: false,
+        slidesPerView: 1,
+        init: false,
+      },
+    };
+  },
+  computed: {
+    last_coordinates() {
+      const cookie_coords = this.$cookies.get('last_coordinates') || {};
+      const route_coords = this.$route.params && this.$route.params.coordinates ? this.$route.params.coordinates : {};
+      if (Object.values(cookie_coords).length) {
+        return cookie_coords;
       }
+      return route_coords ? (() => {
+        const obj = Object.values(route_coords);
+        return obj.length == 2 ? { lat: obj[0], lng: obj[1] } : {};
+      })() : {};
     },
+  },
 
-    data() {
-      return {
-        swiperOption: {
-          spaceBetween: 70,
-          simulateTouch: false,
-          allowTouchMove: false,
-          slidesPerView: 1,
-          init: false
+  mounted() {
+    this.mySwiper.init(this.swiperOption);
+  },
+  methods: {
+    getDistance(d = []) {
+      if (d.length) {
+        if (d && d.length == 2 && Object.keys(this.last_coordinates).length) {
+          const lat2 = d[0]; const lng2 = d[1];
+          const { lat, lng } = this.last_coordinates;
+          return Number(getDistanceFromLatLonInKm(lat, lng, Number(lat2), Number(lng2)).toFixed(1)).toString().replace(/\./, ',');
         }
-      };
-    },
-    methods: {
-      getDistance(d = []) {
-        if (d.length) {
-          if (d && d.length == 2 && Object.keys(this.last_coordinates).length) {
-            let lat2 = d[0], lng2 = d[1],
-              {lat, lng} = this.last_coordinates;
-            return Number(getDistanceFromLatLonInKm(lat, lng, Number(lat2), Number(lng2)).toFixed(1)).toString().replace(/\./, ',')
-          }
-        }
-        return 0;
       }
+      return 0;
     },
-
-    mounted() {
-      this.mySwiper.init(this.swiperOption);
-    }
-  }
+  },
+};
 </script>
 
 <style lang="scss" scoped>

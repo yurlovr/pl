@@ -46,6 +46,8 @@ export const MONTHS = [
 ];
 export const OUT_LINKS_HOTEL = 'https://nash.travel/hotel';
 
+export const OUT_LINKS_EXCURSIONS = 'https://nash.travel/excursions';
+
 export const PLUG_TITLE = {
   FAMILY_REST: {
     title: 'Отдых для всей семьи',
@@ -81,8 +83,38 @@ export const PLUG_TITLE = {
   MAP: {
     title: 'Карта пляжей Крыма',
   },
+  BARS: {
+    title: 'Бары и рестораны',
+  },
+  VISITOR_PICS: {
+    title: 'Фото посетителей',
+  },
+  NEARBY_PLACES: {
+    title: 'Забронируй номер рядом с пляжем',
+    description: 'Наша подборка отелей, основанная на ваших отзывах',
+  },
+  REVIEWS: {
+    title: 'Отзывы гостей',
+  },
+  GRAF_TEMP: {
+    title: 'График температуры',
+  },
+  OPINIONS: {
+    title: 'Мнения местных',
+  },
+  SIMILAR: {
+    title: 'Похожие пляжи рядом',
+  },
+  EVENT: {
+    title: 'Ближайшие мероприятия на пляже',
+  },
+  EXCURSIONS: {
+    title: 'Все экскурсии Крыма',
+  },
+  EXCURSIONS_BEACH: {
+    title: 'Все экскурсии рядом',
+  },
 };
-
 
 export const SOC_LINK = {
   INST: {

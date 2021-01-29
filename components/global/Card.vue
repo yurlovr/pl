@@ -4,7 +4,7 @@
       <nuxt-link
         v-if="!data.another_place"
         :to="{ path: data.humanLink ? data.humanLink : ( data.mainLink ? data.mainLink : '#'),
-               query: {id: data.humanLink ? data.id : ''}}"
+               query: {id: data.id }}"
         class="custom-card__link"
       >
        <!-- :to="{ path: data.humanLink ? data.humanLink : ( data.mainLink ? data.mainLink : '#')}" -->
@@ -50,35 +50,6 @@
           >
         </div>
       </nuxt-link>
-      <!-- <a
-        v-if="!data.another_place"
-        :href="data.humanLink ? data.humanLink : ( data.mainLink ? data.mainLink : '#')"
-        class="custom-card__link"
-        @click.prevent="$bus.goTo( data.humanLink ? data.humanLink : ( data.mainLink ? data.mainLink : '#'), $router)"
-      >
-        <img
-          v-if="data.custom_photo"
-          v-show="picLoaded"
-          :src="data.pic"
-          alt="Фото"
-          class="custom-card__pic"
-          @load="picLoaded = true"
-        >
-        <img
-          v-else
-          v-show="picLoaded"
-          v-lazy-load
-          :data-src="data.pic"
-          alt="Фото"
-          class="custom-card__pic"
-          @load="picLoaded = true"
-        >
-        <img
-          v-show="!picLoaded"
-          class="custom-card__pic"
-          src="~/static/pics/global/pics/slider_height_placeholder.png"
-        >
-      </a> -->
       <a
         v-else
         :href="data.internal_url"
@@ -89,7 +60,7 @@
           v-if="data.custom_photo"
           v-show="picLoaded"
           :src="data.pic"
-          alt="Фото"
+          :alt="data.metaHeader ? data.metaHeader : 'Фото'"
           class="custom-card__pic"
           @load="picLoaded = true"
         >
@@ -97,8 +68,8 @@
           v-else
           v-show="picLoaded"
           v-lazy-load
-          :src="data.pic"
-          alt="Фото"
+          :data-src="data.pic"
+          :alt="data.metaHeader ? data.metaHeader : 'Фото'"
           class="custom-card__pic"
           @load="picLoaded = true"
         >
@@ -178,7 +149,8 @@
       <div>
         <nuxt-link
           v-if="!data.another_place"
-          :to="{path: data.humanLink ? data.humanLink : ( data.mainLink ? data.mainLink : '#' )}"
+          :to="{path: data.humanLink ? data.humanLink : ( data.mainLink ? data.mainLink : '#' ),
+                query: {id: data.id }}"
           class="custom-card__title"
           :style="{ 'font-size': data.beach ? '18px' : '20px' }"
         >
@@ -224,7 +196,7 @@
           @click.prevent="searchCity()"
         >{{ data.location }}</a>
         <a
-          v-else
+          v-if="data.another_place && data.geo_string"
           class="custom-card__location"
           :style="{ 'font-size': data.beach ? '10px' : '12px' }"
         >{{ data.geo_string.replace(',', '') }}</a>
@@ -252,14 +224,17 @@
             target="_blank"
             class="custom-card__price"
             :style="{ 'font-size': data.beach ? '10px' : '12px' }"
-          >от {{ data.price }}
+          >
+            {{ data.type !== 'excursion' ? 'от' : '' }}
+            {{ data.price }}
             <span>
               <img
                 :style="{ 'height': data.beach ? '9px' : '11px', 'margin-bottom': '3px' }"
                 src="~/static/pics/global/svg/ruble.svg"
                 alt="руб"
               >
-            </span>/сутки
+            </span>
+            {{ data.type !== 'excursion' ? '/сутки ' : '' }}
           </a>
         </div>
       </div>

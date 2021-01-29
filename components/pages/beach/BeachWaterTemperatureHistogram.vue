@@ -48,7 +48,8 @@
 </template>
 
 <script>
-import LineChart from '../../../assets/LineChart'
+import LineChart from '../../../assets/LineChart';
+
 export default {
   props: ['data', 'dataAir'],
   components: {
@@ -58,6 +59,7 @@ export default {
   created () {
     this.chartData = {
       labels: ["Янв", "Фев", "Мар", "Апр", "Май", "Июн", "Июл", "Авг", "Сен", "Окт", "Ноя", "Дек"],
+      height: 400,
       datasets: [
         {
           label: 'Температура воды',
@@ -290,7 +292,6 @@ export default {
 
       this.modalOpen = !this.modalOpen;
     },
-
   }
 }
 </script>

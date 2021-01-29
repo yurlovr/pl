@@ -30,7 +30,7 @@
               <img
                 v-lazy-load
                 :data-src="review.pic"
-                :alt="`отзыв о ${title}`"
+                :alt="`отзыв о ${description} ${title}`"
                 class="visitor-photo"
               >
               <div class="slide-placeholder">
@@ -122,24 +122,26 @@
 </template>
 
 <script>
-import Vue from 'vue';
 
 export default {
-  // TODO Почему это здесь??
-  beforeRouteLeave(to, from, next) {
-    this.mySwiper && this.mySwiper.destroy && this.mySwiper.destroy(false, false);
-    next();
+  props: {
+    type: {
+      type: String,
+      required: true,
+    },
+    typeId: {
+      type: String,
+      required: true,
+    },
+    title: {
+      type: String,
+      required: true,
+    },
+    data: {
+      type: Array,
+      required: true,
+    },
   },
-  props: ['data', 'type', 'typeId', 'title'],
-
-  // beforeMount() {
-  //   if (process.browser) {
-  //     require('swiper/dist/css/swiper.css');
-  //     const VueAwesomeSwiper = require('vue-awesome-swiper/dist/ssr');
-  //     Vue.use(VueAwesomeSwiper);
-  //   }
-  // },
-
   data() {
     return {
       swiperOption: {
@@ -169,6 +171,14 @@ export default {
     };
   },
 
+  computed: {
+    description() {
+      if (this.type === 'beach') {
+        return 'пляже';
+      }
+      return 'мероприятии';
+    },
+  },
   mounted() {
     this.mySwiper.on('imagesReady', () => {
       window.addEventListener('resize', this.onResize, false);
@@ -183,7 +193,9 @@ export default {
 
     this.mySwiper.init(this.swiperOption);
   },
-
+  beforeDestroy() {
+    this.mySwiper.destroy(false, false);
+  },
   methods: {
     updateArrows() {
       this.showLeft = !this.mySwiper.isBeginning;
@@ -194,7 +206,6 @@ export default {
       if (!this.$el.querySelector('.beach-event__visitor-pics')) {
         window.removeEventListener('resize', this.onResize, false);
       }
-
       if (this.mySwiper) this.mySwiper.update();
     },
 

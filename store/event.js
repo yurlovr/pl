@@ -1,5 +1,4 @@
 import moment from 'moment';
-import { getDistanceFromLatLonInKm } from "~/assets/calcDistance";
 import { mapEntityList } from '@/helpers/mappers';
 
 moment.locale('ru');
@@ -18,24 +17,10 @@ const dataAndTimeTransform = (from, to, part = 'date') => {
   return result;
 };
 
-const distance = (d, coordinat) => {
-  if (d && d.length === 2 && Object.keys(coordinat).length) {
-    const lat2 = d[0];
-    const lng2 = d[1];
-    const { lat, lng } = coordinat;
-    return Number(getDistanceFromLatLonInKm(lat, lng, Number(lat2), Number(lng2)).toFixed(1)).toString().replace(/\./, ',');
-  }
-  return 0;
-};
-
 function defaultState() {
   return {
     eventId: null,
     event: [],
-    visitorPics: null,
-    announcementData: null,
-    anyPlaces: null,
-    hotels: null,
     weatherData: null,
     mainInfo: null,
     parkings: null,
@@ -46,7 +31,6 @@ function defaultState() {
         hash: 'gallery',
       },
     ],
-    reviews: null,
     email: null,
     telegram: null,
     position: [],
@@ -59,43 +43,11 @@ function defaultState() {
 export const state = () => defaultState();
 
 export const mutations = {
-  SET_ANY_PLACES: (state, payload) => {
-    const { list, pagination } = payload.data;
-
-    state.anyPlaces = {
-      title: 'Где остановиться в Крыму',
-      subtitle: 'Наша подборка отелей, основанная на ваших отзывах',
-      beachNumber: pagination.countElements,
-      showMore: {
-        type: 'beach',
-        query: '?another',
-      },
-      beachSliderData: {
-        slideNumber: 6,
-        cardData: list.map((_, i, list) => ({
-          rating: list[i].RATING,
-          title: list[i].NAME,
-          pic: list[i].PICTURE,
-          mainLink: list[i].URL,
-          beachLink: list[i].URL,
-          beachId: list[i].ID,
-          show_distance: true,
-          geo_string: `${list[i].COUNTRY}, ${list[i].CITY}`,
-          internal_url: list[i].URL,
-          another_place: true,
-          price: list[i].PRICE,
-          coordinates: list[i].COORDINATES ? list[i].COORDINATES.split(',').map(Number) : [],
-          custom_photo: true,
-        })),
-      },
-    };
-  },
   SET_EVENT: (state, payload) => {
-    // state.event = payload;
     const { event, city, beach } = payload;
-    const eventItem = event?.data?.item;
-    const cityItem = city?.data?.item;
-    const beachItem = beach?.data?.item;
+    const eventItem = event.data ? event.data.item : null;
+    const cityItem = city.data ? city.data.item : null;
+    const beachItem = beach.data ? beach.data.item : null;
     if (!eventItem && !cityItem && !beachItem) {
       state.error = true;
     }
@@ -103,15 +55,15 @@ export const mutations = {
     const { WEATHER } = eventItem;
 
     const sideMapWeatherData = {
-      title: cityItem?.NAME || '',
-      date: WEATHER?.WEATHER_DATE || '',
-      waterTemp: WEATHER?.TEMP_WATER || '',
-      airTemp: WEATHER?.TEMP_AIR || '',
-      sunriseTime: WEATHER?.SUNRISE || '',
-      sunsetTime: WEATHER?.SUNSET || '',
-      windSpeed: WEATHER?.WIND || '',
-      humidity: WEATHER?.HUMIDITY || '',
-      precipitation: WEATHER?.PRECIPITATION || '',
+      title: cityItem ? cityItem.NAME : '',
+      date: WEATHER ? WEATHER.WEATHER_DATE : '',
+      waterTemp: WEATHER ? WEATHER.TEMP_WATER : '',
+      airTemp: WEATHER ? WEATHER.TEMP_AIR : '',
+      sunriseTime: WEATHER ? WEATHER.SUNRISE : '',
+      sunsetTime: WEATHER ? WEATHER.SUNSET : '',
+      windSpeed: WEATHER ? WEATHER.WIND : '',
+      humidity: WEATHER ? WEATHER.HUMIDITY : '',
+      precipitation: WEATHER ? WEATHER.PRECIPITATION : '',
     };
     const about = {
       title: 'О мероприятии',
@@ -121,11 +73,11 @@ export const mutations = {
       title: eventItem.NAME,
       date: dataAndTimeTransform(eventItem.ACTIVE_FROM, eventItem.ACTIVE_TO, 'date'),
       likes: eventItem.COUNT_FAVORITES,
-      location: cityItem?.NAME,
-      locationId: cityItem?.ID,
+      location: cityItem ? cityItem.NAME : null,
+      locationId: cityItem ? cityItem.ID : null,
       eventId: eventItem.ID,
       price: eventItem.PRICE || null,
-      beachSeabedType: beachItem.PARAMETERS?.P_BOTTOM?.NAME,
+      beachSeabedType: beachItem.PARAMETERS ? (beachItem.PARAMETERS.P_BOTTOM ? beachItem.PARAMETERS.P_BOTTOM.NAME : '') : '',
       time: eventItem.EVENT_TIME ? eventItem.EVENT_TIME : dataAndTimeTransform(eventItem.ACTIVE_FROM, eventItem.ACTIVE_TO, 'time'),
     };
 
@@ -181,8 +133,8 @@ export const mutations = {
     state.position = beachItem.COORDINATES
       ? beachItem.COORDINATES.split(',').map((v) => parseFloat(v))
       : [];
-    state.email = beachItem?.CONTACT?.EMAIL;
-    state.telegram = beachItem?.CONTACT?.TELEGRAM;
+    state.email = beachItem.CONTACT ? beachItem.CONTACT.EMAIL : null;
+    state.telegram = beachItem.CONTACT ? beachItem.CONTACT.TELEGRAM : null;
     state.parkings = {
       title: beachItem.NAME,
       pos: beachItem.COORDINATES ? beachItem.COORDINATES.split(',')
@@ -220,79 +172,6 @@ export const mutations = {
       },
     ]);
   },
-
-  SET_REVIEWS: (state, payload) => {
-    state.reviews = payload;
-    const { list } = payload.data;
-    state.reviews = list.map((_, i, list) => ({
-      pic: list[i]?.PICTURE,
-      name: list[i].FIO,
-      date: list[i].CREATED_DATE,
-      rating: list[i].AVERAGE_RATING,
-      comment: list[i].DESCRIPTION,
-    }));
-  },
-
-  SET_VISITOR_PICS: (state, payload) => {
-    const { list } = payload.data;
-
-    state.visitorPics = list.map((_, i, list) => ({
-      avatar: list[i].USER ? list[i].USER.PICTURE : null,
-      pic: list[i].PICTURE,
-      name: list[i].USER ? list[i].USER.FIO : null,
-      comment: list[i].DESCRIPTION,
-    }));
-  },
-
-  SET_ANNOUNCEMENT_DATA: (state, payload) => {
-    const { list } = payload.data;
-    if (list.length) {
-      // getting a random announcement
-      const announcement = list[Math.floor(Math.random() * list.length)];
-      state.announcementData = {
-        link: announcement.LINK,
-        pic: announcement.PREVIEW_PICTURE ? announcement.PREVIEW_PICTURE : null,
-        title: announcement.NAME,
-        date: announcement.DATE,
-        description: announcement.DESCRIPTION,
-        color: announcement.COLOR,
-      };
-    }
-  },
-
-  SET_HOTELS: (state, payload) => {
-    const { list, pagination } = payload.hotels.data;
-    const { coordinat } = payload;
-    state.hotels = {
-      title: 'Забронируй номер рядом с пляжем',
-      subtitle: 'Наша подборка отелей, основанная на ваших отзывах',
-      beachNumber: pagination.countElements,
-      // /*showMore: {
-      //   type: 'beach',
-      //   query: '?another'
-      // },*/
-      beachSliderData: {
-        slideNumber: 6,
-        cardData: list.map((_, i, list) => ({
-          rating: list[i].RATING,
-          title: list[i].NAME,
-          pic: list[i].PICTURE,
-          mainLink: list[i].URL,
-          beachLink: list[i].URL,
-          beachId: list[i].ID,
-          show_distance: true,
-          geo_string: `${list[i].COUNTRY}, ${list[i].CITY}`,
-          internal_url: list[i].URL,
-          another_place: true,
-          price: list[i].PRICE,
-          coordinates: list[i].COORDINATES ? list[i].COORDINATES.split(',').map(Number) : [],
-          dist: distance(list[i].COORDINATES ? list[i].COORDINATES.split(',').map(Number) : [], coordinat),
-          custom_photo: true,
-          ignore_global_km: true,
-        })),
-      },
-    };
-  },
   SET_EVENT_ID: (state, id) => {
     state.eventId = id;
   },
@@ -323,38 +202,10 @@ export const actions = {
       eventId = ID;
       beach = await this.$axios.$get(`/beach/item?id=${BEACH}`);
       city = await this.$axios.$get(`/city/item?id=${CITIES}`);
-    } catch (error) {
-      // console.log(error);
-    }
+    } catch (error) {}
     commit('SET_EVENT', { event, beach, city });
 
     commit('SET_EVENT_ID', eventId);
-  },
-  async setAnnouncement({ commit }, page) {
-    let announcement = null;
-    if (page === 'event') {
-      announcement = await this.$axios.$get('/banner/list?page=/event');
-    }
-    commit('SET_ANNOUNCEMENT_DATA', announcement);
-  },
-
-  async setHotels({ commit }) {
-    const hotels = await this.$axios.$get('/hotel/beachList?count=10');
-    const coordinat = this.$cookies.get('last_coordinates') || {};
-    commit('SET_HOTELS', { hotels, coordinat });
-  },
-
-  async setAnyPlaces({ commit }) {
-    const anyPlaces = await this.$axios.$get('/hotel/list?count=10');
-    commit('SET_ANY_PLACES', anyPlaces);
-  },
-  async setVisitorPics({ commit }, eventId) {
-    const visitorPics = await this.$axios.$get(`/socialPhoto/list?entityId=${eventId}&count=10`);
-    commit('SET_VISITOR_PICS', visitorPics);
-  },
-  async setReviews({ commit }, eventId) {
-    const reviews = await this.$axios.$get(`/review/list?entityId=${eventId}`);
-    commit('SET_REVIEWS', reviews);
   },
 
   async setMapEntity({ commit }) {
@@ -364,43 +215,16 @@ export const actions = {
 };
 
 export const getters = {
-  // eventData: (state, getters, rootState) => {
-  //       // adding formatted other events
-  //       let otherEvents = rootState.events.data.list.filter(v => v.ID != state.event.data.item.ID && v.BEACH && v.BEACH.CITY && state.event.data.item.BEACH && state.event.data.item.BEACH.CITY && v.BEACH.CITY.NAME == state.event.data.item.BEACH.CITY.NAME);
-  //       ret.otherEvents.beachNumber = Math.min(otherEvents.length, 45);
-  //       for (let i = 0; i < otherEvents.length; i++) {
-  //           ret.otherEvents.beachSliderData.cardData.push({
-  //               title: otherEvents[i].NAME,
-  //               date: otherEvents[i].ACTIVE_FROM,
-  //               beach: otherEvents[i].BEACH ? otherEvents[i].BEACH.NAME : null,
-  //               paid: otherEvents[i].PAID,
-  //               tempWater: otherEvents[i].BEACH && otherEvents[i].BEACH.WEATHER && otherEvents[i].BEACH.TEMP ? otherEvents[i].BEACH.WEATHER.TEMP.WATER : null,
-  //               mainLink: `event/${otherEvents[i].ID}`,
-  //               beachLink: otherEvents[i].BEACH ? `beach/${otherEvents[i].BEACH.CODE}` : null,
-  //               humanLink: otherEvents[i].CODE ? `event/${otherEvents[i].CODE}` : null,
-  //               location: otherEvents[i].BEACH && otherEvents[i].BEACH.CITY ? otherEvents[i].BEACH.CITY.NAME : null,
-  //               locationId: otherEvents[i].BEACH && otherEvents[i].BEACH.CITY ? otherEvents[i].BEACH.CITY.ID : null,
-  //               pic: otherEvents[i].PHOTOS ? otherEvents[i].PHOTOS[0] : null,
-  //               eventId: otherEvents[i].ID,
-  //               showFavorite: true
-  //           });
-  //       }
-  //   },
   getWeatherData: (state) => state.weatherData,
   getAbout: (state) => state.about,
   getMainInfo: (state) => state.mainInfo,
   getParkings: (state) => state.parkings,
   getHugeSlider: (state) => state.hugeSlider,
   getSections: (state) => state.sections,
-  getReviews: (state) => state.reviews,
   getEmail: (state) => state.email,
   getTelegram: (state) => state.telegram,
   getPosition: (state) => state.position,
-  getAnnouncement: (state) => state.announcementData,
-  getHotels: (state) => state.hotels,
-  getAnyPlaces: (state) => state.anyPlaces,
   getEventId: (state) => state.eventId,
-  getVisitorPics: (state) => state.visitorPics,
   getInfra: (state) => state.infra,
   getMapEntity: (state) => state.mapEntity,
   getError: (state) => state.error,
