@@ -8,7 +8,7 @@
       <h3
         class="main-page__section-title"
       >
-        {{ PLUG_TITLE.SIMILAR.title }}
+        {{ PLUG_TITLE.EXCURSIONS_BEACH.title }}
       </h3>
       <div
         class="main-page__section-subtitle-area"
@@ -16,7 +16,7 @@
         <div
           class="img_container"
         >
-          Нет похожих пляжей рядом
+          В настоящее время нет доступных экскурсий.
         </div>
       </div>
     </div>
@@ -37,7 +37,6 @@ export default {
 
 <style lang="scss">
 .no-similar {
-  margin-top: 15px;
   margin-bottom: 60px;
 }
 </style>

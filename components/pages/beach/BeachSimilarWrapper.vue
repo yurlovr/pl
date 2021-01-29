@@ -1,5 +1,5 @@
 <template>
-  <div id="similar-beaches">
+  <div id="similar">
     <BlockPlug
       v-if="!getSimilarBeaches"
       :height="365"

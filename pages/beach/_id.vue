@@ -1,5 +1,7 @@
 <template>
-  <div class="beach-page custom-page">
+  <div
+    class="beach-page custom-page"
+  >
     <div class="beach-page__container custom-container">
       <client-only>
         <!-- Navigation Menu -->
@@ -15,14 +17,12 @@
           @call-modal="changeModalState"
         />
       </client-only>
-
       <div class="custom-container-inner">
         <BeachEventSideButtons
           :data="beach"
           :dont-show-pave="true"
         />
       </div>
-
       <div class="two-part-layout">
         <!-- Left side -->
         <main class="two-part-layout__left">
@@ -97,7 +97,6 @@
                           ...getInfraData.filter(e => Array.isArray(e.pos))]"
             :data="getParking"
           />
-
           <LazyComponent>
             <template #placeholder>
               <BlockPlug
@@ -185,9 +184,7 @@
           </LazyComponent>
         </aside>
       </div>
-    </div>
 
-    <div class="custom-container">
       <LazyComponent>
         <template #placeholder>
           <BlockPlug
@@ -199,58 +196,57 @@
           :beach-id="beach.id"
         />
       </LazyComponent>
-    </div>
 
-    <div class="main-page__white-wrapper beach-event__visitor-pics-wrapper">
+      <div class="main-page__white-wrapper beach-event__visitor-pics-wrapper">
+        <LazyComponent>
+          <template #placeholder>
+            <BlockPlug
+              :id="'visitor-pics'"
+              :text="PLUG_TITLE.VISITOR_PICS"
+              :height="672"
+            />
+          </template>
+          <VisitorPicsWrapper
+            :id="beach.id"
+            :title="meta.h1 || 'пляже' "
+          />
+        </LazyComponent>
+      </div>
+
       <LazyComponent>
         <template #placeholder>
           <BlockPlug
-            :id="'visitor-pics'"
-            :text="PLUG_TITLE.VISITOR_PICS"
-            :height="672"
+            :text="PLUG_TITLE.EXCURSIONS_BEACH"
+            :height="649"
           />
         </template>
-        <VisitorPicsWrapper
-          :id="beach.id"
-          :title="meta.h1 || 'пляже' "
+        <Excursions
+          :page="'beach'"
+          :beach-id="beach.id"
+          :excursions-ids="beach.excursions"
         />
       </LazyComponent>
+
+      <LazyComponent>
+        <template #placeholder>
+          <BlockPlug
+            :id="'similar'"
+            :text="PLUG_TITLE.SIMILAR"
+            :height="365"
+          />
+        </template>
+        <BeachSimilarWrapper
+          :city-id="beach.cityId"
+          :tags="beach.tags"
+          :beach-id="beach.id"
+        />
+      </LazyComponent>
+      <iframe360
+        v-if="show_pano"
+        :url="beach.panorama"
+        @close-modal="changeModalState"
+      />
     </div>
-
-    <LazyComponent>
-      <template #placeholder>
-        <BlockPlug
-          :text="PLUG_TITLE.EXCURSIONS_BEACH"
-          :height="649"
-        />
-      </template>
-      <Excursions
-        :page="'beach'"
-        :beach-id="beach.id"
-        :excursions-ids="beach.excursions"
-      />
-    </LazyComponent>
-
-    <LazyComponent>
-      <template #placeholder>
-        <BlockPlug
-          :id="'similar-beaches'"
-          :text="PLUG_TITLE.SIMILAR"
-          :height="365"
-        />
-      </template>
-      <BeachSimilarWrapper
-        :city-id="beach.cityId"
-        :tags="beach.tags"
-        :beach-id="beach.id"
-      />
-    </LazyComponent>
-
-    <iframe360
-      v-if="show_pano"
-      :url="beach.panorama"
-      @close-modal="changeModalState"
-    />
   </div>
 </template>
 
@@ -336,6 +332,12 @@ export default {
 </script>
 
 <style lang="scss">
+.two-part-layout {
+  min-height: 1000px;
+}
+#infra, #services {
+  min-height: 485px;
+}
 .hotels-section {
   padding: 0;
   margin-top: 30px;

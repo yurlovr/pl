@@ -36,9 +36,7 @@ export default {
     };
   },
   async fetch() {
-    if (!this.getWaterTemp) {
-      await this.setWaterTemp();
-    }
+    await this.setWaterTemp(this.cityId);
   },
   computed: {
     ...mapGetters('temperatures', [
@@ -51,11 +49,8 @@ export default {
       };
       if (!this.getWaterTemp) return result;
       Object.keys(this.getWaterTemp).forEach((key) => {
-        const currentCity = this.getWaterTemp[key].find((item) => item.CITY.ID === this.cityId);
-        if (currentCity) {
-          result.waterHistogramData.push(+currentCity.TEMP.WATER);
-          result.airHistogramData.push(+currentCity.TEMP.AIR);
-        }
+        result.waterHistogramData.push(+this.getWaterTemp[key].TEMP.WATER);
+        result.airHistogramData.push(+this.getWaterTemp[key].TEMP.AIR);
       });
       return result;
     },

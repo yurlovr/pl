@@ -35,6 +35,7 @@ export const actions = {
       const beach = await this.$axios.$get(`/beach/item?id=${id}`);
       commit('SET_BEACH', beach);
     } catch (e) {
+      console.log('e', e)
       commit('SET_ERROR', true);
     }
   },
@@ -140,7 +141,7 @@ export const getters = {
       },
       {
         title: 'Похожие пляжи',
-        hash: 'similar-beaches',
+        hash: 'similar',
         show: true,
       },
     ];

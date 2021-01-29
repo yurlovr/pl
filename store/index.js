@@ -65,7 +65,6 @@ export const actions = {
 };
 
 export const getters = {
-  // Mobile settings
   getMobileSettings: (state) => {
     if (!state.mobile_settings.data) return null;
     const { list } = state.mobile_settings.data;

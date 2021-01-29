@@ -11,9 +11,6 @@
           </p>
         </section>
       </main>
-      <!-- <aside class="two-part-layout__right">
-        <AnnouncementCard :data="$store.state.announcementData" />
-      </aside> -->
     </div>
   </div>
 </template>

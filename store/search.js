@@ -1,6 +1,5 @@
-import {getDistanceFromLatLonInKm} from "../assets/calcDistance";
+import { getDistanceFromLatLonInKm } from "../assets/calcDistance";
 import { mapBeach } from '~/helpers/mappers';
-import { debounce } from '~/helpers/index';
 
 function getTitleForTags({ param, title }) {
   switch (param) {
@@ -186,99 +185,6 @@ export const mutations = {
   set_loaded: (state, s) => state.f_loaded = s,
   SET_MY_COORDS: (state, data) => state.my_coords = data,
   SET_MY_CITY: (state, city) => state.my_city_id = city,
-  // SET_SEARCH: (state, data) => {
-  //   state.init = true;
-  //   const payload = {
-  //     data,
-  //   };
-  //   state.searchConfig = payload;
-  //   state.searchParams.selects.price.options = state.searchParams.selects.price.options.concat(payload.data.prices)
-
-  //   state.searchParams.selects.price.options.map(e => {
-  //     if (!e.title) {
-  //       e.title = e.name;
-  //     }
-  //     return e;
-  //   })
-  //   // initializing the first row
-  //   for (let i = 0; i < payload.data.cities.length; i++) {
-  //     state.searchParams.selects.cities.options.push({
-  //       title: payload.data.cities[i].NAME,
-  //       id: payload.data.cities[i].ID
-  //     });
-  //   }
-  //   for (let i = 0; i < payload.data.beachTypes.length; i++) {
-  //     state.searchParams.selects.beachTypes.options.push({
-  //       title: payload.data.beachTypes[i].NAME,
-  //       id: payload.data.beachTypes[i].ID
-  //     });
-  //   }
-  //   for (let i = 0; i < payload.data.modes.length; i++) {
-  //     state.searchParams.selects.modes.options.push({
-  //       title: payload.data.modes[i].NAME,
-  //       id: payload.data.modes[i].ID
-  //     });
-  //   }
-  //   // no need to get prices, they are preinitialized
-  //   // initializing the second row
-  //   for (let i = 0; i < payload.data.lineLengthList.length; i++) {
-  //     state.searchParams.selects.searchBeachLengthFrom.options.push({
-  //       title: payload.data.lineLengthList[i],
-  //       id: payload.data.lineLengthList[i]
-  //     })
-  //   }
-  //   for (let i = 0; i < payload.data.lineLengthList.length; i++) {
-  //     state.searchParams.selects.searchBeachLengthTo.options.push({
-  //       title: payload.data.lineLengthList[i],
-  //       id: payload.data.lineLengthList[i]
-  //     })
-  //   }
-  //   for (let i = 0; i < payload.data.waterTempList.length; i++) {
-  //     state.searchParams.selects.searchWaterTempFrom.options.push({
-  //       title: payload.data.waterTempList[i],
-  //       id: payload.data.waterTempList[i]
-  //     })
-  //   }
-  //   for (let i = 0; i < payload.data.waterTempList.length; i++) {
-  //     state.searchParams.selects.searchWaterTempTo.options.push({
-  //       title: payload.data.waterTempList[i],
-  //       id: payload.data.waterTempList[i]
-  //     })
-  //   }
-  //   // initializing the checkboxes
-  //   for (let i = 0; i < payload.data.tags.length; i++) {
-  //     state.searchParams.checkboxes.tags[payload.data.tags[i].ID] = {
-  //       value: false,
-  //       title: payload.data.tags[i].NAME,
-  //       id: payload.data.tags[i].ID,
-  //       type: 'tags'
-  //     }
-  //   }
-  //   for (let i = 0; i < payload.data.addTags.length; i++) {
-  //     state.searchParams.checkboxes.addTags[payload.data.addTags[i].ID] = {
-  //       value: false,
-  //       title: payload.data.addTags[i].NAME,
-  //       id: payload.data.addTags[i].ID,
-  //       type: 'addTags'
-  //     }
-  //   }
-  //   for (let i = 0; i < payload.data.services.length; i++) {
-  //     state.searchParams.checkboxes.services[payload.data.services[i].ID] = {
-  //       value: false,
-  //       title: payload.data.services[i].NAME,
-  //       id: payload.data.services[i].ID,
-  //       type: 'services'
-  //     }
-  //   }
-  //   for (let i = 0; i < payload.data.infrastructures.length; i++) {
-  //     state.searchParams.checkboxes.infrastructures[payload.data.infrastructures[i].ID] = {
-  //       value: false,
-  //       title: payload.data.infrastructures[i].NAME,
-  //       id: payload.data.infrastructures[i].ID,
-  //       type: 'infrastructures'
-  //     }
-  //   }
-  // },
 
   updateParamsShown: (state, payload) => {
     state.paramsShown = payload;
@@ -295,20 +201,6 @@ export const mutations = {
   SET_SEARCH_RESULT_BEACH_BACKUP: (state, payload) => {
     state.searchPageResultBeachBackup = payload;
   },
-
-  // updateInput(state, payload) {
-  //   state.searchInput = payload;
-  // },
-
-  // TODO Eating 1000ms on hydration
-  // updateSearchSecondRowParam(state, payload) {
-  //   state.searchParams.selects[payload.param].options[0].title = payload.title;
-  //   state.searchParams.selects[payload.param].options.push('lol');
-  //   state.searchParams.selects[payload.param].options.pop();
-
-  //   if (state.searchParams.selects[payload.param].value.id === -1)
-  //     state.searchParams.selects[payload.param].value.title = payload.title;
-  // },
 
   SET_SEARCH_PARAMS(state, payload) {
     // checkbox
@@ -392,88 +284,9 @@ export const mutations = {
     state.searchPageResult = state.searchPageResultEventBackup;
   },
 
-  // updateSearchQuery(state, isQuery) {
-  //   state.query = '?';
-
-  //   if (isQuery) {
-  //     state.query += `q=${state.searchInput}`;
-  //     return;
-  //   }
-
-  //   state.searchPageResultEventBackup = [];
-
-  //   if (state.searchParams.selects.cities.value.id != -1) {
-  //     state.query += `city=${state.searchParams.selects.cities.value.id}&`;
-  //   }
-  //   if (state.searchParams.selects.beachTypes.value.id != -1) {
-  //     state.query += `typeBeach=${state.searchParams.selects.beachTypes.value.id}&`;
-  //   }
-  //   if (state.searchParams.selects.modes.value.id != -1) {
-  //     state.query += `mode=${state.searchParams.selects.modes.value.id}&`;
-  //   }
-  //   if (state.searchParams.selects.price.value.id != -1) {
-  //     state.query += `price=${state.searchParams.selects.price.value.id}&`;
-  //   }
-  //   if (state.searchParams.selects.searchBeachLengthFrom.value.id != -1) {
-  //     state.query += `lengthFrom=${state.searchParams.selects.searchBeachLengthFrom.value.id}&`;
-  //   }
-  //   if (state.searchParams.selects.searchBeachLengthTo.value.id != -1) {
-  //     state.query += `lengthTo=${state.searchParams.selects.searchBeachLengthTo.value.id}&`;
-  //   }
-  //   if (state.searchParams.selects.searchWaterTempFrom.value.id != -1) {
-  //     state.query += `tempFrom=${state.searchParams.selects.searchWaterTempFrom.value.id}&`;
-  //   }
-  //   if (state.searchParams.selects.searchWaterTempTo.value.id != -1) {
-  //     state.query += `tempTo=${state.searchParams.selects.searchWaterTempTo.value.id}&`;
-  //   }
-  //   state.searchParams.checkboxes.tags.forEach((e) => {
-  //     if (e.value)
-  //       state.query += `tags[]=${e.id}&`;
-  //   })
-  //   state.searchParams.checkboxes.addTags.forEach((e) => {
-  //     if (e.value)
-  //       state.query += `addTags[]=${e.id}&`;
-  //   })
-  //   state.searchParams.checkboxes.services.forEach((e) => {
-  //     if (e.value)
-  //       state.query += `services[]=${e.id}&`;
-  //   })
-  //   state.searchParams.checkboxes.infrastructures.forEach((e) => {
-  //     if (e.value)
-  //       state.query += `infrastructures[]=${e.id}&`;
-  //   })
-
-  //   if (Object.values(state.coords).length && state.radius) {
-
-  //     state.query += `coordinates=` + encodeURIComponent(Object.values(state.coords).join(',')) + '&diameter=' + (typeof state.radius === 'number' ?
-  //       (state.radius / 1000) : encodeURIComponent(state.radius)) + '&'
-  //   }
-
-
-  //   // cleaning up the last & or ? if it's empty
-  //   state.query = state.query.slice(0, -1);
-  // },
-
   EMPTY_RESULTS(state) {
     state.searchPageResult = [];
   },
-
-  // emptySearchParams(state) {
-  //   state.searchInput = '';
-  //   state.searchParams.selects.cities.value = state.searchParams.selects.cities.options[0];
-  //   state.searchParams.selects.beachTypes.value = state.searchParams.selects.beachTypes.options[0];
-  //   state.searchParams.selects.modes.value = state.searchParams.selects.modes.options[0];
-  //   state.searchParams.selects.price.value = state.searchParams.selects.price.options[0];
-  //   state.searchParams.selects.searchBeachLengthFrom.value = state.searchParams.selects.searchBeachLengthFrom.options[0];
-  //   state.searchParams.selects.searchBeachLengthTo.value = state.searchParams.selects.searchBeachLengthTo.options[0];
-  //   state.searchParams.selects.searchWaterTempFrom.value = state.searchParams.selects.searchWaterTempFrom.options[0];
-  //   state.searchParams.selects.searchWaterTempTo.value = state.searchParams.selects.searchWaterTempTo.options[0];
-
-  //   state.searchParams.checkboxes.tags.forEach(v => v.value = false);
-  //   state.searchParams.checkboxes.addTags.forEach(v => v.value = false);
-  //   state.searchParams.checkboxes.services.forEach(v => v.value = false);
-  //   state.searchParams.checkboxes.infrastructures.forEach(v => v.value = false);
-  // },
   SET_SEARCH_RESULT_CITY(state, payload) {
     const list = payload.list.map(mapBeach);
     state.searchResultCity = {
@@ -753,69 +566,11 @@ export const mutations = {
 };
 
 export const actions = {
-  // async search({commit, state}, [coords = null, city = -1]) {
-  //   commit('SET_MY_COORDS', coords);
-  //   commit('SET_MY_CITY', city);
-  //   commit('updateSearchQuery');
-  //   // if (state.query.length > 0) {
-  //   commit('SET_SEARCH_RESULT', await this.$axios.$get(`search/filter${state.query}`));
-  //   // } else commit('EMPTY_RESULTS');
-  // },
-
-  // async searchQuery({commit, state, rootState}, [coords = null, city = -1]) {
-  //   commit('updateSearchQuery', true);
-  //   commit('SET_MY_COORDS', coords);
-  //   commit('SET_MY_CITY', city);
-  //   // if (state.query.length > 0) {
-  //   let autocompleteRes = null;
-
-  //   try {
-  //     autocompleteRes = await this.$axios.$get(`search/autocomplete${state.query}`);
-  //   } catch (err) {
-  //     console.error('error during search: ', err);
-  //   }
-
-  //   let beaches = {
-  //       data: {
-  //         list: []
-  //       }
-  //     },
-  //     events = {
-  //       data: {
-  //         list: []
-  //       }
-  //     };
-
-
-  //   if (!autocompleteRes.data || !autocompleteRes.data.hasOwnProperty('list') || !(Array.isArray(autocompleteRes.data.list)) || autocompleteRes.data.list.length === 0) {
-  //     console.warn('warning: no data or empty search results')
-  //     commit('EMPTY_RESULTS')
-  //     commit('set_loaded', true)
-  //     return;
-  //   }
-
-  //   if (autocompleteRes.data && autocompleteRes.data.list) {
-  //     for (let i = 0; i < autocompleteRes.data.list.length; i++) {
-  //       if (rootState.beaches.data.list.find(v => v.ID == autocompleteRes.data.list[i].ID))
-  //         beaches.data.list.push(rootState.beaches.data.list.find(v => v.ID == autocompleteRes.data.list[i].ID));
-  //       if (rootState.events.data.list.find(v => v.ID == autocompleteRes.data.list[i].ID))
-  //         events.data.list.push(rootState.events.data.list.find(v => v.ID == autocompleteRes.data.list[i].ID));
-  //     }
-  //   } else {
-  //     events.data.list = rootState.events.data.list;
-  //     beaches.data.list = rootState.beaches.data.list;
-  //   }
-  //   commit('SET_SEARCH_RESULT', beaches);
-  //   commit('SET_SEARCH_RESULT_BEACH_BACKUP', beaches);
-  //   commit('SET_SEARCH_RESULT_EVENT_BACKUP', events);
-  //   commit('set_loaded', true)
-  //   // } else commit('EMPTY_RESULTS');
-  // },
 
   async searchAutocomplete({commit, state}, [coords = null, city = -1]) {
     commit('SET_MY_COORDS', coords);
     commit('SET_MY_CITY', city);
-    let res = await this.$axios.$get(`search/autocomplete?q=${state.searchInput}`);
+    const res = await this.$axios.$get(`search/autocomplete?q=${state.searchInput}`);
     if (res.data) {
       commit('updateAutocomplete', res.data);
     }
@@ -823,11 +578,6 @@ export const actions = {
   async updateTags({commit, state}, path) {
     commit('updateTags', path);
   },
-
-  // async updateSearchInput({commit}, input) {
-  //   commit('updateSearchInput', input);
-  //   commit('emptySearchParams');
-  // },
   async setSearchCityQuery({ commit }, payload) {
     const { city, page, count } = payload;
     const { data } = await this.$axios.$get(`search/filter?city=${city}&page=${page}&count=${count}`);
@@ -947,38 +697,8 @@ export const actions = {
     }
   },
   setUpdateSearchTags({ commit }, payload) {
-    // currentValue: {
-    //   title: "Адлер"
-    // }
-    // id: "2451"
-    // param: "city"
-    // value: null
-    // type: 'select'
     commit('SET_QUERY_PARAMS', { ...payload, action: 'delete' });
     commit('SET_SEARCH_PARAMS_UPDATE', { ...payload, action: 'delete' });
-    // }
-
-
-
-    // let result = state.tags;
-    // const { param, currentValue, value } = payload;
-    // if (param === 'cities' && !value) {
-    //   result = result.filter((item) => item.value.title.toLowerCase()
-    //     !== currentValue.title.toLowerCase());
-    // }
-    // if (param === 'beachType' && !value) {
-    //   result = result.filter((item) => item.value.title.toLowerCase()
-    //     !== currentValue.title.toLowerCase());
-    // }
-    // if (param === 'addTags' && !value) {
-    //   result = result.filter((item) => item.value.title.toLowerCase()
-    //     !== currentValue.title.toLowerCase());
-    // }
-    // if (param === 'tags' && !value) {
-    //   result = result.filter((item) => item.value.title.toLowerCase()
-    //     !== currentValue.title.toLowerCase());
-    // }
-    // commit('SET_TAGS', result);
   },
   async setSeach({ commit }, payload) {
     if (!payload) {
@@ -996,18 +716,10 @@ export const actions = {
     const { data } = await this.$axios.$get(`search/filter?${paramsForQuery}&page=${page}&count=${count}`);
     commit('SET_SEARCH1', data);
   },
-  // async setSearchConfig({ commit }) {
-  //   const { data } = await this.$axios.$get('/search/config');
-  //   commit('SET_SEARCH_CONFIG', data);
-  // },
   setSearchParams({ commit }, payload) {
     commit('SET_QUERY_PARAMS', payload);
     commit('SET_SEARCH_PARAMS', payload);
   },
-  // async setSeachFromParams({ commit }, payload) {
-  //   const { data } = await this.$axios.$get(`search/filter?${payload}`);
-  //   commit('SET_SEARCH_FROM_PARAMS', data);
-  // },
   setDefaultSearchParams({ commit }) {
     commit('SET_DEFAULT_SEARCH_PARAMS');
   },

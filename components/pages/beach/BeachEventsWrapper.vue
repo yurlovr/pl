@@ -1,5 +1,5 @@
 <template>
-  <div id="similar-beaches">
+  <div>
     <BlockPlug
       v-if="!getBeachEvents"
       :height="374"

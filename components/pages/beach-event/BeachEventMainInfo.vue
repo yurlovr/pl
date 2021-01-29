@@ -1,7 +1,7 @@
 <template>
   <section
     id="main-info"
-    class="two-part-layout__card"
+    class="two-part-layout__card mh"
   >
     <div class="beach-event__main-info">
       <div class="search-page__map-area__card__title-area beach-event__main-info__title-area">
@@ -247,3 +247,8 @@ export default {
   },
 };
 </script>
+<style lang="scss">
+.mh {
+  min-height: 485px;
+}
+</style>

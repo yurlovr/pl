@@ -124,6 +124,7 @@ export default {
     },
     goTo(hash) {
       const el = document.querySelector(hash);
+      console.log(el)
       this.dontScroll = true;
       if (this.atTop) {
         this.atTop = false;

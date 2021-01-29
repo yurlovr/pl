@@ -3,17 +3,20 @@
     class="main-page__white-wrapper"
   >
     <BlockPlug
-      v-if="!dataForRender"
+      v-if="!dataForRender && !getNoExcursions"
       :height="649"
       :text="title"
       :class-name="'main-page__beach-slider-area custom-container main-page__family-rest'"
       :show-loader="true"
     />
     <BeachSliderArea
-      v-else
+      v-else-if="dataForRender"
       :data="dataForRender"
       :outlink="OUT_LINKS_EXCURSIONS"
       class="main-page__family-rest"
+    />
+    <NoExcursions
+      v-else
     />
   </div>
 </template>
@@ -26,6 +29,7 @@ export default {
   components: {
     BeachSliderArea: () => import('~/components/global/BeachSliderArea'),
     BlockPlug: () => import('~/components/global/BlockPlug'),
+    NoExcursions: () => import('~/components/pages/beach/NoExcursions'),
   },
   props: {
     page: {
@@ -54,6 +58,7 @@ export default {
   computed: {
     ...mapGetters('excursions', [
       'getExcursions',
+      'getNoExcursions',
     ]),
     dataForRender() {
       if (this.page === 'main') {
@@ -70,12 +75,12 @@ export default {
   beforeDestroy() {
     this.setExcursions({
       page: null,
-      beachId: null,
     });
   },
   methods: {
     ...mapActions('excursions', [
       'setExcursions',
+      // 'setNoExcursions',
     ]),
   },
 };

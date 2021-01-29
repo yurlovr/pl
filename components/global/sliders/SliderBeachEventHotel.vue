@@ -116,12 +116,12 @@ export default {
     this.mySwiper.init(this.swiperOption);
     this.updateArrows();
 
-    this.$bus.$on('hidePageTransitioner', () => {
-      setTimeout(() => { this.update(); }, 2000);
-    });
-    this.$bus.$on('mainPageReady', () => {
-      setTimeout(() => { this.update(); }, 2000);
-    });
+    // this.$bus.$on('hidePageTransitioner', () => {
+    //   setTimeout(() => { this.update(); }, 2000);
+    // });
+    // this.$bus.$on('mainPageReady', () => {
+    //   setTimeout(() => { this.update(); }, 2000);
+    // });
   },
 
   methods: {
@@ -140,12 +140,12 @@ export default {
       }
     },
 
-    update() {
-      if (this.mySwiper) {
-        this.mySwiper.slideNext();
-        this.mySwiper.slidePrev();
-      }
-    },
+    // update() {
+    //   if (this.mySwiper) {
+    //     this.mySwiper.slideNext();
+    //     this.mySwiper.slidePrev();
+    //   }
+    // },
   },
 };
 </script>

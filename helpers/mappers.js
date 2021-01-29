@@ -243,7 +243,7 @@ export function mapBeachMainData(item) {
     beachId: item.ID,
     beachLength: item.PARAMETERS.P_LINE_LENGTH,
     price: item.PARAMETERS.P_PRICE,
-    beachType: item.PARAMETERS.P_BEACH_TYPE.NAME,
+    beachType: item.PARAMETERS.P_BEACH_TYPE ? item.PARAMETERS.P_BEACH_TYPE.NAME : null,
     beachSeabedType: item.PARAMETERS.P_BOTTOM
       ? item.PARAMETERS.P_BOTTOM.NAME
       : null,

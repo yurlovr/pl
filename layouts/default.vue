@@ -123,9 +123,9 @@ export default {
       if (this.$router.currentRoute.path !== '/') this.$bus.$emit('hidePageTransitioner');
     },
   },
-  beforeRouteLeave(to, from, next) {
-    this.$bus.$emit('transition');
-    setTimeout(() => { next(); }, 500);
-  },
+  // beforeRouteLeave(to, from, next) {
+  //   this.$bus.$emit('transition');
+  //   setTimeout(() => { next(); }, 500);
+  // },
 };
 </script>

@@ -3,8 +3,8 @@ export const state = () => ({
 });
 
 export const actions = {
-  async setWaterTemp({ commit }) {
-    const temperatures = await this.$axios.$get('/weather/list');
+  async setWaterTemp({ commit }, cityId) {
+    const temperatures = await this.$axios.$get(`/weather/list${cityId ? `?cityId[]=${cityId}` : ''}`);
     commit('SET_TEMPERATURES', temperatures);
   },
 };

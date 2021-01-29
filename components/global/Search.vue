@@ -623,35 +623,35 @@ export default {
       }
 
       // correcting the params values if they area set to default for different screen width
-      if (this.searchParams) {
-        if (this.searchMobileText || this.showCorrectSelectText) {
-          if (this.searchParams.selects.searchBeachLengthFrom.options[0].title === 'Протяженность линии от, м') {
-            this.updateSearchSecondRowParam({
-              title: 'От',
-              param: this.searchParams.selects.searchBeachLengthFrom.param,
-            });
-          }
-          if (this.searchParams.selects.searchWaterTempFrom.options[0].title === 'Температура воды от, °C') {
-            this.updateSearchSecondRowParam({
-              title: 'От',
-              param: this.searchParams.selects.searchWaterTempFrom.param,
-            });
-          }
-        } else {
-          if (this.searchParams.selects.searchBeachLengthFrom.options[0].title === 'От') {
-            this.updateSearchSecondRowParam({
-              title: 'Протяженность линии от, м',
-              param: this.searchParams.selects.searchBeachLengthFrom.param,
-            });
-          }
-          if (this.searchParams.selects.searchWaterTempFrom.options[0].title === 'От') {
-            this.updateSearchSecondRowParam({
-              title: 'Температура воды от, °C',
-              param: this.searchParams.selects.searchWaterTempFrom.param,
-            });
-          }
-        }
-      }
+      // if (this.searchParams) {
+      //   if (this.searchMobileText || this.showCorrectSelectText) {
+      //     if (this.searchParams.selects.searchBeachLengthFrom.options[0].title === 'Протяженность линии от, м') {
+      //       this.updateSearchSecondRowParam({
+      //         title: 'От',
+      //         param: this.searchParams.selects.searchBeachLengthFrom.param,
+      //       });
+      //     }
+      //     if (this.searchParams.selects.searchWaterTempFrom.options[0].title === 'Температура воды от, °C') {
+      //       this.updateSearchSecondRowParam({
+      //         title: 'От',
+      //         param: this.searchParams.selects.searchWaterTempFrom.param,
+      //       });
+      //     }
+      //   } else {
+      //     if (this.searchParams.selects.searchBeachLengthFrom.options[0].title === 'От') {
+      //       this.updateSearchSecondRowParam({
+      //         title: 'Протяженность линии от, м',
+      //         param: this.searchParams.selects.searchBeachLengthFrom.param,
+      //       });
+      //     }
+      //     if (this.searchParams.selects.searchWaterTempFrom.options[0].title === 'От') {
+      //       this.updateSearchSecondRowParam({
+      //         title: 'Температура воды от, °C',
+      //         param: this.searchParams.selects.searchWaterTempFrom.param,
+      //       });
+      //     }
+      //   }
+      // }
     },
 
     // autocomplete: debounce(async function () {

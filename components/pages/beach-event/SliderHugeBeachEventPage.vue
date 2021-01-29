@@ -71,10 +71,11 @@
               :key="i"
               class="swiper-slide"
             >
+                <!-- v-lazy-load -->
               <img
                 v-if="!pic.includes('youtube')"
                 v-lazy-load
-                :src="pic"
+                :data-src="pic"
                 :alt="data.title"
               >
               <div class="slide-placeholder">
@@ -159,7 +160,7 @@
         >
           <img
             v-lazy-load
-            :src="pic"
+            :data-src="pic"
             :alt="data.title"
           >
           <div class="slide-placeholder">
@@ -242,7 +243,7 @@
                       </div>
                       <img
                         v-lazy-load
-                        :src="pic"
+                        :data-src="pic"
                         :alt="data.title"
                       >
                       <div class="slide-placeholder slide-placeholder--beach-modal-big">
@@ -303,7 +304,7 @@
                   <img
                     v-if="!pic.includes('youtube')"
                     v-lazy-load
-                    :src="pic"
+                    :data-src="pic"
                     :alt="data.title"
                   >
                   <div class="slide-placeholder slide-placeholder--big-modal-right">

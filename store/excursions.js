@@ -18,29 +18,29 @@ export const state = () => ({
     main: null,
     page: null,
   },
+  noExcursions: false,
 });
 
 export const actions = {
   async setExcursions({ commit, state }, payload) {
     const { page, excursionsIds } = payload;
     if (page === 'main' && state.excursions.main) return;
+    if (page === 'beach' && !excursionsIds.length) {
+      commit('SET_NO_EXCURSIONS', true);
+      return;
+    }
     if (page) {
-      const query = `?${excursionsIds.map((item) => `id[]=${item}`).join('&')}`;
+      const query = excursionsIds.length ? `?${excursionsIds.map((item) => `id[]=${item}`).join('&')}` : '';
       const excursions = await this.$axios.$get(`/excursion/list${query}`);
       commit('SET_EXCURSIONS', { excursions, page });
     } else {
       commit('SET_EXCURSIONS_DEFAULT');
+      commit('SET_NO_EXCURSIONS', false);
     }
-    // if (page === 'main' && state.hotels.main) return;
-    // if (page) {
-    //   const path = selectPathFromPage(page, beachId);
-    //   const hotels = await this.$axios.$get(path);
-    //   const coordinat = this.$cookies.get('last_coordinates') || {};
-    //   commit('SET_HOTELS', { hotels, coordinat, page });
-    // } else {
-    //   commit('SET_HOTELS_DEFAULT');
-    // }
   },
+  // setNoExcursions({ commit }, data) {
+  //   commit('SET_NO_EXCURSIONS', data);
+  // },
 };
 
 export const mutations = {
@@ -87,12 +87,16 @@ export const mutations = {
     }
   },
   SET_EXCURSIONS_DEFAULT: (state) => {
-    state.hotels = {
-      ...state.hotels,
+    state.excursions = {
+      ...state.excursions,
       page: null,
     };
+  },
+  SET_NO_EXCURSIONS: (state, data) => {
+    state.noExcursions = data;
   },
 };
 export const getters = {
   getExcursions: (state) => state.excursions,
+  getNoExcursions: (state) => state.noExcursions,
 };

@@ -18,7 +18,6 @@
       <div class="main-page__welcome__gradient" />
       <Welcome />
       <Search
-        v-show="!(bgAndBarShown || tempBgAndBarShown)"
         class="main-page__welcome__search"
         label-id="1"
       />
@@ -33,7 +32,6 @@
         </template>
         <MapBlock />
       </LazyComponent>
-      <!-- <Banner :index="2" class="banner-1" /> -->
       <LazyComponent>
         <template #placeholder>
           <BlockPlug
@@ -88,7 +86,6 @@
           :white="true"
         />
       </LazyComponent>
-
       <LazyComponent>
         <template #placeholder>
           <BlockPlug
@@ -100,7 +97,6 @@
           :page="'main'"
         />
       </LazyComponent>
-
       <LazyComponent>
         <template #placeholder>
           <BlockPlug
@@ -169,35 +165,13 @@ export default {
 
     // this.onScroll();
     this.onResize();
-
-    this.$bus.$on('hideHeaderBgAndBar', () => {
-      this.bgAndBarShown = false;
-    });
-
-    this.$bus.$on('tempHideHeaderBgAndBar', () => {
-      this.tempBgAndBarShown = false;
-    });
-
-    this.$bus.$on('showHeaderBgAndBar', () => {
-      this.bgAndBarShown = true;
-    });
-
-    this.$bus.$on('tempShowHeaderBgAndBar', () => {
-      this.tempBgAndBarShown = true;
-    });
   },
 
   methods: {
     ...mapActions('main', ['getMainPageData']),
-    ...mapActions('loading', ['setLoading']),
     ...mapMutations('main', ['setGeoLocating']),
 
     onScroll() {
-      // if (document.querySelector('main-page')) {
-      //   window.removeEventListener('scroll', this.onScroll, false);
-      //   return;
-      // }
-
       const scrollTop = window.scrollY || document.body.scrollTop || document.documentElement.scrollTop;
       // show or hide the search background and the bar depending on the scroll
       if (window.innerWidth > 900 && scrollTop >= 346 || window.innerWidth <= 900 && window.innerWidth > 800 && scrollTop >= 230 || window.innerWidth <= 800 && window.innerWidth > 650 && scrollTop >= 245 || window.innerWidth <= 650 && scrollTop >= 20) {
