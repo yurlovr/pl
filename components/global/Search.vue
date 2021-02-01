@@ -420,21 +420,10 @@ export default {
     this.$bus.$on('hideParams', () => {
       this.hideParams();
     });
-    // this.$bus.$on('updateSearchParam', (payload) => {
-    //   this.updateSearchParam(payload);
-    // });
 
     this.$bus.$on('search', () => {
       this.searchFilter();
     });
-
-    // this.$bus.$on('emptySearchParams', () => {
-    //   this.emptySearchParams();
-    // });
-
-    // this.$bus.$on('updateSearchInput', () => {
-    //   this.updateSearchInput();
-    // });
   },
 
   methods: {
@@ -449,16 +438,9 @@ export default {
       'setSearchInputValue',
     ]),
     ...mapMutations('search', [
-      // 'updateSearchQuery',
-      // 'updateSearchSecondRowParam',
-      // 'updateInput',
-      // 'updateSearchParam',
-      // 'emptySearchParams',
-      // 'updateSearchInput',
       'updateParamsShown',
       'set_coords',
       'set_radius',
-      // 'hoverAutocomplete',
     ]),
     toggleMobileShow() {
       this.mobileSearchBarShown = !this.mobileSearchBarShown;
@@ -553,55 +535,16 @@ export default {
 
     searchFilter() {
       const query = `${this.getQueryParams}&page=1&count=12`;
-      // if (this.$nuxt.$route.path === '/search') { // already in the search page
-      //   this.search([this.geoLocating ? (this.$cookies.get('last_coordinates') || {}) : {}, this.$cookies.get('geo_locating') || -1]); // update results and tags
-      //   this.$bus.goTo(`/search${query}`, this.$router, false); // updateQuery
-      //   setTimeout(() => {
-      //     this.$bus.goTo(`/search${query}`, this.$router, false);
-      //   }, 1); // updateQuery
-      // } else {
-      //   this.search([this.geoLocating ? (this.$cookies.get('last_coordinates') || {}) : {}, this.$cookies.get('geo_locating') || -1]);
-      //   setTimeout(() => {
       this.setSeach(null);
       this.setSendRequest(true);
       this.$bus.goTo(`/search${query}`, this.$router);
-      //   }, 1);
-      // }
     },
-
-    // searchCurQuery() {
-    //   document.querySelector('.search__bar__input').blur(); // hide autocomlete
-    //   if (this.searchInput != '') {
-    //     if (this.$nuxt.$route.path == '/search') { // already in the search page
-    //       this.searchQuery([this.$cookies.get('last_coordinates') || {}, this.$cookies.get('geo_locating') || -1]); // update results and tags
-    //       this.$bus.goTo(`/search${this.query}`, this.$router, false); // updateQuery
-    //       setTimeout(() => {
-    //         this.$bus.goTo(`/search${this.query}`, this.$router, false);
-    //       }, 1); // updateQuery
-    //     } else {
-    //       this.searchQuery([this.$cookies.get('last_coordinates') || {}, this.$cookies.get('geo_locating') || -1]);
-    //       setTimeout(() => {
-    //         this.$bus.goTo(`/search${this.query}`, this.$router);
-    //       }, 1);
-    //     }
-    //   }
-    //   // this.clearInput();
-    //   this.mobileSearchBarShown = false;
-    // },
 
     clearInput() {
       this.setSearchInputValue('');
     },
 
-    // onInput(e) {
-    //   console.log(e)
-    //   this.setSearchInputValue(e.target.value);
-    //   // this.updateInput(e.target.value);
-    //   // this.autocomplete();
-    // },
-
     onResize() {
-      // if it's not the main slider and its params are open, and the screen size gets lower than 450, then close its own params
       if (window.innerWidth <= 450 && this.labelId && this.paramsShown) {
         setTimeout(() => {
           this.toggleParams();
@@ -621,44 +564,8 @@ export default {
       } else {
         this.searchMobileText = false;
       }
-
-      // correcting the params values if they area set to default for different screen width
-      // if (this.searchParams) {
-      //   if (this.searchMobileText || this.showCorrectSelectText) {
-      //     if (this.searchParams.selects.searchBeachLengthFrom.options[0].title === 'Протяженность линии от, м') {
-      //       this.updateSearchSecondRowParam({
-      //         title: 'От',
-      //         param: this.searchParams.selects.searchBeachLengthFrom.param,
-      //       });
-      //     }
-      //     if (this.searchParams.selects.searchWaterTempFrom.options[0].title === 'Температура воды от, °C') {
-      //       this.updateSearchSecondRowParam({
-      //         title: 'От',
-      //         param: this.searchParams.selects.searchWaterTempFrom.param,
-      //       });
-      //     }
-      //   } else {
-      //     if (this.searchParams.selects.searchBeachLengthFrom.options[0].title === 'От') {
-      //       this.updateSearchSecondRowParam({
-      //         title: 'Протяженность линии от, м',
-      //         param: this.searchParams.selects.searchBeachLengthFrom.param,
-      //       });
-      //     }
-      //     if (this.searchParams.selects.searchWaterTempFrom.options[0].title === 'От') {
-      //       this.updateSearchSecondRowParam({
-      //         title: 'Температура воды от, °C',
-      //         param: this.searchParams.selects.searchWaterTempFrom.param,
-      //       });
-      //     }
-      //   }
-      // }
     },
 
-    // autocomplete: debounce(async function () {
-    //   if (this.searchInput && this.searchInput.length >= 1) {
-    //     this.searchAutocomplete([this.$cookies.get('last_coordinates') || {}, this.$cookies.get('geo_locating') || -1]);
-    //   }
-    // }, 250),
     clickLink(link) {
       this.setSearchInputValue('');
       this.$bus.goTo(link, this.$router);
@@ -676,7 +583,6 @@ export default {
     },
     pressEscInput(event) {
       if (event.key === 'Escape') {
-        // window.removeEventListener('keydown', this.pressEscInput);
         this.clearInput();
       }
     },

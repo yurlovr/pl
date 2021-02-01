@@ -9,33 +9,11 @@
       class="custom-new-select__top"
       @click="dropdownOpen = !dropdownOpen"
     >
-      <!-- <span v-if="param === 'searchBeachLengthFrom'">
-        <span v-if="chosenIndex !== 0">
-          Протяженность линии от,
-        </span>
-        <span class="custom-new-select__length-val">
-          {{ title }}
-        </span>
-      </span> -->
-      <!-- <span v-else> -->
       <span>
         {{ title }}
       </span>
       <img src="~/static/pics/global/svg/dropdown.svg">
     </div>
-    <!-- <select
-      v-if="city"
-      id="city-native"
-      name="citySelect"
-      @change="x => choose(x.target.value)"
-    >
-      <option
-        v-for="(option, i) in options"
-        :value="i"
-      >
-        {{ option.title }}
-      </option>
-    </select> -->
     <div
       v-show="dropdownOpen"
       class="custom-new-select__bottom"
@@ -115,29 +93,11 @@ export default {
         param: this.param,
         option,
       });
-      // this.$bus.$emit('updateSearchParam', { param: this.param, value: { title: this.options[i].title, id: this.options[i].id } });
-
-      // id == 0 is the default value
-      // if (this.opposite) {
-      //   setTimeout(() => {
-      //     if (this.value.id !== -1 && this.opposite.value.id !== -1 && (
-      //       (this.param === 'searchWaterTempFrom' || this.param === 'searchBeachLengthFrom') && this.value.title >= this.opposite.value.title)
-      //       || (this.param == 'searchWaterTempTo' || this.param === 'searchBeachLengthTo') && this.value.title <= this.opposite.value.title) {
-      //       this.$bus.$emit('updateSearchParam', { param: this.opposite.param, value: { title: this.opposite.options[0].title, id: this.opposite.options[0].id } });
-      //     }
-      //   }, 1);
-      // }
     },
 
     onBlur() {
       this.dropdownOpen = false;
     },
-
-    // filteredTitle(title) {
-    //   console.log(title)
-    //   if (title && title.replace) return title.replace('посёлок городского типа', 'пгт.');
-    //   return title;
-    // },
   },
 };
 </script>

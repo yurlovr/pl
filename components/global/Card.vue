@@ -188,13 +188,14 @@
           @click.prevent="$bus.goTo(data.beachLink ? data.beachLink : '#', $router)"
           v-html="data.beach"
         />
-        <a
+        <nuxt-link
           v-if="!data.another_place"
-          :href="`/search?city=${data.locationId}`"
+          :to="`/search?city=${data.locationId}&page=1&count=12`"
           class="custom-card__location"
           :style="{ 'font-size': data.beach ? '10px' : '12px' }"
-          @click.prevent="searchCity()"
-        >{{ data.location }}</a>
+        >
+          {{ data.location }}
+        </nuxt-link>
         <a
           v-if="data.another_place && data.geo_string"
           class="custom-card__location"
@@ -347,16 +348,16 @@ export default {
       else this.max = 2;
     },
 
-    searchCity() {
-      this.$bus.$emit('emptySearchParams');
-      this.$bus.$emit('updateSearchParam', {
-        param: 'cities',
-        value: { title: this.data.location, id: this.data.locationId },
-      });
-      setTimeout(() => {
-        this.$bus.$emit('search');
-      }, 1);
-    },
+    // searchCity() {
+    //   this.$bus.$emit('emptySearchParams');
+    //   this.$bus.$emit('updateSearchParam', {
+    //     param: 'cities',
+    //     value: { title: this.data.location, id: this.data.locationId },
+    //   });
+    //   setTimeout(() => {
+    //     this.$bus.$emit('search');
+    //   }, 1);
+    // },
     // clickLink({ event, link, id }) {
     //   event.preventDefault();
     //   console.log('LINK', link, event)

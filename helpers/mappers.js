@@ -4,6 +4,7 @@ import { OUT_LINKS_EXCURSIONS } from '~/const/const';
  * Map Event entity
  */
 export function mapEvent(item) {
+  console.log(item)
   return {
     id: item.ID,
     title: item.NAME,
@@ -12,12 +13,12 @@ export function mapEvent(item) {
     showFavorite: true,
     beach: item.BEACH ? item.BEACH.NAME : null,
     paid: item.PAID,
-    location: item.BEACH && item.BEACH.CITY ? item.BEACH.CITY.NAME : null,
+    location: item.CITIES.length ? item.CITIES[0].NAME : null,
     pic: item.PHOTOS ? item.PHOTOS.medium[0].path : null,
     mainLink: `/event/${item.ID}`,
     humanLink: item.CODE ? `/event/${item.CODE}` : null,
     beachLink: item.BEACH && item.BEACH.CODE ? `beach/${item.BEACH.CODE}` : null,
-    locationId: item.BEACH && item.BEACH.CITY ? item.BEACH.CITY.ID : null,
+    locationId: item.CITIES.length ? item.CITIES[0].ID : null,
     eventId: item.ID,
     beachId: item.BEACH ? item.BEACH.ID : null,
   };
@@ -182,7 +183,8 @@ export function mapBeach(item) {
     mainLink: `beach/${item.ID}`,
     beachLink: `beach/${item.ID}`,
     humanLink: item.CODE ? `beach/${item.CODE}` : null,
-    cityId: item.CITY,
+    locationId: item.CITY[0].ID,
+    location: item.CITY[0].NAME,
     beachId: item.ID,
     tags: item.TAGS
       ? item.TAGS.map((v) => ({ id: v.ID, title: v.NAME }))
@@ -357,8 +359,8 @@ export function mapRest(item) {
     paid: item.PAID,
     rating: parseFloat(item.AVERAGE_RATING),
     title: item.NAME,
-    location: item.CITY ? item.CITY.NAME : null,
-    locationId: item.CITY ? item.CITY.ID : -1,
+    location: item.CITY[0].NAME,
+    locationId: item.CITY[0].ID,
     pic: item.PHOTOS.medium && item.PHOTOS.medium.length ? item.PHOTOS.medium[0].path : null,
     mainLink: `beach/${item.ID}`,
     beachLink: `beach/${item.ID}`,
