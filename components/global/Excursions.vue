@@ -1,6 +1,6 @@
 <template>
   <div
-    class="main-page__white-wrapper"
+    class="excursions"
   >
     <BlockPlug
       v-if="!dataForRender && !getNoExcursions"
@@ -15,8 +15,11 @@
       :outlink="OUT_LINKS_EXCURSIONS"
       class="main-page__family-rest"
     />
-    <NoExcursions
+    <NoBlock
       v-else
+      :title="PLUG_TITLE.EXCURSIONS.title"
+      :description="'Пока мы не нашли ничего похожего. Возможно это самый лучший пляж!'"
+      white="true"
     />
   </div>
 </template>
@@ -29,7 +32,7 @@ export default {
   components: {
     BeachSliderArea: () => import('~/components/global/BeachSliderArea'),
     BlockPlug: () => import('~/components/global/BlockPlug'),
-    NoExcursions: () => import('~/components/pages/beach/NoExcursions'),
+    NoBlock: () => import('~/components/pages/beach/NoBlock'),
   },
   props: {
     page: {
@@ -85,3 +88,8 @@ export default {
   },
 };
 </script>
+<style lang="scss">
+.excursions {
+  margin-bottom: 15px;
+}
+</style>

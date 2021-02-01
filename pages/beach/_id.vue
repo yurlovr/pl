@@ -46,7 +46,10 @@
             <BeachQuickData
               v-if="beach.infrastructures.length > 0"
               :title="'Инфраструктура пляжа'"
-              :data="beach.infrastructures"
+              :data="beach.infrastructures.filter((i) => ![
+                'ostanovki-obshchestvennogo-transporta',
+                'parkovka',
+              ].includes(i.code))"
               action="service"
               :href="true"
             />
@@ -79,12 +82,19 @@
           <section
             id="services"
             class="two-part-layout__card beach-page__quick-data-wrapper"
+            :class="!beach.services.length ? 'no-data' : ''"
           >
             <BeachQuickData
               v-if="beach.services.length > 0"
               :title="'Услуги и аренда'"
               :data="beach.services"
               action="service"
+            />
+            <NoBlock
+              v-else
+              :title="PLUG_TITLE.SERVICES.title"
+              :description="'В настоящий момент раздел находится в заполнении.'"
+              :white="true"
             />
           </section>
 
@@ -106,7 +116,7 @@
               />
             </template>
             <BeachWaterTemperature
-              :city-id="beach.cityId"
+              :city-id="beach.locationId"
             />
           </LazyComponent>
 
@@ -179,9 +189,9 @@
             :beach="true"
             class="beach-event__map-weather__desktop"
           />
-          <LazyComponent>
+          <!-- <LazyComponent>
             <AnnouncemetWrapper />
-          </LazyComponent>
+          </LazyComponent> -->
         </aside>
       </div>
 
@@ -197,7 +207,7 @@
         />
       </LazyComponent>
 
-      <div class="main-page__white-wrapper beach-event__visitor-pics-wrapper">
+      <div class="beach-event__visitor-pics-wrapper">
         <LazyComponent>
           <template #placeholder>
             <BlockPlug
@@ -236,7 +246,7 @@
           />
         </template>
         <BeachSimilarWrapper
-          :city-id="beach.cityId"
+          :city-id="beach.locationId"
           :tags="beach.tags"
           :beach-id="beach.id"
         />
@@ -281,6 +291,7 @@ export default {
     BeachSimilarWrapper: () => import('~/components/pages/beach/BeachSimilarWrapper'),
     BeachEventsWrapper: () => import('~/components/pages/beach/BeachEventsWrapper'),
     Excursions: () => import('~/components/global/Excursions'),
+    NoBlock: () => import('~/components/pages/beach/NoBlock'),
   },
   mixins: [head],
   data() {
@@ -337,6 +348,9 @@ export default {
 }
 #infra, #services {
   min-height: 485px;
+}
+#services.no-data {
+  min-height: 250px;
 }
 .hotels-section {
   padding: 0;

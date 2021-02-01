@@ -12,7 +12,12 @@
       :data="getSimilarBeaches"
       :pagination="true"
     />
-    <NoSimilar v-else />
+    <NoBlock
+      v-else
+      :title="PLUG_TITLE.SIMILAR.title"
+      :description="'Пока мы не нашли ничего похожего. Возможно это самый лучший пляж!'"
+      white="true"
+    />
   </div>
 </template>
 
@@ -24,7 +29,7 @@ export default {
   components: {
     BeachSliderArea: () => import('~/components/global/BeachSliderArea'),
     BlockPlug: () => import('~/components/global/BlockPlug'),
-    NoSimilar: () => import('~/components/pages/beach/NoSimilar'),
+    NoBlock: () => import('~/components/pages/beach/NoBlock'),
   },
   props: {
     cityId: {

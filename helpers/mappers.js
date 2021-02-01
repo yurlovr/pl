@@ -161,6 +161,8 @@ export function mapSimilar(item) {
     title: item.NAME,
     pic: item.PREVIEW,
     mainLink: item.ID,
+    location: item.CITY.length ? item.CITY[0].NAME : null,
+    locationId: item.CITY.length ? item.CITY[0].ID : null,
   };
 }
 
@@ -213,7 +215,7 @@ export function mapBeachServices(beach) {
       //   'ostanovki-obshchestvennogo-transporta',
       //   'parkovka',
       // ].includes(i.code)),
-    services: beach.SERVICES.map(mapService),
+    services: beach.SERVICES.length ? beach.SERVICES.map(mapService).filter((i) => i.code) : [],
   };
 }
 export function mapCoords(coords) {

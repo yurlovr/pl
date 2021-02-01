@@ -12,7 +12,14 @@
       :data="getBeachEvents"
       class="beach-page__cardless-area"
     />
-    <NoEvents v-else />
+
+    <NoBlock
+      v-else
+      :id="'events'"
+      :title="PLUG_TITLE.EVENT.title"
+      :description="'В настоящее время на пляже нет мероприятий.'"
+      :white="true"
+    />
   </div>
 </template>
 
@@ -24,7 +31,7 @@ export default {
   components: {
     BeachEvents: () => import('~/components/pages/beach/BeachEvents'),
     BlockPlug: () => import('~/components/global/BlockPlug'),
-    NoEvents: () => import('~/components/pages/beach/NoEvents'),
+    NoBlock: () => import('~/components/pages/beach/NoBlock'),
   },
   props: {
     beachId: {

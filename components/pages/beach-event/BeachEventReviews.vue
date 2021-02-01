@@ -1,9 +1,9 @@
 <template>
   <section
     id="reviews"
-    class="beach-event__reviews"
-    :class="{ empty: data && !data.length }"
+    class="beach-event__reviews two-part-layout__card"
   >
+    <!-- :class="{ empty: data && !data.length }" -->
     <h2 class="two-part-layout__card__title beach-event__reviews__title">
       Отзывы гостей ({{ data ? data.length : 0 }})
     </h2>
@@ -53,6 +53,12 @@
           />
         </div>
       </div>
+    </div>
+    <div
+      v-if="!data.length"
+      class="text"
+    >
+      Пока нет отзывов о пляже. Вы можете быть первым!
     </div>
     <BeachEventLeaveReview :type-id="typeId" :type="type" />
     <div

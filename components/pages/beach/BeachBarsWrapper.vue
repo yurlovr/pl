@@ -8,25 +8,31 @@
       :show-loader="true"
     />
     <BeachBarsNRestos
-      v-else
+      v-else-if="data && data.length"
       class="beach-page__cardless-area"
       :data="data"
       :title="title"
+    />
+    <NoBlock
+      v-else
+      :id="'barsNRestos'"
+      :title="PLUG_TITLE.BARS.title"
+      :description="'На пляже очень много доступных ресторанов.'"
+      :white="true"
     />
   </div>
 </template>
 
 <script>
 import { mapGetters, mapActions } from 'vuex';
-import BeachBarsNRestos from './BeachBarsNRestos.vue';
-import BlockPlug from '~/components/global/BlockPlug.vue';
 import { PLUG_TITLE } from '~/const/const';
 
 export default {
   name: 'BeachBarsWrapper',
   components: {
-    BlockPlug,
-    BeachBarsNRestos,
+    BlockPlug: () => import('~/components/global/BlockPlug'),
+    BeachBarsNRestos: () => import('~/components/pages/beach/BeachBarsNRestos'),
+    NoBlock: () => import('~/components/pages/beach/NoBlock'),
   },
   props: {
     title: {

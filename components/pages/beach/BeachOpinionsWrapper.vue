@@ -7,9 +7,16 @@
       :show-loader="true"
     />
     <BeachOpinions
-      v-else
+      v-else-if="getOpinions && getOpinions.length"
       id="opinions"
       :data="getOpinions"
+    />
+    <NoBlock
+      v-else
+      :id="'opinions'"
+      :title="PLUG_TITLE.OPINIONS.title"
+      :description="'Пока местные не дали оценку пляжу. Возможно они не хотят рассказывать про этот замечательный пляж!'"
+      :white="true"
     />
   </div>
 </template>
@@ -22,6 +29,7 @@ export default {
   components: {
     BeachOpinions: () => import('~/components/pages/beach/BeachOpinions'),
     BlockPlug: () => import('~/components/global/BlockPlug'),
+    NoBlock: () => import('~/components/pages/beach/NoBlock'),
   },
   props: {
     beachId: {

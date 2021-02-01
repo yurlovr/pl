@@ -114,6 +114,9 @@ export const PLUG_TITLE = {
   EXCURSIONS_BEACH: {
     title: 'Все экскурсии рядом',
   },
+  SERVICES: {
+    title: 'Услуги и аренда',
+  },
 };
 
 export const SOC_LINK = {

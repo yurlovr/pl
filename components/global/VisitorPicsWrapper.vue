@@ -1,6 +1,6 @@
 <template>
   <div
-    class="main-page__white-wrapper beach-event__visitor-pics-wrapper"
+    class="two-part-layout__card"
   >
     <BeachEventVisitorPics
       v-if="visitorPics && id"

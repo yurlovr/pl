@@ -2,9 +2,7 @@
   <div v-body-scroll-lock="true" class="modal-for-3d">
     <div class="modal-for-3d__modal">
       <div class="modal-for-3d__modal__body">
-        <p class="modal-for-3d__modal__body__cross" @click.stop="close">
-          &#10005
-        </p>
+        <p class="modal-for-3d__modal__body__cross" @click.stop="close" />
         <a
           href="/"
           target="_blank"

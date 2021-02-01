@@ -9,7 +9,6 @@
     />
     <BeachEventReviews
       v-else
-      class="beach-page__cardless-area"
       :type="'event'"
       :type-id="id"
       :data="reviews"
